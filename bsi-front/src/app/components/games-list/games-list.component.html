@@ -1,0 +1,327 @@
+
+
+  <div id="ranking_div" href="" class="float text-black col-sm-12 col-md-8"  target="_blank" (click)="closeRanking('ranking_div')">
+  <button style="PADDING-LEFT: 0PX"  class="btn float-end text-left"><span class="material-icons">close</span></button>
+
+  <div class="row" style="height: 34rem;background: #ffffffd6;">
+
+    <div class=""></div>
+
+    <h3 class="py-1" style="BACKGROUND: linear-gradient(to right, #009fff, #ec2f4b) !important;COLOR: WHITE;BORDER-RADIUS: 9PX;OPACITY: 0.9;">Ranking en tiempo real</h3>
+
+      <table class="charts-css column show-heading show-labels  show-data-axes show-primary-axis custom-effect animations-example-1 custom-effect">
+
+        <thead>
+          <tr>
+            <th scope="col"> Equipo </th>
+            <th scope="col"> Progress </th></tr>
+          </thead>
+          <tbody>
+
+            <ng-container *ngFor="let venta of ventas">
+
+              <ng-container *ngIf="venta.indice == 1">
+
+                <tr><th scope="row"> {{venta.descripcion}} </th>  <td class="highlighted" style="--start:0; --size:{{venta.indice}};"> <span class="data text-white"> {{venta.total}} </span></td> </tr>
+
+              </ng-container>
+
+              <ng-container *ngIf="venta.indice != 1">
+
+                <tr><th scope="row"> {{venta.descripcion}} </th>  <td style="--start:0; --size:{{venta.indice}};"> <span class="data text-white"> {{venta.total}} </span></td> </tr>
+
+              </ng-container>
+
+              </ng-container>
+
+          </tbody>
+      </table>
+
+    </div>
+
+
+
+  </div>
+
+  <div class="card">
+
+    <h4 style="padding-top: 10px;padding-bottom: 10px;border-bottom: 1px solid #b3b3b3;padding-left: 10px;">
+      Legajos
+
+      <button (click)="getGames()" class="btn-ellipsis py-2" style="display: inline !IMPORTANT;width: 35px;">
+        <span class="material-icons align-middle">
+        refresh
+        </span>
+      </button>
+    </h4>
+
+    <div class="card-header" style="background-color: inherit;">
+
+      <div class="row">
+
+        <div class="col-md-4 col-sm-12 pb-2">
+          <select class="form-select" aria-label="Default select example" (change)="onEstadoSelect($event)">
+            <option>Elija un estado</option>
+            <option selected value="1">Ingresadas (no filtran por fecha)</option>
+            <option value="2">Documentacion (no filtran por fecha)</option>
+            <option value="6">Rechazadas</option>
+            <option value="5">Finalizadas</option>
+        </select>
+        </div>
+
+        <div class="col-md-4 col-sm-12 pb-2">
+          <span style="margin-right: 10px;">Fecha Seña:</span>
+          <input type="date" (change)="getGamesFromDate_sena_start($event)" id="star_new_ctrl" name="trip-start" value="{{date_sena_start}}" min="2019-01-01" max="2040-12-31"
+          style="width: 40%; background: transparent;border-radius: 8px;border: 2px solid #00000040;padding: 5px;font-size: 110%;color: black;">
+
+          <input type="date" (change)="getGamesFromDate_sena_end($event)" id="end_ctrl" name="trip-start" value="{{date_sena_end}}" min="2019-01-01" max="2040-12-31"
+          style="width: 35%; background: transparent;border-radius: 8px;border: 2px solid #00000040;padding: 5px;font-size: 110%;color: black">
+        </div>
+
+        <div class="col-md-4 col-sm-12 pb-2">
+          <span style="margin-right: 10px;">Fecha Turno:</span>
+          <input type="date" (change)="getGamesFromDate_firma_start($event)" id="star_ctrl" name="trip-start" value="{{date_firma_start}}" min="2019-01-01" max="2040-12-31"
+          style="width: 35%; background: transparent;border-radius: 8px;border: 2px solid #00000040;padding: 5px;font-size: 110%;color: black;">
+
+          <input type="date" (change)="getGamesFromDate_firma_end($event)" id="end_ctrl" name="trip-start" value="{{date_firma_end}}" min="2019-01-01" max="2040-12-31"
+          style="width: 35%; background: transparent;border-radius: 8px;border: 2px solid #00000040;padding: 5px;font-size: 110%;color: black">
+      </div>
+
+      </div>
+
+  </div>
+
+    <div class="card-body" style="padding: 0;">
+
+      <div class="table-responsive">
+
+      <table class="table table-stried table-condensed table-hover">
+        <thead>
+            <tr>
+              <th class="">Descargar<a ng-click="sort_by('HomeTeam')"><i class="icon-sort"></i></a></th>
+              <th class="">Info<a ng-click="sort_by('HomeTeam')"><i class="icon-sort"></i></a></th>
+              <th class="">Denominacion&nbsp;<a ng-click="sort_by('line')"><i class="icon-sort"></i></a></th>
+              <th class="">Estado&nbsp;<a ng-click="sort_by('HomeTeam')"><i class="icon-sort"></i></a></th>
+              <th class="">F. Venta&nbsp;<a ng-click="sort_by('HomeTeam')"><i class="icon-sort"></i></a></th>
+              <th class="">Lote&nbsp;<a ng-click="sort_by('HomeTeam')"><i class="icon-sort"></i></a></th>
+              <th class="">N. Venta<a ng-click="sort_by('HomeTeam')"><i class="icon-sort"></i></a></th>
+              <th class="">$ Lote&nbsp;<a ng-click="sort_by('HomeTeam')"><i class="icon-sort"></i></a></th>
+              <th class="">Seña&nbsp;<a ng-click="sort_by('HomeTeam')"><i class="icon-sort"></i></a></th>
+              <th class="">N. Seña&nbsp;<a ng-click="sort_by('HomeTeam')"><i class="icon-sort"></i></a></th>
+              <th class="">Pago&nbsp;<a ng-click="sort_by('HomeTeam')"><i class="icon-sort"></i></a></th>
+              <th class="">N. Pago&nbsp;<a ng-click="sort_by('HomeTeam')"><i class="icon-sort"></i></a></th>
+              <th class="">Firma&nbsp;<a ng-click="sort_by('awayTeamName')"><i class="icon-sort"></i></a></th>
+              <th class="">N. Firma&nbsp;<a ng-click="sort_by('HomeTeam')"><i class="icon-sort"></i></a></th>
+              <th class="">N. Cierre<a ng-click="sort_by('HomeTeam')"><i class="icon-sort"></i></a></th>
+              <th class="">&nbsp;<a ng-click="sort_by('HomeTeam')"><i class="icon-sort"></i></a></th>
+              <th class="">&nbsp;<a ng-click="sort_by('HomeTeam')"><i class="icon-sort"></i></a></th>
+              <th class="">&nbsp;<a ng-click="sort_by('HomeTeam')"><i class="icon-sort"></i></a></th>
+              <th class="">&nbsp;<a ng-click="sort_by('HomeTeam')"><i class="icon-sort"></i></a></th>
+
+            </tr>
+        </thead>
+
+        <tbody>
+
+          <ng-container *ngFor="let sol of solicitudes">
+
+            <tr>
+
+              <td>
+
+                <button (click)="downloadReal(sol)" class="btn-ellipsis py-2">
+                  <span class="material-icons align-middle">
+                  download
+                  </span>
+                  <span>({{sol.fileCant}})</span>
+                  <span id="file_span_{{sol.id}}"></span>
+                </button>
+
+              </td>
+
+              <td>
+
+                <button id="file_txt_{{sol.id}}" (click)="download(sol)" class="btn-ellipsis py-2">
+                  <span class="material-icons align-middle">info</span>
+                  <span id="info_span_{{sol.id}}"></span>
+                </button>
+
+              </td>
+
+              <td>{{sol.denominacion}}</td>
+              <td>{{sol.estado}}</td>
+              <td style="font-weight: normal;text-overflow: inherit;"> {{sol.timestamp | date : 'dd/MM/yyyy':'-0000'}}</td>
+              <td>{{sol.lote_append}}</td>
+              <td data-bs-toggle="tooltip" data-bs-placement="top" title="{{sol.observaciones_v}}">{{sol.observaciones_v}}</td>
+              <td>{{sol.lote_total | currency : 'USD' : 'symbol' : '1.0-0'}}</td>
+              <td>{{sol.refuerzo_total | currency : 'USD' : 'symbol' : '1.0-0'}}</td>
+              <td title="{{sol.observaciones_s}}" class="">{{sol.observaciones_s}}</td>
+              <td>{{sol.refuerzo_total + sol.pago_total | currency : 'USD' : 'symbol' : '1.0-0'}}</td>
+              <td data-bs-toggle="tooltip" data-bs-placement="top" title="{{sol.observaciones_p}}" class="">{{sol.observaciones_p}}</td>
+              <td style="font-weight: bold;text-overflow: inherit;"> {{sol.fecha_firma | date : 'dd/MM/yyyy HH:mm':'-0000'}}</td>
+              <td title="{{sol.observaciones_f}}" class="">{{sol.observaciones_f}}</td>
+              <td title="{{sol.observaciones_a}}" class="">{{sol.observaciones_a}}</td>
+
+              <td>
+
+                <div *ngIf="sol.estado =='Iniciado' || sol.estado =='Documentacion'">
+
+                  <button class="btn btn-outline-primary" (click)="editar(sol)">
+                    <span  class="material-icons">
+                      edit
+                    </span>
+
+                  </button>
+                </div>
+              </td>
+
+              <td>
+
+                <div *ngIf="sol.estado =='Iniciado' || sol.estado =='Documentacion'">
+
+                  <button (click)="enviarRefuerzo(sol)" class="btn btn-outline-primary"><span class="material-icons">
+                    attach_money
+                    </span></button>
+                </div>
+
+              </td>
+
+              <td>
+
+                <div *ngIf="sol.estado =='Iniciado'">
+
+                <button (click)="enviarSol(sol)" class="btn btn-outline-success"><span class="material-icons">
+                  done_all
+                  </span></button>
+                </div>
+
+              </td>
+
+              <td>
+
+                <div *ngIf="sol.estado =='Iniciado' || sol.estado =='Documentacion'">
+
+                  <button (click)="rechazar(sol)" class="btn btn-outline-danger"><span class="material-icons">
+                    close
+                    </span></button>
+
+                </div>
+
+              </td>
+
+            </tr>
+
+          </ng-container>
+
+        </tbody>
+      </table>
+
+      </div>
+
+    </div>
+
+    <div *ngIf="ld_header" class="lds-roller"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+
+    <!-- Button trigger modal -->
+   <button type="button" class="btn btn-primary" id="modal_btn" style="visibility: hidden;" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+     Launch modal
+   </button>
+
+  </div>
+
+  <!-- Modal -->
+<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog" style="
+  max-width:85%;
+  margin:auto;
+">
+    <div class="modal-content mt-5">
+      <div class="modal-header">
+
+        <h2 class="modal-title" id="staticBackdropLabel">{{sol_modal.barrio}}</h2>
+
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+                style="font-weight: 800;border: 2px solid var(--bs-black);border-radius: 28px;margin-right: 3px;margin-top: -4px;">
+        </button>
+
+      </div>
+      <div class="modal-body" style="
+      font-size: 170%;
+      display: block;
+      margin:auto;
+      ">
+
+        <div class="rw">
+          <span class="modal-label d-inline">Fecha Venta:</span>
+          <span class="modal-content d-inline">{{sol_modal.timestamp | date : 'dd/MM/yyyy' }}</span>
+        </div>
+        <div class="ow">
+          <span class="modal-label d-inline">Nro Lote:</span>
+          <span class="modal-content d-inline">{{sol_modal.lote_append}}</span>
+        </div>
+
+        <div class="rw">
+          <span class="modal-label d-inline">Nombre Propietario:</span>
+          <span class="modal-content d-inline">{{sol_modal.denominacion}}</span>
+        </div>
+        <div class="rw">
+          <span class="modal-label d-inline">Dni:</span>
+          <span class="modal-content d-inline">{{sol_modal.dni}}</span>
+        </div>
+        <div class="rw">
+          <span class="modal-label d-inline">Estado Civil:</span>
+          <span class="modal-content d-inline">{{sol_modal.estado_civil}}</span>
+        </div>
+        <div class="rw">
+          <span class="modal-label d-inline">Nro Contacto:</span>
+          <span class="modal-content d-inline">{{sol_modal.telefono}}</span>
+        </div>
+        <div class="ow">
+          <span class="modal-label d-inline">Total Lote:</span>
+          <span class="modal-content d-inline">{{sol_modal.lote_total}} usd</span>
+        </div>
+        <div class="rw">
+          <span class="modal-label d-inline">Seña:</span>
+          <span class="modal-content d-inline">{{sol_modal.refuerzo_total}}</span>
+        </div>
+        <div class="ro">
+          <span class="modal-label d-inline">Abonado hasta ahora:</span>
+          <span class="modal-content d-inline">{{lbl_pago_parcial}}</span>
+        </div>
+        <div class="ro">
+          <span class="modal-label d-inline">Resta Pagar:</span>
+          <span class="modal-content d-inline">{{lbl_resta}} usd</span>
+        </div>
+        <div class="rw">
+          <span class="modal-label d-inline">Vendedor:</span>
+          <span class="modal-content d-inline">{{sol_modal.grupo}}</span>
+        </div>
+      </div>
+
+      <ng-container *ngFor="let blob of sol_modal.blobArray; let i = index">
+
+        <div class="row" class="mt-3 mb-3">
+
+          <div class="col-md-12 col-sm-12">
+
+            <img id="img_{{i}}" src="{{blob}}"  height="500" alt=""
+            style="display: block;
+                  width: 100%;
+                  height: 100%;padding-bottom: 0 !important;
+                  padding-top: 2% !important;
+                  padding: 15%;"
+            >
+
+          </div>
+
+        </div>
+
+      </ng-container>
+
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">cerrar</button>
+      </div>
+    </div>
+  </div>
+</div>

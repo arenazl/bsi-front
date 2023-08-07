@@ -1,0 +1,371 @@
+
+<div class="col-md-6 offset-md-3">
+
+
+  <div class="card">
+
+
+    <div class="card-header">
+      <h4>Carga de Documentacion</h4>
+    </div>
+
+    <div class="card-body">
+
+      <div *ngIf="phase1 && !edit" class="row">
+
+        <H4 class="m-2">Archivos</H4>
+
+        <div *ngIf="!edit">
+
+          <div class="form-group m-2">
+            <input type="file" name="upload" ngf-resize="{width: 200, height: 200, centerCrop: false}" [(ngModel)]="sol.nombre_archivo_1" placeholder="Arhivo" class="form-control" id="fileUpload" multiple ng2FileSelect [uploader]="uploader">
+          </div>
+
+          <div class="row m-1" *ngFor="let item of uploader.queue">
+
+            <div class="col-md-5 filename" style="padding-top: 7px;">{{item.file.name}}</div>
+
+            <div class="col md-2" style="padding-top: 13px;">
+              <div class="progress">
+                <div class="progress-bar bg-success" [ngStyle]="{'width':item.progress+'%'}"></div>
+              </div>
+            </div>
+
+            <div class="col-md-3">
+
+              <div *ngIf="filesUploaded==false">
+                  <button type="button" class="btn btn-outline-danger" (click)="item.remove()"> cancel </button>
+              </div>
+
+              <div *ngIf="filesUploaded==true">
+                <button disabled type="button" class="btn btn-outline-success"> Subido </button>
+              </div>
+
+            </div>
+
+          </div>
+
+            <div class="row" *ngIf="!phase2">
+           <!--<div class="row" *ngIf="uploader?.queue?.length! > 0 && filesUploaded==false">-->
+
+            <div class="form-group m-2 text-center">
+
+              <button type="button" class="btn btn-primary w-100" style="display: grid !important;" (click)="uploader.uploadAll()"> {{upload_text}} </button>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+      <div *ngIf="phase2 || edit" class="d-none">
+
+      <form class="m-2" action="POST" enctype="multipart/form-data">
+
+        <H4 class="m-2">Continue la carga...</H4>
+
+        <div class="form-group mt-3 m-2">
+
+          <div *ngIf="!edit" class="row">
+
+            <div class="col-md-12">
+
+              <select class="form-select" aria-label="Default select example" (change)="onLoteSelect($event,1)">
+
+                <option selected>Elija el lote reservarvado (Nro. 1)</option>
+
+                <option *ngFor="let lote of lotes" [value]="lote.id">
+                Lote {{lote.id}}
+
+            </select>
+
+          </div>
+
+      </div>
+
+      </div>
+
+      <div class="row">
+
+        <div class="col-md-12">
+          <div (click)="showHideLotes()" class="form-group m-2">
+
+            <button class="btn btn-outline-dark w-100"><span class="material-icons">
+              calendar_month
+              </span>{{expand_text_lote}}</button>
+          </div>
+        </div>
+
+      </div>
+
+        <div id="showHideLotes" class="form-group {{expand_css_l}}">
+
+          <div class="form-group m-2">
+
+            <select class="form-select" aria-label="Default select example" (change)="onLoteSelect($event, 2)">
+
+                <option selected>Elija el lote reservarvado (Nro. 2)</option>
+
+                <option *ngFor="let lote of lotes" [value]="lote.id">
+                Lote {{lote.id}}
+
+            </select>
+
+          </div>
+
+          <div class="form-group m-2">
+
+            <select class="form-select" aria-label="Default select example" (change)="onLoteSelect($event,3)">
+
+                <option selected>Elija el lote reservarvado (Nro. 3)</option>
+
+                <option *ngFor="let lote of lotes" [value]="lote.id">
+                Lote {{lote.id}} - {{lote.observaciones}}
+
+            </select>
+
+          </div>
+
+          <div class="form-group m-2">
+
+            <select class="form-select" aria-label="Default select example" (change)="onLoteSelect($event,4)">
+
+                <option selected>Elija el lote reservarvado (Nro. 4)</option>
+
+                <option *ngFor="let lote of lotes" [value]="lote.id">
+                Lote {{lote.id}}
+
+            </select>
+
+          </div>
+
+          <div class="form-group m-2">
+
+            <select class="form-select" aria-label="Default select example" (change)="onLoteSelect($event,5)">
+
+                <option selected>Elija el lote reservarvado (Nro. 5)</option>
+
+                <option *ngFor="let lote of lotes" [value]="lote.id">
+                Lote {{lote.id}}
+
+            </select>
+
+          </div>
+
+          <div class="form-group m-2">
+
+            <select class="form-select" aria-label="Default select example" (change)="onLoteSelect($event,6)">
+
+                <option selected>Elija el lote reservarvado (Nro. 5)</option>
+
+                <option *ngFor="let lote of lotes" [value]="lote.id">
+                Lote {{lote.id}}
+
+            </select>
+
+          </div>
+
+          <div class="form-group m-2">
+
+            <select class="form-select" aria-label="Default select example" (change)="onLoteSelect($event,7)">
+
+                <option selected>Elija el lote reservarvado (Nro. 6)</option>
+
+                <option *ngFor="let lote of lotes" [value]="lote.id">
+                Lote {{lote.id}} - {{lote.observaciones}}
+
+            </select>
+
+          </div>
+
+
+          <div class="form-group m-2">
+
+            <select class="form-select" aria-label="Default select example" (change)="onLoteSelect($event,7)">
+
+                <option selected>Elija el lote reservarvado (Nro. 7)</option>
+
+                <option *ngFor="let lote of lotes" [value]="lote.id">
+                Lote {{lote.id}} - {{lote.observaciones}}
+
+            </select>
+
+          </div>
+
+          <div class="form-group m-2">
+
+            <select class="form-select" aria-label="Default select example" (change)="onLoteSelect($event, 8)">
+
+                <option selected>Elija el lote reservarvado (Nro. 8)</option>
+
+                <option *ngFor="let lote of lotes" [value]="lote.id">
+                Lote {{lote.id}}
+
+            </select>
+
+          </div>
+
+          <div class="form-group m-2">
+
+            <select class="form-select" aria-label="Default select example" (change)="onLoteSelect($event, 9)">
+
+                <option selected>Elija el lote reservarvado (Nro. 9)</option>
+
+                <option *ngFor="let lote of lotes" [value]="lote.id">
+                Lote {{lote.id}} - {{lote.observaciones}}
+
+            </select>
+
+          </div>
+
+          <div class="form-group m-2">
+
+            <select class="form-select" aria-label="Default select example" (change)="onLoteSelect($event,10)">
+
+                <option selected>Elija el lote reservarvado (Nro. 10)</option>
+
+                <option *ngFor="let lote of lotes" [value]="lote.id">
+                Lote {{lote.id}}
+
+            </select>
+
+          </div>
+
+      </div>
+
+        <div class="form-group m-2">
+          <input type="text" name="nombre" rows="2" [(ngModel)]="sol.denominacion" placeholder="Propietario" class="form-control" autofocus>
+        </div>
+
+        <div class="form-group m-2">
+
+          <input type="text" name="DNI" rows="2" [(ngModel)]="sol.dni" placeholder="DNI" class="form-control" autofocus>
+        </div>
+
+        <div class="form-group m-2">
+          <input type="text" name="telefono" rows="2" [(ngModel)]="sol.telefono" placeholder="Telefono" class="form-control" autofocus>
+        </div>
+
+        <div class="form-group m-2">
+          <input type="text" name="estado_civil" rows="2" [(ngModel)]="sol.estado_civil" placeholder="Estado civil" class="form-control" autofocus>
+        </div>
+
+        <div class="row d-none">
+
+        <div class="col-md-12">
+          <div (click)="showHidePropietarios()" class="form-group m-2">
+
+            <button class="btn btn-outline-dark w-100"><span class="material-icons">
+              calendar_month
+              </span>{{expand_text_propietario}}</button>
+          </div>
+        </div>
+
+      </div>
+
+        <div id="showHidePropietarios" class="form-group {{expand_css_p}}">
+
+          <div class="form-group m-2">
+            <input type="text" name="nombre" rows="2" [(ngModel)]="sol.denominacion_2" placeholder="Propietario (2)" class="form-control">
+          </div>
+
+          <div class="form-group m-2">
+
+            <input type="text" name="DNI" rows="2" [(ngModel)]="sol.dni_2" placeholder="DNI (2)" class="form-control">
+          </div>
+
+          <div class="form-group m-2">
+            <input type="text" name="telefono" rows="2" [(ngModel)]="sol.telefono_2" placeholder="Telefono (2)" class="form-control">
+          </div>
+
+          <div class="form-group m-2">
+            <input type="text" name="estado_civil" [(ngModel)]="sol.estado_civil_2" placeholder="Estado civil (2)" class="form-control">
+          </div>
+
+        </div>
+
+        <div class="form-group m-2">
+
+          <select class="form-select" aria-label="Default select example" (change)="onStateSelect($event)">
+
+              <option selected>Elija la provincia del cliente</option>
+
+              <option *ngFor="let prov of provincias" [value]="prov.id">
+
+                {{prov.provincia}}
+
+          </select>
+
+        </div>
+
+        <div class="form-group m-2">
+
+          <select class="form-select" aria-label="Default select example">
+
+              <option selected>Elija la localidad del cliente</option>
+
+              <option *ngFor="let loc of localidades" [value]="loc.id">
+
+                {{loc.localidad}}
+
+          </select>
+
+        </div>
+
+        <div class="form-group m-2">
+          <input type="number" name="seña" rows="2" [(ngModel)]="sol.refuerzo_total" placeholder="Sena en USD" class="form-control" autofocus>
+        </div>
+
+        <div class="form-group m-2">
+          <textarea name="observacion" rows="2" [(ngModel)]="sol.observaciones_s" placeholder="Observacion seña" class="form-control" autofocus></textarea>
+        </div>
+
+        <div class="form-group m-2">
+          <input type="number" name="total" rows="2" [(ngModel)]="sol.lote_total" placeholder="Total Lote en USD" class="form-control" autofocus>
+        </div>
+
+        <div class="row" *ngIf="filesUploaded==true || edit">
+
+          <div class="form-group m-2 mt-2 text-center">
+
+            <button type="submit" style="display: grid !important" class="btn btn-success w-100" (click)="edit ? updateGame() : saveNewGame()">
+             {{send_text}}
+            </button>
+
+          </div>
+
+        </div>
+
+      </form>
+
+    </div>
+
+
+    <div class="row card d-none">
+      <h4>Download Section</h4>
+
+      <div class="row" *ngFor="let item of attachments; let i = index"
+      style="margin:10px;padding:5px;background-color:rgb(231, 229, 229); border-radius:5px; line-height:40px;">
+          <div class="col-sm-7">{{item.originalname}}</div>
+          <div class="col-sm-5" style="text-align:center;"><button type="button" class="btn btn-primary" (click)="download(i)">Download</button></div>
+      </div>
+    </div>
+
+    </div>
+
+  </div>
+
+</div>
+
+<!--
+<div class="col-md-4 d-none">
+  <div class="card card-body text-center">
+  <img [src]="game.image == '' ? '/assets/noimage.png' : game.image" alt="No Image" class="card-img-top">
+    <h3>{{game.id}}. {{game.title == '' ? 'Game Title' : game.title}}</h3>
+    <p>{{game.description == '' ? 'Write your Descrition' : game.description}}</p>
+    <p>{{game.created_at | date: 'yyyy-MM-dd'}}</p>
+  </div>
+</div>-->
+
