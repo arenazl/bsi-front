@@ -73,6 +73,8 @@ export interface Solicitud {
     id_agenda?:number;
 };
 
+
+
 export interface Refuerzo {
   id?: number,
   id_solicitud?: number,
