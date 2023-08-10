@@ -11,7 +11,7 @@ import { GlobalVariable } from '../../global';
 import Swal from 'sweetalert2';
 import { NgxImageCompressService } from 'ngx-image-compress';
 
-const uri = GlobalVariable.BASE_API_URL + "/file/upload2"
+const uri = GlobalVariable.BASE_API_URL + "/file/uploadtr"
 
 @Component({
   selector: 'app-game-form',
@@ -31,6 +31,7 @@ export class GameFormComponent implements OnInit {
   loteEstado = {estado:EnumLotes.Reservado};
 
   uploader:FileUploader = new FileUploader({url:uri});
+
   attachments:any=[];
 
   serverfilename_1?:string;
@@ -53,8 +54,10 @@ export class GameFormComponent implements OnInit {
   send_text=" Guardar documentacion";
 
   filesUploaded:boolean=false;
-  loteSeleccionado:number=0;
-  provSeleccionado:any;
+
+  motivoSeleccionado="";
+  conceptoSeleccionado="";
+
   lotesFilterOptions = <LotesFilterOptions>{};
 
   sol: Solicitud = {
@@ -79,7 +82,12 @@ export class GameFormComponent implements OnInit {
 
       this.uploader.onBeforeUploadItem = (item: FileItem) => {
 
-        item.withCredentials = false;
+        item.withCredentials = false;   
+
+        item.file.name= sessionStorage.getItem('nombre') as unknown as string + "-" +
+                        this.conceptoSeleccionado + "-" +
+                        this.motivoSeleccionado;
+        
       }
 
       this.uploader.onCompleteItem=(item:any, response:any,status:any, headers:any) =>{
@@ -106,7 +114,6 @@ export class GameFormComponent implements OnInit {
         {
           this.serverfilename_5 = JSON.parse(response).uploadname;
         }
-
         this.attachments.push(JSON.parse(response));
 
         if(this.uploader.queue.length == this.attachments.length)
@@ -116,17 +123,18 @@ export class GameFormComponent implements OnInit {
         }
       }
 
-
       this.uploader.onProgressItem=(fileItem:any, progress:any) =>{
+
         this.upload_text = "espere mientras actualizamos..."
         this.phase2 = true;
+
       }
   }
 
   ngOnInit() {
 
-    this.getLotes();
-    this.getProvincias();
+    //this.getLotes();
+    //this.getProvincias();
 
     this.route.params.subscribe((params) => {
       const id = params["id"];
@@ -147,6 +155,8 @@ export class GameFormComponent implements OnInit {
     });
 
   }
+
+
 
   showHideLotes(){
 
@@ -202,51 +212,14 @@ export class GameFormComponent implements OnInit {
 
   }
 
-  onLoteSelect(event:any, loteCount:number) {
-
-    if(loteCount == 1){
-      this.sol.id_lote = event.target.value as number;
-    }
-    if(loteCount == 2){
-      this.sol.id_lote_2 = event.target.value as number;    }
-    if(loteCount == 3){
-      this.sol.id_lote_3 = event.target.value as number;
-    }
-    if(loteCount == 4){
-      this.sol.id_lote_4 = event.target.value as number;
-    }
-    if(loteCount == 5){
-      this.sol.id_lote_5 = event.target.value as number;
-    }
-    if(loteCount == 6){
-      this.sol.id_lote_6 = event.target.value as number;
-    }
-    if(loteCount == 7){
-      this.sol.id_lote_7 = event.target.value as number;
-    }
-    if(loteCount == 8){
-      this.sol.id_lote_8 = event.target.value as number;
-    }
-    if(loteCount == 9){
-      this.sol.id_lote_9 = event.target.value as number;
-    }
-    if(loteCount == 10){
-      this.sol.id_lote_10 = event.target.value as number;
-    }
+  onMotivoSelect(event:any) 
+  {
+    this.conceptoSeleccionado = event.target.value;
   }
 
-  onStateSelect(event:any) {
-
-    this.provSeleccionado = event.target.value;
-
-    this.loteService.getLocalidades(this.provSeleccionado)
-    .subscribe(
-      res => {
-       this.localidades = res;
-      },
-      err => console.error(err)
-    );
-
+  onConceptoSelect(event:any) 
+  {
+    this.motivoSeleccionado = event.target.value;
   }
 
   download(index: string | number){
@@ -263,175 +236,6 @@ export class GameFormComponent implements OnInit {
     );
   }
 
-  saveNewGame() {
 
-    this.send_text="Guardando..."
-
-    if(this.sol.denominacion == undefined ||
-      this.sol.dni == undefined ||
-      this.sol.estado_civil == undefined ||
-      this.sol.id_lote == undefined ||
-      this.sol.telefono == undefined ||
-      this.sol.nombre_archivo_1 == undefined ||
-      this.sol.refuerzo_total == undefined ||
-      this.sol.lote_total ==  undefined)
-      {
-
-        Swal.fire({
-          title: 'Faltan Completar Datos',
-          confirmButtonText: 'Completar',
-          showLoaderOnConfirm: true,
-          preConfirm: () => {
-          },
-            allowOutsideClick: () => !Swal.isLoading()
-          }).then((result) => {
-            if (result.isConfirmed) {
-            }
-          })
-      }
-      else
-      {
-        this.sol.nombre_archivo_1 = this.serverfilename_1;
-        this.sol.nombre_archivo_2 = this.serverfilename_2;
-        this.sol.nombre_archivo_3 = this.serverfilename_3;
-        this.sol.nombre_archivo_4 = this.serverfilename_4;
-        this.sol.nombre_archivo_5 = this.serverfilename_5;
-
-        this.sol.id_barrio = sessionStorage.getItem('id_barrio') as unknown as number
-        this.sol.id_grupo = sessionStorage.getItem('id_grupo') as unknown as number;
-        this.sol.grupo = sessionStorage.getItem('grupo') as unknown as string;
-
-        this.sol.id_estado= 1;
-        this.sol.estado= 'Iniciado';
-
-        if(this.sol.id_lote){
-          let lote: Lotes={estado:EnumLotes.Cargado, id:this.sol.id_lote,id_barrio:this.sol.id_barrio};
-          this.loteService.updateLote(this.loteSeleccionado, lote)
-          .subscribe(
-            res => {
-             console.log(res);
-            },
-            err => console.error(err)
-          );
-
-        }
-        if(this.sol.id_lote_2){
-          let lote: Lotes={estado:EnumLotes.Cargado, id:this.sol.id_lote_2,id_barrio:this.sol.id_barrio};
-          this.loteService.updateLote(this.loteSeleccionado, lote)
-          .subscribe(
-            res => {
-             console.log(res);
-            },
-            err => console.error(err)
-          );
-        }
-        if(this.sol.id_lote_3){
-          let lote: Lotes={estado:EnumLotes.Cargado, id:this.sol.id_lote_3,id_barrio:this.sol.id_barrio};
-          this.loteService.updateLote(this.loteSeleccionado, lote)
-          .subscribe(
-            res => {
-             console.log(res);
-            },
-            err => console.error(err)
-          );
-        }
-        if(this.sol.id_lote_4){
-          let lote: Lotes={estado:EnumLotes.Cargado, id:this.sol.id_lote_4,id_barrio:this.sol.id_barrio};
-          this.loteService.updateLote(this.loteSeleccionado, lote)
-          .subscribe(
-            res => {
-             console.log(res);
-            },
-            err => console.error(err)
-          );
-        }
-        if(this.sol.id_lote_5){
-          let lote: Lotes={estado:EnumLotes.Cargado, id:this.sol.id_lote_5,id_barrio:this.sol.id_barrio};
-          this.loteService.updateLote(this.loteSeleccionado, lote)
-          .subscribe(
-            res => {
-             console.log(res);
-            },
-            err => console.error(err)
-          );
-        }
-        if(this.sol.id_lote_6){
-          let lote: Lotes={estado:EnumLotes.Cargado, id:this.sol.id_lote_6,id_barrio:this.sol.id_barrio};
-          this.loteService.updateLote(this.loteSeleccionado, lote)
-          .subscribe(
-            res => {
-             console.log(res);
-            },
-            err => console.error(err)
-          );
-        }
-        if(this.sol.id_lote_7){
-          let lote: Lotes={estado:EnumLotes.Cargado, id:this.sol.id_lote_7,id_barrio:this.sol.id_barrio};
-          this.loteService.updateLote(this.loteSeleccionado, lote)
-          .subscribe(
-            res => {
-             console.log(res);
-            },
-            err => console.error(err)
-          );
-        }
-        if(this.sol.id_lote_8){
-          let lote: Lotes={estado:EnumLotes.Cargado, id:this.sol.id_lote_8,id_barrio:this.sol.id_barrio};
-          this.loteService.updateLote(this.loteSeleccionado, lote)
-          .subscribe(
-            res => {
-             console.log(res);
-            },
-            err => console.error(err)
-          );
-        }
-        if(this.sol.id_lote_9){
-          let lote: Lotes={estado:EnumLotes.Cargado, id:this.sol.id_lote_9,id_barrio:this.sol.id_barrio};
-          this.loteService.updateLote(this.loteSeleccionado, lote)
-          .subscribe(
-            res => {
-             console.log(res);
-            },
-            err => console.error(err)
-          );
-        }
-        if(this.sol.id_lote_10){
-          let lote: Lotes={estado:EnumLotes.Cargado, id:this.sol.id_lote_10,id_barrio:this.sol.id_barrio};
-          this.loteService.updateLote(this.loteSeleccionado, lote)
-          .subscribe(
-            res => {
-             console.log(res);
-            },
-            err => console.error(err)
-          );
-        }
-
-        delete this.sol.timestamp;
-        delete this.sol.id;
-
-        this.legajoService.saveGame(this.sol)
-          .subscribe(
-            res => {
-              this.router.navigate(['/legajo']);
-            },
-            err => console.error(err)
-        )
-
-      }
-  }
-
-  updateGame(){
-
-    this.send_text="Guardando..."
-
-    this.legajoService.updateGame(this.sol.id, this.sol)
-    .subscribe(
-      res => {
-        this.router.navigate(['/auditoria']);
-        console.log(res);
-      },
-      err => console.error(err)
-    )
-  }
 
 }

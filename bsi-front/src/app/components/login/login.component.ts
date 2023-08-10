@@ -56,6 +56,7 @@ export class LoginComponent implements OnInit {
     this.legajoService.getUsuario(this.usuario)
     .subscribe(
       res => {
+        
 
         this.login_txt = "Registrado!"
         this.usuario = res
