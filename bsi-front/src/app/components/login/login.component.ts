@@ -55,12 +55,14 @@ export class LoginComponent implements OnInit {
 
     this.legajoService.getUsuario(this.usuario)
     .subscribe(
-      res => {
-        
+      res => {    
 
-        this.login_txt = "Registrado!"
-        this.usuario = res
-        if(this.usuario.nombre){
+        this.login_txt = "Registrado!";
+
+        this.usuario = (res as any)[0];
+
+        if(this.usuario.nombre)
+        { 
           this.usuario.panel=true
           //from db
           sessionStorage.setItem('nombre', this.usuario.nombre);
@@ -75,7 +77,7 @@ export class LoginComponent implements OnInit {
           this.sharedService.sendClickEvent(this.usuario);
 
           if (this.usuario.rol == 'Vendedor') {
-            this.router.navigate(['/reservar']);
+            this.router.navigate(['/legajo/add/0']);
           }
           if (this.usuario.rol == 'Control') {
             this.router.navigate(['/auditoria']);
