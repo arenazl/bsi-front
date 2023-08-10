@@ -59,6 +59,7 @@ export class AuditoriaComponent implements OnInit {
       this.getGames();
     }
 
+
     getGamesByAgenda(id_agenda:number){
 
       this.id_agenda=id_agenda;
@@ -70,7 +71,7 @@ export class AuditoriaComponent implements OnInit {
       this.getGames()
 
     }
-
+ 
     getGames(nodate:boolean=false, today:boolean=false) {
 
       this.ld_header=true;
@@ -189,7 +190,7 @@ export class AuditoriaComponent implements OnInit {
       this.params.tg = event.target.value;
       this.getGames();
     }
-
+    
     onGrupoSelect(event:any) {
       this.params_gr = event.target.value;
       this.getGames();
