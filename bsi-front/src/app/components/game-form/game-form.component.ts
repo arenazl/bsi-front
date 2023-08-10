@@ -87,7 +87,6 @@ export class GameFormComponent implements OnInit {
         item.file.name= sessionStorage.getItem('nombre') as unknown as string + "-" +
                         this.conceptoSeleccionado + "-" +
                         this.motivoSeleccionado;
-        
       }
 
       this.uploader.onCompleteItem=(item:any, response:any,status:any, headers:any) =>{
@@ -119,15 +118,15 @@ export class GameFormComponent implements OnInit {
         if(this.uploader.queue.length == this.attachments.length)
         {
           this.filesUploaded=true;
-
+          this.upload_text = "Listo"
         }
+    
       }
 
       this.uploader.onProgressItem=(fileItem:any, progress:any) =>{
 
         this.upload_text = "espere mientras actualizamos..."
         this.phase2 = true;
-
       }
   }
 
