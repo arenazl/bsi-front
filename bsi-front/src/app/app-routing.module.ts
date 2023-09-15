@@ -6,7 +6,6 @@ import { Routes, RouterModule } from '@angular/router';
 import { GamesListComponent } from './components/games-list/games-list.component';
 import { GameFormComponent } from './components/game-form/game-form.component';
 import { LoginComponent } from './components/login/login.component';
-import { ControladorComponent } from './components/controlador/controlador.component';
 import { ReservarComponent } from './components/reservar/reservar.component';
 import { RankingComponent } from './components/ranking/ranking.component';
 import { TranfeComponent } from './components/tranfe/tranfe.component';
@@ -42,11 +41,7 @@ const routes: Routes = [
     component: GameFormComponent
   },
   {
-    path: 'controlador',
-    component: ControladorComponent
-  },
-  {
-    path: 'auditoria',
+    path: 'auditoria/:id',
     component: AuditoriaComponent
   },
   {

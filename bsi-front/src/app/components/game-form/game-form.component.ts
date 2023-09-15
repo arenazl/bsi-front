@@ -119,6 +119,9 @@ export class GameFormComponent implements OnInit {
         {
           this.filesUploaded=true;
           this.upload_text = "Listo"
+          
+          this.router.navigate(['/auditoria/' + JSON.parse(response).id]);
+
         }
     
       }
@@ -143,6 +146,7 @@ export class GameFormComponent implements OnInit {
         this.edit = true;
 
         this.legajoService.getGame(id)
+        
         .subscribe(
           res => {
             this.sol = res as Solicitud;

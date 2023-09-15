@@ -1,10 +1,10 @@
 import { LegajoService } from '../../services/legajo.service';
 import { FileService } from './../../services/file.service';
 import { Component, OnInit, HostBinding } from '@angular/core';
-import { Solicitud, FileRes, Usuario, Params, FileForTable, Refuerzo, FinPago, EnumLotes, Lotes } from 'src/app/models/Model';
+import { Solicitud, FileRes, Usuario, FileForTable, Refuerzo, FinPago, EnumLotes, Lotes } from 'src/app/models/Model';
 import { FileSelectDirective, FileUploader} from 'ng2-file-upload'
 import {saveAs} from 'file-saver';
-import { Router, ActivatedRoute } from '@angular/router';
+import { Router, ActivatedRoute, Params } from '@angular/router';
 import { SharedService } from 'src/app/services/shared.service';
 import Swal from 'sweetalert2';
 import { provideProtractorTestingSupport } from '@angular/platform-browser';
@@ -49,16 +49,55 @@ export class AuditoriaComponent implements OnInit {
   id_agenda=1;
   span_agenda:string="Ferrari";
 
+  id = '';
+
+  tranfeResponse:any;
+
+
   blobArray = new Array<string>();
 
   firstItemOfDay = new Array<any>();
 
-  constructor(private legajoService: LegajoService, private lotesService: LotesService, private router: Router, private fileService: FileService, private sharedService:SharedService) { }
+  constructor(private legajoService: LegajoService, private lotesService: LotesService, private router: Router, 
+    private fileService: FileService, private sharedService:SharedService, private route: ActivatedRoute,
+    ) { }
 
     ngOnInit() {
-      this.getGames();
+
+      this.route.params.subscribe((params) => {
+        
+        this.id = params["id"];
+
+        if (this.id != '')
+        {
+          
+         this.fileService.getTR(this.id)   
+          .subscribe(
+            res => {
+              this.tranfeResponse = res;
+            },
+            err => console.error(err)
+          )
+          
+        }
+  
+      });
+
     }
 
+    getFile(): void {
+
+      this.fileService.downloadFile(this.id as unknown as number).subscribe(blob => {
+        const url = window.URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.setAttribute('download', 'filename.txt');  // or any other extension
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+      });
+
+    }
 
     getGamesByAgenda(id_agenda:number){
 
@@ -75,27 +114,10 @@ export class AuditoriaComponent implements OnInit {
     getGames(nodate:boolean=false, today:boolean=false) {
 
       this.ld_header=true;
-
-      this.params.id_barrio = sessionStorage.getItem('id_barrio') as unknown as number
-      this.params.grupo = this.params_gr;
-      this.params.id_agenda = this.id_agenda;
-
-      if(this.isFechaFirma)
-      {
-        this.params.fecha_start_firma = new Date(this.date_firma_start);
-        this.params.fecha_end_firma = new Date(this.date_firma_end);
-        this.params.fecha_start_seña = undefined;
-        this.params.fecha_end_seña = undefined;
-      }
-      else
-      { // es seña
-      this.params.fecha_start_seña = new Date(this.date_sena_start);
-      this.params.fecha_end_seña = new Date(this.date_sena_end);
-      this.params.fecha_start_firma = undefined;
-      this.params.fecha_end_firma = undefined;
-      }
-
-      let lastFecha:any;
+ 
+      //this.params.id_barrio = sessionStorage.getItem('id_barrio') as unknown as number
+      //this.params.grupo = this.params_gr;
+      //this.params.id_agenda = this.id_agenda;
 
       this.legajoService.getGames(this.params)
         .subscribe(
@@ -103,83 +125,6 @@ export class AuditoriaComponent implements OnInit {
 
             this.ld_header=false;
 
-            this.solicitudes = null;
-            let list = res as Array<any>;
-            let fileTable: FileForTable;
-
-            list.forEach(item => {
-              let sol = item as Solicitud;
-              sol.archivos = new Array<FileForTable>();
-
-              if(sol.fecha_firma){
-                if(new Date(sol.fecha_firma).getDate() != lastFecha)
-                {
-                  this.firstItemOfDay.push(sol.id)
-                }
-              }
-
-              sol.lote_append ='';
-
-              if(sol.id_lote){
-                sol.lote_append += sol.id_lote;
-              }
-              if(sol.id_lote_2){
-                sol.lote_append += ', ' + sol.id_lote_2;
-              }
-              if(sol.id_lote_3){
-                sol.lote_append += ', ' + sol.id_lote_3;
-              }
-              if(sol.id_lote_4){
-                sol.lote_append += ', ' + sol.id_lote_4;
-              }
-              if(sol.id_lote_5){
-                sol.lote_append += ', ' + sol.id_lote_5;
-              }
-              if(sol.id_lote_6){
-                sol.lote_append += ', ' + sol.id_lote_6;
-              }
-              if(sol.id_lote_7){
-                sol.lote_append += ', ' + sol.id_lote_7;
-              }
-              if(sol.id_lote_8){
-                sol.lote_append += ', ' + sol.id_lote_8;
-              }
-              if(sol.id_lote_9){
-                sol.lote_append += ', ' + sol.id_lote_9;
-              }
-              if(sol.id_lote_10){
-                sol.lote_append += ', ' + sol.id_lote_10;
-              }
-
-              if(sol.nombre_archivo_1){
-                fileTable = {fileName:sol.nombre_archivo_1,friendlyName:sol.nombre_archivo_1.split('-',2)[1]}
-                sol.archivos.push(fileTable)
-                sol.fileCant=1;
-              } if(sol.nombre_archivo_2){
-                fileTable = {fileName:sol.nombre_archivo_2,friendlyName:sol.nombre_archivo_2.split('-',2)[1]}
-                sol.archivos.push(fileTable)
-                sol.fileCant=2;
-              } if(sol.nombre_archivo_3){
-                fileTable = {fileName:sol.nombre_archivo_3,friendlyName:sol.nombre_archivo_3.split('-',2)[1]}
-                sol.archivos.push(fileTable)
-                sol.fileCant=3;
-              } if(sol.nombre_archivo_4){
-                fileTable = {fileName:sol.nombre_archivo_4,friendlyName:sol.nombre_archivo_4.split('-',2)[1]}
-                sol.archivos.push(fileTable)
-                sol.fileCant=4;
-              } if(sol.nombre_archivo_5){
-                fileTable = {fileName:sol.nombre_archivo_5,friendlyName:sol.nombre_archivo_5.split('-',2)[1]}
-                sol.archivos.push(fileTable)
-                sol.fileCant=5;
-              }
-
-              if(sol.fecha_firma){
-                lastFecha = new Date(sol.fecha_firma).getDate();
-              }
-
-            });
-
-            this.solicitudes = list;
           },
           err => console.error(err)
         );
@@ -187,8 +132,8 @@ export class AuditoriaComponent implements OnInit {
     }
 
     onEstadoSelect(event:any) {
-      this.params.tg = event.target.value;
-      this.getGames();
+      //this.params.tg = event.target.value;
+      //this.getGames();
     }
     
     onGrupoSelect(event:any) {
@@ -279,7 +224,7 @@ export class AuditoriaComponent implements OnInit {
 
       sol.archivos?.forEach(item => {
 
-        this.fileService.downloadFile(item.fileName as string)
+        this.fileService.downloadFile(this.id as unknown as number)
         .subscribe(
             data => {
               i++;
@@ -353,7 +298,7 @@ export class AuditoriaComponent implements OnInit {
       sol.blobArray = new Array<string>();
 
       sol.archivos?.forEach(item => {
-        this.fileService.downloadFile(item.fileName as string)
+        this.fileService.downloadFile(0)
         .subscribe(
             data => {
 

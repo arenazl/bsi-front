@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { GlobalVariable } from '../global';
+import { Observable } from 'rxjs';
 
 
 @Injectable({
@@ -13,13 +14,18 @@ export class FileService {
 
   constructor(private _http:HttpClient){}
 
-  downloadFile(file:string){
-      var body = {filename:file};
+  getTR(id: string) {
+    return this._http.get(`${this.API_URI}/file/responsetr/${id}}`);
+  }
 
-      return this._http.post(`${this.API_URI}/file/download`,body,{
-          responseType : 'blob',
-          headers:new HttpHeaders().append('Content-Type','application/json')
-      });
+  
+  
+  downloadFile(id: number): Observable<Blob> {
+    const url = `${this.API_URI}/file/download/${id}`;
+    return this._http.get(url, {
+      responseType: 'blob',
+      headers: new HttpHeaders().append('Content-Type', 'application/json')
+    });
   }
 
   dropBox(file:string){

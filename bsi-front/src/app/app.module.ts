@@ -1,4 +1,4 @@
-import { ControladorComponent } from './components/controlador/controlador.component';
+
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
@@ -30,7 +30,6 @@ import { TranfeComponent } from './components/tranfe/tranfe.component';
     GamesListComponent,
     GameFormComponent,
     LoginComponent,
-    ControladorComponent,
     AuditoriaComponent,
     MapComponent,
     ReservarComponent,

@@ -31,6 +31,7 @@ export class LegajoService {
     return this.http.delete(`${this.API_URI}/legajo/${id}`);
   }
 
+
   saveGame(game: Solicitud) {
     return this.http.post(`${this.API_URI}/legajo`, game);
   }

@@ -631,22 +631,6 @@ export class GamesListComponent implements OnInit, AfterViewInit {
 
     sol.archivos?.forEach(item => {
 
-      this.fileService.downloadFile(item.fileName as string)
-      .subscribe(
-          data => {
-            i++;
-            let file_ctrl = document.getElementById("file_span_" + id);
-            if (file_ctrl) file_ctrl.innerText= "";
-
-            let objectURL = URL.createObjectURL(data);
-            sol.blobArray?.push(objectURL);
-
-            if(i === sol?.archivos?.length) {
-              this.removePrefix();
-            }
-          },
-          error => console.error(error)
-      );
 
     });
 
@@ -703,21 +687,6 @@ export class GamesListComponent implements OnInit, AfterViewInit {
     if (file_ctrl) file_ctrl.innerText= "...";
 
     sol.blobArray = new Array<string>();
-
-    sol.archivos?.forEach(item => {
-      this.fileService.downloadFile(item.fileName as string)
-      .subscribe(
-          data => {
-
-            let file_ctrl = document.getElementById("file_span_" + id);
-            if (file_ctrl) file_ctrl.innerText= "";
-
-            saveAs(data, item.fileName as string)
-          },
-          error => console.error(error)
-      );
-
-    });
 
   }
 
