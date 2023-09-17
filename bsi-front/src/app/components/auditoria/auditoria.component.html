@@ -1,26 +1,20 @@
 
 
-  <div class="card">
+  <div class="card px-0 mb-3">
 
-    <h4 style="padding-top: 10px;padding-bottom: 10px;border-bottom: 1px solid #b3b3b3;padding-left: 10px;">
-      Trasnferencias Inmediatas
-
-    </h4>
+    <div class="card-header pt-3">
+      
+      <h5>
+        Transferencias Inmediatas
+      </h5>
+     
+    </div>
 
     <div *ngIf="ld_header" class="lds-roller"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
 
-  </div>
+    <div class="card-body pb-0" *ngIf="tranfeResponse?.head">
 
-  <!-- Panel para mostrar los datos de 'head' -->
-<div class="card">
-  <div class="card-header" style="padding-left: 0px;">
-    <button class="btn btn-outline-primary" (click)="getFile()">Exportar Archivo</button>
-
-  </div>
-
-  <div class="card-body" *ngIf="tranfeResponse?.head" style="background-color: #cac4c43b;">
-
-      <div class="row" style="font-size: 1.2rem;">
+      <div class="row">
         <div class="col-md-4">
           <div class="label fw-normal">Fecha:</div>
           <p class="fw-bold">{{ tranfeResponse.head[0].Fecha | date : 'dd/MM/yyyy' }}</p>
@@ -35,7 +29,7 @@
         </div>
       </div>
 
-      <div class="row" style="font-size: 1.2rem;">
+      <div class="row">
         <div class="col-md-4">
           <div class="label fw-normal">CBU Origen:</div>
           <p class="fw-bold">{{ tranfeResponse.head[0].cbuOrigen }}</p>
@@ -46,30 +40,61 @@
         </div>
       </div>
 
+    </div>
+
+  </div>
+
+<div class="card px-0 mb-3">
+
+  <div class="card-body p-0" *ngIf="tranfeResponse?.head">
+
+    <div class="table-responsive">
+      <table class="table table-striped table-condensed table-hover mb-0">
+        <thead style="opacity: 0.7;">
+          <tr style="
+          font-size: 110%;
+          color:white;
+          background: linear-gradient(270deg, rgb(141, 36, 36), rgb(13, 110, 253)) !important;
+    --darkreader-inline-bgimage: linear-gradient(270deg, #6e3635, #4673b6);
+    --darkreader-inline-bgcolor: initial;">
+            <th>CBU</th>
+            <th>Importe</th>
+            <th>Referencia</th>
+          </tr>
+        </thead>
+        <tbody>
+          <ng-container *ngFor="let sol of tranfeResponse?.data">
+            <tr>
+              <td>{{ sol.CBU }}</td>
+              <td>{{ sol.Importe | currency : 'USD' : 'symbol' : '1.0-0' }}</td>
+              <td>{{ sol.Referencia }}</td>
+            </tr>
+          </ng-container>
+        </tbody>
+      </table>
+    </div>
+
+  </div>
+  
 </div>
 
-<!-- Tu tabla existente para mostrar los datos de 'data' -->
-<div class="card">
-  <div class="table-responsive">
-    <table class="table table-striped table-condensed table-hover">
-      <thead>
-        <tr style="
-        font-size: 110%;
-    ">
-          <th>CBU</th>
-          <th>Importe</th>
-          <th>Referencia</th>
-        </tr>
-      </thead>
-      <tbody>
-        <ng-container *ngFor="let sol of tranfeResponse?.data">
-          <tr>
-            <td>{{ sol.CBU }}</td>
-            <td>{{ sol.Importe | currency : 'USD' : 'symbol' : '1.0-0' }}</td>
-            <td>{{ sol.Referencia }}</td>
-          </tr>
-        </ng-container>
-      </tbody>
-    </table>
+<div class="card px-0">
+
+  <div class="card-header">
+
+  <h5>Exportar TR</h5>
+
   </div>
+
+  <div class="card-body">
+
+    <button type="button" class="btn btn-primary" 
+    (click)="getFile()"> Descargar Archivo </button>
+
+  </div>
+
+</div>
+
+
+
 

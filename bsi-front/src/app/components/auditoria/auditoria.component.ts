@@ -74,7 +74,16 @@ export class AuditoriaComponent implements OnInit {
          this.fileService.getTR(this.id)   
           .subscribe(
             res => {
+
               this.tranfeResponse = res;
+
+              const capitalizedData = this.tranfeResponse.data.map((sol: any) => {
+                sol.Referencia = sol.Referencia.split(' ').map((word:any) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()).join(' ');
+                return sol;
+              });
+
+              this.tranfeResponse.data = capitalizedData;
+
             },
             err => console.error(err)
           )
@@ -88,10 +97,14 @@ export class AuditoriaComponent implements OnInit {
     getFile(): void {
 
       this.fileService.downloadFile(this.id as unknown as number).subscribe(blob => {
+
+        let cbu = this.tranfeResponse.head[0].cbuOrigen;
+        let concepto = this.tranfeResponse.head[0].concepto
+
         const url = window.URL.createObjectURL(blob);
         const link = document.createElement('a');
         link.href = url;
-        link.setAttribute('download', 'filename.txt');  // or any other extension
+        link.setAttribute('download', cbu + '-' + concepto + '.txt');  // or any other extension
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
@@ -122,9 +135,7 @@ export class AuditoriaComponent implements OnInit {
       this.legajoService.getGames(this.params)
         .subscribe(
           res => {
-
             this.ld_header=false;
-
           },
           err => console.error(err)
         );

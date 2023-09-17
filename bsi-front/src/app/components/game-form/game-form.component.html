@@ -1,11 +1,10 @@
 
 <div class="col-md-6 offset-md-3">
 
-
   <div class="card">
 
-    <div class="card-header">
-      <h4>Carga de Documentacion</h4>
+    <div class="card-header pt-3">
+      <h5>Carga de Documentacion</h5>
     </div>
 
     <div class="card-body">
@@ -21,12 +20,16 @@
               <div class="col-md-12">
   
                 <select class="form-select" aria-label="Default select example" (change)="onMotivoSelect($event)">
-  
+                   
                   <option selected>Elija el motivo</option>
-                  <option value="MONO"> MONO </option>
-                  <option value="PERRO"> PERRO </option>
-                  <option value="GANZO"> GANZO </option>
-  
+                  <option value="VAR"> Varios </option>
+                  <option value="ALQ"> Alquileres </option>
+                  <option value="CUO"> Cuotas </option>
+                  <option value="EXP"> Expensas </option>
+                  <option value="FAC"> Factura </option>
+                  <option value="PRE"> Préstamo </option>
+                  <option value="SEG"> Seguros </option>
+                  <option value="HON"> Honorarios </option>
               </select>
   
             </div>
@@ -40,10 +43,9 @@
             <select class="form-select" aria-label="Default select example" (change)="onConceptoSelect($event)">
     
                 <option selected>Elija el concepto</option>
-                <option value="PEPE"> PEPE </option>
-                <option value="JUAN"> JUAN </option>
-                <option value="CARLOS"> CARLOS </option>
-    
+                <option value="CONCEP1"> Concepto 1 </option>
+                <option value="CONCEP2"> Concepto 2 </option>
+ 
             </select>
     
           </div>
