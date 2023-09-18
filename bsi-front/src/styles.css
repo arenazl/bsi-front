@@ -252,11 +252,12 @@ height: auto;
 
 .lds-roller {
     position: absolute;
-    top: 50%;
+    top: 55%;
     left: 50%;
     margin-top: -50px;
     margin-left: -50px;
   width: 80px;
+  z-index: 99999;
   height: 80px;
 }
 .lds-roller div {

@@ -1,6 +1,41 @@
 
+<div class="card px-0 mb-3">
 
-  <div class="card px-0 mb-3">
+  <div class="card-header pt-3">
+    
+    <h5>
+      Historico
+    </h5>
+   
+  </div>
+
+  <div class="card-body pb-0">
+
+    <div class="row">
+      <div class="col-md-4">
+        <div class="label fw-normal">Buscar Transferencias Anteriores:</div>
+
+        <p class="fw-bold">
+
+          <select class="form-select" aria-label="Default select example" (change)="getTrByID($event)">
+                 
+            <option selected value="">Elija una transferencia</option>
+            <option value="1064"> YPF (24.05.2022) </option>
+            <option value="1074"> Repsol (24.05.2022) </option>
+            <option value="1084"> Globant (24.05.2022) </option>
+            <option value="934"> Ledeam (24.05.2022) </option>        
+          
+        </select>
+
+        </p>
+      </div>  
+    </div>
+  </div>
+
+
+</div>
+
+  <div class="card px-0 mb-3" *ngIf="tranfeResponse.data">
 
     <div class="card-header pt-3">
       
@@ -10,9 +45,7 @@
      
     </div>
 
-    <div *ngIf="ld_header" class="lds-roller"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
-
-    <div class="card-body pb-0" *ngIf="tranfeResponse?.head">
+    <div class="card-body pb-0">
 
       <div class="row">
         <div class="col-md-4">
@@ -43,6 +76,17 @@
     </div>
 
   </div>
+
+      <div *ngIf="ld_header" class="lds-roller">
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+      </div>
 
 <div class="card px-0 mb-3">
 
@@ -78,7 +122,7 @@
   
 </div>
 
-<div class="card px-0">
+<div class="card px-0" *ngIf="tranfeResponse.data">
 
   <div class="card-header">
 

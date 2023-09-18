@@ -15,11 +15,9 @@ export class FileService {
   constructor(private _http:HttpClient){}
 
   getTR(id: string) {
-    return this._http.get(`${this.API_URI}/file/responsetr/${id}}`);
+    return this._http.get(`${this.API_URI}/file/responsetr/${id}`);
   }
 
-  
-  
   downloadFile(id: number): Observable<Blob> {
     const url = `${this.API_URI}/file/download/${id}`;
     return this._http.get(url, {

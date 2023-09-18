@@ -58,27 +58,6 @@ export class ReservarComponent implements OnInit {
   }
 
 
-  reservarLote(){
-
-    this.login_txt = "Espere..."
-
-    this.lotesArray.forEach(lote => {
-
-      this.lotesService.updateLote(this.loteSeleccionado, lote)
-      .subscribe(
-        res => {
-         this.lotes = res;
-         this.router.navigate(['/legajo/add/0']);
-        },
-        err => console.error(err)
-      );
-
-
-
-    });
-
-  }
-
   onLoteSelect(event:any, loteCount:number) {
 
     let loteId = event.target.value as number

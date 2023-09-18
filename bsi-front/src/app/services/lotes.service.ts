@@ -20,6 +20,7 @@ export class LotesService {
     return this.http.post(`${this.API_URI}/lote/list`, lotesFilter);
   }
 
+  
   getMovements() {
      return this.http.get('assets/json/mainmenu.json')
   }

@@ -1,11 +1,86 @@
 [
-  { "title": "Movimientos", "description": "Consulta tus movimientos bancarios", "link": "/movimientos" },
-  { "title": "Depósitos", "description": "Realiza depósitos a tus cuentas", "link": "/depositos" },
-  { "title": "Transferencias Inmediatas", "description": "Transfiere dinero a otras cuentas", "link": "/legajo/add/0" },
-  { "title": "Inversiones", "description": "Invierte en productos financieros", "link": "/inversiones" },
-  { "title": "Préstamos", "description": "Solicita un préstamo personal", "link": "/prestamos" },
-  { "title": "Seguros", "description": "Contrata seguros para proteger tu patrimonio", "link": "/seguros" },
-  { "title": "Tarjetas", "description": "Gestiona tus tarjetas de crédito", "link": "/tarjetas" },
-  { "title": "Pagos", "description": "Realiza pagos de servicios y productos", "link": "/pagos" },
-  { "title": "Consulta de Saldo", "description": "Consulta el saldo de tus cuentas", "link": "/consultasaldo" }
+  {
+    "title": "Movimientos",
+    "description": "Consulta tus movimientos bancarios",
+    "items": [
+      {
+        "description": "Consulta tus movimientos bancarios",
+        "link": "/movimientos"
+      }
+    ]
+  },
+  {
+    "title": "Depósitos",
+    "description": "Realiza depósitos a tus cuentas",
+    "items": [
+      {
+        "description": "Realiza depósitos a tus cuentas",
+        "link": "/depositos"
+      }
+    ]
+  },
+  {
+    "title": "Transferencias Inmediatas",
+    "description": "Gestiona tus transferencias inmediatas",
+    "items": [
+      {
+        "description": "Histórico",
+        "link": "/auditoria/0"
+      },
+      {
+        "description": "Nueva Carga",
+        "link": "/legajo/add/0"
+      }
+    ]
+  },
+  {
+    "title": "Inversiones",
+    "description": "Consulta tus inversiones",
+    "items": [
+      {
+        "description": "Consulta tus inversiones",
+        "link": "/inversiones"
+      }
+    ]
+  },
+  {
+    "title": "Préstamos",
+    "description": "Consulta tus préstamos",
+    "items": [
+      {
+        "description": "Consulta tus préstamos",
+        "link": "/prestamos"
+      }
+    ]
+  },
+  {
+    "title": "Seguros",
+    "description": "Consulta tus seguros",
+    "items": [
+      {
+        "description": "Consulta tus seguros",
+        "link": "/seguros"
+      }
+    ]
+  },
+  {
+    "title": "Tarjetas",
+    "description": "Gestiona tus tarjetas",
+    "items": [
+      {
+        "description": "Gestiona tus tarjetas",
+        "link": "/tarjetas"
+      }
+    ]
+  },
+  {
+    "title": "Pagos",
+    "description": "Realiza tus pagos",
+    "items": [
+      {
+        "description": "Realiza tus pagos",
+        "link": "/pagos"
+      }
+    ]
+  }
 ]

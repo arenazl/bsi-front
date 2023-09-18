@@ -8,22 +8,22 @@
 
     <div class="card-body row">
 
-      <div class="col-lg-4 col-md-6 col-sm-12" *ngFor="let activity of movements">
-
-        <div class="card">
-          <div class="card-body">
-
-            <h5 class="card-title">{{activity.title}}</h5>
-            <p class="card-text">{{activity.description}}</p>
-            <a
-            [routerLink]="[activity.link]"
-            class="btn btn-primary"
-            style="opacity: 0.8;">
-              Ir a {{activity.title}}
-          </a>
+    <div class="col-lg-4 col-md-6 col-sm-12" *ngFor="let activity of movements">
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">{{activity.title}}</h5>
+          <p class="card-text">{{activity.description}}</p>
+          <div class="d-flex flex-row flex-wrap">
+            <div *ngFor="let item of activity.items;; let isLast=last" class="flex-grow-1" [class.me-2]="!isLast">
+              <a [routerLink]="[item.link]" class="btn btn-outline-primary fw-bold w-100">
+                Ir a {{item.description}}
+              </a>
+            </div>
           </div>
         </div>
       </div>
+    </div>
+
 
     </div>
 
