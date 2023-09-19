@@ -13,6 +13,7 @@
         <div class="card-body">
           <h5 class="card-title">{{activity.title}}</h5>
           <p class="card-text">{{activity.description}}</p>
+
           <div class="d-flex flex-row flex-wrap">
             <div *ngFor="let item of activity.items;; let isLast=last" class="flex-grow-1" [class.me-2]="!isLast">
               <a [routerLink]="[item.link]" class="btn btn-outline-primary fw-bold w-100">

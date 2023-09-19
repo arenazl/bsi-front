@@ -97,8 +97,6 @@ export class AuditoriaComponent implements OnInit {
     this.fileService.getTR(id).subscribe(
       (res) => {
         this.tranfeResponse = res;
-
-        this.transformData();
          this.ld_header = false;
       },
       (err) => console.error(err)
@@ -135,10 +133,14 @@ export class AuditoriaComponent implements OnInit {
         const url = window.URL.createObjectURL(blob);
         const link = document.createElement("a");
         link.href = url;
+
         link.setAttribute("download", cbu + "-" + concepto + ".txt"); // or any other extension
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
+
+        //hacer una funcion que se llame devolverTema.
+
       });
   }
 
