@@ -60,6 +60,7 @@ export class LoginComponent implements OnInit {
         this.login_txt = "Registrado!";
 
         this.usuario = (res as any)[0];
+        
 
         if(this.usuario.nombre)
         { 
@@ -67,15 +68,15 @@ export class LoginComponent implements OnInit {
           //from db
           sessionStorage.setItem('nombre', this.usuario.nombre);
           sessionStorage.setItem('password', this.usuario.password as string);
-          sessionStorage.setItem('rol', this.usuario.rol as string);
           sessionStorage.setItem('grupo', this.usuario.grupo as string);
           sessionStorage.setItem('id_grupo', this.usuario.id_grupo as unknown as string);
-          //from login
-          sessionStorage.setItem('id_barrio', this.barrioId as unknown as string);
-          sessionStorage.setItem('barrio', this.barrioDesc as unknown as string);
+  
 
           this.sharedService.sendClickEvent(this.usuario);
 
+          this.router.navigate(['/tranfe']);
+          return;
+          
           if (this.usuario.rol == 'Vendedor') {
             this.router.navigate(['/reservar']);
           }
