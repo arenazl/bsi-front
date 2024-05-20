@@ -18,6 +18,10 @@ export class FileService {
     return this._http.get(`${this.API_URI}/file/responsetr/${id}`);
   }
 
+  getTRList() {
+    return this._http.get(`${this.API_URI}/file/responsetrlist`);
+  }
+
   downloadFile(id: number): Observable<Blob> {
     const url = `${this.API_URI}/file/download/${id}`;
     return this._http.get(url, {

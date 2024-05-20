@@ -74,7 +74,7 @@ export class LoginComponent implements OnInit {
 
           this.sharedService.sendClickEvent(this.usuario);
 
-          this.router.navigate(['/tranfe']);
+          this.router.navigate(['/reservar']);
           return;
           
           if (this.usuario.rol == 'Vendedor') {

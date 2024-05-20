@@ -57,6 +57,8 @@ export class AuditoriaComponent implements OnInit {
   id_agenda = 1;
   span_agenda: string = "Ferrari";
 
+  tranfeList: any = [];
+
   id = "";
 
   idSelected=false;
@@ -83,6 +85,8 @@ export class AuditoriaComponent implements OnInit {
     this.route.params.subscribe((params) => {
       this.id = params["id"];
 
+      this.getTransForSelect();
+
       if (this.id != "0")
       {
           this.getAndTransformTRData(this.id);
@@ -98,6 +102,16 @@ export class AuditoriaComponent implements OnInit {
       (res) => {
         this.tranfeResponse = res;
          this.ld_header = false;
+      },
+      (err) => console.error(err)
+    );
+  }
+
+  
+  getTransForSelect(): void {
+    this.fileService.getTRList().subscribe(
+      (res) => {
+        this.tranfeList = res;
       },
       (err) => console.error(err)
     );
@@ -124,17 +138,19 @@ export class AuditoriaComponent implements OnInit {
   }
 
   getFile(): void {
+    
     this.fileService
       .downloadFile(this.id as unknown as number)
       .subscribe((blob) => {
-        let cbu = this.tranfeResponse.head[0].cbuOrigen;
+        
+        let cbu : string = this.tranfeResponse.head[0].empresaNombre;
         let concepto = this.tranfeResponse.head[0].concepto;
 
         const url = window.URL.createObjectURL(blob);
         const link = document.createElement("a");
         link.href = url;
 
-        link.setAttribute("download", cbu + "-" + concepto + ".txt"); // or any other extension
+        link.setAttribute("download", cbu.trim() + "-" + concepto + ".txt"); // or any other extension
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);

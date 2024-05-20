@@ -16,16 +16,13 @@
         <div class="label fw-normal">Buscar Transferencias Anteriores:</div>
 
         <p class="fw-bold">
-
+ 
           <select class="form-select" aria-label="Default select example" (change)="getTrByID($event)">
-                 
             <option selected value="">Elija una transferencia</option>
-            <option value="4"> YPF (24.05.2022) </option>
-            <option value="14"> Repsol (24.05.2022) </option>
-            <option value="24"> Globant (24.05.2022) </option>
-            <option value="4"> Ledeam (24.05.2022) </option>        
-          
-        </select>
+            <option *ngFor="let empresa of tranfeList" [value]="empresa.id">
+              {{ empresa.empresaNombre }} 
+            </option>
+          </select>               
 
         </p>
       </div>  
@@ -35,7 +32,7 @@
 
 </div>
 
-  <div class="card px-0 mb-3" *ngIf="tranfeResponse.data">
+  <div class="card px-0 mb-3" *ngIf="tranfeResponse?.data">
 
     <div class="card-header pt-3">
       
@@ -50,7 +47,7 @@
       <div class="row">
         <div class="col-md-4">
           <div class="label fw-normal">Fecha:</div>
-          <p class="fw-bold">{{ tranfeResponse.head[0].Fecha | date : 'dd/MM/yyyy' }}</p>
+          <p class="fw-bold">{{ tranfeResponse.head[0].fechaAcreditacion | date : 'dd/MM/yyyy' }}</p>
         </div>
         <div class="col-md-4">
           <div class="label fw-normal">Cantidad de Transferencias:</div>
@@ -58,14 +55,14 @@
         </div>
         <div class="col-md-4">
           <div class="label fw-normal">Importe Total:</div>
-          <p class="fw-bold">{{ tranfeResponse.head[0].ImporteTotal | currency : 'USD' : 'symbol' : '1.0-0' }}</p>
+          <p class="fw-bold">{{ tranfeResponse.head[0].importeTotalFinal | currency : 'USD' : 'symbol' : '1.0-0' }}</p>
         </div>
       </div>
 
       <div class="row">
         <div class="col-md-4">
           <div class="label fw-normal">CBU Origen:</div>
-          <p class="fw-bold">{{ tranfeResponse.head[0].cbuOrigen }}</p>
+          <p class="fw-bold">{{ tranfeResponse.head[0].bloqueDosCbuEmpresa }}</p>
         </div>
         <div class="col-md-4">
           <div class="label fw-normal">Concepto:</div>
@@ -109,9 +106,9 @@
         <tbody>
           <ng-container *ngFor="let sol of tranfeResponse?.data">
             <tr>
-              <td>{{ sol.CBU }}</td>
-              <td>{{ sol.Importe | currency : 'USD' : 'symbol' : '1.0-0' }}</td>
-              <td>{{ sol.Referencia }}</td>
+              <td>{{ sol.bloqueCBU2 }}</td>
+              <td>{{ sol.importe | currency : 'USD' : 'symbol' : '1.0-0' }}</td>
+              <td>{{ sol.beneficiarioApeNombre }}</td>
             </tr>
           </ng-container>
         </tbody>
@@ -122,7 +119,7 @@
   
 </div>
 
-<div class="card px-0" *ngIf="tranfeResponse.data">
+<div class="card px-0" *ngIf="tranfeResponse?.data">
 
   <div class="card-header">
 
