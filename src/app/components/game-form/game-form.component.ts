@@ -79,7 +79,6 @@ export class GameFormComponent implements OnInit {
               private activatedRoute: ActivatedRoute,
               private imageCompress: NgxImageCompressService) {
 
-
       this.uploader.onBeforeUploadItem = (item: FileItem) => {
 
         item.withCredentials = false;   
@@ -93,6 +92,7 @@ export class GameFormComponent implements OnInit {
 
         item.withCredentials = false;
 
+        /*
         if(this.attachments.length ==0)
         {
           this.serverfilename_1 = JSON.parse(response).uploadname;
@@ -112,16 +112,17 @@ export class GameFormComponent implements OnInit {
         if(this.attachments.length ==4)
         {
           this.serverfilename_5 = JSON.parse(response).uploadname;
-        }
-        this.attachments.push(JSON.parse(response));
+        }*/
 
+
+        this.attachments.push(JSON.parse(response));
+        
         if(this.uploader.queue.length == this.attachments.length)
         {
           this.filesUploaded=true;
           this.upload_text = "Listo"
           
           this.router.navigate(['/auditoria/' + JSON.parse(response).id]);
-
         }
     
       }
