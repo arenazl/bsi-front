@@ -107,7 +107,6 @@ export class AuditoriaComponent implements OnInit {
     );
   }
 
-  
   getTransForSelect(): void {
     this.fileService.getTRList().subscribe(
       (res) => {

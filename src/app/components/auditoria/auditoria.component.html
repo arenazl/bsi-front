@@ -85,39 +85,30 @@
         <div></div>
       </div>
 
-<div class="card px-0 mb-3">
 
-  <div class="card-body p-0" *ngIf="tranfeResponse?.head">
+      <div class="card px-0 mb-3">
+        <table class="table table-striped table-condensed table-hover mb-0">
+            <thead class="opacity-style">
+                <tr class="header-style">
+                    <th>CBU</th>
+                    <th>Importe</th>
+                    <th>Referencia</th>
+                </tr>
+            </thead>
+            <tbody>
+                <ng-container *ngFor="let sol of tranfeResponse?.data">
+                    <tr>
+                        <td>{{ sol.bloqueCBU2 }}</td>
+                        <td>{{ sol.importe | currency : 'USD' : 'symbol' : '1.0-0' }}</td>
+                        <td>{{ sol.beneficiarioApeNombre }}</td>
+                    </tr>
+                </ng-container>
+            </tbody>
+        </table>
 
-    <div class="table-responsive">
-      <table class="table table-striped table-condensed table-hover mb-0">
-        <thead style="opacity: 0.7;">
-          <tr style="
-          font-size: 110%;
-          color:white;
-          background: linear-gradient(270deg, rgb(141, 36, 36), rgb(13, 110, 253)) !important;
-    --darkreader-inline-bgimage: linear-gradient(270deg, #6e3635, #4673b6);
-    --darkreader-inline-bgcolor: initial;">
-            <th>CBU</th>
-            <th>Importe</th>
-            <th>Referencia</th>
-          </tr>
-        </thead>
-        <tbody>
-          <ng-container *ngFor="let sol of tranfeResponse?.data">
-            <tr>
-              <td>{{ sol.bloqueCBU2 }}</td>
-              <td>{{ sol.importe | currency : 'USD' : 'symbol' : '1.0-0' }}</td>
-              <td>{{ sol.beneficiarioApeNombre }}</td>
-            </tr>
-          </ng-container>
-        </tbody>
-      </table>
+
     </div>
 
-  </div>
-  
-</div>
 
 <div class="card px-0" *ngIf="tranfeResponse?.data">
 
