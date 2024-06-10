@@ -11,7 +11,7 @@ import { GlobalVariable } from '../../global';
 import Swal from 'sweetalert2';
 import { NgxImageCompressService } from 'ngx-image-compress';
 
-const uri = GlobalVariable.BASE_API_URL + "/file/uploadtr"
+const uri = GlobalVariable.BASE_API_URL + "/file/uploadTR"
 
 @Component({
   selector: 'app-game-form',
@@ -92,29 +92,12 @@ export class GameFormComponent implements OnInit {
 
         item.withCredentials = false;
 
-        /*
         if(this.attachments.length ==0)
         {
           this.serverfilename_1 = JSON.parse(response).uploadname;
         }
-        if(this.attachments.length ==1)
-        {
-          this.serverfilename_2 = JSON.parse(response).uploadname;
-        }
-        if(this.attachments.length ==2)
-        {
-          this.serverfilename_3 = JSON.parse(response).uploadname;
-        }
-        if(this.attachments.length ==3)
-        {
-          this.serverfilename_4 = JSON.parse(response).uploadname;
-        }
-        if(this.attachments.length ==4)
-        {
-          this.serverfilename_5 = JSON.parse(response).uploadname;
-        }*/
-
-
+    
+        
         this.attachments.push(JSON.parse(response));
         
         if(this.uploader.queue.length == this.attachments.length)
