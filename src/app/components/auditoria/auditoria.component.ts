@@ -82,6 +82,7 @@ export class AuditoriaComponent implements OnInit {
 
   ngOnInit() {
 
+
     this.route.params.subscribe((params) => {
       this.id = params["id"];
 
@@ -108,6 +109,7 @@ export class AuditoriaComponent implements OnInit {
   }
 
   getTransForSelect(): void {
+
     this.fileService.getTRList().subscribe(
       (res) => {
         this.tranfeList = res;
@@ -216,6 +218,7 @@ export class AuditoriaComponent implements OnInit {
   }
 
   getDateForDB(dias_hasta: number = 0) {
+
     if (!dias_hasta) {
       let currentYear: string = new Date().getFullYear().toString();
       let currentDay = new Date().getDate().toString();
@@ -889,4 +892,5 @@ export class AuditoriaComponent implements OnInit {
     ) as HTMLElement;
     element.click();
   }
+
 }

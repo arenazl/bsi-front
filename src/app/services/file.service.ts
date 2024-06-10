@@ -19,7 +19,7 @@ export class FileService {
   }
 
   getTRList() {
-    return this._http.get(`${this.API_URI}/file/responsetrlist`);
+    return this._http.get(`${this.API_URI}/file/responsetrforcombo`);
   }
 
   downloadFile(id: number): Observable<Blob> {

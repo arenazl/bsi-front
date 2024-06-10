@@ -11,7 +11,7 @@ import { GlobalVariable } from '../../global';
 import Swal from 'sweetalert2';
 import { NgxImageCompressService } from 'ngx-image-compress';
 
-const uri = GlobalVariable.BASE_API_URL + "/file/uploadTR"
+const uri = GlobalVariable.BASE_API_URL + "/file/uploadtr"
 
 @Component({
   selector: 'app-game-form',
