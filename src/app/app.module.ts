@@ -22,6 +22,7 @@ import { RankingComponent } from './components/ranking/ranking.component';
 import { SafeHtmlPipe } from '../app/sanitize'
 import {NgxImageCompressService} from 'ngx-image-compress';
 import { TranfeComponent } from './components/tranfe/tranfe.component';
+import { ImportXslComponent } from './import-xsl/import-xsl.component';
 
 @NgModule({
   declarations: [
@@ -35,7 +36,8 @@ import { TranfeComponent } from './components/tranfe/tranfe.component';
     ReservarComponent,
     RankingComponent,
     SafeHtmlPipe,
-    TranfeComponent
+    TranfeComponent,
+    ImportXslComponent
   ],
   imports: [
     BrowserModule,

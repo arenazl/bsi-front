@@ -1,0 +1,67 @@
+
+
+
+<div class="col-md-6 offset-md-3">
+
+    <div class="card">
+  
+      <div class="card-header pt-3">
+        <h5>Carga de Documentacion</h5>
+      </div>
+  
+      <div class="card-body">
+  
+        <div class="row">
+  
+          <form class="m-2" action="POST" enctype="multipart/form-data">
+  
+
+            <div class="form-group m-2">
+              <input type="file" name="upload" ngf-resize="{width: 200, height: 200, centerCrop: false}" 
+              [(ngModel)]="nombre_archivo" placeholder="Arhivo" class="form-control" id="fileUpload" 
+              multiple ng2FileSelect [uploader]="uploader">
+            </div>
+  
+            <div class="row m-1" *ngFor="let item of uploader.queue">
+  
+              <div class="col-md-5 filename" style="padding-top: 7px;">{{item.file.name}}</div>
+  
+              <div class="col md-2" style="padding-top: 13px;">
+                <div class="progress">
+                  <div class="progress-bar bg-success" [ngStyle]="{'width':item.progress+'%'}"></div>
+                </div>
+              </div>
+  
+              <!--
+              <div class="col-md-3">
+  
+                <div *ngIf="filesUploaded==false">
+                    <button type="button" class="btn btn-outline-danger" (click)="item.remove()"> cancel </button>
+                </div>
+  
+                <div *ngIf="filesUploaded==true">
+                  <button disabled type="button" class="btn btn-outline-success"> Subido </button>
+                </div>
+  
+              </div>-->
+  
+            </div>
+                   
+            <div class="form-group m-2 text-center">
+  
+              <button type="button" class="btn btn-primary w-100" style="display: grid !important;" (click)="uploader.uploadAll()"> upload all </button>
+  
+            </div>
+    
+          </form>
+  
+        </div>
+
+      </div>
+  
+    </div>
+  
+  </div>
+  
+
+  

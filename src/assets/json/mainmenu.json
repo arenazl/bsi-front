@@ -73,6 +73,7 @@
       }
     ]
   },
+
   {
     "title": "Pagos",
     "description": "Realiza tus pagos",
@@ -80,6 +81,17 @@
       {
         "description": "Realiza tus pagos",
         "link": "/pagos"
+      }
+    ]
+  },
+
+  {
+    "title": "Importacion",
+    "description": "Nueva funcionalidad",
+    "items": [
+      {
+        "description": "Carga desde excel",
+        "link": "/importxls/add"
       }
     ]
   }

@@ -9,6 +9,7 @@ import { LoginComponent } from './components/login/login.component';
 import { ReservarComponent } from './components/reservar/reservar.component';
 import { RankingComponent } from './components/ranking/ranking.component';
 import { TranfeComponent } from './components/tranfe/tranfe.component';
+import { ImportXslComponent } from './import-xsl/import-xsl.component';
 
 const routes: Routes = [
   {
@@ -32,10 +33,12 @@ const routes: Routes = [
     path: 'legajo',
     component: GamesListComponent
   },
+
   {
     path: 'legajo/add/:id',
     component: GameFormComponent
   },
+
   {
     path: 'legajo/edit/:id',
     component: GameFormComponent
@@ -51,7 +54,13 @@ const routes: Routes = [
   {
     path: 'tranfe',
     component: TranfeComponent
-  }
+  },
+
+  {
+    path: 'importxls/add',
+    component: ImportXslComponent
+  },
+
 ];
 
 @NgModule({
