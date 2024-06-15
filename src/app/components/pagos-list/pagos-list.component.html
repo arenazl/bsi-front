@@ -1,0 +1,102 @@
+<div class="card px-0 mb-3">
+    
+    
+    <div class="card-body pb-0">
+        <div class="row">
+            <div class="col-md-4">
+                <div class="label fw-normal">Buscar Transferencias Anteriores:</div>
+                <p class="fw-bold">
+                    <select class="form-select" aria-label="Default select example" (change)="getTrByID($event)">
+                        <option selected value="">Elija una transferencia</option>
+                        <option *ngFor="let empresa of tranfeList" [value]="empresa.id">
+                            {{ empresa.empresaNombre }}
+                        </option>
+                    </select>
+                </p>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<div class="card px-0 mb-3" *ngIf="tranfeResponse?.data">
+
+    <div class="card-header pt-3">
+        <h5>Empresa</h5>
+    </div>
+
+    <div class="card-body pb-0">
+        <div class="row">
+            <div class="col-md-4">
+                <div class="label fw-normal">Fecha:</div>   
+                <!--<p class="fw-bold">{{ tranfeResponse.head.fechaAcreditacion | date : 'dd/MM/yyyy' }}</p>-->
+            </div>
+            <div class="col-md-4">
+                <div class="label fw-normal">Cantidad de Transferencias:</div>
+                <p class="fw-bold">{{ tranfeResponse.head.CANTIDAD_TRANSFERENCIAS }}</p>
+            </div>
+            <div class="col-md-4">
+                <div class="label fw-normal">Importe Total:</div>
+                <p class="fw-bold">{{ tranfeResponse.head.TOTAL_IMPORTE | currency : 'USD' : 'symbol' : '1.0-0' }}</p>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-4">
+                <div class="label fw-normal">CBU Origen:</div>
+                <p class="fw-bold">{{ tranfeResponse.head.bloqueDosCbuEmpresa }}</p>
+            </div>
+            <div class="col-md-4">
+                <div class="label fw-normal">Concepto:</div>
+                <p class="fw-bold">{{ tranfeResponse.head.CONCEPTO }}</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div *ngIf="ld_header" class="lds-roller">
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+</div>
+
+<div class="card px-0 mb-3">
+
+    <div class="card-header pt-3">
+        <h5>Beneficiarios</h5>
+    </div>
+
+    <table class="table table-striped table-condensed table-hover mb-0">
+        <thead class="opacity-style">
+            <tr class="header-style">
+                <th>CBU</th>
+                <th>Importe</th>
+                <th>Referencia</th>
+            </tr>
+        </thead>
+        <tbody>
+            <ng-container *ngFor="let sol of tranfeResponse?.data">
+                <tr>
+                    <td>{{ sol.CBU }}</td>
+                    <td>{{ sol.IMPORTE | currency : 'USD' : 'symbol' : '1.0-0' }}</td>
+                    <td>{{ sol.APELLIDO }} {{ sol.NOMBRE }}</td>
+                </tr>
+            </ng-container>
+        </tbody>
+    </table>
+</div>
+
+<div class="card px-0" *ngIf="tranfeResponse?.data">
+    <div class="card-header">
+        <h5>Exportar TR</h5>
+    </div>
+
+    <div class="card-body">
+        <button type="button" class="btn btn-primary" (click)="getFile()">Descargar Archivo</button>
+    </div>
+</div>

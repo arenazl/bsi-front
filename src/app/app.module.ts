@@ -22,7 +22,8 @@ import { RankingComponent } from './components/ranking/ranking.component';
 import { SafeHtmlPipe } from '../app/sanitize'
 import {NgxImageCompressService} from 'ngx-image-compress';
 import { TranfeComponent } from './components/tranfe/tranfe.component';
-import { ImportXslComponent } from './import-xsl/import-xsl.component';
+import { ImportXslComponent } from './components/import-xsl/import-xsl.component';
+import { PagosListComponent } from './components/pagos-list/pagos-list.component';
 
 @NgModule({
   declarations: [
@@ -37,7 +38,8 @@ import { ImportXslComponent } from './import-xsl/import-xsl.component';
     RankingComponent,
     SafeHtmlPipe,
     TranfeComponent,
-    ImportXslComponent
+    ImportXslComponent,
+    PagosListComponent
   ],
   imports: [
     BrowserModule,

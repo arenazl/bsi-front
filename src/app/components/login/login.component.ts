@@ -14,8 +14,6 @@ import { IfStmt } from '@angular/compiler';
 })
 export class LoginComponent implements OnInit {
 
-  finca: string = 'Finca Don Eugenio II';
-  yachting: string  = 'Don Luis (Yachting Club)';
   login_txt="Ingresar";
 
   constructor(private legajoService: LegajoService, private router: Router, private activatedRoute: ActivatedRoute, private sharedService:SharedService) { }
@@ -25,6 +23,7 @@ export class LoginComponent implements OnInit {
     user:new FormControl(null),
     pass:new FormControl(null),
   });
+
 
   barrioId:number=0;
   barrioDesc:string='';
@@ -51,8 +50,6 @@ export class LoginComponent implements OnInit {
     id_barrio: 1
     };
 
-    if(this.barrioId == 1) this.barrioDesc=this.finca; else this.barrioDesc= this.yachting;
-
     this.legajoService.getUsuario(this.usuario)
     .subscribe(
       res => {    
@@ -61,7 +58,6 @@ export class LoginComponent implements OnInit {
 
         this.usuario = (res as any)[0];
         
-
         if(this.usuario.nombre)
         { 
           this.usuario.panel=true
@@ -71,7 +67,6 @@ export class LoginComponent implements OnInit {
           sessionStorage.setItem('grupo', this.usuario.grupo as string);
           sessionStorage.setItem('id_grupo', this.usuario.id_grupo as unknown as string);
   
-
           this.sharedService.sendClickEvent(this.usuario);
 
           this.router.navigate(['/reservar']);

@@ -97,7 +97,6 @@ export class GameFormComponent implements OnInit {
           this.serverfilename_1 = JSON.parse(response).uploadname;
         }
     
-        
         this.attachments.push(JSON.parse(response));
         
         if(this.uploader.queue.length == this.attachments.length)
@@ -115,6 +114,7 @@ export class GameFormComponent implements OnInit {
         this.upload_text = "espere mientras actualizamos..."
         this.phase2 = true;
       }
+
   }
 
   ngOnInit() {

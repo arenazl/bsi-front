@@ -18,8 +18,16 @@ export class FileService {
     return this._http.get(`${this.API_URI}/file/responsetr/${id}`);
   }
 
+  getPagos(id: string) {
+    return this._http.get(`${this.API_URI}/file/pagoslist/${id}`);
+  }
+
   getTRList() {
     return this._http.get(`${this.API_URI}/file/responsetrforcombo`);
+  }
+
+  getPagosList() {
+    return this._http.get(`${this.API_URI}/file/responsepagosforcombo`);
   }
 
   downloadFile(id: number): Observable<Blob> {

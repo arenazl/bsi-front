@@ -89,6 +89,10 @@
     "description": "Nueva funcionalidad",
     "items": [
       {
+        "description": "Historico",
+        "link": "/pagoslist/0"   
+    },
+      {
         "description": "Carga desde excel",
         "link": "/importxls/add"
       }

@@ -9,7 +9,8 @@ import { LoginComponent } from './components/login/login.component';
 import { ReservarComponent } from './components/reservar/reservar.component';
 import { RankingComponent } from './components/ranking/ranking.component';
 import { TranfeComponent } from './components/tranfe/tranfe.component';
-import { ImportXslComponent } from './import-xsl/import-xsl.component';
+import { ImportXslComponent } from './components/import-xsl/import-xsl.component';
+import { PagosListComponent } from './components/pagos-list/pagos-list.component';
 
 const routes: Routes = [
   {
@@ -47,6 +48,11 @@ const routes: Routes = [
     path: 'auditoria/:id',
     component: AuditoriaComponent
   },
+  {
+    path: 'pagoslist/:id',
+    component: PagosListComponent
+  },
+
   {
     path: 'ranking',
     component: RankingComponent

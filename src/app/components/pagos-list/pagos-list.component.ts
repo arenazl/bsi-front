@@ -23,12 +23,12 @@ import { ElementSchemaRegistry } from "@angular/compiler";
 import { LotesService } from "src/app/services/lotes.service";
 
 @Component({
-  selector: "app-auditoria",
-  templateUrl: "./auditoria.component.html",
-  styleUrls: ["./auditoria.component.css"],
+  selector: 'app-pagos-list',
+  templateUrl: './pagos-list.component.html',
+  styleUrls: ['./pagos-list.component.css']
 })
-export class AuditoriaComponent implements OnInit {
-  
+export class PagosListComponent implements OnInit {
+
   @HostBinding("class") classes = "row";
 
   solicitudes: any = [];
@@ -83,11 +83,10 @@ export class AuditoriaComponent implements OnInit {
 
   ngOnInit() {
 
-
     this.route.params.subscribe((params) => {
       this.id = params["id"];
 
-      this.getTransForSelect();
+      //this.getTransForSelect();
 
       if (this.id != "0")
       {
@@ -100,8 +99,9 @@ export class AuditoriaComponent implements OnInit {
   getAndTransformTRData(id: string): void {
 
     this.ld_header = true;
-    this.fileService.getTR(id).subscribe(
+    this.fileService.getPagos(id).subscribe(
       (res) => {
+
         this.tranfeResponse = res;
          this.ld_header = false;
       },
@@ -111,7 +111,7 @@ export class AuditoriaComponent implements OnInit {
 
   getTransForSelect(): void {
 
-    this.fileService.getTRList().subscribe(
+    this.fileService.getPagosList().subscribe(
       (res) => {
         this.tranfeList = res;
       },
@@ -893,5 +893,7 @@ export class AuditoriaComponent implements OnInit {
     ) as HTMLElement;
     element.click();
   }
+
+
 
 }
