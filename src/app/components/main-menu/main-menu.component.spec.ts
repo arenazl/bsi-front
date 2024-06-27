@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ImportXslComponent } from './import-xsl.component';
+import { MainMenuComponent } from './main-menu.component';
 
-describe('ImportXslComponent', () => {
-  let component: ImportXslComponent;
-  let fixture: ComponentFixture<ImportXslComponent>;
+describe('ReservarComponent', () => {
+  let component: MainMenuComponent;
+  let fixture: ComponentFixture<MainMenuComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ ImportXslComponent ]
+      declarations: [ MainMenuComponent ]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(ImportXslComponent);
+    fixture = TestBed.createComponent(MainMenuComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

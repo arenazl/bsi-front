@@ -1,6 +1,6 @@
-import { LegajoService } from "../../services/legajo.service";
-import { FileService } from "./../../services/file.service";
-import { Component, OnInit, HostBinding } from "@angular/core";
+import { LegajoService } from "../../../services/legajo.service";
+import { FileService } from "../../../services/file.service";
+import { Component, OnInit, HostBinding, AfterViewInit } from "@angular/core";
 import {
   Solicitud,
   FileRes,
@@ -17,7 +17,7 @@ import { Router, ActivatedRoute, Params } from "@angular/router";
 import { SharedService } from "src/app/services/shared.service";
 import Swal from "sweetalert2";
 import { provideProtractorTestingSupport } from "@angular/platform-browser";
-import { ignoreElements, iif } from "rxjs";
+import { filter, ignoreElements, iif } from "rxjs";
 import { registerLocaleData } from "@angular/common";
 import { ElementSchemaRegistry } from "@angular/compiler";
 import { LotesService } from "src/app/services/lotes.service";
@@ -27,7 +27,7 @@ import { LotesService } from "src/app/services/lotes.service";
   templateUrl: './pagos-list.component.html',
   styleUrls: ['./pagos-list.component.css']
 })
-export class PagosListComponent implements OnInit {
+export class PagosListComponent implements OnInit, AfterViewInit {
 
   @HostBinding("class") classes = "row";
 
@@ -64,7 +64,7 @@ export class PagosListComponent implements OnInit {
 
   idSelected=false;
 
-  tranfeResponse: any;
+  tranfeResponse: any = { data: [] };
 
   detaildByID = false;
 
@@ -80,6 +80,11 @@ export class PagosListComponent implements OnInit {
     private sharedService: SharedService,
     private route: ActivatedRoute
   ) {}
+  ngAfterViewInit(): void { 
+
+
+    
+  }
 
   ngOnInit() {
 
@@ -99,13 +104,15 @@ export class PagosListComponent implements OnInit {
   getAndTransformTRData(id: string): void {
 
     this.ld_header = true;
-    this.fileService.getPagos(id).subscribe(
-      (res) => {
 
-        this.tranfeResponse = res;
-         this.ld_header = false;
-      },
-      (err) => console.error(err)
+
+    this.fileService.getPagos(id).pipe( filter ( (res) => res.length > 0 )).subscribe((res) => {
+
+      this.tranfeResponse = res.data;
+      this.ld_header = res.data.head;
+      
+    },
+    (err) => console.error(err)
     );
   }
 

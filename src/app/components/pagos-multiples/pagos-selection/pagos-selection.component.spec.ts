@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { TranfeComponent } from './tranfe.component';
+import { PagosSelectionComponent } from './pagos-selection.component';
 
 describe('TranfeComponent', () => {
-  let component: TranfeComponent;
-  let fixture: ComponentFixture<TranfeComponent>;
+  let component: PagosSelectionComponent;
+  let fixture: ComponentFixture<PagosSelectionComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ TranfeComponent ]
+      declarations: [ PagosSelectionComponent ]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(TranfeComponent);
+    fixture = TestBed.createComponent(PagosSelectionComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

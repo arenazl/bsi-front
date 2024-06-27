@@ -17,13 +17,13 @@ import { LoginComponent } from './components/login/login.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { AuditoriaComponent } from './components/auditoria/auditoria.component';
 import { MapComponent } from './components/map/map.component';
-import { ReservarComponent } from './components/reservar/reservar.component';
+import { MainMenuComponent } from './components/main-menu/main-menu.component';
 import { RankingComponent } from './components/ranking/ranking.component';
 import { SafeHtmlPipe } from '../app/sanitize'
 import {NgxImageCompressService} from 'ngx-image-compress';
-import { TranfeComponent } from './components/tranfe/tranfe.component';
-import { ImportXslComponent } from './components/import-xsl/import-xsl.component';
-import { PagosListComponent } from './components/pagos-list/pagos-list.component';
+import { PagosSelectionComponent } from './components/pagos-multiples/pagos-selection/pagos-selection.component';
+import { PagosImportComponent } from './components/pagos-multiples/pagos-import/pagos-import.component';
+import { PagosListComponent } from './components/pagos-multiples/pagos-list/pagos-list.component';
 
 @NgModule({
   declarations: [
@@ -34,11 +34,11 @@ import { PagosListComponent } from './components/pagos-list/pagos-list.component
     LoginComponent,
     AuditoriaComponent,
     MapComponent,
-    ReservarComponent,
+    MainMenuComponent,
     RankingComponent,
     SafeHtmlPipe,
-    TranfeComponent,
-    ImportXslComponent,
+    PagosSelectionComponent,
+    PagosImportComponent,
     PagosListComponent
   ],
   imports: [

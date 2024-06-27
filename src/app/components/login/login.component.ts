@@ -50,6 +50,10 @@ export class LoginComponent implements OnInit {
     id_barrio: 1
     };
 
+/*
+    this.router.navigate(['/mainmenu']);
+    return;*/
+
     this.legajoService.getUsuario(this.usuario)
     .subscribe(
       res => {    
@@ -69,7 +73,7 @@ export class LoginComponent implements OnInit {
   
           this.sharedService.sendClickEvent(this.usuario);
 
-          this.router.navigate(['/reservar']);
+          this.router.navigate(['/mainmenu']);
           return;
           
           if (this.usuario.rol == 'Vendedor') {
@@ -89,5 +93,7 @@ export class LoginComponent implements OnInit {
       },
       err => console.error(err)
     )
+
   }
+
 }

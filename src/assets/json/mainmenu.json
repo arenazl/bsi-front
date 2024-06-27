@@ -1,7 +1,8 @@
 [
   {
-    "title": "Movimientos",
-    "description": "Consulta tus movimientos bancarios",
+    "title": "Alta De Cuentas Masiva",
+    "description": "Creá tu archivo de altas de cuentas bancarias",
+    "enabled": false,
     "items": [
       {
         "description": "Consulta tus movimientos bancarios",
@@ -10,42 +11,46 @@
     ]
   },
   {
-    "title": "Depósitos",
-    "description": "Realiza depósitos a tus cuentas",
+    "title": "Pagos Múltiples",
+    "description": "Generá tus de archivos de pagos",
+    "enabled": true,
     "items": [
       {
-        "description": "Realiza depósitos a tus cuentas",
-        "link": "/depositos"
+        "description": "Pagos Multiples",
+        "link": "/pagosSelection"
       }
     ]
   },
   {
     "title": "Transferencias Inmediatas",
-    "description": "Gestiona tus transferencias inmediatas",
+    "description": "Confeccioná tus archivos TIM-BIPI",
+    "enabled": true,
     "items": [
       {
-        "description": "Histórico",
+        "description": "el Historial",
         "link": "/auditoria/0"
       },
       {
-        "description": "Nueva Carga",
+        "description": "una Nueva Carga",
         "link": "/legajo/add/0"
       }
     ]
   },
   {
-    "title": "Inversiones",
-    "description": "Consulta tus inversiones",
+    "title": "Tarjetas Recargables",
+    "description": "Gestioná el alta y los pagos de tus tarjetas",
+    "enabled": false,
     "items": [
       {
-        "description": "Consulta tus inversiones",
-        "link": "/inversiones"
+        "description": "Gestiona tus tarjetas",
+        "link": "/tarjetas"
       }
     ]
   },
   {
-    "title": "Préstamos",
-    "description": "Consulta tus préstamos",
+    "title": "Débitos Automáticos",
+    "description": "Administrá los pagos de tus abonados",
+    "enabled": false,
     "items": [
       {
         "description": "Consulta tus préstamos",
@@ -54,8 +59,9 @@
     ]
   },
   {
-    "title": "Seguros",
-    "description": "Consulta tus seguros",
+    "title": "Códigos De Barras",
+    "description": "Elaboramos o actualizamos tus boletas de pago",
+    "enabled": false,
     "items": [
       {
         "description": "Consulta tus seguros",
@@ -64,37 +70,35 @@
     ]
   },
   {
-    "title": "Tarjetas",
-    "description": "Gestiona tus tarjetas",
+    "title": "Validación De CBU",
+    "description": "Eliminá los rechazos de las transferencias",
+    "enabled": false,
     "items": [
       {
-        "description": "Gestiona tus tarjetas",
-        "link": "/tarjetas"
-      }
-    ]
-  },
-
-  {
-    "title": "Pagos",
-    "description": "Realiza tus pagos",
-    "items": [
-      {
-        "description": "Realiza tus pagos",
-        "link": "/pagos"
+        "description": "Consulta tus inversiones",
+        "link": "/inversiones"
       }
     ]
   },
   {
-    "title": "Importacion",
-    "description": "Nueva funcionalidad",
+    "title": "Servicio De Consultoría",
+    "description": "Disminuí la carga operativa",
+    "enabled": false,
     "items": [
       {
-        "description": "Historico",
-        "link": "/pagoslist/0"   
-    },
+        "description": "Consulta tus movimientos bancarios",
+        "link": "/movimientos"
+      }
+    ]
+  },
+  {
+    "title": "Migración De Archivos",
+    "description": "Optimizá los procesos de migración",
+    "enabled": false,
+    "items": [
       {
-        "description": "Carga desde excel",
-        "link": "/importxls/add"
+        "description": "Realiza depósitos a tus cuentas",
+        "link": "/depositos"
       }
     ]
   }

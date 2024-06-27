@@ -6,11 +6,11 @@ import { Routes, RouterModule } from '@angular/router';
 import { GamesListComponent } from './components/games-list/games-list.component';
 import { GameFormComponent } from './components/game-form/game-form.component';
 import { LoginComponent } from './components/login/login.component';
-import { ReservarComponent } from './components/reservar/reservar.component';
+import { MainMenuComponent } from './components/main-menu/main-menu.component';
 import { RankingComponent } from './components/ranking/ranking.component';
-import { TranfeComponent } from './components/tranfe/tranfe.component';
-import { ImportXslComponent } from './components/import-xsl/import-xsl.component';
-import { PagosListComponent } from './components/pagos-list/pagos-list.component';
+import { PagosSelectionComponent } from './components/pagos-multiples/pagos-selection/pagos-selection.component';
+import { PagosImportComponent } from './components/pagos-multiples/pagos-import/pagos-import.component';
+import { PagosListComponent } from './components/pagos-multiples/pagos-list/pagos-list.component';
 
 const routes: Routes = [
   {
@@ -27,8 +27,8 @@ const routes: Routes = [
     component: MapComponent
   },
   {
-    path: 'reservar',
-    component: ReservarComponent
+    path: 'mainmenu',
+    component: MainMenuComponent
   },
   {
     path: 'legajo',
@@ -58,13 +58,13 @@ const routes: Routes = [
     component: RankingComponent
   },
   {
-    path: 'tranfe',
-    component: TranfeComponent
+    path: 'pagosSelection',
+    component: PagosSelectionComponent
   },
 
   {
-    path: 'importxls/add',
-    component: ImportXslComponent
+    path: 'pagosImport/:id',
+    component: PagosImportComponent
   },
 
 ];

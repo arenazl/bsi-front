@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { GlobalVariable } from '../global';
 import { Observable } from 'rxjs';
+import { map } from 'jquery';
 
 
 @Injectable({
@@ -12,15 +13,19 @@ export class FileService {
 
   API_URI = GlobalVariable.BASE_API_URL;
 
-  constructor(private _http:HttpClient){}
+
+
+  constructor(private _http:HttpClient
+  ){}
 
   getTR(id: string) {
     return this._http.get(`${this.API_URI}/file/responsetr/${id}`);
   }
 
-  getPagos(id: string) {
+  getPagos(id: string)  :Observable<any> {
     return this._http.get(`${this.API_URI}/file/pagoslist/${id}`);
   }
+
 
   getTRList() {
     return this._http.get(`${this.API_URI}/file/responsetrforcombo`);

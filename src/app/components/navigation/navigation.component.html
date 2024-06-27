@@ -2,150 +2,42 @@
 
 <div *ngIf=" showNav==true">
 
-<nav class="navbar navbar-dark bg-dark navbar-expand-lg" style="background: linear-gradient(270deg,#8d2424, #0d6efd) !important;">
-  <div class="container-fluid">
-
-    <a class="navbar-brand" href="#">
-      <span class="material-icons" style="vertical-align: top;font-size: 28px;padding-left: 13px;">
-        public
+  <nav class="navbar navbar-dark bg-dark navbar-expand-lg" style="background: linear-gradient(270deg,#8d2424, #0d6efd) !important;">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="#">
+        <span class="material-icons" style="vertical-align: top; font-size: 28px; padding-left: 13px;">
+          public
         </span>
-    </a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav me-auto">
+          <li class="nav-item active">
+            <a class="nav-link" routerLink="/mainmenu" routerLinkActive="active">
+              <i style="padding-right: 7px;" class="far fa-folder-open"></i>
+              <span class="sr-only">(current)</span>Menu Principal
+            </a>
+          </li>
+        </ul>
 
+        <div class="d-flex ms-auto align-items-center">
 
-      <form class="form-inline" style="
-      display: inherit;
-  ">
-
-      <div class="md-form my-0">
-        <a class="navbar-brand" style="
-        font-size: 16px;"> Bsi Informatica</a>
-      </div>
-
-        <div class="md-form my-0 d-none">
-          <i class="far fa-id-badge" style="padding-right: 6px;"></i>
-          <a class="navbar-brand" style="
-          font-size: 16px;"> {{rol}}</a>
-        </div>
-
-        <div class="md-form my-0">
-          <i class="far fa-user" style="padding-right: 6px;"></i>
-          <a class="navbar-brand" style="font-size: 16px;"> {{nombre}}</a>
-        </div>
-
-        <div *ngIf="grupo != 'null'">
-
-          <div class="md-form my-0 d-none">
-            <i class="far fa-user-circle" style="padding-right: 6px;"></i>
-            <a class="navbar-brand" style="font-size: 16px;"> {{grupo}}</a>
+          <div class="md-form my-0 d-flex align-items-center">
+            <i class="far fa-user" style="padding-right: 6px;"></i>
+            <a class="navbar-brand" style="font-size: 16px; margin-right: 20px;">{{nombre}}</a>
+            <i class="fas fa-building" style="padding-right: 6px;"></i>
+            <a class="navbar-brand" style="font-size: 16px;">Municipalidad de Chacabuco</a>
           </div>
-
+      
         </div>
 
-        <div class="d-none">
-          <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search">
-        </div>
-
-      </form>
-
-
-      <div *ngIf="rol=='Admin'">
-        <ul class="navbar-nav mr-auto">
-
-          <li class=" d-none">
-            <a class="nav-link" routerLink="/mapa" routerLinkActive="active"><i style="padding-right: 7px;" class="far fa-edit"></i>Mapa</a>
-          </li>
-
-          <li class="d-none">
-            <a class="nav-link" routerLink="/reservar" routerLinkActive="active"><i style="padding-right: 7px;" class="far fa-edit"></i>Reservar Lote</a>
-          </li>
-
-          <!--
-          <li class="nav-item active">
-            <a class="nav-link" routerLink="/legajo/add" routerLinkActive="active"><i style="padding-right: 7px;" class="far fa-edit"></i>Nueva Carga</a>
-          </li>-->
-
-          <li class="d-none">
-            <a class="nav-link" routerLink="/legajo" routerLinkActive="active"><i style="padding-right: 7px;" class="far fa-folder-open"></i><span class="sr-only">(current)</span>Mis Legajos</a>
-          </li>
-
-          <li class="d-none">
-            <a class="nav-link" routerLink="/controlador" routerLinkActive="active"><i style="padding-right: 7px;" class="far fa-folder-open"></i>Control</a>
-          </li>
-
-          <li class=" d-none">
-            <a class="nav-link" routerLink="/auditoria" routerLinkActive="active"><i style="padding-right: 7px;" class="far fa-folder-open"></i>Documentacion</a>
-          </li>
-
-        </ul>
-        </div>
-
-
-      <div *ngIf="rol=='Vendedor'">
-      <ul class="navbar-nav mr-auto">
-
-
-        <li class="nav-item">
-          <a class="nav-link" routerLink="/reservar" routerLinkActive="active"><i style="padding-right: 7px;" class="far fa-edit"></i>Menu principal</a>
-        </li>
-
-        <!--
-        <li class="nav-item">
-          <a class="nav-link" routerLink="/legajo/add/0" routerLinkActive="active"><i style="padding-right: 7px;" class="far fa-edit"></i>Nueva Carga</a>
-        </li>-->
-
-        <li class="d-none">
-          <a class="nav-link" routerLink="/legajo" routerLinkActive="active"><i style="padding-right: 7px;" class="far fa-folder-open"></i><span class="sr-only">(current)</span>Mis Legajos</a>
-        </li>
-
-        <li class="d-none">
-          <a class="nav-link" routerLink="/ranking" routerLinkActive="active"><i style="padding-right: 7px;" class="far fa-folder-open"></i><span class="sr-only">(current)</span>Ranking Ventas</a>
-        </li>
-
-
-      </ul>
       </div>
-
-
-      <div *ngIf="rol=='Control'">
-        <ul class="navbar-nav mr-auto">
-
-
-          <li class="nav-item active">
-            <a class="nav-link" routerLink="/controlador" routerLinkActive="active"><i style="padding-right: 7px;" class="far fa-folder-open"></i>Mis Legajos</a>
-          </li>
-
-          <li class="nav-item active">
-            <a class="nav-link" routerLink="/ranking" routerLinkActive="active"><i style="padding-right: 7px;" class="far fa-folder-open"></i><span class="sr-only">(current)</span>Ranking Ventas</a>
-          </li>
-
-        </ul>
-
-        </div>
-
-        <div>
-
-          <ul class="navbar-nav mr-auto">
- 
-            <!--
-            <li class="nav-item active">
-              <a class="nav-link" routerLink="/legajo/add/0" routerLinkActive="active"><i style="padding-right: 7px;" class="far fa-folder-open"></i>Nueva Carga</a>
-            </li>-->
-
-            <li class="nav-item active">
-              <a class="nav-link" routerLink="/reservar" routerLinkActive="active"><i style="padding-right: 7px;" class="far fa-folder-open"></i><span class="sr-only">(current)</span>Menu</a>
-            </li>
-
-          </ul>
-        </div>
-
-
     </div>
-  </div>
-</nav>
+
+  </nav>
+  
 
 </div>
 

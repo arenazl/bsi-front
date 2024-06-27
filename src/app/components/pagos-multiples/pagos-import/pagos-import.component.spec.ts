@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ReservarComponent } from './reservar.component';
+import { PagosImportComponent } from './pagos-import.component';
 
-describe('ReservarComponent', () => {
-  let component: ReservarComponent;
-  let fixture: ComponentFixture<ReservarComponent>;
+describe('ImportXslComponent', () => {
+  let component: PagosImportComponent;
+  let fixture: ComponentFixture<PagosImportComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ ReservarComponent ]
+      declarations: [ PagosImportComponent ]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(ReservarComponent);
+    fixture = TestBed.createComponent(PagosImportComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
