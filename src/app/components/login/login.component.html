@@ -1,33 +1,31 @@
-
 <!------ Include the above in your HEAD tag ---------->
 
-<div class="wrapper fadeInDown">
-  <div id="formContent">
+<div class="d-flex align-items-center justify-content-center vh-100">
+  <div id="formContent" class="text-center p-4 border rounded shadow">
     <!-- Tabs Titles -->
 
     <!-- Icon -->
-    <div class="fadeIn first d-flex align-items-center justify-content-center mt-2">
- 
+    <div class="first d-flex align-items-center justify-content-center mt-2">
       <span class="material-icons icon-md" style="color: #57baed;">
         supervisor_account
-        </span>
-
-        <span class="fw-bold" style="color: #57baed;">
-         Bsi Informatica
-          </span>
+      </span>
+      <span class="fw-bold" style="color: #57baed;">
+        Bsi Informatica
+      </span>
     </div>
 
     <!-- Login Form -->
     <form [formGroup]="form" (ngSubmit)="onSubmit()">
-      <input type="text" id="login" class="fadeIn second" name="login" placeholder="usuario" formControlName="user" value="admin">
-      <input type="text" id="password" class="fadeIn third" name="login" placeholder="clave" formControlName="pass">
-      <input type="submit" class="fadeIn fourth mt-2" value="{{login_txt}}">
+      <input type="text" id="login" class="form-control mt-3" placeholder="usuario" formControlName="user">
+      <input type="password" id="password" class="form-control mt-3" placeholder="clave" formControlName="pass">
+      <input type="submit" style="
+      width: 90%;
+  " class="fourth mt-3 btn btn-primary" value="{{login_txt}}">
     </form>
 
-    <!-- Remind Passowrd -->
+    <!-- Remind Password -->
     <div id="formFooter" class="d-none">
       <a class="underlineHover" href="#">Forgot Password?</a>
     </div>
-
   </div>
 </div>
