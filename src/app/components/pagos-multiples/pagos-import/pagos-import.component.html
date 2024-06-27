@@ -75,6 +75,11 @@
                 {{buttonText}}
               </button>
             </div>
+
+            <div *ngIf="errorMessage" class="form-group mt-3 text-center">
+              <label class="text-danger">{{ errorMessage }}</label>
+            </div>
+
           </form>
         </div>
       </div>

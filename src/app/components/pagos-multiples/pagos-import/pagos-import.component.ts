@@ -31,6 +31,7 @@ export class PagosImportComponent implements OnInit {
   nombre_archivo: string = '';
   filesUploaded = false;
   buttonText = 'Subir Archivo';
+  errorMessage = '';
 
   constructor(
     private fileService: FileService,
@@ -56,8 +57,18 @@ export class PagosImportComponent implements OnInit {
         this.buttonText = "Completado";
         item.withCredentials = false;
 
-        this.router.navigate(['/pagoslist/' + JSON.parse(response).id])      
+        const parsedResponse = JSON.parse(response);
 
+        try {
+
+          if (parsedResponse.id) {
+            this.router.navigate(['/pagoslist/' + parsedResponse.id]);
+          } else {
+            this.errorMessage = parsedResponse.message;
+          }
+        } catch (error) {
+          this.errorMessage = 'Carga fallida';
+        }
       }
 
       this.uploader.onProgressItem=(fileItem:any, progress:any) =>{
