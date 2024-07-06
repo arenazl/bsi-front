@@ -62,7 +62,7 @@ export class PagosListComponent implements OnInit, AfterViewInit {
 
   id = "";
 
-  idSelected=false;
+  idSelected = false;
 
   tranfeResponse: any = { data: [] };
 
@@ -79,11 +79,11 @@ export class PagosListComponent implements OnInit, AfterViewInit {
     private fileService: FileService,
     private sharedService: SharedService,
     private route: ActivatedRoute
-  ) {}
-  ngAfterViewInit(): void { 
+  ) { }
+  ngAfterViewInit(): void {
 
 
-    
+
   }
 
   ngOnInit() {
@@ -93,26 +93,24 @@ export class PagosListComponent implements OnInit, AfterViewInit {
 
       //this.getTransForSelect();
 
-      if (this.id != "0")
-      {
-          this.getAndTransformTRData(this.id);
+      if (this.id != "0") {
+        this.getPagosById(this.id);
       }
 
     });
   }
 
-  getAndTransformTRData(id: string): void {
+  getPagosById(id: string): void {
 
     this.ld_header = true;
 
+    this.fileService.getPagos(id).subscribe((res) => {
 
-    this.fileService.getPagos(id).pipe( filter ( (res) => res.length > 0 )).subscribe((res) => {
+      this.ld_header = false;
+      this.tranfeResponse = res;
 
-      this.tranfeResponse = res.data;
-      this.ld_header = res.data.head;
-      
     },
-    (err) => console.error(err)
+      (err) => console.error(err)
     );
   }
 
@@ -142,17 +140,17 @@ export class PagosListComponent implements OnInit, AfterViewInit {
 
   getTrByID(id: any) {
     if (id.target.value) {
-        this.getAndTransformTRData(id.target.value);
+      this.getPagosById(id.target.value);
     }
   }
 
   getFile(): void {
-    
+
     this.fileService
       .downloadFile(this.id as unknown as number)
       .subscribe((blob) => {
-        
-        let cbu : string = this.tranfeResponse.head[0].empresaNombre;
+
+        let cbu: string = this.tranfeResponse.head[0].empresaNombre;
         let concepto = this.tranfeResponse.head[0].concepto;
 
         const url = window.URL.createObjectURL(blob);
@@ -180,6 +178,7 @@ export class PagosListComponent implements OnInit, AfterViewInit {
   }
 
   getGames(nodate: boolean = false, today: boolean = false) {
+
     this.ld_header = true;
 
     //this.params.id_barrio = sessionStorage.getItem('id_barrio') as unknown as number
@@ -374,7 +373,7 @@ export class PagosListComponent implements OnInit, AfterViewInit {
             id_barrio: sol.id_barrio as number,
           };
           this.lotesService.updateLote(sol.id_lote, lote).subscribe(
-            (res) => {},
+            (res) => { },
             (err) => console.error(err)
           );
         }
@@ -385,7 +384,7 @@ export class PagosListComponent implements OnInit, AfterViewInit {
             id_barrio: sol.id_barrio as number,
           };
           this.lotesService.updateLote(sol.id_lote, lote).subscribe(
-            (res) => {},
+            (res) => { },
             (err) => console.error(err)
           );
         }
@@ -396,7 +395,7 @@ export class PagosListComponent implements OnInit, AfterViewInit {
             id_barrio: sol.id_barrio as number,
           };
           this.lotesService.updateLote(sol.id_lote, lote).subscribe(
-            (res) => {},
+            (res) => { },
             (err) => console.error(err)
           );
         }
@@ -407,7 +406,7 @@ export class PagosListComponent implements OnInit, AfterViewInit {
             id_barrio: sol.id_barrio as number,
           };
           this.lotesService.updateLote(sol.id_lote, lote).subscribe(
-            (res) => {},
+            (res) => { },
             (err) => console.error(err)
           );
         }
@@ -418,7 +417,7 @@ export class PagosListComponent implements OnInit, AfterViewInit {
             id_barrio: sol.id_barrio as number,
           };
           this.lotesService.updateLote(sol.id_lote, lote).subscribe(
-            (res) => {},
+            (res) => { },
             (err) => console.error(err)
           );
         }
@@ -429,7 +428,7 @@ export class PagosListComponent implements OnInit, AfterViewInit {
             id_barrio: sol.id_barrio as number,
           };
           this.lotesService.updateLote(sol.id_lote, lote).subscribe(
-            (res) => {},
+            (res) => { },
             (err) => console.error(err)
           );
         }
@@ -440,7 +439,7 @@ export class PagosListComponent implements OnInit, AfterViewInit {
             id_barrio: sol.id_barrio as number,
           };
           this.lotesService.updateLote(sol.id_lote, lote).subscribe(
-            (res) => {},
+            (res) => { },
             (err) => console.error(err)
           );
         }
@@ -451,7 +450,7 @@ export class PagosListComponent implements OnInit, AfterViewInit {
             id_barrio: sol.id_barrio as number,
           };
           this.lotesService.updateLote(sol.id_lote, lote).subscribe(
-            (res) => {},
+            (res) => { },
             (err) => console.error(err)
           );
         }
@@ -462,7 +461,7 @@ export class PagosListComponent implements OnInit, AfterViewInit {
             id_barrio: sol.id_barrio as number,
           };
           this.lotesService.updateLote(sol.id_lote, lote).subscribe(
-            (res) => {},
+            (res) => { },
             (err) => console.error(err)
           );
         }
@@ -473,7 +472,7 @@ export class PagosListComponent implements OnInit, AfterViewInit {
             id_barrio: sol.id_barrio as number,
           };
           this.lotesService.updateLote(sol.id_lote, lote).subscribe(
-            (res) => {},
+            (res) => { },
             (err) => console.error(err)
           );
         }
@@ -527,7 +526,7 @@ export class PagosListComponent implements OnInit, AfterViewInit {
             id_barrio: sol.id_barrio as number,
           };
           this.lotesService.updateLote(sol.id_lote, lote).subscribe(
-            (res) => {},
+            (res) => { },
             (err) => console.error(err)
           );
         }
@@ -538,7 +537,7 @@ export class PagosListComponent implements OnInit, AfterViewInit {
             id_barrio: sol.id_barrio as number,
           };
           this.lotesService.updateLote(sol.id_lote, lote).subscribe(
-            (res) => {},
+            (res) => { },
             (err) => console.error(err)
           );
         }
@@ -549,7 +548,7 @@ export class PagosListComponent implements OnInit, AfterViewInit {
             id_barrio: sol.id_barrio as number,
           };
           this.lotesService.updateLote(sol.id_lote, lote).subscribe(
-            (res) => {},
+            (res) => { },
             (err) => console.error(err)
           );
         }
@@ -560,7 +559,7 @@ export class PagosListComponent implements OnInit, AfterViewInit {
             id_barrio: sol.id_barrio as number,
           };
           this.lotesService.updateLote(sol.id_lote, lote).subscribe(
-            (res) => {},
+            (res) => { },
             (err) => console.error(err)
           );
         }
@@ -571,7 +570,7 @@ export class PagosListComponent implements OnInit, AfterViewInit {
             id_barrio: sol.id_barrio as number,
           };
           this.lotesService.updateLote(sol.id_lote, lote).subscribe(
-            (res) => {},
+            (res) => { },
             (err) => console.error(err)
           );
         }
@@ -582,7 +581,7 @@ export class PagosListComponent implements OnInit, AfterViewInit {
             id_barrio: sol.id_barrio as number,
           };
           this.lotesService.updateLote(sol.id_lote, lote).subscribe(
-            (res) => {},
+            (res) => { },
             (err) => console.error(err)
           );
         }
@@ -593,7 +592,7 @@ export class PagosListComponent implements OnInit, AfterViewInit {
             id_barrio: sol.id_barrio as number,
           };
           this.lotesService.updateLote(sol.id_lote, lote).subscribe(
-            (res) => {},
+            (res) => { },
             (err) => console.error(err)
           );
         }
@@ -604,7 +603,7 @@ export class PagosListComponent implements OnInit, AfterViewInit {
             id_barrio: sol.id_barrio as number,
           };
           this.lotesService.updateLote(sol.id_lote, lote).subscribe(
-            (res) => {},
+            (res) => { },
             (err) => console.error(err)
           );
         }
@@ -615,7 +614,7 @@ export class PagosListComponent implements OnInit, AfterViewInit {
             id_barrio: sol.id_barrio as number,
           };
           this.lotesService.updateLote(sol.id_lote, lote).subscribe(
-            (res) => {},
+            (res) => { },
             (err) => console.error(err)
           );
         }
@@ -626,7 +625,7 @@ export class PagosListComponent implements OnInit, AfterViewInit {
             id_barrio: sol.id_barrio as number,
           };
           this.lotesService.updateLote(sol.id_lote, lote).subscribe(
-            (res) => {},
+            (res) => { },
             (err) => console.error(err)
           );
         }

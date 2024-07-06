@@ -2,7 +2,7 @@
 .header-style {
     font-size: 110%;
     color: white;
-    background: linear-gradient(270deg, rgb(141, 36, 36), rgb(13, 110, 253)) !important;
+    background: linear-gradient(270deg, #0cb9db, #087287) !important;
     --darkreader-inline-bgimage: linear-gradient(270deg, #6e3635, #4673b6);
     --darkreader-inline-bgcolor: initial;
 }

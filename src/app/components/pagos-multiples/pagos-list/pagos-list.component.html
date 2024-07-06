@@ -1,10 +1,10 @@
 <div class="card px-0 mb-3">
-    
-    
+
+
     <div class="card-body pb-0">
         <div class="row">
             <div class="col-md-4">
-                <div class="label fw-normal">Buscar Transferencias Anteriores:</div>
+                <div class="label fw-normal">Buscar Pagos Anteriores:</div>
                 <p class="fw-bold">
                     <select class="form-select" aria-label="Default select example" (change)="getTrByID($event)">
                         <option selected value="">Elija una transferencia</option>
@@ -28,8 +28,8 @@
     <div class="card-body pb-0">
         <div class="row">
             <div class="col-md-4">
-                <div class="label fw-normal">Fecha:</div>   
-                <!--<p class="fw-bold">{{ tranfeResponse.head.fechaAcreditacion | date : 'dd/MM/yyyy' }}</p>-->
+                <div class="label fw-normal">Fecha:</div>
+                <p class="fw-bold">{{ tranfeResponse.head.FECHA | date : 'dd/MM/yyyy' }}</p>
             </div>
             <div class="col-md-4">
                 <div class="label fw-normal">Cantidad de Transferencias:</div>
@@ -43,8 +43,8 @@
 
         <div class="row">
             <div class="col-md-4">
-                <div class="label fw-normal">CBU Origen:</div>
-                <p class="fw-bold">{{ tranfeResponse.head.bloqueDosCbuEmpresa }}</p>
+                <div class="label fw-normal">Cuenta Debito:</div>
+                <p class="fw-bold">{{ tranfeResponse.head.CUENTA_DEBITO }}</p>
             </div>
             <div class="col-md-4">
                 <div class="label fw-normal">Concepto:</div>

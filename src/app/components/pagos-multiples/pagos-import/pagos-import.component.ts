@@ -25,8 +25,10 @@ export class PagosImportComponent implements OnInit {
 
   selectedRotulo = '';
   selectedCuentaDebito = '';
+  pagoType=0;
   selectedConcepto = '';
   fechaPago: string = '';
+
   cargaArchivoSeleccionada = false;
   nombre_archivo: string = '';
   filesUploaded = false;
@@ -43,13 +45,16 @@ export class PagosImportComponent implements OnInit {
 
       this.uploader.onBeforeUploadItem = (item: FileItem) => {
 
-        item.withCredentials = false;   
+        item.withCredentials = false; 
 
-        item.file.name= sessionStorage.getItem('nombre') as unknown as string + "-" +
+        item.file.name= 
+        sessionStorage.getItem('Id') as unknown as string + "-" +
+        sessionStorage.getItem('IdOrganismo') as unknown as string + "-" +
+        this.pagoType + "-" +
         this.selectedConcepto + "-" +
-        this.selectedRotulo;
-        
+        this.formatDateForFile(this.fechaPago);
       }
+
 
       this.uploader.onCompleteItem=(item:any, response:any,status:any, headers:any) =>{  
 
@@ -59,16 +64,12 @@ export class PagosImportComponent implements OnInit {
 
         const parsedResponse = JSON.parse(response);
 
-        try {
-
-          if (parsedResponse.id) {
-            this.router.navigate(['/pagoslist/' + parsedResponse.id]);
-          } else {
-            this.errorMessage = parsedResponse.message;
-          }
-        } catch (error) {
-          this.errorMessage = 'Carga fallida';
+        if (parsedResponse.id) {    
+          this.router.navigate(['/pagoslist/' + parsedResponse.id]);
+        } else {
+          this.errorMessage = parsedResponse.message;
         }
+        
       }
 
       this.uploader.onProgressItem=(fileItem:any, progress:any) =>{
@@ -76,12 +77,23 @@ export class PagosImportComponent implements OnInit {
       }
   }
 
+  formatDateForFile(dateString: string): string {
+    const date = new Date(dateString);
+    const year = date.getFullYear().toString();
+    const month = (date.getMonth() + 1).toString().padStart(2, '0');
+    const day = date.getDate().toString().padStart(2, '0');
+    return `${year}${month}${day}`;
+  }
 
-  ngOnInit(): void {    
+  ngOnInit(): void {   
 
+    this.route.params.subscribe((params) => {
+      this.pagoType = params["id"];
+    });
+     
     this.selectedRotulo = 'TR009V77'; // Asigna el valor inicial para Rótulo
     this.selectedCuentaDebito = 'Cuenta 1'; // Asigna el valor inicial para Cuenta Débito
-    this.selectedConcepto = 'Sueldo'; // Asigna el valor inicial para Concepto
+    this.selectedConcepto = 'SUELDOS'; // Asigna el valor inicial para Concepto
 
   }
 

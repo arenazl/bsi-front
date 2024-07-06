@@ -1,94 +1,96 @@
-
-
-
 <div class="col-md-6 offset-md-3">
 
-    <div class="card">
-  
-      <div class="card-header pt-3">
-        <h5>Pago de Haberes</h5>
-      </div>
+  <div class="card">
 
-      <div class="card-body">
-        <div class="row">
-          <form class="m-2" action="POST" enctype="multipart/form-data">
-            <!-- Campos predefinidos -->
-            <div class="form-group m-2">
-              <div class="row">
-                <div class="col-lg-4 col-md-6 col-sm-12">
-                  <label class="label" for="rotulo">Rótulo</label>
-                  <input type="text" class="form-control" id="rotulo" [(ngModel)]="selectedRotulo" name="rotulo" readonly>
-                </div>
-                <div class="col-lg-4 col-md-6 col-sm-12">
-                  <label class="label" for="cuentaDebito">Cuenta Débito</label>
-                  <input type="text" class="form-control" id="cuentaDebito" [(ngModel)]="selectedCuentaDebito" name="cuentaDebito" readonly>
-                </div>
-                <div class="col-lg-4 col-md-6 col-sm-12">
-                  <label class="label" for="concepto">Concepto</label>
-                  <input type="text" class="form-control" id="concepto" [(ngModel)]="selectedConcepto" name="concepto" readonly>
-                </div>
+    <div class="card-header pt-3">
+      <h5>Pago de Beneficios</h5>
+    </div>
+
+    <div class="card-body">
+      <div class="row">
+        <form class="m-2" action="POST" enctype="multipart/form-data">
+          <!-- Campos predefinidos -->
+          <div class="form-group m-2">
+            <div class="row">
+              <div class="col-lg-4 col-md-6 col-sm-12">
+                <label class="label" for="rotulo">Rótulo</label>
+                <input type="text" class="form-control" id="rotulo" [(ngModel)]="selectedRotulo" name="rotulo" readonly>
               </div>
+              <div class="col-lg-4 col-md-6 col-sm-12">
+                <label class="label" for="cuentaDebito">Cuenta Débito</label>
+                <input type="text" class="form-control" id="cuentaDebito" [(ngModel)]="selectedCuentaDebito"
+                  name="cuentaDebito" readonly>
+              </div>
+
+              <div class="col-lg-4 col-md-6 col-sm-12">
+                <label class="label" for="concepto">Concepto</label>
+                <select class="form-control" id="concepto" [(ngModel)]="selectedConcepto" name="concepto">
+                  <option value="SUELDOS">SUELDOS</option>
+                  <option value="AGUINALDOS">AGUINALDOS</option>
+                </select>
+              </div>
+
             </div>
-    
-            <!-- Fecha de pago -->
-            <div class="form-group mt-3 m-2" style="
+
+          </div>
+
+          <!-- Fecha de pago -->
+          <div class="form-group mt-3 m-2" style="
             width: 31%;
         ">
-              <label class="label" for="fechaPago">Fecha de Pago</label>
-              <input type="date" class="form-control" id="fechaPago" [(ngModel)]="fechaPago" name="fechaPago">
-            </div>
-    
-            <!-- Opciones de carga -->
-            <div *ngIf="fechaPago" class="form-group mt-3 m-2">
-              <label class="label">Opciones de Carga</label>
-              <div class="d-flex">
-                <button type="button" class="btn btn-secondary me-2" disabled>Carga Manual</button>
-                <button type="button" class="btn btn-primary" (click)="selectCargaArchivo()">Carga por Archivo</button>
-              </div>
-            </div>
-    
-            <!-- Carga por archivo -->
-            <div *ngIf="cargaArchivoSeleccionada" class="form-group mt-3 m-2">
-              <label class="label" for="rotulo">Carga de Archivo</label>
-              <input type="file" name="upload" ngf-resize="{width: 200, height: 200, centerCrop: false}"
-                [(ngModel)]="nombre_archivo" placeholder="Archivo" class="form-control" id="fileUpload"
-                multiple ng2FileSelect [uploader]="uploader">
-            </div>
-    
-            <!-- Progreso de subida de archivos -->
-            <div class="row m-1" *ngFor="let item of uploader.queue">
-              <div class="col-md-5 filename" style="padding-top: 7px;">{{item.file.name}}</div>
-              <div class="col md-2" style="padding-top: 13px;">
-                <div class="progress">
-                  <div class="progress-bar bg-success" [ngStyle]="{'width':item.progress+'%'}"></div>
-                </div>
-              </div>
-              <div class="col-md-3 d-flex">
-                <button type="button" class="btn btn-outline-danger me-2" (click)="item.remove()">Cancelar</button>
-                <button *ngIf="filesUploaded" disabled type="button" class="btn btn-outline-success">Subido</button>
-              </div>
-            </div>
-    
-            <!-- Botón de subir archivos -->
-            <div *ngIf="cargaArchivoSeleccionada" class="form-group m-2 mt-3">
-              <button [ngClass]="{'btn-completed': filesUploaded}" class="btn btn-primary w-100 display-inherit" type="button" (click)="uploader.uploadAll()">
-                {{buttonText}}
-              </button>
-            </div>
+            <label class="label" for="fechaPago">Fecha de Pago</label>
+            <input type="date" class="form-control" id="fechaPago" [(ngModel)]="fechaPago" name="fechaPago">
+          </div>
 
-            <div *ngIf="errorMessage" class="form-group mt-3 text-center">
-              <label class="text-danger">{{ errorMessage }}</label>
+          <!-- Opciones de carga -->
+          <div *ngIf="fechaPago" class="form-group mt-3 m-2">
+            <label class="label">Opciones de Carga</label>
+            <div class="d-flex">
+              <button type="button" class="btn btn-secondary me-2" disabled>Carga Manual</button>
+              <button type="button" class="btn btn-primary" (click)="selectCargaArchivo()">Carga por Archivo</button>
             </div>
+          </div>
 
-          </form>
-        </div>
+          <!-- Carga por archivo -->
+          <div *ngIf="cargaArchivoSeleccionada" class="form-group mt-3 m-2">
+            <label class="label" for="rotulo">Carga de Archivo</label>
+            <input type="file" name="upload" ngf-resize="{width: 200, height: 200, centerCrop: false}"
+              [(ngModel)]="nombre_archivo" placeholder="Archivo" class="form-control" id="fileUpload" multiple
+              ng2FileSelect [uploader]="uploader">
+          </div>
+
+          <!-- Progreso de subida de archivos -->
+          <div class="row m-1" *ngFor="let item of uploader.queue">
+            <div class="col-md-5 filename" style="padding-top: 7px;">{{item.file.name}}</div>
+            <div class="col md-2" style="padding-top: 13px;">
+              <div class="progress">
+                <div class="progress-bar bg-success" [ngStyle]="{'width':item.progress+'%'}"></div>
+              </div>
+            </div>
+            <div class="col-md-3 d-flex">
+              <button type="button" class="btn btn-outline-danger me-2" (click)="item.remove()">Cancelar</button>
+              <button *ngIf="filesUploaded" disabled type="button" class="btn btn-outline-success">Subido</button>
+            </div>
+          </div>
+
+          <!-- Botón de subir archivos -->
+          <div *ngIf="cargaArchivoSeleccionada" class="form-group m-2 mt-3">
+            <button [ngClass]="{'btn-completed': filesUploaded}" class="btn btn-primary w-100 display-inherit"
+              type="button" (click)="uploader.uploadAll()">
+              {{buttonText}}
+            </button>
+          </div>
+
+          <div *ngIf="errorMessage" class="form-group mt-3 text-center">
+            <label class="text-danger">{{ errorMessage }}</label>
+          </div>
+
+        </form>
       </div>
-
-
-  
     </div>
-  
-  </div>
-  
 
-  
+
+
+  </div>
+
+</div>

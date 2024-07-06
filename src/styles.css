@@ -208,6 +208,7 @@ height: auto;
   --color-4: linear-gradient(to right, #009fff, #ec2f4b) !important;
 }
 
+
 .fixed{
   position: fixed;
   width: 272px;

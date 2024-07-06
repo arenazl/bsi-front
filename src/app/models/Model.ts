@@ -104,19 +104,18 @@ export interface FileForTable {
 
 
 export interface Usuario {
-  panel?:boolean,
-  id?: number,
-  id_barrio?:number;
-  nombre?: string,
-  password?: string,
-  id_rol?: number,
-  rol?:string,
-  id_grupo?:number,
-  barrio?: string,
-  grupo?:string
-  nombre_grupo?:string,
 
+  Id: number;
+  IdOrganismo: number;
+  Nombre_Organismo: string;
+  Apellido: string;
+  Nombre: string;
+  Cargo_Funcion: string;
+  Pass: string;
+
+  panel?:boolean,
   esAdmin?: boolean
+
 };
 
 export interface Params {

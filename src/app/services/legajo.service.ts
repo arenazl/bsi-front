@@ -56,7 +56,7 @@ export class LegajoService {
     return this.http.put(`${this.API_URI}/legajo/${id}`, updatedGame);
   }
 
-  getUsuario(usuario: Usuario) {
+  getUsuario(usuario: any) {
     return this.http.post(`${this.API_URI}/legajo/login`, usuario);
   }
 

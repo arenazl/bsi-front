@@ -13,53 +13,26 @@ import { Router } from '@angular/router';
 
 export class NavigationComponent implements OnInit {
 
-  clickEventsubscription:Subscription;
-  public isCollapsed = true;
+  clickEventsubscription: Subscription;
   usuario = <Usuario>{};
+  showNav? = true;
 
-  nombre?= ""
-  rol?=""
-  grupo?=""
-  barrio="";
-  showNav?=true;
+  constructor(private sharedService: SharedService, private router: Router) {
 
-  constructor(private sharedService:SharedService, private router: Router) {
-
-    this.clickEventsubscription=this.sharedService.getClickEvent().subscribe(us=>{
-
-      this.showNav =us.panel;
-      this.usuario.nombre = sessionStorage.getItem('nombre') as string;
-      this.usuario.rol = sessionStorage.getItem('rol') as string;
-      this.usuario.grupo = sessionStorage.getItem('grupo') as string;
-      this.usuario.barrio = sessionStorage.getItem('barrio') as string;
-
-      this.nombre = this.usuario.nombre;
-      this.rol = this.usuario.rol;
-      this.grupo = this.usuario.grupo;
-      this.barrio = this.usuario.barrio;
-
+    this.clickEventsubscription = this.sharedService.getClickEvent().subscribe(us => {
+      this.usuario = us;
+      this.showNav = us.Apellido != null ? true : false;
     });
 
+  }
+
+  ngOnInit() {
+    if (sessionStorage.getItem('Nombre') == '' || sessionStorage.getItem('Nombre') == null) {
+      this.router.navigate(['/login']);
+    } else {
+      this.usuario.Nombre = sessionStorage.getItem('Nombre') as string;
+      this.usuario.Apellido = sessionStorage.getItem('Apellido') as string;
+      this.usuario.Nombre_Organismo = sessionStorage.getItem('Organismo') as string;
     }
-
-    ngOnInit() {
-
-      if(sessionStorage.getItem('nombre') == '' || sessionStorage.getItem('nombre') == null){
-        this.router.navigate(['/login']);
-      } else {
-
-        this.usuario.nombre = sessionStorage.getItem('nombre') as string;
-        this.usuario.rol = sessionStorage.getItem('rol') as string;
-        this.usuario.grupo = sessionStorage.getItem('grupo') as string;
-        this.usuario.barrio = sessionStorage.getItem('barrio') as string;
-
-        this.nombre = this.usuario.nombre;
-        this.rol = this.usuario.rol;
-        this.grupo = this.usuario.grupo;
-        this.barrio = this.usuario.barrio;
-
-      }
-
-    }
-
+  }
 }

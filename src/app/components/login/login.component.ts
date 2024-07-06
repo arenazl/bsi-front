@@ -14,85 +14,65 @@ import { IfStmt } from '@angular/compiler';
 })
 export class LoginComponent implements OnInit {
 
-  login_txt="Ingresar";
+  login_txt = "Ingresar";
 
-  constructor(private legajoService: LegajoService, private router: Router, private activatedRoute: ActivatedRoute, private sharedService:SharedService) { }
+  constructor(private legajoService: LegajoService, private router: Router, private activatedRoute: ActivatedRoute, private sharedService: SharedService) { }
 
-  form= new FormGroup({
-    barrio:new FormControl(null),
-    user:new FormControl(null),
-    pass:new FormControl(null),
+  form = new FormGroup({
+    barrio: new FormControl(null),
+    user: new FormControl(null),
+    pass: new FormControl(null),
   });
 
 
-  barrioId:number=0;
-  barrioDesc:string='';
+  barrioId: number = 0;
+  barrioDesc: string = '';
 
-  usuario = <Usuario>{};
+  usuario = <any>{};
 
   ngOnInit() {
 
-      this.usuario.panel=false;
-      this.sharedService.sendClickEvent(this.usuario);
+    this.usuario.panel = false;
+    this.sharedService.sendClickEvent(this.usuario);
   }
 
-  onCitySelect(event:any) {
+  onCitySelect(event: any) {
     this.barrioId = event.target.value as number;
   }
 
-  onSubmit(){
+  onSubmit() {
 
     this.login_txt = "Espere..."
 
-    this.usuario = {
-    nombre: this.form.value.user as unknown as string,
-    password: this.form.value.pass as unknown as string,
-    id_barrio: 1
+    var userPayload = {
+      nombre: this.form.value.user as unknown as string,
+      password: this.form.value.pass as unknown as string
     };
 
-/*
-    this.router.navigate(['/mainmenu']);
-    return;*/
+    this.legajoService.getUsuario(userPayload)
+      .subscribe(
+        (res: any) => {
 
-    this.legajoService.getUsuario(this.usuario)
-    .subscribe(
-      res => {    
+          this.login_txt = "Registrado!";
 
-        this.login_txt = "Registrado!";
+          this.usuario.panel = true
 
-        this.usuario = (res as any)[0];
-        
-        if(this.usuario.nombre)
-        { 
-          this.usuario.panel=true
-          //from db
-          sessionStorage.setItem('nombre', this.usuario.nombre);
-          sessionStorage.setItem('password', this.usuario.password as string);
-          sessionStorage.setItem('grupo', this.usuario.grupo as string);
-          sessionStorage.setItem('id_grupo', this.usuario.id_grupo as unknown as string);
-  
-          this.sharedService.sendClickEvent(this.usuario);
+          sessionStorage.setItem('Id', res.ID_USER);
+          sessionStorage.setItem('Nombre', res.Nombre);
+          sessionStorage.setItem('Apellido', res.Apellido);
+          sessionStorage.setItem('IdOrganismo', res.ID_Organismo);
+          sessionStorage.setItem('Organismo', res.Nombre_Organismo);
+
+          this.sharedService.sendClickEvent(res);
 
           this.router.navigate(['/mainmenu']);
           return;
-          
-          if (this.usuario.rol == 'Vendedor') {
-            this.router.navigate(['/reservar']);
-          }
-          if (this.usuario.rol == 'Control') {
-            this.router.navigate(['/auditoria']);
-          }
-          if (this.usuario.rol == 'Documentacion') {
-            this.router.navigate(['/auditoria']);
-          }
-          if (this.usuario.rol == 'Admin') {
-            this.router.navigate(['/legajo']);
-          }
 
-        }
-      },
-      err => console.error(err)
-    )
+
+
+        },
+        err => console.error(err)
+      )
 
   }
 

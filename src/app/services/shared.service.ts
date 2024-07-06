@@ -11,7 +11,7 @@ providedIn: 'root'
 
 export class SharedService {
 
-usuario = <Usuario>{};
+usuario = <any>{};
 private subject = new Subject<any>();
   
 

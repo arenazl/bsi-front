@@ -1,15 +1,15 @@
+<div *ngIf="showNav==true">
 
-
-<div *ngIf=" showNav==true">
-
-  <nav class="navbar navbar-dark bg-dark navbar-expand-lg" style="background: linear-gradient(270deg,#8d2424, #0d6efd) !important;">
+  <nav class="navbar navbar-dark bg-dark navbar-expand-lg"
+    style="background: linear-gradient(270deg,#009688, #0d6efd) !important;">
     <div class="container-fluid">
       <a class="navbar-brand" href="#">
         <span class="material-icons" style="vertical-align: top; font-size: 28px; padding-left: 13px;">
           public
         </span>
       </a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
@@ -26,26 +26,18 @@
 
           <div class="md-form my-0 d-flex align-items-center">
             <i class="far fa-user" style="padding-right: 6px;"></i>
-            <a class="navbar-brand" style="font-size: 16px; margin-right: 20px;">{{nombre}}</a>
+            <a class="navbar-brand" style="font-size: 16px; margin-right: 20px;">{{usuario.Apellido}},
+              {{usuario.Nombre}} </a>
             <i class="fas fa-building" style="padding-right: 6px;"></i>
-            <a class="navbar-brand" style="font-size: 16px;">Municipalidad de Chacabuco</a>
+            <a class="navbar-brand" style="font-size: 16px;">{{usuario.Nombre_Organismo}}</a>
           </div>
-      
+
         </div>
 
       </div>
     </div>
 
   </nav>
-  
+
 
 </div>
-
-
-
-
-
-
-
-
-
