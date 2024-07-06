@@ -147,22 +147,20 @@ export class PagosListComponent implements OnInit, AfterViewInit {
   getFile(): void {
 
     this.fileService
-      .downloadFile(this.id as unknown as number)
+      .downloadPagoFile(this.id as unknown as number)
       .subscribe((blob) => {
 
-        let cbu: string = this.tranfeResponse.head[0].empresaNombre;
-        let concepto = this.tranfeResponse.head[0].concepto;
+        let cbu: "cbu"
+        let concepto = "concepto"
 
         const url = window.URL.createObjectURL(blob);
         const link = document.createElement("a");
         link.href = url;
 
-        link.setAttribute("download", cbu.trim() + "-" + concepto + ".txt"); // or any other extension
+        link.setAttribute("download", "989898989".trim() + "-" + concepto + ".txt");
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
-
-        //hacer una funcion que se llame devolverTema.
 
       });
   }
