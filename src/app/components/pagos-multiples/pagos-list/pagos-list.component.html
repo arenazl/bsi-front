@@ -22,7 +22,7 @@
 
 </div>
 
-<div class="card px-0 mb-3" *ngIf="tranfeResponse.data.lenght > 0">
+<div class="card px-0 mb-3" *ngIf="tranfeResponse.data.length > 0">
 
     <div class="card-header pt-3">
         <h5>Empresa</h5>
@@ -57,7 +57,6 @@
     </div>
 </div>
 
-
 <div *ngIf="ld_header" class="lds-roller">
     <div></div>
     <div></div>
@@ -69,7 +68,7 @@
     <div></div>
 </div>
 
-<div class="card px-0 mb-3">
+<div class="card px-0 mb-3" *ngIf="tranfeResponse.data.length > 0">
 
     <table class="table table-striped table-condensed table-hover mb-0">
         <thead class="opacity-style">
@@ -92,7 +91,7 @@
 
 </div>
 
-<div class="card px-0 mb-3" *ngIf="tranfeResponse.data.lenght > 0">
+<div class="card px-0 mb-3" *ngIf="tranfeResponse.data.length > 0">
     <div class="card-header">
         <h5>Exportar TR</h5>
     </div>
