@@ -1,5 +1,3 @@
-
-
 <div class="card">
 
   <div class="card-header">
@@ -8,28 +6,19 @@
 
   <div class="card-body row">
 
-    <div
-    *ngFor="let item of items"
-    class="col-lg-4 col-md-6 col-sm-12"
-  >
-    <div class="card">
-      <div class="card-body" [ngClass]="{'disabled': !item.active}">
-        <h5 class="card-title">{{ item.description }}</h5>
-        <p class="card-text"></p>
-        <a
-          [routerLink]="item.link"
-          class="btn btn-primary"
-        >
-          {{ item.buttonText }}
-        </a>
+    <div *ngFor="let item of items" class="col-lg-4 col-md-6 col-sm-12">
+      <div class="card">
+        <div class="card-body" [ngClass]="{'disabled': !item.active}">
+          <h5 class="card-title">{{ item.description }}</h5>
+          <p class="card-text"></p>
+          <a [routerLink]="item.link" class="btn btn-outline-primary fw-bold">
+            {{ item.buttonText }}
+          </a>
+        </div>
       </div>
     </div>
+
+
   </div>
 
-
 </div>
-
-</div>
-
-
-

@@ -1,10 +1,13 @@
 <div class="card px-0 mb-3">
 
+    <div class="card-header pt-3">
+        <h5> Buscar Pagos Anteriores</h5>
+
+    </div>
 
     <div class="card-body pb-0">
         <div class="row">
             <div class="col-md-4">
-                <div class="label fw-normal">Buscar Pagos Anteriores:</div>
                 <p class="fw-bold">
                     <select class="form-select" aria-label="Default select example" (change)="getTrByID($event)">
                         <option selected value="">Elija una transferencia</option>
@@ -54,6 +57,7 @@
     </div>
 </div>
 
+
 <div *ngIf="ld_header" class="lds-roller">
     <div></div>
     <div></div>
@@ -66,10 +70,6 @@
 </div>
 
 <div class="card px-0 mb-3">
-
-    <div class="card-header pt-3">
-        <h5>Beneficiarios</h5>
-    </div>
 
     <table class="table table-striped table-condensed table-hover mb-0">
         <thead class="opacity-style">
@@ -89,9 +89,10 @@
             </ng-container>
         </tbody>
     </table>
+
 </div>
 
-<div class="card px-0" *ngIf="tranfeResponse?.data">
+<div class="card px-0 mb-3" *ngIf="tranfeResponse?.data">
     <div class="card-header">
         <h5>Exportar TR</h5>
     </div>
