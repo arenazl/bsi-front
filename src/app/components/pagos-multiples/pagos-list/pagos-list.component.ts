@@ -82,16 +82,15 @@ export class PagosListComponent implements OnInit, AfterViewInit {
   ) { }
   ngAfterViewInit(): void {
 
-
-
   }
 
   ngOnInit() {
 
     this.route.params.subscribe((params) => {
+
       this.id = params["id"];
 
-      //this.getTransForSelect();
+      this.getTransForSelect();
 
       if (this.id != "0") {
         this.getPagosById(this.id);

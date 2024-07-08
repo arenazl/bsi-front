@@ -16,6 +16,10 @@
     "enabled": true,
     "items": [
       {
+        "description": "el Historial",
+        "link": "/pagoslist/0"
+      },
+      {
         "description": "Pagos Multiples",
         "link": "/pagosSelection"
       }

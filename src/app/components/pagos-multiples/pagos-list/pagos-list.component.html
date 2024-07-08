@@ -10,9 +10,9 @@
             <div class="col-md-4">
                 <p class="fw-bold">
                     <select class="form-select" aria-label="Default select example" (change)="getTrByID($event)">
-                        <option selected value="">Elija una transferencia</option>
-                        <option *ngFor="let empresa of tranfeList" [value]="empresa.id">
-                            {{ empresa.empresaNombre }}
+                        <option selected value="">Elija un pago</option>
+                        <option *ngFor="let empresa of tranfeList" [value]="empresa.ID_PagoHead">
+                            {{ empresa.ConcatenatedValue }}
                         </option>
                     </select>
                 </p>
@@ -22,7 +22,7 @@
 
 </div>
 
-<div class="card px-0 mb-3" *ngIf="tranfeResponse?.data">
+<div class="card px-0 mb-3" *ngIf="tranfeResponse.data.lenght > 0">
 
     <div class="card-header pt-3">
         <h5>Empresa</h5>
