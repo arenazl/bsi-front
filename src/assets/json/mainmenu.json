@@ -1,18 +1,18 @@
 [
   {
-    "title": "Alta De Cuentas Masiva",
+    "title": "Alta De Cuentas Masiva (Becas)",
     "description": "Creá tu archivo de altas de cuentas bancarias",
-    "enabled": false,
+    "enabled": true,
     "items": [
       {
-        "description": "Consulta tus movimientos bancarios",
+        "description": "Archivo de alta de cuentas",
         "link": "/movimientos"
       }
     ]
   },
   {
     "title": "Pagos Múltiples",
-    "description": "Generá tus de archivos de pagos",
+    "description": "Generá tus archivos de pagos",
     "enabled": true,
     "items": [
       {
@@ -20,7 +20,7 @@
         "link": "/pagoslist/0"
       },
       {
-        "description": "Pagos Multiples",
+        "description": "Pagos Múltiples",
         "link": "/pagosSelection"
       }
     ]
@@ -42,8 +42,8 @@
   },
   {
     "title": "Tarjetas Recargables",
-    "description": "Gestioná el alta y los pagos de tus tarjetas",
-    "enabled": false,
+    "description": "Gestioná el alta y las cargas de tus tarjetas",
+    "enabled": true,
     "items": [
       {
         "description": "Gestiona tus tarjetas",
@@ -54,10 +54,10 @@
   {
     "title": "Débitos Automáticos",
     "description": "Administrá los pagos de tus abonados",
-    "enabled": false,
+    "enabled": true,
     "items": [
       {
-        "description": "Consulta tus préstamos",
+        "description": "Débitos automáticos",
         "link": "/prestamos"
       }
     ]
@@ -65,10 +65,10 @@
   {
     "title": "Códigos De Barras",
     "description": "Elaboramos o actualizamos tus boletas de pago",
-    "enabled": false,
+    "enabled": true,
     "items": [
       {
-        "description": "Consulta tus seguros",
+        "description": "Código de barras",
         "link": "/seguros"
       }
     ]
@@ -76,10 +76,10 @@
   {
     "title": "Validación De CBU",
     "description": "Eliminá los rechazos de las transferencias",
-    "enabled": false,
+    "enabled": true,
     "items": [
       {
-        "description": "Consulta tus inversiones",
+        "description": "Validación de CBU",
         "link": "/inversiones"
       }
     ]
@@ -87,10 +87,10 @@
   {
     "title": "Servicio De Consultoría",
     "description": "Disminuí la carga operativa",
-    "enabled": false,
+    "enabled": true,
     "items": [
       {
-        "description": "Consulta tus movimientos bancarios",
+        "description": "Servicio de Consultoría",
         "link": "/movimientos"
       }
     ]
@@ -98,10 +98,10 @@
   {
     "title": "Migración De Archivos",
     "description": "Optimizá los procesos de migración",
-    "enabled": false,
+    "enabled": true,
     "items": [
       {
-        "description": "Realiza depósitos a tus cuentas",
+        "description": "Migración de archivos",
         "link": "/depositos"
       }
     ]
