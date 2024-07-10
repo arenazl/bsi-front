@@ -24,13 +24,23 @@ export class FileService {
     return this._http.get(`${this.API_URI}/file/pagoslist/${id}`);
   }
 
-
   getTRList() {
     return this._http.get(`${this.API_URI}/file/responsetrforcombo`);
   }
 
   getPagosList() {
     return this._http.get(`${this.API_URI}/file/responsepagosforcombo`);
+  }
+
+  getContratosBotones(user: number, contrato: number) {
+
+    var body = { user: user, contrato: contrato };
+
+    return this._http.post(`${this.API_URI}/file/contratosbotones`, body, {
+      responseType: 'json',
+      headers: new HttpHeaders().append('Content-Type', 'application/json')
+    });
+
   }
 
   downloadFile(id: number): Observable<Blob> {

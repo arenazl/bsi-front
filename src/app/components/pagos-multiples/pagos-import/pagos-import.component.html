@@ -1,12 +1,24 @@
 <div class="col-md-6 offset-md-3">
 
-  <div class="card">
+  <div *ngIf="ld_header" class="lds-roller">
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+  </div>
+
+  <div *ngIf="!ld_header" class="card">
 
     <div class="card-header pt-3">
-      <h5>Pago de Beneficios</h5>
+      <h5>{{pageTitle}}</h5>
     </div>
 
     <div class="card-body">
+
       <div class="row">
         <form class="m-2" action="POST" enctype="multipart/form-data">
           <!-- Campos predefinidos -->
@@ -24,10 +36,12 @@
 
               <div class="col-lg-4 col-md-6 col-sm-12">
                 <label class="label" for="concepto">Concepto</label>
+
                 <select class="form-control" id="concepto" [(ngModel)]="selectedConcepto" name="concepto">
-                  <option value="SUELDOS">SUELDOS</option>
-                  <option value="AGUINALDOS">AGUINALDOS</option>
+                  <option value="" selected>Elija el concepto</option>
+                  <option *ngFor="let concepto of conceptosList" [value]="concepto">{{ concepto }}</option>
                 </select>
+
               </div>
 
             </div>
@@ -87,9 +101,8 @@
 
         </form>
       </div>
+
     </div>
-
-
 
   </div>
 

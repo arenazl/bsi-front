@@ -1,4 +1,15 @@
-<div class="card">
+<div *ngIf="ld_header" class="lds-roller">
+  <div></div>
+  <div></div>
+  <div></div>
+  <div></div>
+  <div></div>
+  <div></div>
+  <div></div>
+  <div></div>
+</div>
+
+<div *ngIf="!ld_header" class="card">
 
   <div class="card-header">
     <h4>Pagos Multiples</h4>
@@ -8,11 +19,11 @@
 
     <div *ngFor="let item of items" class="col-lg-4 col-md-6 col-sm-12">
       <div class="card">
-        <div class="card-body" [ngClass]="{'disabled': !item.active}">
-          <h5 class="card-title">{{ item.description }}</h5>
+        <div class="card-body" [ngClass]="{'disabled': !item.Tipo_Estado}">
+          <h5 class="card-title"> Tipo de Pago </h5>
           <p class="card-text"></p>
-          <a [routerLink]="item.link" class="btn btn-outline-primary fw-bold">
-            {{ item.buttonText }}
+          <a [routerLink]="'/pagosImport/' + item.Contrato_ID" class="btn btn-outline-primary fw-bold">
+            {{ item.Texto_Boton }}
           </a>
         </div>
       </div>
