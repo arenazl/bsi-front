@@ -10,3 +10,15 @@
 .opacity-style {
     opacity: 0.7;
 }
+
+.btn-responsive {
+    flex: 1 1 100%; /* Por defecto, los botones ocupan el 100% del ancho */
+    margin: 5px 0; /* Agregar margen entre los botones */
+  }
+  
+  @media (min-width: 768px) {
+    .btn-responsive {
+      flex: 1 1 25%; /* En pantallas de tamaño mediano y superior, los botones ocupan el 25% del ancho */
+      margin: 5px; /* Ajustar el margen entre los botones */
+    }
+  }

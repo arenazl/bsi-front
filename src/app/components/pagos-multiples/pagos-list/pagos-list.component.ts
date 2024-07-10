@@ -21,6 +21,8 @@ import { filter, ignoreElements, iif } from "rxjs";
 import { registerLocaleData } from "@angular/common";
 import { ElementSchemaRegistry } from "@angular/compiler";
 import { LotesService } from "src/app/services/lotes.service";
+import html2canvas from "html2canvas";
+import jsPDF from "jspdf";
 
 @Component({
   selector: 'app-pagos-list',
@@ -135,6 +137,25 @@ export class PagosListComponent implements OnInit, AfterViewInit {
     });
 
     this.tranfeResponse.data = capitalizedData;
+  }
+
+
+  generatePDF() {
+
+    const dataElement = document.getElementById('pdf-content');
+
+    if (dataElement) {
+      html2canvas(dataElement).then(canvas => {
+        const imgData = canvas.toDataURL('image/png');
+        const pdf = new jsPDF();
+        const imgProps = pdf.getImageProperties(imgData);
+        const pdfWidth = pdf.internal.pageSize.getWidth();
+        const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
+        pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
+        pdf.save('document.pdf');
+      });
+    }
+
   }
 
   getTrByID(id: any) {
