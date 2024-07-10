@@ -36,7 +36,7 @@ export class PagosImportComponent implements OnInit {
   buttonText = 'Subir Archivo';
   errorMessage = '';
   pageTitle = '';
-  fechaPago: string = new Date(new Date().setDate(new Date().getDate())).toISOString().split('T')[0];
+  fechaPago: string = new Date(new Date().setDate(new Date().getDate() + 1)).toISOString().split('T')[0];
 
   ld_header: boolean = true;
 
