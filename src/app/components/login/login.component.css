@@ -79,7 +79,6 @@ html {
   /* FORM TYPOGRAPHY*/
   
   input[type=button], input[type=submit], input[type=reset]  {
-    background-color: #56baed;
     border: none;
     color: white;
     padding: 15px 80px;

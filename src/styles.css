@@ -224,6 +224,10 @@ height: auto;
   z-index: 100;
 }
 
+.color-primary
+{
+  color: #1b66e6;
+}
 
 .contaner{
   padding: 0px !important;
