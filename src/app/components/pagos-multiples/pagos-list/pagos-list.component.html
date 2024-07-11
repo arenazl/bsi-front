@@ -86,9 +86,11 @@
             <tbody>
                 <ng-container *ngFor="let sol of tranfeResponse?.data">
                     <tr>
-                        <td style="color: #545454 Im !important ;font-family: 'IBM Plex Mono', monospace;">{{ sol.CBU }}
+                        <td style="font-family: 'JetBrains Mono', monospace;color: #4e4e4e;">{{ sol.CBU
+                            }}
                         </td>
-                        <td style="color: #545454 Im !important ;font-family: 'IBM Plex Mono', monospace;">{{
+                        <td style="font-family: 'JetBrains Mono', monospace;color: #4e4e4e;">
+                            {{
                             sol.IMPORTE | BsiCurrencyPipe }}</td>
                         <td>{{ sol.APELLIDO }}</td>
                     </tr>
