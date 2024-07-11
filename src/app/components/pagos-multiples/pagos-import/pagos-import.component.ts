@@ -56,9 +56,10 @@ export class PagosImportComponent implements OnInit {
         sessionStorage.getItem('Id') as unknown as string + "-" +
         sessionStorage.getItem('IdOrganismo') as unknown as string + "-" +
         this.pagoType + "-" +
-        this.selectedConcepto + "-" +
+        this.selectedConcepto.replace('-', '.') + "-" +
         this.formatDateForFile(this.fechaPago);
     }
+
 
     this.uploader.onCompleteItem = (item: any, response: any, status: any, headers: any) => {
 

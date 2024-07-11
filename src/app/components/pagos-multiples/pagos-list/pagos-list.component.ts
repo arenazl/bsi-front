@@ -33,46 +33,26 @@ export class PagosListComponent implements OnInit, AfterViewInit {
 
   @HostBinding("class") classes = "row";
 
-  solicitudes: any = [];
   usuario = <Usuario>{};
 
   ld_header: boolean = false;
 
   params = <Params>{ tg: 2, id_barrio: 0 };
-  params_gr = 0;
-  param_dt = "";
-
-  lbl_resta = 0;
-  lbl_pago_parcial = 0;
-  lote_append = "";
-
-  fin = <FinPago>{};
-
-  sol_modal = <Solicitud>{};
 
   date_firma_start = this.getDateForDB(0);
   date_firma_end = this.getDateForDB(7);
 
-  date_sena_start = this.getDateForDB(0);
-  date_sena_end = this.getDateForDB(7);
-
-  isFechaFirma = true;
-  id_agenda = 1;
-  span_agenda: string = "Ferrari";
-
   tranfeList: any = [];
-
   selectedHistoryId = "";
-
   idSelected = false;
 
   tranfeResponse: any = { data: [] };
 
   detaildByID = false;
-
   blobArray = new Array<string>();
-
   firstItemOfDay = new Array<any>();
+
+  municipio = '';
 
   constructor(
     private legajoService: LegajoService,
@@ -106,6 +86,8 @@ export class PagosListComponent implements OnInit, AfterViewInit {
     this.ld_header = true;
 
     this.selectedHistoryId = id;
+
+    this.municipio = this.toProperCase(sessionStorage.getItem('Organismo') as string)
 
     this.fileService.getPagos(id).subscribe((res) => {
 
@@ -168,81 +150,46 @@ export class PagosListComponent implements OnInit, AfterViewInit {
 
   getFile(): void {
 
-    this.fileService
-
-      .downloadPagoFile(this.selectedHistoryId as unknown as number)
-      .subscribe((blob) => {
-
-        let cbu: "cbu"
-        let concepto = "concepto"
-
-        const url = window.URL.createObjectURL(blob);
-        const link = document.createElement("a");
-        link.href = url;
-
-        link.setAttribute("download", "989898989".trim() + "-" + concepto + ".txt");
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-
-      });
-  }
-
-  getGamesByAgenda(id_agenda: number) {
-    this.id_agenda = id_agenda;
-
-    if (id_agenda == 1) this.span_agenda = "Ferrari";
-    if (id_agenda == 2) this.span_agenda = "Sinelli";
-    if (id_agenda == 3) this.span_agenda = "Nordelta";
-
-    this.getGames();
-  }
-
-  getGames(nodate: boolean = false, today: boolean = false) {
-
-    this.ld_header = true;
-
-    //this.params.id_barrio = sessionStorage.getItem('id_barrio') as unknown as number
-    //this.params.grupo = this.params_gr;
-    //this.params.id_agenda = this.id_agenda;
-
-    this.legajoService.getGames(this.params).subscribe(
-      (res) => {
-        this.ld_header = false;
+    Swal.fire({
+      title: "Contrato de aceptación",
+      text: "Este contrato de aceptación es para los efectos legales que establece la Ley de Contratación y Fiscalización, y se acepta como firma del solicitante.",
+      inputAttributes: {
+        autocapitalize: "off",
       },
-      (err) => console.error(err)
-    );
-  }
+      showCancelButton: true,
+      confirmButtonText: "Acepto",
+      showLoaderOnConfirm: true,
+      preConfirm: (nota) => {
 
-  onEstadoSelect(event: any) {
-    //this.params.tg = event.target.value;
-    //this.getGames();
-  }
+        this.fileService
+          .downloadPagoFile(this.selectedHistoryId as unknown as number)
+          .subscribe((blob) => {
 
-  onGrupoSelect(event: any) {
-    this.params_gr = event.target.value;
-    this.getGames();
-  }
+            let cbu: "cbu"
+            let concepto = "concepto"
 
-  onDiaSelect(e: any) {
-    /*
-      if(e.target.value == 'tghoy'){
-        this.date_start = this.getDateForDB(0);
-        this.date_end = this.getDateForDB(0);
+            const url = window.URL.createObjectURL(blob);
+            const link = document.createElement("a");
+            link.href = url;
+
+            link.setAttribute("download", "989898989".trim() + "-" + concepto + ".txt");
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+
+          });
+
+      },
+      allowOutsideClick: () => !Swal.isLoading(),
+    }).then((result) => {
+      if (result.isConfirmed) {
+        Swal.fire({
+          title: "Confirmado!",
+        });
       }
-      if(e.target.value == 'tgmañana'){
-        this.date_start = this.getDateForDB(1);
-        this.date_end = this.getDateForDB(1);
-      }
-      if(e.target.value == 'tgweek'){
-        this.date_start = this.getDateForDB(0);
-        this.date_end = this.getDateForDB(7);;
-      }
-      if(e.target.value == 'tgmonth'){
-        this.date_start = this.getDateForDB(0);
-        this.date_end = this.getDateForDB(30);;
-      }
-      this.getGames();*/
+    });
+
+
   }
 
   getDateForDB(dias_hasta: number = 0) {
@@ -286,34 +233,6 @@ export class PagosListComponent implements OnInit, AfterViewInit {
     else return false;
   }
 
-  download(sol: Solicitud) {
-    sol.blobArray = new Array<string>();
-    let i = 0;
-
-    let id = sol.id;
-    let file_ctrl = document.getElementById("file_span_" + sol.id);
-    if (file_ctrl) file_ctrl.innerText = "...";
-
-    this.getTicket(sol);
-
-    sol.archivos?.forEach((item) => {
-      this.fileService.downloadFile(this.selectedHistoryId as unknown as number).subscribe(
-        (data) => {
-          i++;
-          let file_ctrl = document.getElementById("file_span_" + id);
-          if (file_ctrl) file_ctrl.innerText = "";
-
-          let objectURL = URL.createObjectURL(data);
-          sol.blobArray?.push(objectURL);
-
-          if (i === sol?.archivos?.length) {
-            this.removePrefix();
-          }
-        },
-        (error) => console.error(error)
-      );
-    });
-  }
 
   removePrefix() {
     setTimeout(() => {
@@ -369,366 +288,15 @@ export class PagosListComponent implements OnInit, AfterViewInit {
     });
   }
 
-  aprobar(sol: Solicitud) {
-    Swal.fire({
-      title:
-        "Confirma que el cliente " +
-        sol.denominacion +
-        " pago la totalidad indicada y desea proceder con la Finalizacion del Legajo?",
-      showCancelButton: true,
-      confirmButtonText: "Finalizar",
-      showLoaderOnConfirm: true,
-      preConfirm: () => {
-        sol.id_estado = 6;
-        sol.estado = "Finalizado";
-        sol.archivos = undefined;
-        sol.lote_append = undefined;
-        sol.parcial_lbl = undefined;
-        sol.resta_lbl = undefined;
-        sol.fileCant = undefined;
-
-        if (sol.id_lote) {
-          let lote: Lotes = {
-            estado: EnumLotes.Vendido,
-            id: sol.id_lote,
-            id_barrio: sol.id_barrio as number,
-          };
-          this.lotesService.updateLote(sol.id_lote, lote).subscribe(
-            (res) => { },
-            (err) => console.error(err)
-          );
-        }
-        if (sol.id_lote_2) {
-          let lote: Lotes = {
-            estado: EnumLotes.Vendido,
-            id: sol.id_lote_2,
-            id_barrio: sol.id_barrio as number,
-          };
-          this.lotesService.updateLote(sol.id_lote, lote).subscribe(
-            (res) => { },
-            (err) => console.error(err)
-          );
-        }
-        if (sol.id_lote_3) {
-          let lote: Lotes = {
-            estado: EnumLotes.Vendido,
-            id: sol.id_lote_3,
-            id_barrio: sol.id_barrio as number,
-          };
-          this.lotesService.updateLote(sol.id_lote, lote).subscribe(
-            (res) => { },
-            (err) => console.error(err)
-          );
-        }
-        if (sol.id_lote_4) {
-          let lote: Lotes = {
-            estado: EnumLotes.Vendido,
-            id: sol.id_lote_4,
-            id_barrio: sol.id_barrio as number,
-          };
-          this.lotesService.updateLote(sol.id_lote, lote).subscribe(
-            (res) => { },
-            (err) => console.error(err)
-          );
-        }
-        if (sol.id_lote_5) {
-          let lote: Lotes = {
-            estado: EnumLotes.Vendido,
-            id: sol.id_lote_5,
-            id_barrio: sol.id_barrio as number,
-          };
-          this.lotesService.updateLote(sol.id_lote, lote).subscribe(
-            (res) => { },
-            (err) => console.error(err)
-          );
-        }
-        if (sol.id_lote_6) {
-          let lote: Lotes = {
-            estado: EnumLotes.Vendido,
-            id: sol.id_lote_6,
-            id_barrio: sol.id_barrio as number,
-          };
-          this.lotesService.updateLote(sol.id_lote, lote).subscribe(
-            (res) => { },
-            (err) => console.error(err)
-          );
-        }
-        if (sol.id_lote_7) {
-          let lote: Lotes = {
-            estado: EnumLotes.Vendido,
-            id: sol.id_lote_7,
-            id_barrio: sol.id_barrio as number,
-          };
-          this.lotesService.updateLote(sol.id_lote, lote).subscribe(
-            (res) => { },
-            (err) => console.error(err)
-          );
-        }
-        if (sol.id_lote_8) {
-          let lote: Lotes = {
-            estado: EnumLotes.Vendido,
-            id: sol.id_lote_8,
-            id_barrio: sol.id_barrio as number,
-          };
-          this.lotesService.updateLote(sol.id_lote, lote).subscribe(
-            (res) => { },
-            (err) => console.error(err)
-          );
-        }
-        if (sol.id_lote_9) {
-          let lote: Lotes = {
-            estado: EnumLotes.Vendido,
-            id: sol.id_lote_9,
-            id_barrio: sol.id_barrio as number,
-          };
-          this.lotesService.updateLote(sol.id_lote, lote).subscribe(
-            (res) => { },
-            (err) => console.error(err)
-          );
-        }
-        if (sol.id_lote_10) {
-          let lote: Lotes = {
-            estado: EnumLotes.Vendido,
-            id: sol.id_lote_10,
-            id_barrio: sol.id_barrio as number,
-          };
-          this.lotesService.updateLote(sol.id_lote, lote).subscribe(
-            (res) => { },
-            (err) => console.error(err)
-          );
-        }
-
-        this.legajoService.updateGame(sol.id, sol).subscribe(
-          (res) => {
-            console.log(res);
-            this.getGames();
-          },
-          (err) => console.error(err)
-        );
-      },
-      allowOutsideClick: () => !Swal.isLoading(),
-    }).then((result) => {
-      if (result.isConfirmed) {
-        Swal.fire({
-          title: "Enviado!",
-        });
-      }
-    });
+  toProperCase(str: string): string {
+    return str
+      .split(' ')
+      .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+      .join(' ');
   }
 
-  getData() {
-    this.getGames();
-  }
 
-  rechazar(sol: Solicitud) {
-    Swal.fire({
-      title: "Rechazar carpeta de " + sol.denominacion,
-      input: "textarea",
-      inputAttributes: {
-        autocapitalize: "off",
-      },
-      showCancelButton: true,
-      confirmButtonText: "Rechazar",
-      showLoaderOnConfirm: true,
-      preConfirm: (login) => {
-        sol.observaciones_a = login;
-        sol.id_estado = 3;
-        sol.estado = "Rechazado";
-        sol.archivos = undefined;
-        sol.lote_append = undefined;
-        sol.parcial_lbl = undefined;
-        sol.resta_lbl = undefined;
-        sol.fileCant = undefined;
-
-        if (sol.id_lote) {
-          let lote: Lotes = {
-            estado: EnumLotes.Disponible,
-            id: sol.id_lote,
-            id_barrio: sol.id_barrio as number,
-          };
-          this.lotesService.updateLote(sol.id_lote, lote).subscribe(
-            (res) => { },
-            (err) => console.error(err)
-          );
-        }
-        if (sol.id_lote_2) {
-          let lote: Lotes = {
-            estado: EnumLotes.Disponible,
-            id: sol.id_lote_2,
-            id_barrio: sol.id_barrio as number,
-          };
-          this.lotesService.updateLote(sol.id_lote, lote).subscribe(
-            (res) => { },
-            (err) => console.error(err)
-          );
-        }
-        if (sol.id_lote_3) {
-          let lote: Lotes = {
-            estado: EnumLotes.Disponible,
-            id: sol.id_lote_3,
-            id_barrio: sol.id_barrio as number,
-          };
-          this.lotesService.updateLote(sol.id_lote, lote).subscribe(
-            (res) => { },
-            (err) => console.error(err)
-          );
-        }
-        if (sol.id_lote_4) {
-          let lote: Lotes = {
-            estado: EnumLotes.Disponible,
-            id: sol.id_lote_4,
-            id_barrio: sol.id_barrio as number,
-          };
-          this.lotesService.updateLote(sol.id_lote, lote).subscribe(
-            (res) => { },
-            (err) => console.error(err)
-          );
-        }
-        if (sol.id_lote_5) {
-          let lote: Lotes = {
-            estado: EnumLotes.Disponible,
-            id: sol.id_lote_5,
-            id_barrio: sol.id_barrio as number,
-          };
-          this.lotesService.updateLote(sol.id_lote, lote).subscribe(
-            (res) => { },
-            (err) => console.error(err)
-          );
-        }
-        if (sol.id_lote_6) {
-          let lote: Lotes = {
-            estado: EnumLotes.Disponible,
-            id: sol.id_lote_6,
-            id_barrio: sol.id_barrio as number,
-          };
-          this.lotesService.updateLote(sol.id_lote, lote).subscribe(
-            (res) => { },
-            (err) => console.error(err)
-          );
-        }
-        if (sol.id_lote_7) {
-          let lote: Lotes = {
-            estado: EnumLotes.Disponible,
-            id: sol.id_lote_7,
-            id_barrio: sol.id_barrio as number,
-          };
-          this.lotesService.updateLote(sol.id_lote, lote).subscribe(
-            (res) => { },
-            (err) => console.error(err)
-          );
-        }
-        if (sol.id_lote_8) {
-          let lote: Lotes = {
-            estado: EnumLotes.Disponible,
-            id: sol.id_lote_8,
-            id_barrio: sol.id_barrio as number,
-          };
-          this.lotesService.updateLote(sol.id_lote, lote).subscribe(
-            (res) => { },
-            (err) => console.error(err)
-          );
-        }
-        if (sol.id_lote_9) {
-          let lote: Lotes = {
-            estado: EnumLotes.Disponible,
-            id: sol.id_lote_9,
-            id_barrio: sol.id_barrio as number,
-          };
-          this.lotesService.updateLote(sol.id_lote, lote).subscribe(
-            (res) => { },
-            (err) => console.error(err)
-          );
-        }
-        if (sol.id_lote_10) {
-          let lote: Lotes = {
-            estado: EnumLotes.Disponible,
-            id: sol.id_lote_10,
-            id_barrio: sol.id_barrio as number,
-          };
-          this.lotesService.updateLote(sol.id_lote, lote).subscribe(
-            (res) => { },
-            (err) => console.error(err)
-          );
-        }
-
-        this.legajoService.updateGame(sol.id, sol).subscribe(
-          (res) => {
-            console.log(res);
-            this.getGames();
-          },
-          (err) => console.error(err)
-        );
-      },
-      allowOutsideClick: () => !Swal.isLoading(),
-    }).then((result) => {
-      if (result.isConfirmed) {
-        Swal.fire({
-          title: "Enviado!",
-        });
-      }
-    });
-  }
-
-  editar(sol: Solicitud) {
-    this.router.navigate(["/legajo/add/" + sol.id]);
-  }
-
-  enviarFirma(sol: Solicitud) {
-    let fecha_for_db = this.getDateForDB(0);
-
-    Swal.fire({
-      title: "Registro de turno para " + sol.denominacion,
-      html:
-        '<input id="swal-input1" type="datetime-local" value="' +
-        fecha_for_db +
-        "T12:00" +
-        '" class="swal2-input">' +
-        '<select id="dd_agenda" class="form-select" style="width: 93%;margin-top: 18px; font-size: 110%; margin-left: 16px;"><option value="1">Ferrari</option><option value="2">Sinelli</option><option value="3">Nordelta</option></select>' +
-        '<textarea id="swal-input2" name="Text1" cols="40" rows="4" style="margin-top: 18px;border: 1px solid #d5d5d5;padding: 10px;" placeholder="Ingrese alguna nota..."></textarea>',
-      inputAttributes: {
-        autocapitalize: "off",
-      },
-      showCancelButton: true,
-      confirmButtonText: "Guardar fecha",
-      showLoaderOnConfirm: true,
-      preConfirm: (firma) => {
-        var fecha_ctrl = document.getElementById(
-          "swal-input1"
-        ) as HTMLInputElement;
-        var nota = document.getElementById("swal-input2") as HTMLInputElement;
-        var id_agenda = document.getElementById(
-          "dd_agenda"
-        ) as HTMLSelectElement;
-
-        let fecha_for_db = new Date(fecha_ctrl.value + "+0000");
-
-        sol.fecha_firma = fecha_for_db;
-        sol.observaciones_f = nota.value;
-        sol.archivos = undefined;
-        sol.lote_append = undefined;
-        sol.parcial_lbl = undefined;
-        sol.resta_lbl = undefined;
-        sol.fileCant = undefined;
-        sol.id_agenda = id_agenda.value as unknown as number;
-
-        this.legajoService.updateGame(sol.id, sol).subscribe(
-          (res) => {
-            this.getGames();
-            this.getGames();
-          },
-          (err) => console.error(err)
-        );
-      },
-      allowOutsideClick: () => !Swal.isLoading(),
-    }).then((result) => {
-      if (result.isConfirmed) {
-        Swal.fire({
-          title: "Enviado!",
-        });
-      }
-    });
-  }
-
+  /*
   enviarNota(sol: Solicitud) {
     Swal.fire({
       title: "Ingrese una nota para" + sol.denominacion,
@@ -759,8 +327,9 @@ export class PagosListComponent implements OnInit, AfterViewInit {
         });
       }
     });
-  }
+  }*/
 
+  /*
   enviarCuota(sol: Solicitud) {
     if (!sol.refuerzo_total) sol.refuerzo_total = 0;
     if (!sol.pago_total) sol.pago_total = 0;
@@ -822,105 +391,7 @@ export class PagosListComponent implements OnInit, AfterViewInit {
         });
       }
     });
-  }
-
-  //fecha firma
-  getGamesFromDate_firma_start(event: any) {
-    this.isFechaFirma = true;
-    this.date_firma_start = event.target.value;
-    this.getGames();
-  }
-
-  //fecha firma
-  getGamesFromDate_firma_end(event: any) {
-    this.isFechaFirma = true;
-    this.date_firma_end = event.target.value;
-    this.getGames();
-  }
-
-  //fecha seña
-  getGamesFromDate_sena_start(event: any) {
-    this.isFechaFirma = false;
-    this.date_sena_start = event.target.value;
-    this.getGames();
-  }
-
-  //fecha seña
-  getGamesFromDate_sena_end(event: any) {
-    this.isFechaFirma = false;
-    this.date_sena_end = event.target.value;
-    this.getGames();
-  }
-
-  getTicket(sol: Solicitud) {
-    if (!sol.refuerzo_total) sol.refuerzo_total = 0;
-    if (!sol.pago_total) sol.pago_total = 0;
-    if (!sol.lote_total) sol.lote_total = 0;
-
-    this.lbl_resta = sol.lote_total - (sol.refuerzo_total + sol.pago_total);
-    this.lbl_pago_parcial = sol.refuerzo_total + sol.pago_total;
-
-    sol.barrio = sessionStorage.getItem("barrio") as string;
-
-    sol.lote_append = "";
-
-    if (sol.id_lote) {
-      sol.lote_append += sol.id_lote;
-    }
-    if (sol.id_lote_2) {
-      sol.lote_append += ", " + sol.id_lote_2;
-    }
-    if (sol.id_lote_3) {
-      sol.lote_append += ", " + sol.id_lote_3;
-    }
-    if (sol.id_lote_4) {
-      sol.lote_append += ", " + sol.id_lote_4;
-    }
-    if (sol.id_lote_5) {
-      sol.lote_append += ", " + sol.id_lote_5;
-    }
-    if (sol.id_lote_6) {
-      sol.lote_append += ", " + sol.id_lote_6;
-    }
-    if (sol.id_lote_7) {
-      sol.lote_append += ", " + sol.id_lote_7;
-    }
-    if (sol.id_lote_8) {
-      sol.lote_append += ", " + sol.id_lote_8;
-    }
-    if (sol.id_lote_9) {
-      sol.lote_append += ", " + sol.id_lote_9;
-    }
-    if (sol.id_lote_10) {
-      sol.lote_append += ", " + sol.id_lote_10;
-    }
-
-    this.sol_modal = sol;
-
-    let element: HTMLElement = document.getElementById(
-      "modal_btn"
-    ) as HTMLElement;
-    element.click();
-  }
-
-  getTicketAll() {
-    this.solicitudes.forEach((soli: Solicitud) => {
-      if (!soli.refuerzo_total) soli.refuerzo_total = 0;
-      if (!soli.pago_total) soli.pago_total = 0;
-      if (!soli.lote_total) soli.lote_total = 0;
-
-      soli.parcial_lbl = soli.refuerzo_total + soli.pago_total;
-      soli.resta_lbl =
-        soli.lote_total - (soli.refuerzo_total + soli.pago_total);
-      soli.barrio = sessionStorage.getItem("barrio") as string;
-    });
-
-    let element: HTMLElement = document.getElementById(
-      "modal_btn_all"
-    ) as HTMLElement;
-    element.click();
-  }
-
+  }*/
 
 
 }
