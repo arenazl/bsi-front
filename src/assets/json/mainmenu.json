@@ -2,7 +2,7 @@
   {
     "title": "Alta De Cuentas Masiva (Becas)",
     "description": "Creá tu archivo de altas de cuentas bancarias",
-    "enabled": true,
+    "enabled": false,
     "items": [
       {
         "description": "Archivo de alta de cuentas",
@@ -43,7 +43,7 @@
   {
     "title": "Tarjetas Recargables",
     "description": "Gestioná el alta y las cargas de tus tarjetas",
-    "enabled": true,
+    "enabled": false,
     "items": [
       {
         "description": "Gestiona tus tarjetas",
@@ -54,7 +54,7 @@
   {
     "title": "Débitos Automáticos",
     "description": "Administrá los pagos de tus abonados",
-    "enabled": true,
+    "enabled": false,
     "items": [
       {
         "description": "Débitos automáticos",
@@ -65,7 +65,7 @@
   {
     "title": "Códigos De Barras",
     "description": "Elaboramos o actualizamos tus boletas de pago",
-    "enabled": true,
+    "enabled": false,
     "items": [
       {
         "description": "Código de barras",
@@ -76,7 +76,7 @@
   {
     "title": "Validación De CBU",
     "description": "Eliminá los rechazos de las transferencias",
-    "enabled": true,
+    "enabled": false,
     "items": [
       {
         "description": "Validación de CBU",
@@ -87,7 +87,7 @@
   {
     "title": "Servicio De Consultoría",
     "description": "Disminuí la carga operativa",
-    "enabled": true,
+    "enabled": false,
     "items": [
       {
         "description": "Servicio de Consultoría",
@@ -98,7 +98,7 @@
   {
     "title": "Migración De Archivos",
     "description": "Optimizá los procesos de migración",
-    "enabled": true,
+    "enabled": false,
     "items": [
       {
         "description": "Migración de archivos",

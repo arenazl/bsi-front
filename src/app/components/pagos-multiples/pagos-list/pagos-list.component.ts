@@ -150,6 +150,7 @@ export class PagosListComponent implements OnInit, AfterViewInit {
 
   getFile(): void {
 
+    /*
     Swal.fire({
       title: "Contrato de aceptación",
       icon: "info",
@@ -188,8 +189,37 @@ export class PagosListComponent implements OnInit, AfterViewInit {
           title: "Confirmado!",
         });
       }
-    });
+    });*/
 
+    Swal.fire({
+      title: "Agregar pago para " + 'pepe',
+      text:
+        "Restan por ingresar U$D " + 9000000,
+      html:
+        "<h5> Restan por abonar $" +
+        'resta' +
+        " </h4>" +
+        '<input id="swal-input1" type="number" value="' +
+        'look' +
+        '" class="swal2-input">' +
+        '<textarea id="swal-input2" name="Text1" cols="40" rows="4" style="margin-top: 18px;border: 1px solid #d5d5d5;padding: 10px;" placeholder="Ingrese alguna nota..."></textarea>',
+      inputAttributes: {
+        autocapitalize: "off",
+      },
+      showCancelButton: true,
+      confirmButtonText: "Agregar pago",
+      showLoaderOnConfirm: true,
+      preConfirm: () => {
+
+      },
+      allowOutsideClick: () => !Swal.isLoading(),
+    }).then((result) => {
+      if (result.isConfirmed) {
+        Swal.fire({
+          title: "Enviado!",
+        });
+      }
+    });
 
   }
 
