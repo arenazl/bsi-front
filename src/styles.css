@@ -353,3 +353,9 @@ height: auto;
 .card-header {
  padding-top: 1%;
 }
+
+
+.btn-completed[_ngcontent-kir-c59] {
+  background-color: #00958a !important;
+  color: white !important;
+}
