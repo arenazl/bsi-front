@@ -62,7 +62,7 @@ export class PagosListComponent implements OnInit, AfterViewInit {
 
   tranfeList: any = [];
 
-  id = "";
+  selectedHistoryId = "";
 
   idSelected = false;
 
@@ -90,12 +90,12 @@ export class PagosListComponent implements OnInit, AfterViewInit {
 
     this.route.params.subscribe((params) => {
 
-      this.id = params["id"];
+      this.selectedHistoryId = params["id"];
 
       this.getTransForSelect();
 
-      if (this.id != "0") {
-        this.getPagosById(this.id);
+      if (this.selectedHistoryId != "0") {
+        this.getPagosById(this.selectedHistoryId);
       }
 
     });
@@ -104,6 +104,8 @@ export class PagosListComponent implements OnInit, AfterViewInit {
   getPagosById(id: string): void {
 
     this.ld_header = true;
+
+    this.selectedHistoryId = id;
 
     this.fileService.getPagos(id).subscribe((res) => {
 
@@ -167,7 +169,8 @@ export class PagosListComponent implements OnInit, AfterViewInit {
   getFile(): void {
 
     this.fileService
-      .downloadPagoFile(this.id as unknown as number)
+
+      .downloadPagoFile(this.selectedHistoryId as unknown as number)
       .subscribe((blob) => {
 
         let cbu: "cbu"
@@ -294,7 +297,7 @@ export class PagosListComponent implements OnInit, AfterViewInit {
     this.getTicket(sol);
 
     sol.archivos?.forEach((item) => {
-      this.fileService.downloadFile(this.id as unknown as number).subscribe(
+      this.fileService.downloadFile(this.selectedHistoryId as unknown as number).subscribe(
         (data) => {
           i++;
           let file_ctrl = document.getElementById("file_span_" + id);

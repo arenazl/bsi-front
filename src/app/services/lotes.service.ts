@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Solicitud, Usuario, Params } from '../models/Model';
 import { Observable } from 'rxjs';
-import { GlobalVariable } from '../global';
+import { GlobalVariable } from '../../environments/global';
 
 
 @Injectable({
@@ -20,9 +20,9 @@ export class LotesService {
     return this.http.post(`${this.API_URI}/lote/list`, lotesFilter);
   }
 
-  
+
   getMovements() {
-     return this.http.get('assets/json/mainmenu.json')
+    return this.http.get('assets/json/mainmenu.json')
   }
 
   updateLote(id: number | undefined, updateLote: Lotes): Observable<any> {

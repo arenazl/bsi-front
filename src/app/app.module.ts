@@ -12,7 +12,7 @@ import { GamesListComponent } from './components/games-list/games-list.component
 // Services
 import { LegajoService } from './services/legajo.service';
 import { GameFormComponent } from './components/game-form/game-form.component';
-import {FileUploadModule} from 'ng2-file-upload';
+import { FileUploadModule } from 'ng2-file-upload';
 import { LoginComponent } from './components/login/login.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { AuditoriaComponent } from './components/auditoria/auditoria.component';
@@ -20,10 +20,11 @@ import { MapComponent } from './components/map/map.component';
 import { MainMenuComponent } from './components/main-menu/main-menu.component';
 import { RankingComponent } from './components/ranking/ranking.component';
 import { SafeHtmlPipe } from '../app/sanitize'
-import {NgxImageCompressService} from 'ngx-image-compress';
+import { NgxImageCompressService } from 'ngx-image-compress';
 import { PagosSelectionComponent } from './components/pagos-multiples/pagos-selection/pagos-selection.component';
 import { PagosImportComponent } from './components/pagos-multiples/pagos-import/pagos-import.component';
 import { PagosListComponent } from './components/pagos-multiples/pagos-list/pagos-list.component';
+import { BsiCurrencyPipe } from "./pipes/bsi-currency";
 
 @NgModule({
   declarations: [
@@ -39,7 +40,8 @@ import { PagosListComponent } from './components/pagos-multiples/pagos-list/pago
     SafeHtmlPipe,
     PagosSelectionComponent,
     PagosImportComponent,
-    PagosListComponent
+    PagosListComponent,
+    BsiCurrencyPipe
   ],
   imports: [
     BrowserModule,
@@ -50,7 +52,9 @@ import { PagosListComponent } from './components/pagos-multiples/pagos-list/pago
     ReactiveFormsModule,
   ],
   providers: [
-    LegajoService, NgxImageCompressService
+    BsiCurrencyPipe,
+    LegajoService,
+    NgxImageCompressService
   ],
   bootstrap: [AppComponent]
 })

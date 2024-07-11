@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { GlobalVariable } from '../global';
+import { GlobalVariable } from '../../environments/global';
 import { Observable } from 'rxjs';
 import { map } from 'jquery';
 

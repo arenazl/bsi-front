@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Solicitud, Usuario, Params, Refuerzo, FinPago } from '../models/Model';
 import { Observable } from 'rxjs';
-import { GlobalVariable } from '../global';
+import { GlobalVariable } from '../../environments/global';
 
 
 @Injectable({

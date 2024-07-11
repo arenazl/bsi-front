@@ -7,7 +7,7 @@ import { Solicitud, FileRes, Usuario, EnumLotes, LotesParams, Lotes, LotesFilter
 import { FileItem, FileLikeObject, FileSelectDirective, FileUploader } from 'ng2-file-upload'
 import { saveAs } from 'file-saver';
 import { Router, ActivatedRoute, Params } from '@angular/router';
-import { GlobalVariable } from '../../../global';
+import { GlobalVariable } from '../../../../environments/global';
 import Swal from 'sweetalert2';
 import { NgxImageCompressService } from 'ngx-image-compress';
 import { Item } from '../../../models/Model';
