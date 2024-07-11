@@ -22,7 +22,7 @@
         <div class="card-body" [ngClass]="{'disabled': !item.Tipo_Estado}">
           <h5 class="card-title"> Tipo de Pago </h5>
           <p class="card-text"></p>
-          <a [routerLink]="'/pagosImport/' + item.Contrato_ID" class="btn btn-outline-primary fw-bold">
+          <a [routerLink]="'/pagosImport/' + item.Contrato_ID" class="btn btn-primary fw-bold">
             {{ item.Texto_Boton }}
           </a>
         </div>

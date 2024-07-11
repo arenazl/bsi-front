@@ -97,8 +97,13 @@ export class PagosImportComponent implements OnInit {
         this.pageTitle = selectedButton.Texto_Boton;
         this.selectedRotulo = selectedButton.Rotulo;
         this.selectedCuentaDebito = selectedButton.Cuenta_Debito;
-        this.conceptosList = selectedButton.Concepto.split(',')
-        this.selectedConcepto = '';
+
+        this.conceptosList = selectedButton.Concepto.split(',');
+        if (this.conceptosList.length === 1) {
+          this.selectedConcepto = this.conceptosList[0];
+        } else {
+          this.selectedConcepto = '';
+        }
 
       });
 

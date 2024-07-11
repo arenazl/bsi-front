@@ -37,11 +37,14 @@
               <div class="col-lg-4 col-md-6 col-sm-12">
                 <label class="label" for="concepto">Concepto</label>
 
-                <select class="form-control" id="concepto" [(ngModel)]="selectedConcepto" name="concepto">
-                  <option value="" selected>Elija el concepto</option>
+                <input *ngIf="conceptosList.length === 1" type="text" class="form-control" id="concepto"
+                  [value]="conceptosList[0]" readonly />
+
+                <select *ngIf="conceptosList.length > 1" class="form-control" id="concepto"
+                  [(ngModel)]="selectedConcepto" name="concepto">
+                  <option value="">SELECCIONAR</option>
                   <option *ngFor="let concepto of conceptosList" [value]="concepto">{{ concepto }}</option>
                 </select>
-
               </div>
 
             </div>
@@ -60,8 +63,11 @@
           <div *ngIf="fechaPago" class="form-group mt-3 m-2">
             <label class="label">Opciones de Carga</label>
             <div class="d-flex">
-              <button type="button" class="btn btn-secondary me-2" disabled>Carga Manual</button>
-              <button type="button" class="btn btn-primary" (click)="selectCargaArchivo()">Carga por Archivo</button>
+              <button type="button" class="btn btn-secondary fw-bold" style="
+              margin-right: 15px;
+          " disabled>Carga Manual</button>
+              <button type="button" class="btn btn-primary fw-bold" (click)="selectCargaArchivo()">Carga por
+                Archivo</button>
             </div>
           </div>
 
