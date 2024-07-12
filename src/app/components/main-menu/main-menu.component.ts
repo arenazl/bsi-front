@@ -40,18 +40,19 @@ export class MainMenuComponent implements OnInit {
 
   showAds() {
 
-    Swal.fire({
-      title: "Lo sentimos, no tienes acceso a esta funcionalidad, si consideras que puede serte util, contactate para mas informacion.",
-      width: "120vh",
-      padding: "9em",
-      color: "#716add",
+Swal.fire({
+      title: "Lo sentimos, no tienes acceso a esta funcionalidad, si considerás que puede serte útil, contactate para más información.  </br> </br> </br> </br> </br> </br> </br>",
+      width: "50%",
+      padding: "6em",
+      color: "#0B5ED7",
       confirmButtonText: "Contactanos",
       background: "#fff url(../../../../../assets/img/reunion.jpg)",
       backdrop: `
-        rgba(0,0,123,0.4)
+        rgba(0,0,123,8)
         url("/images/nyan-cat.gif")
         left top
         no-repeat
+        heigthAuto 
       `
     });
 
