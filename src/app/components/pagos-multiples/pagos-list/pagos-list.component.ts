@@ -150,10 +150,11 @@ export class PagosListComponent implements OnInit, AfterViewInit {
 
   getFile(): void {
 
+
     Swal.fire({
       title: "Contrato de aceptación",
       icon: "info",
-      text: "Este contrato de aceptación es para los efectos legales que establece la Ley de Contratación y Fiscalización, y se acepta como firma del solicitante.",
+      text: "Lo sentimos, tu usuario no tiene acceso a esta funcionalidad. Si considerás que podría serte útil y deseás adquirir este servicio, por favor, contactanos para más información",
       inputAttributes: {
         autocapitalize: "off",
       },
