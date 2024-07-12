@@ -35,14 +35,69 @@
 
 
 <div id="pdf-content">
-
+    
     <div class="card px-0 mb-3" *ngIf="tranfeResponse.data.length > 0">
 
         <div class="card-header pt-3">
-            <h5> {{ municipio }}</h5>
+            <h3> {{ municipio }}</h3>
+        </div>
+
+        <div class="card-body">
+            <div class="a">
+                <div class="fecha" style="float: right;" >
+                    <h4>Buenos Aires, {{ tranfeResponse.head.FECHA | date : 'dd/MM/yyyy' }}</h4>
+                </div>
+            </div>
+            <br>
+            <br>    
+            <br>
+            <div class="a">
+
+                <h4>Señor gerente del <br>Banco de la Provincia de Buenos Aires</h4>
+                <p>-  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -</p>
+                <br>
+                <h4>De nuestra consideración:</h4>
+                <br>
+                <h4 style="float: right;">Ref.: CONVENIO DE PAGOS</h4>
+                <br>
+                <br>
+                <p style="float: inline-end;">-  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -</p>
+                <br>
+                <br>
+                <br>
+                <h4 style="text-indent: 320px;">Tengo el agrado de dirigirme a Ud. con relación al tema de referencia.</h4>
+                <br>
+                <br>
+                <h4  style="text-indent: 320px;">Sobre el particular, adjunto diskette y listado de respaldo conteniendo los sueldos del personal de nuestra empresa de acuerdo al siguiente detalle: </h4>
+                <br>
+                <br>
+                <div class="pagos">
+                    <h4>Cantidad de pagos: {{ tranfeResponse.head.CANTIDAD_TRANSFERENCIAS }}</h4>
+                    <h4>Total general a acreditar:
+                    <br>
+                    en Pesos.........: {{ tranfeResponse.head.TOTAL_IMPORTE | BsiCurrencyPipe }}
+                    </h4>
+                </div>
+                <br>
+                <br>
+                <h4 style="text-indent: 320px;">Asimismo, autorizo al Banco a debitar de nuestra cuenta corriente radicada en esa sucursal, los fondos necesarios para atender los pagos y la comisión del servicio.</h4>
+                <br><br>
+                <h4 style="text-indent: 320px;">Los pagos deben estar disponibles en las cajas de ahorros de nuestros empleados el dia {{ tranfeResponse.head.FECHA | date : 'dd/MM/yyyy' }} + 1</h4>
+                <br>
+                <br>
+                <h4  style="text-indent: 320px;">Saluda a Ud. muy atentamente.</h4>
+                <br>
+                <br>
+                <br>
+                <div class="firma" style="float: inline-end;">
+                    <h4>----------------------------------------</h4>
+                    <h4>Firma y sello del titular de la cuenta corriente</h4>
+                </div>
+            </div>
         </div>
     
         <div class="card-body pb-0">
+
             <div class="row">
                 <div class="col-md-4">
                     <div class="label fw-normal">Fecha:</div>
@@ -70,8 +125,10 @@
                 </div>
             </div>
         </div>
+
     </div>
 
+    <!-- ACCIONES -->
     <div class="card px-0 mb-3" *ngIf="tranfeResponse.data.length > 0">
         <div class="card-header">
             <h5>Exportar TR</h5>
@@ -82,10 +139,13 @@
                 PDF</button>
             <button type="button" class="btn btn-primary col-12 mx-2 col-md-2" (click)="getFile()">Descargar
                 Archivo</button>
+            <button type="button" class="btn btn-primary col-12 mx-2 col-md-2" (click)="getFile()">Descargar
+                contrato</button>
         </div>
 
     </div>
 
+    <!-- RESULTADOS -->
     <div class="card px-0 mb-3" *ngIf="tranfeResponse.data.length > 0">
 
         <div class="card-header pt-3">

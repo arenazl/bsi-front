@@ -151,7 +151,7 @@ export class PagosListComponent implements OnInit, AfterViewInit {
   getFile(): void {
 
 
-    Swal.fire({
+    /*Swal.fire({
       title: "Contrato de aceptación",
       icon: "info",
       text: "Lo sentimos, tu usuario no tiene acceso a esta funcionalidad. Si considerás que podría serte útil y deseás adquirir este servicio, por favor, contactanos para más información",
@@ -162,7 +162,7 @@ export class PagosListComponent implements OnInit, AfterViewInit {
       confirmButtonText: "Acepto",
       showLoaderOnConfirm: true,
       preConfirm: (nota) => {
-
+*/
         this.fileService
           .downloadPagoFile(this.selectedHistoryId as unknown as number)
           .subscribe((blob) => {
@@ -180,7 +180,7 @@ export class PagosListComponent implements OnInit, AfterViewInit {
             document.body.removeChild(link);
 
           });
-
+/*
       },
       allowOutsideClick: () => !Swal.isLoading(),
     }).then((result) => {
