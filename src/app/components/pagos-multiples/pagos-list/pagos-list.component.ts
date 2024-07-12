@@ -150,10 +150,10 @@ export class PagosListComponent implements OnInit, AfterViewInit {
 
   getFile(): void {
 
-    Swal.fire({
-      title: "Contrato de aceptación",
+    /*Swal.fire({
+      title: "Confirmación",
       icon: "info",
-      text: "Este contrato de aceptación es para los efectos legales que establece la Ley de Contratación y Fiscalización, y se acepta como firma del solicitante.",
+      text: "El archivo que está por descargar contiene exactamente la información que se visualizó en la pantalla anterior. Puede descargar además, el archivo PDF que contiene la nota para el Banco y el detalle del contenido del archivo de pagos.",
       inputAttributes: {
         autocapitalize: "off",
       },
@@ -161,7 +161,7 @@ export class PagosListComponent implements OnInit, AfterViewInit {
       confirmButtonText: "Acepto",
       showLoaderOnConfirm: true,
       preConfirm: (nota) => {
-
+*/
         this.fileService
           .downloadPagoFile(this.selectedHistoryId as unknown as number)
           .subscribe((blob) => {
@@ -179,7 +179,7 @@ export class PagosListComponent implements OnInit, AfterViewInit {
             document.body.removeChild(link);
 
           });
-
+/*
       },
       allowOutsideClick: () => !Swal.isLoading(),
     }).then((result) => {
