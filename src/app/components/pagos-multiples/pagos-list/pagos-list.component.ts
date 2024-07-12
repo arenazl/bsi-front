@@ -150,7 +150,6 @@ export class PagosListComponent implements OnInit, AfterViewInit {
 
   getFile(): void {
 
-    /*
     Swal.fire({
       title: "Contrato de aceptación",
       icon: "info",
@@ -189,8 +188,9 @@ export class PagosListComponent implements OnInit, AfterViewInit {
           title: "Confirmado!",
         });
       }
-    });*/
+    });
 
+    /*
     Swal.fire({
       title: "Agregar pago para " + 'pepe',
       text:
@@ -219,7 +219,7 @@ export class PagosListComponent implements OnInit, AfterViewInit {
           title: "Enviado!",
         });
       }
-    });
+    });*/
 
   }
 
