@@ -144,7 +144,10 @@ export class PagosListComponent implements OnInit, AfterViewInit {
 
     const dataElement2 = document.getElementById('pdf-contrato');
 
+    dataElement2?.classList.remove('d-none');
+
     if (dataElement2) {
+
       html2canvas(dataElement2).then(canvas => {
         const imgData = canvas.toDataURL('image/png');
         const pdf = new jsPDF();
@@ -153,9 +156,9 @@ export class PagosListComponent implements OnInit, AfterViewInit {
         const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
         pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
         pdf.save('contrato.pdf');
+        dataElement2?.classList.add('d-none');
       });
     }
-
 
   }
 

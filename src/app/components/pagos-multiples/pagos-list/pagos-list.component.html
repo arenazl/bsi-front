@@ -109,7 +109,9 @@
                     </tr>
                 </thead>
                 <tbody>
+
                     <ng-container *ngFor="let sol of tranfeResponse?.data">
+
                         <tr>
                             <td style="font-family: 'JetBrains Mono', monospace;color: #4e4e4e;width: 42%;
                                 padding-left: 15vh;">
@@ -127,7 +129,9 @@
 
                             </td>
                         </tr>
+
                     </ng-container>
+
                 </tbody>
             </table>
         </div>
@@ -135,7 +139,7 @@
 </div>
 
 
-<div id="pdf-contrato" class="card" style="visibility: hidden;" *ngIf="tranfeResponse.data.length > 0">
+<div id="pdf-contrato" class="card" class="d-none" *ngIf="tranfeResponse.data.length > 0">
 
     <div class="a">
         <div class="fecha" style="float: right;">
@@ -146,7 +150,8 @@
     <br>
     <br>
     <br>
-    <div class="a">
+
+    <div id="pagina 2">
 
         <h4>Señor gerente del <br>Banco de la Provincia de Buenos Aires</h4>
         <p>- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -</p>
