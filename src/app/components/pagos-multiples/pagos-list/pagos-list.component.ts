@@ -123,8 +123,7 @@ export class PagosListComponent implements OnInit, AfterViewInit {
     this.tranfeResponse.data = capitalizedData;
   }
 
-
-  generatePDF() {
+  generatePdfTable() {
 
     const dataElement = document.getElementById('pdf-content');
 
@@ -136,9 +135,27 @@ export class PagosListComponent implements OnInit, AfterViewInit {
         const pdfWidth = pdf.internal.pageSize.getWidth();
         const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
         pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
-        pdf.save('document.pdf');
+        pdf.save('registros.pdf');
       });
     }
+  }
+
+  generatePdfContrato() {
+
+    const dataElement2 = document.getElementById('pdf-contrato');
+
+    if (dataElement2) {
+      html2canvas(dataElement2).then(canvas => {
+        const imgData = canvas.toDataURL('image/png');
+        const pdf = new jsPDF();
+        const imgProps = pdf.getImageProperties(imgData);
+        const pdfWidth = pdf.internal.pageSize.getWidth();
+        const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
+        pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
+        pdf.save('contrato.pdf');
+      });
+    }
+
 
   }
 
@@ -163,64 +180,64 @@ export class PagosListComponent implements OnInit, AfterViewInit {
       showLoaderOnConfirm: true,
       preConfirm: (nota) => {
 */
-        this.fileService
-          .downloadPagoFile(this.selectedHistoryId as unknown as number)
-          .subscribe((blob) => {
+    this.fileService
+      .downloadPagoFile(this.selectedHistoryId as unknown as number)
+      .subscribe((blob) => {
 
-            let cbu: "cbu"
-            let concepto = "concepto"
+        let cbu: "cbu"
+        let concepto = "concepto"
 
-            const url = window.URL.createObjectURL(blob);
-            const link = document.createElement("a");
-            link.href = url;
+        const url = window.URL.createObjectURL(blob);
+        const link = document.createElement("a");
+        link.href = url;
 
-            link.setAttribute("download", "989898989".trim() + "-" + concepto + ".txt");
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
+        link.setAttribute("download", "989898989".trim() + "-" + concepto + ".txt");
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
 
-          });
-/*
-      },
-      allowOutsideClick: () => !Swal.isLoading(),
-    }).then((result) => {
-      if (result.isConfirmed) {
-        Swal.fire({
-          title: "Confirmado!",
-        });
-      }
-    });
-
+      });
     /*
-    Swal.fire({
-      title: "Agregar pago para " + 'pepe',
-      text:
-        "Restan por ingresar U$D " + 9000000,
-      html:
-        "<h5> Restan por abonar $" +
-        'resta' +
-        " </h4>" +
-        '<input id="swal-input1" type="number" value="' +
-        'look' +
-        '" class="swal2-input">' +
-        '<textarea id="swal-input2" name="Text1" cols="40" rows="4" style="margin-top: 18px;border: 1px solid #d5d5d5;padding: 10px;" placeholder="Ingrese alguna nota..."></textarea>',
-      inputAttributes: {
-        autocapitalize: "off",
-      },
-      showCancelButton: true,
-      confirmButtonText: "Agregar pago",
-      showLoaderOnConfirm: true,
-      preConfirm: () => {
-
-      },
-      allowOutsideClick: () => !Swal.isLoading(),
-    }).then((result) => {
-      if (result.isConfirmed) {
-        Swal.fire({
-          title: "Enviado!",
+          },
+          allowOutsideClick: () => !Swal.isLoading(),
+        }).then((result) => {
+          if (result.isConfirmed) {
+            Swal.fire({
+              title: "Confirmado!",
+            });
+          }
         });
-      }
-    });*/
+    
+        /*
+        Swal.fire({
+          title: "Agregar pago para " + 'pepe',
+          text:
+            "Restan por ingresar U$D " + 9000000,
+          html:
+            "<h5> Restan por abonar $" +
+            'resta' +
+            " </h4>" +
+            '<input id="swal-input1" type="number" value="' +
+            'look' +
+            '" class="swal2-input">' +
+            '<textarea id="swal-input2" name="Text1" cols="40" rows="4" style="margin-top: 18px;border: 1px solid #d5d5d5;padding: 10px;" placeholder="Ingrese alguna nota..."></textarea>',
+          inputAttributes: {
+            autocapitalize: "off",
+          },
+          showCancelButton: true,
+          confirmButtonText: "Agregar pago",
+          showLoaderOnConfirm: true,
+          preConfirm: () => {
+    
+          },
+          allowOutsideClick: () => !Swal.isLoading(),
+        }).then((result) => {
+          if (result.isConfirmed) {
+            Swal.fire({
+              title: "Enviado!",
+            });
+          }
+        });*/
 
   }
 
@@ -301,6 +318,7 @@ export class PagosListComponent implements OnInit, AfterViewInit {
   }
 
   downloadReal(sol: Solicitud) {
+
     let id = sol.id;
     let file_ctrl = document.getElementById("file_span_" + sol.id);
     if (file_ctrl) file_ctrl.innerText = "...";

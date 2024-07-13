@@ -31,6 +31,8 @@ export class PagosImportComponent implements OnInit {
   conceptosList: any[] = [];
 
   cargaArchivoSeleccionada = false;
+  conceptoSeleccionado = false;
+
   nombre_archivo: string = '';
   filesUploaded = false;
   buttonText = 'Subir Archivo';
@@ -107,11 +109,17 @@ export class PagosImportComponent implements OnInit {
 
       });
 
-
     });
 
   }
 
+  conceptoChange(event: any) {
+    if (event === 'SELECCIONAR' || event === '') {
+      this.conceptoSeleccionado = false;
+    } else {
+      this.conceptoSeleccionado = true;
+    }
+  }
 
   formatDateForFile(dateString: string): string {
     const date = new Date(dateString);

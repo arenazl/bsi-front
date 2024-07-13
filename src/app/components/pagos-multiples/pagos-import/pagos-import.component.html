@@ -41,7 +41,7 @@
                   [value]="conceptosList[0]" readonly />
 
                 <select *ngIf="conceptosList.length > 1" class="form-control" id="concepto"
-                  [(ngModel)]="selectedConcepto" name="concepto">
+                  [(ngModel)]="selectedConcepto" (ngModelChange)="conceptoChange($event)" name="concepto">
                   <option value="">SELECCIONAR</option>
                   <option *ngFor="let concepto of conceptosList" [value]="concepto">{{ concepto }}</option>
                 </select>
@@ -60,11 +60,12 @@
           </div>
 
           <!-- Opciones de carga -->
-          <div *ngIf="fechaPago" class="form-group mt-3 m-2">
+          <div *ngIf="conceptoSeleccionado" class="form-group mt-3 m-2">
             <label class="label">Opciones de Carga</label>
             <div class="d-flex">
               <button type="button" class="btn btn-secondary fw-bold" style="
               margin-right: 15px;
+              
           " disabled>Carga Manual</button>
               <button type="button" class="btn btn-primary fw-bold" (click)="selectCargaArchivo()">Carga por
                 Archivo</button>

@@ -14,11 +14,12 @@
           <div class="d-flex flex-row flex-wrap">
 
             <div *ngFor="let item of activity.items; let isLast=last" class="flex-grow-1" [class.me-2]="!isLast">
-              <a [routerLink]="activity.enabled ? [item.link] : []"
-                [ngClass]="activity.enabled ? 'btn btn-primary' : 'btn btn-outline-primary'" class="fw-bold w-100"
+
+              <a [routerLink]="activity.enabled ? [item.link] : []" class="btn btn-primary fw-bold w-100"
                 (click)="activity.enabled ? null : showAds()">
                 Ir a {{ item.description }}
               </a>
+
             </div>
 
           </div>
