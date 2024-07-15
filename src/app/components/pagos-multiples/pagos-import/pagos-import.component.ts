@@ -103,6 +103,7 @@ export class PagosImportComponent implements OnInit {
         this.conceptosList = selectedButton.Concepto.split(',');
         if (this.conceptosList.length === 1) {
           this.selectedConcepto = this.conceptosList[0];
+          this.conceptoSeleccionado = true;
         } else {
           this.selectedConcepto = '';
         }
