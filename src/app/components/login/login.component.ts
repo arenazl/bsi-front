@@ -42,7 +42,7 @@ export class LoginComponent implements OnInit {
 
   onSubmit() {
 
-    this.login_txt = "Espere..."
+    this.login_txt = "Validando...";
 
     var userPayload = {
       nombre: this.form.value.user as unknown as string,
