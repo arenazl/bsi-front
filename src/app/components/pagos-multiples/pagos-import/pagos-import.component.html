@@ -21,46 +21,71 @@
 
       <div class="row">
         <form class="m-2" action="POST" enctype="multipart/form-data">
-          <!-- Campos predefinidos -->
-          <div class="form-group m-2">
-            <div class="row">
-              <div class="col-lg-4 col-md-6 col-sm-12">
-                <label class="label" for="rotulo">Rótulo</label>
-                <input type="text" class="form-control" id="rotulo" [(ngModel)]="selectedRotulo" name="rotulo" readonly>
-              </div>
-              <div class="col-lg-4 col-md-6 col-sm-12">
-                <label class="label" for="cuentaDebito">Cuenta Débito</label>
-                <input type="text" class="form-control" id="cuentaDebito" [(ngModel)]="selectedCuentaDebito"
-                  name="cuentaDebito" readonly>
-              </div>
 
-              <div class="col-lg-4 col-md-6 col-sm-12">
-                <label class="label" for="concepto">Concepto</label>
+          <ng-container *ngIf="this.tipo == 'pagos'">
 
-                <input *ngIf="conceptosList.length === 1" type="text" class="form-control" id="concepto"
-                  [value]="conceptosList[0]" readonly />
+            <div class="form-group m-2">
+              <div class="row">
+                <div class="col-lg-4 col-md-6 col-sm-12">
+                  <label class="label" for="rotulo">Rótulo</label>
+                  <input type="text" class="form-control" id="rotulo" [(ngModel)]="selectedRotulo" name="rotulo"
+                    readonly>
+                </div>
+                <div class="col-lg-4 col-md-6 col-sm-12">
+                  <label class="label" for="cuentaDebito">Cuenta Débito</label>
+                  <input type="text" class="form-control" id="cuentaDebito" [(ngModel)]="selectedCuentaDebito"
+                    name="cuentaDebito" readonly>
+                </div>
+                <div class="col-lg-4 col-md-6 col-sm-12">
+                  <label class="label" for="concepto">Concepto</label>
 
-                <select *ngIf="conceptosList.length > 1" class="form-control" id="concepto"
-                  [(ngModel)]="selectedConcepto" (ngModelChange)="conceptoChange($event)" name="concepto">
-                  <option value="">SELECCIONAR</option>
-                  <option *ngFor="let concepto of conceptosList" [value]="concepto">{{ concepto }}</option>
-                </select>
+                  <input *ngIf="conceptosList.length === 1" type="text" class="form-control" id="concepto"
+                    [value]="conceptosList[0]" readonly />
+
+                  <select *ngIf="conceptosList.length > 1" class="form-control" id="concepto"
+                    [(ngModel)]="selectedConcepto" (ngModelChange)="conceptoChange($event)" name="concepto">
+                    <option value="">SELECCIONAR</option>
+                    <option *ngFor="let concepto of conceptosList" [value]="concepto">{{ concepto }}</option>
+                  </select>
+                </div>
+
               </div>
 
             </div>
 
-          </div>
+            <!-- Fecha de pago -->
+            <div class="form-group mt-3 m-2" style="
+              width: 31%;
+          ">
+              <label class="label" for="fechaPago">Fecha de Pago</label>
+              <input type="date" class="form-control" id="fechaPago" [(ngModel)]="fechaPago" name="fechaPago">
+            </div>
 
-          <!-- Fecha de pago -->
-          <div class="form-group mt-3 m-2" style="
-            width: 31%;
-        ">
-            <label class="label" for="fechaPago">Fecha de Pago</label>
-            <input type="date" class="form-control" id="fechaPago" [(ngModel)]="fechaPago" name="fechaPago">
-          </div>
+          </ng-container>
+
+          <ng-container *ngIf="this.tipo == 'altas'">
+
+            <div class="form-group m-2">
+              <div class="row">
+                <div class="col-lg-4 col-md-6 col-sm-12">
+                  <label class="label" for="rotulo">Rótulo</label>
+                  <input type="text" class="form-control" id="rotulo" [(ngModel)]="selectedRotulo" name="rotulo"
+                    readonly>
+                </div>
+
+                <div class="col-lg-4 col-md-6 col-sm-12">
+                  <label class="label" for="ente">Ente</label>
+                  <input type="text" class="form-control" id="ente" [(ngModel)]="selectedEnte" name="ente" readonly>
+                </div>
+
+              </div>
+
+            </div>
+
+          </ng-container>
 
           <!-- Opciones de carga -->
-          <div *ngIf="conceptoSeleccionado" class="form-group mt-3 m-2">
+          <div *ngIf="conceptoSeleccionado || this.tipo == 'altas'" class="form-group mt-3 m-2">
             <label class="label">Opciones de Carga</label>
             <div class="d-flex">
               <button type="button" class="btn btn-secondary fw-bold" style="

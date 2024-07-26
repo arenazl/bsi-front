@@ -22,10 +22,11 @@ export class PagosSelectionComponent implements OnInit {
 
   loadItems(): void {
 
+    /*
     this.fileService.getContratosBotones(1, 71).subscribe((data: any) => {
       this.ld_header = false;
       this.items = data;
-    });
+    });*/
 
     /*
       this.items = [

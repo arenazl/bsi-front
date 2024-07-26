@@ -64,7 +64,7 @@ const routes: Routes = [
   },
 
   {
-    path: 'pagosImport/:id',
+    path: 'pagosImport/:tipo/:contrato',
     component: PagosImportComponent
   },
 

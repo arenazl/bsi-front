@@ -27,7 +27,11 @@ export class PagosImportComponent implements OnInit {
   selectedRotulo = '';
   selectedCuentaDebito = '';
   selectedConcepto = '';
-  pagoType = 0;
+  selectedEnte = '';
+
+  tipo = '';
+  contrato = '';
+
   conceptosList: any[] = [];
 
   cargaArchivoSeleccionada = false;
@@ -58,7 +62,7 @@ export class PagosImportComponent implements OnInit {
       item.file.name =
         sessionStorage.getItem('Id') as unknown as string + "-" +
         sessionStorage.getItem('IdOrganismo') as unknown as string + "-" +
-        this.pagoType + "-" +
+        this.contrato + "-" +
         this.selectedConcepto.replace('-', '.').trim() + "-" +
         this.formatDateForFile(this.fechaPago);
     }
@@ -89,29 +93,54 @@ export class PagosImportComponent implements OnInit {
 
     this.route.params.subscribe((params) => {
 
-      this.pagoType = params["id"];
+      this.tipo = params["tipo"];
+      this.contrato = params["contrato"];
 
-      this.fileService.getContratosBotones(1, 71).subscribe((data: any) => {
+      this.pageTitle = this.genTitle(this.tipo, this.contrato);
 
-        var selectedButton = data.find((b: any) => b.Contrato_ID == this.pagoType) as Item;
+      this.fileService.ObtenerContratoById(1, 71, parseInt(this.contrato)).subscribe((data: any) => {
 
-        this.ld_header = false;
+        if (this.tipo == 'pagos') {
 
-        this.pageTitle = selectedButton.Texto_Boton;
-        this.selectedRotulo = selectedButton.Rotulo;
-        this.selectedCuentaDebito = selectedButton.Cuenta_Debito;
+          this.ld_header = false;
 
-        this.conceptosList = selectedButton.Concepto.split(',');
-        if (this.conceptosList.length === 1) {
-          this.selectedConcepto = this.conceptosList[0];
-          this.conceptoSeleccionado = true;
-        } else {
-          this.selectedConcepto = '';
+          this.selectedRotulo = data[0].Rotulo;
+          this.selectedCuentaDebito = data[0].Cuenta_Debito;
+
+          this.conceptosList = data[0].Concepto.split(',');
+
+          if (this.conceptosList.length === 1) {
+            this.selectedConcepto = this.conceptosList[0];
+            this.conceptoSeleccionado = true;
+          } else {
+            this.selectedConcepto = '';
+          }
+        }
+
+        else if (this.tipo == 'altas') {
+
+
+          this.selectedRotulo = data[0].Rotulo;
+          this.selectedEnte = data[0].Ente;
+
+          this.ld_header = false;
+
         }
 
       });
 
     });
+
+  }
+
+  genTitle(type: string, contrato: string): string {
+
+    if (type == 'pagos' && contrato == '3') {
+      return 'Pago de Beneficios';
+    } else if (type == 'altas' && contrato == '3') {
+      return 'Alta de Cuentas desde plantillas';
+    } else
+      return "";
 
   }
 
@@ -136,4 +165,3 @@ export class PagosImportComponent implements OnInit {
   }
 
 }
-

@@ -32,11 +32,11 @@ export class FileService {
     return this._http.get(`${this.API_URI}/file/responsepagosforcombo`);
   }
 
-  getContratosBotones(user: number, contrato: number) {
+  ObtenerContratoById(user: number, municipio: number, contrato: number) {
 
-    var body = { user: user, contrato: contrato };
+    var body = { id_user: user, id_organismo: municipio, id_contrato: contrato };
 
-    return this._http.post(`${this.API_URI}/file/contratosbotones`, body, {
+    return this._http.post(`${this.API_URI}/file/ObtenerContratoById`, body, {
       responseType: 'json',
       headers: new HttpHeaders().append('Content-Type', 'application/json')
     });
