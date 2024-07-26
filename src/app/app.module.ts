@@ -25,6 +25,7 @@ import { PagosSelectionComponent } from './components/pagos-multiples/pagos-sele
 import { PagosImportComponent } from './components/pagos-multiples/pagos-import/pagos-import.component';
 import { PagosListComponent } from './components/pagos-multiples/pagos-list/pagos-list.component';
 import { BsiCurrencyPipe } from "./pipes/bsi-currency";
+import { DinamicModuleComponent } from './components/dinamic-module/dinamic-module.component';
 
 @NgModule({
   declarations: [
@@ -41,7 +42,8 @@ import { BsiCurrencyPipe } from "./pipes/bsi-currency";
     PagosSelectionComponent,
     PagosImportComponent,
     PagosListComponent,
-    BsiCurrencyPipe
+    BsiCurrencyPipe,
+    DinamicModuleComponent
   ],
   imports: [
     BrowserModule,

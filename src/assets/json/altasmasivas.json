@@ -1,0 +1,68 @@
+{
+  "header": "Altas Masivas de cuentas",
+  "description": "",
+  "enabled": true,
+  "icono": "fa-credit-card",
+  "items": [
+    {
+      "title": "Tipo de Alta",
+      "description": "",
+      "enabled": true,
+      "items": [
+        {
+          "description": "Alta de cuentas Sueldo (Sector Público)",
+          "link": "/altas/sueldo-publico",
+          "icono": "fa-briefcase"
+        }
+      ]
+    },
+    {
+      "title": "Tipo de Alta",
+      "description": "",
+      "enabled": false,
+      "items": [
+        {
+          "description": "Alta de cuentas Sueldo (Sector Privado)",
+          "link": "/altas/sueldo-privado",
+          "icono": "fa-building"
+        }
+      ]
+    },
+    {
+      "title": "Tipo de Alta",
+      "description": "",
+      "enabled": true,
+      "items": [
+        {
+          "description": "Alta de cuentas Beneficios",
+          "link": "/dinamicModule/altasBeneficios",
+          "icono": "fa-gift"
+        }
+      ]
+    },
+    {
+      "title": "Tipo de Alta",
+      "description": "",
+      "enabled": false,
+      "items": [
+        {
+          "description": "Alta de cuentas Judiciales",
+          "link": "/altas/judiciales",
+          "icono": "fa-gavel"
+        }
+      ]
+    },
+    {
+      "title": "Tipo de Alta",
+      "description": "",
+      "enabled": false,
+      "items": [
+        {
+          "description": "Alta de cuentas Sociales",
+          "link": "/altas/sociales",
+          "icono": "fa-users"
+        }
+      ]
+    }
+  ]
+}

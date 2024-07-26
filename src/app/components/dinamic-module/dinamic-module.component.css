@@ -1,0 +1,14 @@
+.btn .fa, .btn .far {
+    color: #FFC107 !important;
+  }
+
+  .btn span {
+    font-weight: 500 !important;
+  }
+
+  .card-header .fa {
+    color: #0b76ea !important;
+    font-size: 1.3em;
+    margin-bottom: 1px;
+    margin-right: 9px !important;
+  }

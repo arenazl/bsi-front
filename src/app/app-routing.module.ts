@@ -11,6 +11,7 @@ import { RankingComponent } from './components/ranking/ranking.component';
 import { PagosSelectionComponent } from './components/pagos-multiples/pagos-selection/pagos-selection.component';
 import { PagosImportComponent } from './components/pagos-multiples/pagos-import/pagos-import.component';
 import { PagosListComponent } from './components/pagos-multiples/pagos-list/pagos-list.component';
+import { DinamicModuleComponent } from './components/dinamic-module/dinamic-module.component';
 
 const routes: Routes = [
   {
@@ -65,6 +66,11 @@ const routes: Routes = [
   {
     path: 'pagosImport/:id',
     component: PagosImportComponent
+  },
+
+  {
+    path: 'dinamicModule/:screen',
+    component: DinamicModuleComponent
   },
 
 ];

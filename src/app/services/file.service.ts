@@ -69,4 +69,8 @@ export class FileService {
     });
   }
 
+  getJsonForScreen(jsonName: string) {
+    return this._http.get('assets/json/' + jsonName + '.json');
+  }
+
 }

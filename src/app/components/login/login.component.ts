@@ -65,7 +65,7 @@ export class LoginComponent implements OnInit {
 
           this.sharedService.sendClickEvent(res);
 
-          this.router.navigate(['/mainmenu']);
+          this.router.navigate(['/dinamicModule/mainmenu']);
           return;
 
 

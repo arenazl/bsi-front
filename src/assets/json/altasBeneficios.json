@@ -1,0 +1,60 @@
+{
+  "header": "Alta Cuenta de Beneficios",
+  "description": "Genera el archivo de alta de cuenta con el diseño que el banco solicita",
+  "enabled": true,
+  "icono": "fa-gift",
+  "items": [
+    {
+      "title": "Alta de Cuentas desde plantilla",
+      "description": "Importá tus datos desde un Excel",
+      "icono": "fa-file-excel",
+      "enabled": true,
+      "items": [
+        {
+          "description": "Importar la plantilla",
+          "link": "/pagosImport/2",
+          "icono": "fa-download"
+        }
+      ]
+    },
+    {
+      "title": "Alta de Cuentas individual",
+      "description": "Cargá los datos en pantalla",
+      "icono": "fa-file-upload",
+      "enabled": true,
+      "items": [
+        {
+          "description": "Comenzar la carga",
+          "link": "/start-upload",
+          "icono": "fa-hands"
+        }
+      ]
+    },
+    {
+      "title": "Obtener CBU (archivo bancario)",
+      "description": "Importá la devolución del Banco",
+      "icono": "fa-university",
+      "enabled": true,
+      "items": [
+        {
+          "description": "Importar CBUs",
+          "link": "/import-cbu",
+          "icono": "fa-download"
+        }
+      ]
+    },
+    {
+      "title": "Exportar nómina para archivo de pago",
+      "description": "Descargá Excel con beneficiarios a pagar",
+      "icono": "fa-file-excel",
+      "enabled": true,
+      "items": [
+        {
+          "description": "Exportar Beneficiarios",
+          "link": "/export-nomina",
+          "icono": "fa-file-export"
+        }
+      ]
+    }
+  ]
+}

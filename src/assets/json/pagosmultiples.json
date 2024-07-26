@@ -1,0 +1,86 @@
+{
+  "header": "Pagos Multiples",
+  "description": "Gestión de pagos diversos",
+  "enabled": true,
+  "icono": "fa-money-check-alt",
+  "items": [
+    {
+      "title": "Tipo pago",
+      "description": "",
+      "icono": "fa-dollar-sign",
+      "enabled": true,
+      "items": [
+        {
+          "description": "Pago de haberes",
+          "link": "/pagosImport/1",
+          "icono": "fa-money-bill"
+        }
+      ]
+    },
+    {
+      "title": "Tipo pago",
+      "description": "",
+      "icono": "fa-clipboard-list",
+      "enabled": true,
+      "items": [
+        {
+          "description": "Pago a proveedores",
+          "link": "/pagosImport/4",
+          "icono": "fa-file-invoice"
+        }
+      ]
+    },
+    {
+      "title": "Tipo pago",
+      "description": "",
+      "icono": "fa-briefcase",
+      "enabled": true,
+      "items": [
+        {
+          "description": "Pago de honorarios",
+          "link": "/pagosImport/9",
+          "icono": "fa-hand-holding-usd"
+        }
+      ]
+    },
+    {
+      "title": "Tipo pago",
+      "description": "",
+      "icono": "fa-gift",
+      "enabled": true,
+      "items": [
+        {
+          "description": "Pago de Beneficios",
+          "link": "/pagosImport/3",
+          "icono": "fa-gift"
+        }
+      ]
+    },
+    {
+      "title": "Tipo pago",
+      "description": "",
+      "icono": "fa-university",
+      "enabled": true,
+      "items": [
+        {
+          "description": "Embargos (Banco Provincia)",
+          "link": "/pagosImport/10",
+          "icono": "fa-gavel"
+        }
+      ]
+    },
+    {
+      "title": "Tipo pago",
+      "description": "",
+      "icono": "fa-university",
+      "enabled": true,
+      "items": [
+        {
+          "description": "Embargos (Otros Bancos)",
+          "link": "/pagosImport/2",
+          "icono": "fa-balance-scale"
+        }
+      ]
+    }
+  ]
+}

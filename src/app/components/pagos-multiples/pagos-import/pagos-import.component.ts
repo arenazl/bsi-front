@@ -38,7 +38,8 @@ export class PagosImportComponent implements OnInit {
   buttonText = 'Subir Archivo';
   errorMessage = '';
   pageTitle = '';
-  fechaPago: string = new Date(new Date().setDate(new Date().getDate() + 1)).toISOString().split('T')[0];
+
+  fechaPago = new Date(new Date().setDate(new Date().getDate() + 1)).toISOString().split('T')[0];
 
   ld_header: boolean = true;
 
@@ -126,7 +127,7 @@ export class PagosImportComponent implements OnInit {
     const date = new Date(dateString);
     const year = date.getFullYear().toString();
     const month = (date.getMonth() + 1).toString().padStart(2, '0');
-    const day = date.getDate().toString().padStart(2, '0');
+    const day = (date.getDate() + 1).toString().padStart(2, '0');
     return `${year}${month}${day}`;
   }
 
