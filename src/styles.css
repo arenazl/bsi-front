@@ -345,7 +345,6 @@ height: auto;
   }
 }
 
-
 .table-striped > tbody > tr:nth-of-type(2n+1) > * {
   --darkreader-bg--bs-table-accent-bg: rgb(2 2 2 / 2%) !important; 
 }
@@ -359,4 +358,39 @@ height: auto;
   background-color: #00958a !important;
   color: white !important;
 }
+
+body {
+  margin: 0;
+  overflow: hidden;
+  height: 100vh;
+}
+
+.background-blur {
+  background-image: url('./assets/img/wallpaperbetter.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  filter: blur(12px);
+  width: 125vw;
+  height: 124vh;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1;
+}
+
+.vh-100 {
+  min-height: 110vh;
+  width: 126vw;
+  position: relative;
+  z-index: 2;
+}
+
+.formContent {
+  position: relative;
+  z-index: 3;
+  background-color: rgba(255, 255, 255, 0.8); /* This adds a semi-transparent background to the form */
+  backdrop-filter: none; /* Ensure no blur is applied to the form itself */
+}
+
 

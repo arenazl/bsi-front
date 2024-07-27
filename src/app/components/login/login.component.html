@@ -1,7 +1,6 @@
-<!------ Include the above in your HEAD tag ---------->
-
-<div class="d-flex align-items-center justify-content-center vh-100">
-  <div id="formContent" class="text-center p-4 border rounded shadow">
+<div class="d-flex align-items-center justify-content-center vh-100 position-relative">
+  <div class="background-blur"></div>
+  <div id="formContent" class="text-center p-4 border rounded shadow formContent">
     <!-- Tabs Titles -->
 
     <!-- Icon -->
@@ -18,9 +17,8 @@
     <form [formGroup]="form" (ngSubmit)="onSubmit()">
       <input type="text" id="login" class="form-control mt-3" placeholder="usuario" formControlName="user">
       <input type="password" id="password" class="form-control mt-3" placeholder="clave" formControlName="pass">
-      <input type="submit" style="
-      width: 90%;
-  " class="fourth mt-3 btn btn-primary" value="{{login_txt}}">
+      <input type="submit" style="width: 90%; background-color:#366bd0;" class="fourth mt-3 btn btn-primary"
+        value="{{login_txt}}">
     </form>
 
     <!-- Remind Password -->
