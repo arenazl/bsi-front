@@ -137,7 +137,23 @@ export class PagosImportComponent implements OnInit {
 
     if (type == 'pagos' && contrato == '3') {
       return 'Pago de Beneficios';
-    } else if (type == 'altas' && contrato == '3') {
+    }
+    if (type == 'pagos' && contrato == '1') {
+      return 'Pago de Haberes';
+    }
+    if (type == 'pagos' && contrato == '4') {
+      return 'Pago de Proveedores';
+    }
+    if (type == 'pagos' && contrato == '9') {
+      return 'Pago de Honorarios';
+    }
+    if (type == 'pagos' && contrato == '10') {
+      return 'Pago de Embargos (Banco Provincia)';
+    }
+    if (type == 'pagos' && contrato == '2') {
+      return 'Pago de Embargos (otros Bancos)';
+    }
+    else if (type == 'altas' && contrato == '3') {
       return 'Alta de Cuentas desde plantillas';
     } else
       return "";
