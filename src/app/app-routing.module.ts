@@ -8,10 +8,10 @@ import { GameFormComponent } from './components/game-form/game-form.component';
 import { LoginComponent } from './components/login/login.component';
 import { MainMenuComponent } from './components/main-menu/main-menu.component';
 import { RankingComponent } from './components/ranking/ranking.component';
-import { PagosSelectionComponent } from './components/pagos-multiples/pagos-selection/pagos-selection.component';
-import { PagosImportComponent } from './components/pagos-multiples/pagos-import/pagos-import.component';
-import { PagosListComponent } from './components/pagos-multiples/pagos-list/pagos-list.component';
+import { XslVerifiedComponent } from './components/xsl-verified/xsl-verified.component';
 import { DinamicModuleComponent } from './components/dinamic-module/dinamic-module.component';
+import { XslValidatorComponent } from './components/xsl-valivator/xsl-valivator.component';
+import { XslImportComponent } from './components/xsl-import/xsl-import.component';
 
 const routes: Routes = [
   {
@@ -50,24 +50,21 @@ const routes: Routes = [
     component: AuditoriaComponent
   },
   {
-    path: 'pagoslist/:id',
-    component: PagosListComponent
-  },
-
-  {
     path: 'ranking',
     component: RankingComponent
   },
   {
-    path: 'pagosSelection',
-    component: PagosSelectionComponent
+    path: 'xslVerified/:id',
+    component: XslVerifiedComponent
   },
-
   {
-    path: 'pagosImport/:tipo/:contrato',
-    component: PagosImportComponent
+    path: 'xslValivator/:id',
+    component: XslValidatorComponent
   },
-
+  {
+    path: 'xslImport/:tipo/:contrato',
+    component: XslImportComponent
+  },
   {
     path: 'dinamicModule/:screen',
     component: DinamicModuleComponent

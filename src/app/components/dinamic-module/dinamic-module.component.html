@@ -1,19 +1,19 @@
 <div class="card" *ngIf="data">
     <div class="card-header d-flex align-items-center">
         <i *ngIf="data.icono" class="fa me-2" [ngClass]="data.icono"></i>
-        <h4 class="mb-0">{{ data.header }}</h4>
+        <h6 class="mb-0">{{ data.header }}</h6>
     </div>
 
     <div *ngIf="data.description" class="card-body pt-3 pb-0">
-        <p class="card-text text-muted fst-italic">{{ data.description }}</p>
+        <p class="card-text text-muted fst-italic" style=" font-size: 1.1em">{{ data.description }}</p>
     </div>
 
     <div class="card-body row">
         <div class="col-lg-4 col-md-6 col-sm-12" *ngFor="let item of data.items">
             <div class="card mb-3" [ngClass]="{'disabled': !item.enabled}">
                 <div class="card-body">
-                    <h5 class="card-title">{{ item.title }}</h5>
-                    <p class="card-text">{{ item.description }}</p>
+                    <h6 class="card-title">{{ item.title }}</h6>
+                    <p class="card-text font-size-90">{{ item.description }}</p>
                     <div class="d-flex flex-row flex-wrap" *ngIf="item.items">
                         <div *ngFor="let subItem of item.items; let isLast=last" class="flex-grow-1"
                             [class.me-2]="!isLast">

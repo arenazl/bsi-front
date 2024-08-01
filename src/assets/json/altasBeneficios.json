@@ -12,7 +12,7 @@
       "items": [
         {
           "description": "Importar la plantilla",
-          "link": "/pagosImport/altas/3",
+          "link": "/xslImport/altas/3",
           "icono": "fa-download"
         }
       ]

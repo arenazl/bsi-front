@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { PagosListComponent } from './pagos-list.component';
+import { XslVerifiedComponent } from './xsl-verified.component';
 
 describe('PagosListComponent', () => {
-  let component: PagosListComponent;
-  let fixture: ComponentFixture<PagosListComponent>;
+  let component: XslVerifiedComponent;
+  let fixture: ComponentFixture<XslVerifiedComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ PagosListComponent ]
+      declarations: [XslVerifiedComponent]
     })
-    .compileComponents();
+      .compileComponents();
 
-    fixture = TestBed.createComponent(PagosListComponent);
+    fixture = TestBed.createComponent(XslVerifiedComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

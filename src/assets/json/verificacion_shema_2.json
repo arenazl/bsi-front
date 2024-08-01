@@ -1,0 +1,26 @@
+{
+  "data": [
+    {
+      "CUIL": "20123456789",
+      "Tipo_Doc": "DNI",
+      "Nro_Doc": "12345678",
+      "Apellidos": "Perez",
+      "Nombres": "Juan",
+      "Fecha_Nacimiento": "1980-05-15",
+      "Sexo": "M",
+      "es_valido": true,
+      "mensaje_error": ""
+    },
+    {
+      "CUIL": "20345678901",
+      "Tipo_Doc": "DNI",
+      "Nro_Doc": "87654321",
+      "Apellidos": "Gomez",
+      "Nombres": "Maria",
+      "Fecha_Nacimiento": "1990-08-20",
+      "Sexo": "F",
+      "es_valido": false,
+      "mensaje_error": "Fecha de nacimiento inválida"
+    }
+  ]
+}

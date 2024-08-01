@@ -68,9 +68,18 @@ export class FileService {
       headers: new HttpHeaders().append('Content-Type', 'application/json')
     });
   }
-
   getJsonForScreen(jsonName: string) {
     return this._http.get('assets/json/' + jsonName + '.json');
+  }
+
+  getColumnConfig(tipo: string): Observable<any> {
+    const url = `assets/column_shema_${tipo}.json`;
+    return this._http.get<any>(url);
+  }
+
+  getVerificacionContrato(tipo: string): Observable<any> {
+    const url = `assets/verificacion_shema_${tipo}.json`;
+    return this._http.get<any>(url);
   }
 
 }
