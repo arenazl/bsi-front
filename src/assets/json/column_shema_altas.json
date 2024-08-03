@@ -1,0 +1,17 @@
+{
+  "columns": [
+    { "header": "Cuil", "field": "CUIL", "type": "text" },
+    { "header": "Tipo doc", "field": "Tipo_Doc", "type": "text" },
+    { "header": "Nro doc", "field": "Nro_Doc", "type": "text" },
+    { "header": "Apellidos", "field": "Apellidos", "type": "text" },
+    { "header": "Nombres", "field": "Nombres", "type": "text" },
+    {
+      "header": "Fecha nacimiento",
+      "field": "Fecha_Nacimiento",
+      "type": "date"
+    },
+    { "header": "Sexo", "field": "Sexo", "type": "text" },
+    { "header": "Resultado", "field": "es_valido", "type": "result" },
+    { "header": "Mensaje de error", "field": "mensaje_error", "type": "text" }
+  ]
+}

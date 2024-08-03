@@ -25,7 +25,6 @@ import { XslImportComponent } from './components/xsl-import/xsl-import.component
 import { XslVerifiedComponent } from './components/xsl-verified/xsl-verified.component';
 import { BsiCurrencyPipe } from "./pipes/bsi-currency";
 import { DinamicModuleComponent } from './components/dinamic-module/dinamic-module.component';
-import { XslValidatorComponent } from './components/xsl-valivator/xsl-valivator.component';
 
 @NgModule({
   declarations: [
@@ -40,7 +39,6 @@ import { XslValidatorComponent } from './components/xsl-valivator/xsl-valivator.
     RankingComponent,
     SafeHtmlPipe,
     XslImportComponent,
-    XslValidatorComponent,
     XslVerifiedComponent,
     BsiCurrencyPipe,
     DinamicModuleComponent,

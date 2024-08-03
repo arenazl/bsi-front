@@ -73,12 +73,12 @@ export class FileService {
   }
 
   getColumnConfig(tipo: string): Observable<any> {
-    const url = `assets/column_shema_${tipo}.json`;
+    const url = `assets/json/column_shema_${tipo}.json`;
     return this._http.get<any>(url);
   }
 
-  getVerificacionContrato(tipo: string): Observable<any> {
-    const url = `assets/verificacion_shema_${tipo}.json`;
+  getContratoData(tipo: string): Observable<any> {
+    const url = `assets/json/data_${tipo}.json`;
     return this._http.get<any>(url);
   }
 

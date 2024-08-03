@@ -366,7 +366,7 @@ height: auto;
 
 body {
   margin: 0;
-  overflow: hidden;
+  overflow: auto;
   height: 100vh;
 }
 
@@ -398,4 +398,15 @@ body {
   backdrop-filter: none; /* Ensure no blur is applied to the form itself */
 }
 
+.btn-primary {
+  background: linear-gradient(270deg, #00BCD4, #0d6efd) !important;
+  border: 1px solid white;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease; /* Suaviza el cambio de sombra y transformación */
+}
 
+.btn-primary:hover {
+  transform: translateY(4px); /* Eleva el botón al pasar el mouse */
+  border: 1px solid #097ada;
+  box-shadow: 0 6px 11px rgba(146, 146, 146, 0.55);
+}

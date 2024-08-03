@@ -1,0 +1,29 @@
+{
+  "head": {
+    "FECHA": "2024-07-30T00:00:00",
+    "CANTIDAD_TRANSFERENCIAS": 2,
+    "TOTAL_IMPORTE": 4701.25,
+    "CUENTA_DEBITO": "1234567890123456789012",
+    "CONCEPTO": "Pago de servicios"
+  },
+  "data": [
+    {
+      "CBU": "0123456789012345678901",
+      "CUIL": "20123456789",
+      "NOMBRE": "Perez, Juan",
+      "IMPORTE": 1500.75
+    },
+    {
+      "CBU": "0987654321098765432109",
+      "CUIL": "20345678901",
+      "NOMBRE": "Gomez, Maria",
+      "IMPORTE": 0.0
+    },
+    {
+      "CBU": "1234567890123456789012",
+      "CUIL": "20987654321",
+      "NOMBRE": "Lopez, Ana",
+      "IMPORTE": 3200.5
+    }
+  ]
+}

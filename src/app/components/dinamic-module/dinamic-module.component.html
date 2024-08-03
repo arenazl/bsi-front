@@ -1,11 +1,11 @@
 <div class="card" *ngIf="data">
     <div class="card-header d-flex align-items-center">
         <i *ngIf="data.icono" class="fa me-2" [ngClass]="data.icono"></i>
-        <h6 class="mb-0">{{ data.header }}</h6>
+        <h5 class="mb-0">{{ data.header }}</h5>
     </div>
 
     <div *ngIf="data.description" class="card-body pt-3 pb-0">
-        <p class="card-text text-muted fst-italic" style=" font-size: 1.1em">{{ data.description }}</p>
+        <p class="card-text text-muted fst-italic" style=" font-size: 0.95em">{{ data.description }}</p>
     </div>
 
     <div class="card-body row">

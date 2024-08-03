@@ -4,6 +4,7 @@ import { FileUploader, FileItem } from 'ng2-file-upload';
 import { ActivatedRoute, Router } from '@angular/router';
 import { GlobalVariable } from '../../../environments/global';
 import { FileService } from '../../services/file.service';
+import { TipoModulo } from 'src/app/enums/enums';
 
 const uri = GlobalVariable.BASE_API_URL + "/file/importxls";
 
@@ -41,6 +42,7 @@ export class XslImportComponent implements OnInit {
 
   ngOnInit(): void {
     this.route.params.subscribe(params => {
+
       this.tipo = params['tipo'];
       this.contrato = params['contrato'];
 
@@ -50,8 +52,9 @@ export class XslImportComponent implements OnInit {
 
       this.fileService.ObtenerContratoById(1, 71, parseInt(this.contrato)).subscribe((data: any) => {
         this.ld_header = false;
+
         this.initializeControls(data[0]);
-        this.showOpcionesCarga = this.tipo === 'altas' || this.conceptoSeleccionado;
+
       });
     });
 
@@ -64,8 +67,9 @@ export class XslImportComponent implements OnInit {
       this.filesUploaded = true;
       this.buttonText = 'Completado';
       const parsedResponse = JSON.parse(response);
-      if (parsedResponse.id) {
-        this.router.navigate(['/xslValivator/' + parsedResponse.id]);
+      if (true/*parsedResponse.id*/) {
+        this.router.navigate(['/xslVerified/' + this.tipo]);
+
       } else {
         this.errorMessage = parsedResponse.message;
       }
@@ -80,10 +84,12 @@ export class XslImportComponent implements OnInit {
   }
 
   initializeControls(data: any): void {
+
     this.controls = [];
     this.formGroup = this.fb.group({});
 
-    if (this.tipo === 'pagos') {
+    if (this.tipo === TipoModulo.PAGOS) {
+
       this.controls.push(
         { type: 'input', label: 'Rótulo', id: 'rotulo', model: data.Rotulo, readonly: true, inputType: 'text' },
         { type: 'input', label: 'Cuenta Débito', id: 'cuentaDebito', model: data.Cuenta_Debito, readonly: true, inputType: 'text' }
@@ -105,12 +111,16 @@ export class XslImportComponent implements OnInit {
       }
 
       this.showFechaPago = true;
-    } else if (this.tipo === 'altas') {
+
+    }
+    else if (this.tipo === TipoModulo.ALTAS) {
       this.controls.push(
         { type: 'input', label: 'Rótulo', id: 'rotulo', model: data.Rotulo, readonly: true, inputType: 'text' },
         { type: 'input', label: 'Ente', id: 'ente', model: data.Ente, readonly: true, inputType: 'text' }
       );
     }
+
+    this.showOpcionesCarga = this.tipo === TipoModulo.ALTAS || this.conceptoSeleccionado;
 
     this.controls.forEach(control => {
       this.formGroup.addControl(control.id, this.fb.control(control.model));

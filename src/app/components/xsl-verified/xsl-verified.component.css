@@ -1,11 +1,10 @@
 .header-style {
-  font-size: 110%;
   color: white;
   background: linear-gradient(270deg, #009688, #0d6efd) !important;
 }
 
 .opacity-style {
-  opacity: 0.7;
+  opacity: 0.85;
 }
 
 .btn-responsive {
@@ -25,6 +24,11 @@
   font-size: 1.3em;
   margin-bottom: 1px;
   margin-right: 7px !important;
+}
+
+.table-style {
+  font-weight: 500;
+  font-size: 0.9em;
 }
 
 /* Estilos generales */
@@ -88,6 +92,35 @@
 
 .btn .fa {
   margin-right: 8px;
-  font-size: 1.2em;
-  color: #FFC107 !important;
+  font-size: 1em;
+  opacity: 0.9;
+}
+
+.text-success {
+  color: green !important; /* O el color que prefieras */
+}
+
+.text-danger {
+  color: red !important; /* O el color que prefieras */
+}
+
+.fw-500 {
+  font-weight: 500;
+}
+
+table thead th:first-child {
+  border-top-left-radius: 10px; /* Redondea la esquina superior izquierda */
+}
+
+table thead th:last-child {
+  border-top-right-radius: 10px; /* Redondea la esquina superior derecha */
+}
+
+/* Asegúrate de que no haya conflicto con las clases del framework */
+table thead {
+  background-color: #f8f9fa; /* Asegura un fondo claro para ver el efecto */
+}
+
+.card-header {
+  padding-left: 14px !important;
 }

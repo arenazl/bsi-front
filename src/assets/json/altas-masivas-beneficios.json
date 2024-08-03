@@ -21,7 +21,7 @@
       "title": "Alta de Cuentas individual",
       "description": "Cargá los datos en pantalla",
       "icono": "fa-file-upload",
-      "enabled": true,
+      "enabled": false,
       "items": [
         {
           "description": "Comenzar la carga",
@@ -34,7 +34,7 @@
       "title": "Obtener CBU (archivo bancario)",
       "description": "Importá la devolución del Banco",
       "icono": "fa-university",
-      "enabled": true,
+      "enabled": false,
       "items": [
         {
           "description": "Importar CBUs",
@@ -47,7 +47,7 @@
       "title": "Exportar nómina para archivo de pago",
       "description": "Descargá Excel con beneficiarios a pagar",
       "icono": "fa-file-excel",
-      "enabled": true,
+      "enabled": false,
       "items": [
         {
           "description": "Exportar Beneficiarios",

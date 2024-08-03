@@ -10,7 +10,6 @@ import { MainMenuComponent } from './components/main-menu/main-menu.component';
 import { RankingComponent } from './components/ranking/ranking.component';
 import { XslVerifiedComponent } from './components/xsl-verified/xsl-verified.component';
 import { DinamicModuleComponent } from './components/dinamic-module/dinamic-module.component';
-import { XslValidatorComponent } from './components/xsl-valivator/xsl-valivator.component';
 import { XslImportComponent } from './components/xsl-import/xsl-import.component';
 
 const routes: Routes = [
@@ -54,12 +53,8 @@ const routes: Routes = [
     component: RankingComponent
   },
   {
-    path: 'xslVerified/:id',
+    path: 'xslVerified/:tipoForm',
     component: XslVerifiedComponent
-  },
-  {
-    path: 'xslValivator/:id',
-    component: XslValidatorComponent
   },
   {
     path: 'xslImport/:tipo/:contrato',
@@ -68,8 +63,7 @@ const routes: Routes = [
   {
     path: 'dinamicModule/:screen',
     component: DinamicModuleComponent
-  },
-
+  }
 ];
 
 @NgModule({

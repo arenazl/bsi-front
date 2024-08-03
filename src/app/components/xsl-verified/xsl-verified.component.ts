@@ -1,8 +1,9 @@
-import { Component, OnInit, AfterViewInit, HostBinding } from "@angular/core";
+import { Component, OnInit, AfterViewInit, HostBinding, ChangeDetectorRef } from "@angular/core";
 import { FileService } from "../../services/file.service";
 import { Router, ActivatedRoute, Params } from "@angular/router";
 import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
+import { TipoModulo } from "src/app/enums/enums";
 
 @Component({
   selector: 'app-xsl-verified',
@@ -20,26 +21,33 @@ export class XslVerifiedComponent implements OnInit, AfterViewInit {
   validationData: any = { data: [] };
   municipio = '';
   columnConfig: any[] = [];
+  showExportSection = true;
 
   constructor(
     private fileService: FileService,
     private router: Router,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private cdRef: ChangeDetectorRef
+
   ) { }
 
   ngAfterViewInit(): void { }
 
   ngOnInit() {
 
+    this.municipio = this.toProperCase(sessionStorage.getItem('Organismo') as string)
+
     this.route.params.subscribe((params) => {
 
       this.tipoForm = params["tipoForm"];
 
-      this.headerTitle = this.getHeaderText(Number(this.tipoForm));
+      this.headerTitle = this.getHeaderText(this.tipoForm);
 
-      this.fileService.getVerificacionContrato(this.tipoForm).subscribe((result) => {
+      this.fileService.getContratoData(this.tipoForm).subscribe((result) => {
         this.validationData = result;
+        this.cdRef.detectChanges();
       });
+
 
     });
 
@@ -48,17 +56,27 @@ export class XslVerifiedComponent implements OnInit, AfterViewInit {
     });
   }
 
-  getHeaderText(idTipo: number): string {
-    switch (idTipo) {
-      case 1:
-        return "transferencias inmediatas";
-      case 2:
-        return "pagos multiples";
-      case 3:
-        return "alta de cuentas";
-      default:
-        return "Tipo desconocido";
+
+  areAllRecordsValid(): boolean {
+    this.showExportSection = this.validationData.data.every(
+      (record: any) => record.es_valido === true || record.es_valido === undefined
+    );
+    return this.showExportSection;
+  }
+
+  getHeaderText(TipoForm: string): string {
+
+    switch (TipoForm) {
+      case TipoModulo.TRANSFERENCIAS:
+        return "Transferencias Inmediatas";
+      case TipoModulo.PAGOS:
+        return "Pagos Multiples";
+      case TipoModulo.ALTAS:
+        return "Alta de Cuentas";
     }
+
+    return '';
+
   }
 
   generatePdfTable() {

@@ -14,8 +14,8 @@
 
     <div class="card px-0 mb-3" *ngIf="validationData.data.length > 0">
 
-        <div class="card-header pt-3">
-            <h4> {{ municipio }}</h4>
+        <div class="card-header pt-3 pb-1">
+            <h6> {{ municipio }}</h6>
         </div>
 
         <div class="card-body pb-0">
@@ -23,15 +23,15 @@
             <div class="row">
                 <div class="col-md-4">
                     <div class="label fw-normal">Fecha:</div>
-                    <p class="fw-bold">{{ validationData.head.FECHA | date : 'dd/MM/yyyy' }}</p>
+                    <p class="fw-500">{{ validationData.head.FECHA | date : 'dd/MM/yyyy' }}</p>
                 </div>
                 <div class="col-md-4">
                     <div class="label fw-normal">Cantidad de Transferencias:</div>
-                    <p class="fw-bold">{{ validationData.head.CANTIDAD_TRANSFERENCIAS }}</p>
+                    <p class="fw-500">{{ validationData.head.CANTIDAD_TRANSFERENCIAS }}</p>
                 </div>
                 <div class="col-md-4">
                     <div class="label fw-normal">Importe Total:</div>
-                    <p class="fw-bold">{{ validationData.head.TOTAL_IMPORTE | BsiCurrencyPipe }}
+                    <p class="fw-500">{{ validationData.head.TOTAL_IMPORTE | BsiCurrencyPipe }}
                     </p>
                 </div>
             </div>
@@ -39,35 +39,30 @@
             <div class="row">
                 <div class="col-md-4">
                     <div class="label fw-normal">Cuenta Debito:</div>
-                    <p class="fw-bold">{{ validationData.head.CUENTA_DEBITO }}</p>
+                    <p class="fw-500">{{ validationData.head.CUENTA_DEBITO }}</p>
                 </div>
                 <div class="col-md-4">
                     <div class="label fw-normal">Concepto:</div>
-                    <p class="fw-bold">{{ validationData.head.CONCEPTO }}</p>
+                    <p class="fw-500">{{ validationData.head.CONCEPTO }}</p>
                 </div>
             </div>
         </div>
 
+
     </div>
 
     <!-- ACCIONES -->
-    <div class="card px-0 mb-3" *ngIf="validationData.data.length > 0">
-        <div class="card-header">
-            <h5>Exportar TR</h5>
+    <div class="card px-0 mb-3" *ngIf="validationData.data.length > 0 && showExportSection">
+        <div class="card-header pt-3 pb-1">
+            <h6>Exportar</h6>
         </div>
 
         <div class="card-body d-flex flex-wrap">
             <button type="button"
-                class="btn btn-primary col-12 mx-2 col-md-2 d-flex align-items-center justify-content-center"
+                class="btn btn-primary col-12 col-md-2 d-flex align-items-center justify-content-center"
                 (click)="generatePdfContrato()">
                 <i class="fa fa-file-contract me-2"></i>
                 Descargar Contrato
-            </button>
-            <button type="button"
-                class="btn btn-primary col-12 mx-2 col-md-2 d-flex align-items-center justify-content-center"
-                (click)="generatePdfTable()">
-                <i class="fa fa-file-pdf me-2"></i>
-                Descargar PDF
             </button>
             <button type="button"
                 class="btn btn-primary col-12 mx-2 col-md-2 d-flex align-items-center justify-content-center"
@@ -75,39 +70,61 @@
                 <i class="fa fa-file-download me-2"></i>
                 Descargar Archivo
             </button>
+
+            <button *ngIf="areAllRecordsValid()" type="button"
+                class="btn btn-primary col-12 mx-2 col-md-2 d-flex align-items-center justify-content-center"
+                (click)="getFile()">
+                <i class="fa fa-check-circle me-2"></i>
+                Confirmar Envío
+            </button>
         </div>
 
     </div>
 
     <!-- RESULTADOS -->
-
     <div class="card px-0 mb-3" *ngIf="validationData.data.length > 0">
-        <div class="card-header pt-3">
-            <h5>{{headerTitle}}</h5>
+        <div class="card-header pt-3 pb-1">
+            <h6>{{headerTitle}}</h6>
         </div>
-        <div class="card-body m-0 p-0">
-            <div class="table-responsive">
+        <div class="card-body m-3 p-0">
+            <div class="table-responsive table-style">
                 <table class="table table-striped table-condensed table-hover mb-0">
                     <thead class="opacity-style">
                         <tr class="header-style">
-                            <th *ngFor="let col of columnConfig" class="text-start">{{ col.header }}</th>
+                            <th class="text-start">#</th>
+                            <th *ngFor="let col of columnConfig" [class.text-start]="col.type === 'text'"
+                                [class.text-center]="col.type === 'result'" [class.text-end]="col.type === 'currency'">
+                                {{ col.header }}
+                            </th>
                         </tr>
                     </thead>
                     <tbody>
-                        <ng-container *ngFor="let sol of validationData.data">
+                        <ng-container *ngFor="let sol of validationData.data; let i = index">
                             <tr>
-                                <td *ngFor="let col of columnConfig" [class.text-start]="col.type === 'text'"
-                                    [class.text-end]="col.type === 'currency'">
-                                    <ng-container *ngIf="col.type === 'currency'">{{ sol[col.field] | currency
-                                        }}</ng-container>
-                                    <ng-container *ngIf="col.type !== 'currency'">{{ sol[col.field] }}</ng-container>
+                                <td [ngClass]="{'text-danger': sol.es_valido === false, 'text-start': true}">
+                                    {{ i + 1 }}
                                 </td>
-                                <td>
-                                    <ng-container *ngIf="sol.es_valido">
-                                        <i class="fa fa-check-circle text-success"></i> Válido
+                                <td *ngFor="let col of columnConfig" [class.text-start]="col.type === 'text'"
+                                    [class.text-center]="col.type === 'result'"
+                                    [class.text-end]="col.type === 'currency'">
+                                    <ng-container *ngIf="col.type === 'currency'">
+                                        {{ sol[col.field] | currency }}
                                     </ng-container>
-                                    <ng-container *ngIf="!sol.es_valido">
-                                        <i class="fa fa-times-circle text-danger"></i> {{ sol.mensaje_error }}
+                                    <ng-container *ngIf="col.type === 'text' && col.field !== 'mensaje_error'">
+                                        {{ sol[col.field] }}
+                                    </ng-container>
+
+                                    <ng-container *ngIf="col.type === 'date'">
+                                        {{ sol[col.field] }}
+                                    </ng-container>
+
+                                    <ng-container *ngIf="col.type === 'result'">
+                                        <i *ngIf="sol[col.field]" class="fas fa-check text-success"></i>
+                                        <i *ngIf="!sol[col.field]" class="fas fa-times text-danger"></i>
+                                    </ng-container>
+                                    <ng-container
+                                        *ngIf="col.type === 'text' && col.field === 'mensaje_error' && !sol['es_valido']">
+                                        {{ sol[col.field] }}
                                     </ng-container>
                                 </td>
                             </tr>
@@ -116,7 +133,4 @@
                 </table>
             </div>
         </div>
-
     </div>
-
-</div>

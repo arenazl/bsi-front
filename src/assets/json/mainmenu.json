@@ -11,7 +11,7 @@
       "items": [
         {
           "description": "Archivo de alta de cuentas",
-          "link": "/dinamicModule/altasmasivas",
+          "link": "/dinamicModule/altas-masivas",
           "icono": "fa-file-alt"
         }
       ]
@@ -21,11 +21,6 @@
       "description": "Generá tus archivos de pagos",
       "enabled": true,
       "items": [
-        {
-          "description": "el Historial",
-          "link": "/pagoslist/0",
-          "icono": "fa-history"
-        },
         {
           "description": "Pagos Múltiples",
           "link": "/dinamicModule/pagosmultiples",
