@@ -16,7 +16,7 @@ export class XslVerifiedComponent implements OnInit, AfterViewInit {
 
   ld_header: boolean = false;
   tranfeList: any = [];
-  tipoForm = "";
+  TipoModulo = "";
   headerTitle = "";
   validationData: any = { data: [] };
   municipio = '';
@@ -39,29 +39,50 @@ export class XslVerifiedComponent implements OnInit, AfterViewInit {
 
     this.route.params.subscribe((params) => {
 
-      this.tipoForm = params["tipoForm"];
+      this.TipoModulo = params["tipomodulo"]
+      let id = params["id"]
 
-      this.headerTitle = this.getHeaderText(this.tipoForm);
+      this.headerTitle = this.getHeaderText(this.TipoModulo);
 
-      this.fileService.getContratoData(this.tipoForm).subscribe((result) => {
-        this.validationData = result;
-        this.cdRef.detectChanges();
-      });
 
+      if (this.TipoModulo === TipoModulo.PAGOS) {
+        this.getPagosById(id);
+      }
+
+      if (this.TipoModulo === TipoModulo.ALTAS) {
+        this.fileService.getContratoData(this.TipoModulo).subscribe((result) => {
+          this.validationData = result;
+          this.cdRef.detectChanges();
+        });
+      }
 
     });
 
-    this.fileService.getColumnConfig(this.tipoForm).subscribe(config => {
+    this.fileService.getColumnConfig(this.TipoModulo).subscribe(config => {
       this.columnConfig = config.columns;
     });
   }
 
 
-  areAllRecordsValid(): boolean {
-    this.showExportSection = this.validationData.data.every(
-      (record: any) => record.es_valido === true || record.es_valido === undefined
+  getPagosById(id: string): void {
+
+    this.ld_header = true;
+    //this.selectedHistoryId = id;
+    this.fileService.getPagos(id).subscribe((res) => {
+      this.validationData = res;
+      this.ld_header = false;
+    },
+      (err) => console.error(err)
     );
-    return this.showExportSection;
+  }
+
+  areAllRecordsValid(): boolean {
+
+    return this.validationData.data.every(
+      (record: any) => record.es_valido === true ||
+        record.es_valido === undefined
+    );
+
   }
 
   getHeaderText(TipoForm: string): string {
@@ -119,7 +140,7 @@ export class XslVerifiedComponent implements OnInit, AfterViewInit {
   }
 
   getFile(): void {
-    this.fileService.downloadPagoFile(Number(this.tipoForm)).subscribe((blob) => {
+    this.fileService.downloadPagoFile(Number(this.TipoModulo)).subscribe((blob) => {
       const url = window.URL.createObjectURL(blob);
       const link = document.createElement("a");
       link.href = url;

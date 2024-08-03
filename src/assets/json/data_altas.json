@@ -114,8 +114,8 @@
       "Nombres": "Sarah",
       "Fecha_Nacimiento": "1980-02-18T00:00:00",
       "Sexo": "F",
-      "es_valido": true,
-      "mensaje_error": ""
+      "es_valido": false,
+      "mensaje_error": "cuit invalido"
     },
     {
       "CUIL": "20307408679",
@@ -124,6 +124,7 @@
       "Apellidos": "Garcia",
       "Nombres": "Jill",
       "Fecha_Nacimiento": "1976-12-28T00:00:00",
+
       "Sexo": "F",
       "es_valido": true,
       "mensaje_error": ""
@@ -136,8 +137,8 @@
       "Nombres": "Robert",
       "Fecha_Nacimiento": "1967-12-09T00:00:00",
       "Sexo": "M",
-      "es_valido": true,
-      "mensaje_error": ""
+      "es_valido": false,
+      "mensaje_error": "cuit invalido"
     },
     {
       "CUIL": "20374477379",
@@ -158,8 +159,8 @@
       "Nombres": "Jennifer",
       "Fecha_Nacimiento": "1971-05-25T00:00:00",
       "Sexo": "F",
-      "es_valido": true,
-      "mensaje_error": ""
+      "es_valido": false,
+      "mensaje_error": "cuit invalido"
     },
     {
       "CUIL": "23166981609",
@@ -169,8 +170,8 @@
       "Nombres": "Daniel",
       "Fecha_Nacimiento": "1970-10-17T00:00:00",
       "Sexo": "M",
-      "es_valido": true,
-      "mensaje_error": ""
+      "es_valido": false,
+      "mensaje_error": "dni invalido"
     },
     {
       "CUIL": "23216265139",

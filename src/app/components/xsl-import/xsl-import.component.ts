@@ -16,7 +16,7 @@ const uri = GlobalVariable.BASE_API_URL + "/file/importxls";
 export class XslImportComponent implements OnInit {
   uploader: any;
   formGroup: FormGroup;
-  tipo: string = '';
+  tipoModulo: string = '';
   contrato: string = '';
   conceptosList: string[] = [];
   cargaArchivoSeleccionada = false;
@@ -43,44 +43,46 @@ export class XslImportComponent implements OnInit {
   ngOnInit(): void {
     this.route.params.subscribe(params => {
 
-      this.tipo = params['tipo'];
+      this.tipoModulo = params['tipomodulo'];
       this.contrato = params['contrato'];
 
-      this.pageTitle = this.genTitle(this.tipo, this.contrato);
+      this.pageTitle = this.genTitle(this.tipoModulo, this.contrato);
 
-      this.setUpUploader(this.tipo);
+      this.setUpUploader(this.tipoModulo as TipoModulo);
 
       this.fileService.ObtenerContratoById(1, 71, parseInt(this.contrato)).subscribe((data: any) => {
         this.ld_header = false;
-
         this.initializeControls(data[0]);
-
       });
     });
 
     this.uploader.onBeforeUploadItem = (item: FileItem) => {
+
       item.withCredentials = false;
-      item.file.name = this.getFilename(this.tipo);
+      item.file.name = this.getFilename(this.tipoModulo);
     };
 
     this.uploader.onCompleteItem = (item: any, response: any) => {
       this.filesUploaded = true;
       this.buttonText = 'Completado';
-      const parsedResponse = JSON.parse(response);
-      if (true/*parsedResponse.id*/) {
-        this.router.navigate(['/xslVerified/' + this.tipo]);
 
+      const parsedResponse = JSON.parse(response);
+
+      if (parsedResponse.id) {
+        this.router.navigate(['/xslVerified/' + this.tipoModulo + '/' + parsedResponse.id]);
       } else {
-        this.errorMessage = parsedResponse.message;
+        this.router.navigate(['/xslVerified/' + this.tipoModulo + '/' + 1]);
+        //this.errorMessage = parsedResponse.message;
       }
     };
 
     this.uploader.onProgressItem = () => {
       this.buttonText = 'Importando, espere por favor ...';
     };
+
   }
-  setUpUploader(tipo: string) {
-    this.uploader = new FileUploader({ url: uri + tipo });
+  setUpUploader(tipoModulo: TipoModulo) {
+    this.uploader = new FileUploader({ url: uri + tipoModulo });
   }
 
   initializeControls(data: any): void {
@@ -88,7 +90,7 @@ export class XslImportComponent implements OnInit {
     this.controls = [];
     this.formGroup = this.fb.group({});
 
-    if (this.tipo === TipoModulo.PAGOS) {
+    if (this.tipoModulo === TipoModulo.PAGOS) {
 
       this.controls.push(
         { type: 'input', label: 'Rótulo', id: 'rotulo', model: data.Rotulo, readonly: true, inputType: 'text' },
@@ -113,14 +115,14 @@ export class XslImportComponent implements OnInit {
       this.showFechaPago = true;
 
     }
-    else if (this.tipo === TipoModulo.ALTAS) {
+    else if (this.tipoModulo === TipoModulo.ALTAS) {
       this.controls.push(
         { type: 'input', label: 'Rótulo', id: 'rotulo', model: data.Rotulo, readonly: true, inputType: 'text' },
         { type: 'input', label: 'Ente', id: 'ente', model: data.Ente, readonly: true, inputType: 'text' }
       );
     }
 
-    this.showOpcionesCarga = this.tipo === TipoModulo.ALTAS || this.conceptoSeleccionado;
+    this.showOpcionesCarga = this.tipoModulo === TipoModulo.ALTAS || this.conceptoSeleccionado;
 
     this.controls.forEach(control => {
       this.formGroup.addControl(control.id, this.fb.control(control.model));

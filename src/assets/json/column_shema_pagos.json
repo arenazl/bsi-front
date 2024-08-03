@@ -1,7 +1,6 @@
 {
   "columns": [
     { "header": "Cbu", "field": "CBU", "type": "text" },
-    { "header": "Cuil", "field": "CUIL", "type": "text" },
     { "header": "Nombre", "field": "NOMBRE", "type": "text" },
     { "header": "Importe", "field": "IMPORTE", "type": "currency" }
   ]

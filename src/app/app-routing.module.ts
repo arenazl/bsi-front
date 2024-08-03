@@ -53,11 +53,11 @@ const routes: Routes = [
     component: RankingComponent
   },
   {
-    path: 'xslVerified/:tipoForm',
+    path: 'xslVerified/:tipomodulo/:id',
     component: XslVerifiedComponent
   },
   {
-    path: 'xslImport/:tipo/:contrato',
+    path: 'xslImport/:tipomodulo/:contrato',
     component: XslImportComponent
   },
   {

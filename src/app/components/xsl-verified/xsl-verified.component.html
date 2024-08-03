@@ -52,7 +52,7 @@
     </div>
 
     <!-- ACCIONES -->
-    <div class="card px-0 mb-3" *ngIf="validationData.data.length > 0 && showExportSection">
+    <div class="card px-0 mb-3" *ngIf="validationData.data.length > 0 && areAllRecordsValid">
         <div class="card-header pt-3 pb-1">
             <h6>Exportar</h6>
         </div>
@@ -64,6 +64,14 @@
                 <i class="fa fa-file-contract me-2"></i>
                 Descargar Contrato
             </button>
+
+            <button type="button"
+                class="btn btn-primary col-12 col-md-2 d-flex align-items-center justify-content-center"
+                (click)="generatePdfContrato()">
+                <i class="fa fa-file-contract me-2"></i>
+                Descargar Lista Pagos
+            </button>
+
             <button type="button"
                 class="btn btn-primary col-12 mx-2 col-md-2 d-flex align-items-center justify-content-center"
                 (click)="getFile()">
