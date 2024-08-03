@@ -115,7 +115,7 @@
                                     </ng-container>
 
                                     <ng-container *ngIf="col.type === 'date'">
-                                        {{ sol[col.field] }}
+                                        {{ sol[col.field] | date: 'dd/MM/yyyy' }}
                                     </ng-container>
 
                                     <ng-container *ngIf="col.type === 'result'">
