@@ -50,7 +50,13 @@ export class XslVerifiedComponent implements OnInit, AfterViewInit {
       }
 
       if (this.TipoModulo === TipoModulo.ALTAS) {
-        this.validationData.data = this.fileService.getValidationData();
+
+        this.validationData.data = this.fileService.getValidationData() as [];
+
+        this.validationData.data = this.validationData.data.map((record: any) => {
+          record.Fecha_Nacimiento = this.parseDate(record.Fecha_Nacimiento);
+          return record;
+        });
 
         /*
         this.fileService.getContratoData(this.TipoModulo).subscribe((result) => {
@@ -64,6 +70,17 @@ export class XslVerifiedComponent implements OnInit, AfterViewInit {
     this.fileService.getColumnConfig(this.TipoModulo).subscribe(config => {
       this.columnConfig = config.columns;
     });
+  }
+
+  parseDate(dateString: string): Date | null {
+    const parts = dateString.split('/');
+    if (parts.length === 3) {
+      const day = parseInt(parts[0], 10);
+      const month = parseInt(parts[1], 10) - 1; // Los meses son 0-indexados en JavaScript
+      const year = parseInt(parts[2], 10);
+      return new Date(year, month, day);
+    }
+    return null; // Devuelve null si el formato no es válido
   }
 
 

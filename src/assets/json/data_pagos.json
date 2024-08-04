@@ -18,12 +18,6 @@
       "CUIL": "20345678901",
       "NOMBRE": "Gomez, Maria",
       "IMPORTE": 0.0
-    },
-    {
-      "CBU": "1234567890123456789012",
-      "CUIL": "20987654321",
-      "NOMBRE": "Lopez, Ana",
-      "IMPORTE": 3200.5
     }
   ]
 }
