@@ -17,6 +17,7 @@ export class XslVerifiedComponent implements OnInit, AfterViewInit {
   ld_header: boolean = false;
   tranfeList: any = [];
   TipoModulo = "";
+  SelectedId = 0;
   headerTitle = "";
   validationData: any = { data: [] };
   municipio = '';
@@ -40,20 +41,22 @@ export class XslVerifiedComponent implements OnInit, AfterViewInit {
     this.route.params.subscribe((params) => {
 
       this.TipoModulo = params["tipomodulo"]
-      let id = params["id"]
+      this.SelectedId = params["id"]
 
       this.headerTitle = this.getHeaderText(this.TipoModulo);
 
-
       if (this.TipoModulo === TipoModulo.PAGOS) {
-        this.getPagosById(id);
+        this.getPagosById(this.SelectedId);
       }
 
       if (this.TipoModulo === TipoModulo.ALTAS) {
+        this.validationData.data = this.fileService.getValidationData();
+
+        /*
         this.fileService.getContratoData(this.TipoModulo).subscribe((result) => {
           this.validationData = result;
           this.cdRef.detectChanges();
-        });
+        });*/
       }
 
     });
@@ -64,10 +67,9 @@ export class XslVerifiedComponent implements OnInit, AfterViewInit {
   }
 
 
-  getPagosById(id: string): void {
+  getPagosById(id: number): void {
 
     this.ld_header = true;
-    //this.selectedHistoryId = id;
     this.fileService.getPagos(id).subscribe((res) => {
       this.validationData = res;
       this.ld_header = false;
@@ -140,7 +142,8 @@ export class XslVerifiedComponent implements OnInit, AfterViewInit {
   }
 
   getFile(): void {
-    this.fileService.downloadPagoFile(Number(this.TipoModulo)).subscribe((blob) => {
+
+    this.fileService.downloadOutputFile(this.TipoModulo as TipoModulo, this.SelectedId).subscribe((blob) => {
       const url = window.URL.createObjectURL(blob);
       const link = document.createElement("a");
       link.href = url;

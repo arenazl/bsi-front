@@ -6,8 +6,6 @@ import { GlobalVariable } from '../../../environments/global';
 import { FileService } from '../../services/file.service';
 import { TipoModulo } from 'src/app/enums/enums';
 
-const uri = GlobalVariable.BASE_API_URL + "/file/importxls";
-
 @Component({
   selector: 'app-xsl-xsl',
   templateUrl: './xsl-import.component.html',
@@ -30,6 +28,7 @@ export class XslImportComponent implements OnInit {
   controls: any[] = [];
   showFechaPago = false;
   showOpcionesCarga = false;
+  uri = GlobalVariable.BASE_API_URL + "/file/importxls";
 
   constructor(
     private fb: FormBuilder,
@@ -63,15 +62,16 @@ export class XslImportComponent implements OnInit {
     };
 
     this.uploader.onCompleteItem = (item: any, response: any) => {
+
       this.filesUploaded = true;
       this.buttonText = 'Completado';
-
       const parsedResponse = JSON.parse(response);
 
       if (parsedResponse.id) {
         this.router.navigate(['/xslVerified/' + this.tipoModulo + '/' + parsedResponse.id]);
       } else {
-        this.router.navigate(['/xslVerified/' + this.tipoModulo + '/' + 1]);
+        this.fileService.saveValidationData(parsedResponse);
+        this.router.navigate(['/xslVerified/' + this.tipoModulo + '/' + 0]);
         //this.errorMessage = parsedResponse.message;
       }
     };
@@ -82,7 +82,7 @@ export class XslImportComponent implements OnInit {
 
   }
   setUpUploader(tipoModulo: TipoModulo) {
-    this.uploader = new FileUploader({ url: uri + tipoModulo });
+    this.uploader = new FileUploader({ url: this.uri + tipoModulo });
   }
 
   initializeControls(data: any): void {

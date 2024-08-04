@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { GlobalVariable } from '../../environments/global';
-import { Observable } from 'rxjs';
+import { Observable, Observer } from 'rxjs';
 import { map } from 'jquery';
+import { TipoModulo } from '../enums/enums';
 
 
 @Injectable({
@@ -12,6 +13,8 @@ import { map } from 'jquery';
 export class FileService {
 
   API_URI = GlobalVariable.BASE_API_URL;
+  validationData = null;
+  private storageKey = 'validationData';
 
   constructor(private _http: HttpClient
   ) { }
@@ -20,12 +23,25 @@ export class FileService {
     return this._http.get(`${this.API_URI}/file/responsetr/${id}`);
   }
 
-  getPagos(id: string): Observable<any> {
+  getPagos(id: number): Observable<any> {
     return this._http.get(`${this.API_URI}/file/pagoslist/${id}`);
   }
 
   getTRList() {
     return this._http.get(`${this.API_URI}/file/responsetrforcombo`);
+  }
+
+
+  saveValidationData(data: any): void {
+    localStorage.setItem(this.storageKey, JSON.stringify(data));
+  }
+  getValidationData(): any {
+    const storedData = localStorage.getItem(this.storageKey);
+    return storedData ? JSON.parse(storedData) : null;
+  }
+
+  clearValidationData(): void {
+    localStorage.removeItem(this.storageKey);
   }
 
   getPagosList() {
@@ -51,8 +67,8 @@ export class FileService {
     });
   }
 
-  downloadPagoFile(id: number): Observable<Blob> {
-    const url = `${this.API_URI}/file/downloadPago/${id}`;
+  downloadOutputFile(tipoModulo: TipoModulo, id: number): Observable<Blob> {
+    const url = `${this.API_URI}/file/downloadtxtfile/${tipoModulo}/${id}`;
     return this._http.get(url, {
       responseType: 'blob',
       headers: new HttpHeaders().append('Content-Type', 'application/json')
