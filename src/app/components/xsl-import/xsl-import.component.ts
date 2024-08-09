@@ -92,6 +92,8 @@ export class XslImportComponent implements OnInit {
 
     if (this.tipoModulo === TipoModulo.PAGOS) {
 
+      sessionStorage.setItem('Rotulo', data.Rotulo);
+
       this.controls.push(
         { type: 'input', label: 'Rótulo', id: 'rotulo', model: data.Rotulo, readonly: true, inputType: 'text' },
         { type: 'input', label: 'Cuenta Débito', id: 'cuentaDebito', model: data.Cuenta_Debito, readonly: true, inputType: 'text' }

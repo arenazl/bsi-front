@@ -160,11 +160,13 @@ export class XslVerifiedComponent implements OnInit, AfterViewInit {
 
   getFile(): void {
 
+    let rotulo = sessionStorage.getItem('Rotulo')
+
     this.fileService.downloadOutputFile(this.TipoModulo as TipoModulo, this.SelectedId).subscribe((blob) => {
       const url = window.URL.createObjectURL(blob);
       const link = document.createElement("a");
       link.href = url;
-      link.setAttribute("download", "989898989-concepto.txt");
+      link.setAttribute("download", rotulo + ".txt");
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);

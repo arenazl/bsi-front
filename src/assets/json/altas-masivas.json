@@ -1,6 +1,6 @@
 {
   "header": "Altas Masivas de cuentas",
-  "description": "",
+  "description": "Gestión de altas masivas de cuentas bancarias",
   "enabled": true,
   "icono": "fa-credit-card",
   "items": [

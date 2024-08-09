@@ -1,6 +1,6 @@
 {
   "header": "Pagos Multiples",
-  "description": "Gestión de pagos diversos",
+  "description": "Gestión de pagos diversos de la empresa",
   "enabled": true,
   "icono": "fa-money-check-alt",
   "items": [
