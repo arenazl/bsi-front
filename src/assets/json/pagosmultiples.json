@@ -5,7 +5,7 @@
   "icono": "fa-money-check-alt",
   "items": [
     {
-      "title": "Tipo pago",
+      "title": "Generación de archivos para PAgo de Habres",
       "description": "",
       "icono": "fa-dollar-sign",
       "enabled": true,
@@ -18,7 +18,7 @@
       ]
     },
     {
-      "title": "Tipo pago",
+      "title": "Generación de archivos para Pago a Proveedores",
       "description": "",
       "icono": "fa-clipboard-list",
       "enabled": true,
@@ -31,7 +31,7 @@
       ]
     },
     {
-      "title": "Tipo pago",
+      "title": "Generación de archivos para Pago de Honorarios",
       "description": "",
       "icono": "fa-briefcase",
       "enabled": true,
@@ -44,7 +44,7 @@
       ]
     },
     {
-      "title": "Tipo pago",
+      "title": "Generación de archivos para Pago de Beneficios",
       "description": "",
       "icono": "fa-gift",
       "enabled": true,
@@ -57,7 +57,7 @@
       ]
     },
     {
-      "title": "Tipo pago",
+      "title": "Generación de archivos para Embargos Banco Provincia",
       "description": "",
       "icono": "fa-university",
       "enabled": true,
@@ -70,7 +70,7 @@
       ]
     },
     {
-      "title": "Tipo pago",
+      "title": "Generación de archivos para Embargos Otros Bancos",
       "description": "",
       "icono": "fa-university",
       "enabled": true,

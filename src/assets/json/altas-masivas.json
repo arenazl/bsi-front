@@ -5,7 +5,7 @@
   "icono": "fa-credit-card",
   "items": [
     {
-      "title": "Tipo de Alta",
+      "title": "Solicitud de Altas cuenta Sueldo",
       "description": "",
       "enabled": false,
       "items": [
@@ -17,7 +17,7 @@
       ]
     },
     {
-      "title": "Tipo de Alta",
+      "title": "Solicitud de Altas cuenta Sueldo",
       "description": "",
       "enabled": false,
       "items": [
@@ -29,7 +29,7 @@
       ]
     },
     {
-      "title": "Tipo de Alta",
+      "title": "Solicitud de Altas cuenta Beneficios (Becas)",
       "description": "",
       "enabled": true,
       "items": [
@@ -41,7 +41,7 @@
       ]
     },
     {
-      "title": "Tipo de Alta",
+      "title": "Solicitud de Altas cuenta Judiciales",
       "description": "",
       "enabled": false,
       "items": [
@@ -53,7 +53,7 @@
       ]
     },
     {
-      "title": "Tipo de Alta",
+      "title": "Solicitud de Altas cuentas Sociales",
       "description": "",
       "enabled": false,
       "items": [
