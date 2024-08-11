@@ -12,12 +12,6 @@
     },
     { "header": "Sexo", "field": "Sexo", "type": "text" },
     { "header": "Resultado", "field": "es_valido", "type": "result" },
-    { "header": "Mensaje de error", "field": "mensaje_error", "type": "text" },
-    { "header": "Pago de Haberes", "field": "PAGO DE HABERES (OTROS BANCOS)", "type": "text" },
-    { "header": "Pago de Embargos", "field": "PAGO DE EMBARGOS", "type": "text" },
-    { "header": "Pago de Beneficios", "field": "PAGO DE BENEFICIOS", "type": "text" },
-    { "header": "Pago de Proveedores", "field": "PAGO DE PROVEEDORES", "type": "text" },
-    { "header": "Pago de Honorarios", "field": "PAGO DE HONORARIOS", "type": "text" },
-    { "header": "Pago de Embargos", "field": "PAGO DE EMBARGOS (BANCO PROVINCIA)", "type": "text" }
+    { "header": "Mensaje de error", "field": "mensaje_error", "type": "text" }
   ]
 }

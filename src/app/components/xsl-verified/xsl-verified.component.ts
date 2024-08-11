@@ -92,6 +92,7 @@ export class XslVerifiedComponent implements OnInit, AfterViewInit {
           this.validationData = result;
           this.cdRef.detectChanges();
         });*/
+
       }
 
     });

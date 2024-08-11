@@ -42,6 +42,8 @@ export class XslImportComponent implements OnInit {
   ngOnInit(): void {
     this.route.params.subscribe(params => {
 
+      this.fileService.clearValidationData();
+
       this.tipoModulo = params['tipomodulo'];
       this.contrato = params['contrato'];
 
@@ -67,12 +69,19 @@ export class XslImportComponent implements OnInit {
       this.buttonText = 'Completado';
       const parsedResponse = JSON.parse(response);
 
-      if (parsedResponse.id) {
+      if (this.tipoModulo == TipoModulo.PAGOS) {
         this.router.navigate(['/xslVerified/' + this.tipoModulo + '/' + parsedResponse.id]);
-      } else {
-        this.fileService.saveValidationData(parsedResponse);
-        this.router.navigate(['/xslVerified/' + this.tipoModulo + '/' + 0]);
-        //this.errorMessage = parsedResponse.message;
+      }
+      else if (this.tipoModulo == TipoModulo.ALTAS) {
+
+        this.fileService.saveValidationData(parsedResponse.items);
+
+        if (parsedResponse.estado == "OK") {
+          this.router.navigate(['/xslVerified/' + this.tipoModulo + '/' + parsedResponse.nextid]);
+        }
+        else {
+          this.router.navigate(['/xslVerified/' + this.tipoModulo + '/' + 0]);
+        }
       }
     };
 
