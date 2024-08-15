@@ -180,3 +180,10 @@ export interface Localidades {
   id_provincia: number,
   localidad: string
 }
+
+export interface Altas_Payload {
+  IDUSER: number,
+  IDORG: number,
+  IDCONT: string,
+  ITEMS: Array<any>
+}

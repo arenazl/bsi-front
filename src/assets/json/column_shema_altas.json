@@ -1,4 +1,6 @@
+
 {
+
   "columns": [
     { "header": "Cuil", "field": "CUIL", "type": "text" },
     { "header": "Tipo doc", "field": "Tipo_Doc", "type": "text" },
@@ -15,3 +17,6 @@
     { "header": "Mensaje de error", "field": "mensaje_error", "type": "text" }
   ]
 }
+
+
+

@@ -4,6 +4,7 @@ import { GlobalVariable } from '../../environments/global';
 import { Observable, Observer } from 'rxjs';
 import { map } from 'jquery';
 import { TipoModulo } from '../enums/enums';
+import { Altas_Payload } from '../models/Model';
 
 
 @Injectable({
@@ -75,6 +76,15 @@ export class FileService {
     });
   }
 
+  downloadOutputFileAltas(payload: Altas_Payload): Observable<any> {
+
+    var body = { payload };
+    return this._http.post(`${this.API_URI}/file/exportxlsaltas`, body, {
+      responseType: 'json',
+      headers: new HttpHeaders().append('Content-Type', 'application/json')
+    });
+  }
+
   dropBox(file: string) {
 
     var body = { filename: file };
@@ -93,9 +103,6 @@ export class FileService {
     return this._http.get<any>(url);
   }
 
-  getContratoData(tipo: string): Observable<any> {
-    const url = `assets/json/data_${tipo}.json`;
-    return this._http.get<any>(url);
-  }
+
 
 }
