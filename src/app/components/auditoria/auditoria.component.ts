@@ -66,7 +66,8 @@ export class AuditoriaComponent implements OnInit {
 
   tranfeResponse: any;
 
-  detaildByID = false;
+  detaild
+   = false;
 
   blobArray = new Array<string>();
 

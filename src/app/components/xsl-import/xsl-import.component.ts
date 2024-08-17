@@ -28,7 +28,10 @@ export class XslImportComponent implements OnInit {
   controls: any[] = [];
   showFechaPago = false;
   showOpcionesCarga = false;
-  uri = GlobalVariable.BASE_API_URL + "/file/importxls";
+  uri = GlobalVariable.BASE_API_URL + "/file";
+
+  ENTE="";
+  ROTULO="";
 
   constructor(
     private fb: FormBuilder,
@@ -44,8 +47,8 @@ export class XslImportComponent implements OnInit {
 
       this.fileService.clearValidationData();
 
-      this.tipoModulo = params['tipomodulo'];
-      this.contrato = params['contrato'];
+      this.tipoModulo = params['tipomodulo'].toUpperCase();
+      this.contrato = params['contrato'].toUpperCase();
 
       this.pageTitle = this.genTitle(this.tipoModulo, this.contrato);
 
@@ -61,28 +64,18 @@ export class XslImportComponent implements OnInit {
 
       item.withCredentials = false;
       item.file.name = this.getFilename(this.tipoModulo);
+      item.file.name =  item.file.name.replace(/\s+/g, '');
     };
 
     this.uploader.onCompleteItem = (item: any, response: any) => {
 
       this.filesUploaded = true;
-      this.buttonText = 'Completado';
+      this.buttonText = 'Completado'
+
       const parsedResponse = JSON.parse(response);
-
-      if (this.tipoModulo == TipoModulo.PAGOS) {
-        this.router.navigate(['/xslVerified/' + this.tipoModulo + '/' + parsedResponse.id]);
-      }
-      else if (this.tipoModulo == TipoModulo.ALTAS) {
-
-        this.fileService.saveValidationData(parsedResponse.items);
-
-        if (parsedResponse.estado == "OK") {
-          this.router.navigate(['/xslVerified/' + this.tipoModulo + '/' + parsedResponse.nextid]);
-        }
-        else {
-          this.router.navigate(['/xslVerified/' + this.tipoModulo + '/' + 0]);
-        }
-      }
+        
+      this.router.navigate(['/xslVerified/' + this.tipoModulo + '/' + parsedResponse.ID]);
+      
     };
 
     this.uploader.onProgressItem = () => {
@@ -91,15 +84,20 @@ export class XslImportComponent implements OnInit {
 
   }
   setUpUploader(tipoModulo: TipoModulo) {
-    this.uploader = new FileUploader({ url: this.uri + tipoModulo });
+
+    if (tipoModulo == TipoModulo.PAGOS) { this.uploader = new FileUploader({ url: this.uri + '/PagoValidarEntrada' }); }
+    if (tipoModulo == TipoModulo.CUENTA) { this.uploader = new FileUploader({ url: this.uri + '/CuentaValidarEntrada' }); }
   }
 
   initializeControls(data: any): void {
 
+    this.ENTE = data.Ente;
+    this.ROTULO = data.Rotulo;
+
     this.controls = [];
     this.formGroup = this.fb.group({});
 
-    if (this.tipoModulo === TipoModulo.PAGOS) {
+    if (this.tipoModulo == TipoModulo.PAGOS) {
 
       sessionStorage.setItem('Rotulo', data.Rotulo);
 
@@ -126,14 +124,15 @@ export class XslImportComponent implements OnInit {
       this.showFechaPago = true;
 
     }
-    else if (this.tipoModulo === TipoModulo.ALTAS) {
+    else if (this.tipoModulo == TipoModulo.CUENTA) {
+      
       this.controls.push(
         { type: 'input', label: 'Rótulo', id: 'rotulo', model: data.Rotulo, readonly: true, inputType: 'text' },
         { type: 'input', label: 'Ente', id: 'ente', model: data.Ente, readonly: true, inputType: 'text' }
       );
     }
 
-    this.showOpcionesCarga = this.tipoModulo === TipoModulo.ALTAS || this.conceptoSeleccionado;
+    this.showOpcionesCarga = this.tipoModulo === TipoModulo.CUENTA || this.conceptoSeleccionado;
 
     this.controls.forEach(control => {
       this.formGroup.addControl(control.id, this.fb.control(control.model));
@@ -167,10 +166,22 @@ export class XslImportComponent implements OnInit {
   }
 
   getFilename(tipo: string): string {
-    if (tipo === 'pagos') {
-      return `${sessionStorage.getItem('Id')}-${sessionStorage.getItem('IdOrganismo')}-${this.contrato}-${this.formGroup.get('concepto')?.value.replace('-', '.').trim()}-${this.formatDateForFile(this.formGroup.get('fechaPago')?.value)}`;
-    } else if (tipo === 'altas') {
-      return `${sessionStorage.getItem('Id')}-${sessionStorage.getItem('IdOrganismo')}-${this.contrato}`;
+    if (tipo === 'PAGO') 
+      {
+
+      return `${sessionStorage.getItem('Id')}-
+              ${sessionStorage.getItem('IdOrganismo')}-
+              ${this.contrato}-
+              ${this.formGroup.get('concepto')?.value.replace('-', '.').trim()}-
+              ${this.formatDateForFile(this.formGroup.get('fechaPago')?.value)}`;
+
+    } else if (tipo === 'CUENTA') 
+      {
+      return `${sessionStorage.getItem('Id')}-
+              ${sessionStorage.getItem('IdOrganismo')}-
+              ${this.contrato}-
+              ${this.ROTULO}-
+              ${this.ENTE}` ;
     } else {
       return '';
     }

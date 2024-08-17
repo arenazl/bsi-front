@@ -1,7 +1,16 @@
+
 {
-  "columns": [
+
+  "HEADER": [
+    { "header": "fecha", "field": "fecha", "type": "text" },
+    { "header": "Cantidad de Registros", "field": "cantre", "type": "text" },
+    { "header": "Importe Total", "field": "importatotal", "type": "text" }
+  ]
+,
+  "TABLE-COLUMN": [
     { "header": "Cbu", "field": "CBU", "type": "text" },
     { "header": "Nombre", "field": "NOMBRE", "type": "text" },
     { "header": "Importe", "field": "IMPORTE", "type": "currency" }
   ]
+
 }

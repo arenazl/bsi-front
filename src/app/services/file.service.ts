@@ -24,6 +24,29 @@ export class FileService {
     return this._http.get(`${this.API_URI}/file/responsetr/${id}`);
   }
 
+  getResumen(tipomodulo: TipoModulo, id: number) 
+  {
+    if (tipomodulo == TipoModulo.PAGOS) {
+      return this._http.get(`${this.API_URI}/file/PAGO_OBTENER_RESUMEN/${id}`);
+    }
+    else (tipomodulo == TipoModulo.CUENTA) 
+    {
+      return this._http.get(`${this.API_URI}/file/CUENTA_OBTENER_RESUMEN/${id}`);
+    }
+  }
+
+  getMetaData(tipomodulo: TipoModulo) 
+  {
+    if (tipomodulo == TipoModulo.PAGOS) 
+      {
+      return this._http.get(`${this.API_URI}/file/PAGO_METADATA_UI`);
+    } 
+    else tipomodulo == TipoModulo.CUENTA 
+    { 
+      return this._http.get(`${this.API_URI}/file/CUENTA_METADATA_UI`);
+    }
+  }
+
   getPagos(id: number): Observable<any> {
     return this._http.get(`${this.API_URI}/file/pagoslist/${id}`);
   }

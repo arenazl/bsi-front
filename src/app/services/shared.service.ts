@@ -3,8 +3,6 @@ import { Observable, Subject } from 'rxjs';
 import { Usuario } from '../models/Model';
 
 
-
-
 @Injectable({
 providedIn: 'root'
 })
@@ -24,3 +22,4 @@ getClickEvent(): Observable<Usuario>{
   return this.subject.asObservable();
 }
 }
+
