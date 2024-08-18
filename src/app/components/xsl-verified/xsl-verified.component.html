@@ -17,13 +17,13 @@
 
     <div *ngIf="validationData?.header" class="card-body pb-0">
       <div class="row">
-        <div *ngFor="let field of metadata.HEADER" class="col-md-4">
+        <div *ngFor="let field of metadata.HEADER" class="col-md-3">
           <div class="label fw-normal">{{ field.header }}:</div>
           <p class="fw-500">
             <!-- Apply pipe if it exists -->
             <ng-container *ngIf="field.pipe; else noPipeHeader">
-              <ng-container *ngIf="field.pipe === 'currency'">
-                {{ validationData.header[field.field] | currency }}
+              <ng-container *ngIf="field.pipe === 'date'">
+                {{ validationData.header[field.field] | date:'dd/MM/yyyy' }}
               </ng-container>
               <ng-container *ngIf="field.pipe === 'BsiCurrencyPipe'">
                 {{ validationData.header[field.field] | BsiCurrencyPipe }}
@@ -33,32 +33,35 @@
             <ng-template #noPipeHeader>
               {{ validationData.header[field.field] }}
             </ng-template>
+
+
           </p>
         </div>
       </div>
     </div>
 
-
-  <!---
-    <div class="card-body pb-0">
-
-      <div class="row">
-        <div class="col-md-4">
-          <div class="label fw-normal">Buscar Registros Anteriores:</div>
-  
-          <p class="fw-bold">
-   
-            <select class="form-select" aria-label="Default select example" (change)="getTrByID($event)">
-              <option selected value="">Elija una registro</option>
-              <option *ngFor="let tran of transactions" [value]="transaction">
-                {{ empresa.empresaNombre }} 
-              </option>
-            </select>               
-  
-          </p>
-        </div>  
+    <div class="card px-0 mb-3">
+      <div class="card-header pb-0 pt-3 pb-1">
+        <h6>Historial</h6>
       </div>
-    </div>-->
+    
+      <div class="card-body pb-0 d-flex flex-wrap">
+
+        <p class="fw-bold">
+   
+          <select class="form-select" aria-label="Default select example" (change)="getListComboById($event)">
+            <option selected value="">Elija una registro</option>
+            <option *ngFor="let tran of tranfeList" [value]="tran.id">
+              {{ tran.descripcion }} 
+            </option>
+          </select>               
+
+        </p>
+       
+      </div>
+
+    </div>
+
   
 
   <!-- ACCIONES -->
@@ -155,7 +158,7 @@ class="card px-0 mb-3"
                 </ng-container>
 
                 <ng-container *ngIf="col.type === 'date'">
-                  {{ sol[col.field] | date : 'dd/MM/yyyy' }}
+                  {{ sol[col.field] | date:'dd/MM/yyyy' }}
                 </ng-container>
                 <ng-container *ngIf="col.type === 'result'">
                   <i

@@ -4,7 +4,7 @@ import { FileService } from "../../services/file.service";
 import { Router, ActivatedRoute, Params } from "@angular/router";
 import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
-import { TipoModulo } from "src/app/enums/enums";
+import { TipoMetada, TipoModulo } from "src/app/enums/enums";
 import {
   Solicitud,
   FileRes,
@@ -73,15 +73,18 @@ export class XslVerifiedComponent implements OnInit, AfterViewInit {
       this.TipoModulo = params["tipomodulo"]
       this.ID = params["id"]
 
+      this.getListCombo();
+
       this.headerTitle = this.getHeaderText(this.TipoModulo)
 
         this.ld_header = true;
 
         this.fileService.getResumen(this.TipoModulo as TipoModulo, this.ID).subscribe((res) => {
 
-          this.fileService.getMetaData(this.TipoModulo as TipoModulo).subscribe((metadata) => {
+          this.fileService.getMetaData(this.TipoModulo as TipoModulo, TipoMetada.LIST).subscribe((metadata) => {
               this.metadata = (metadata  as any)[0].metadata_json;
               this.validationData = (res as any)[0].resultado_json;
+              
               this.ld_header = false;
             });
         },
@@ -91,12 +94,26 @@ export class XslVerifiedComponent implements OnInit, AfterViewInit {
     });
   }
 
-  /*
-  getTrByID(id: any) {
+
+   
+  getListComboById(id: any) {
     if (id.target.value) {
-        this.getAndTransformTRData(id.target.value);
+
+      this.fileService.getListForCombo(this.TipoModulo as TipoModulo).subscribe((data) => {
+        this.tranfeList = data;
+      });
     }
-  }*/
+  }
+
+
+  getListCombo() {
+
+      this.fileService.getListForCombo(this.TipoModulo as TipoModulo).subscribe((data) => {
+        this.tranfeList = data;
+      });
+    
+  }
+
 
   parseDate(dateString: string): Date | null {
     const parts = dateString.split('/');

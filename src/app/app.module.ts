@@ -25,6 +25,7 @@ import { XslImportComponent } from './components/xsl-import/xsl-import.component
 import { XslVerifiedComponent } from './components/xsl-verified/xsl-verified.component';
 import { BsiCurrencyPipe } from "./pipes/bsi-currency";
 import { DinamicModuleComponent } from './components/dinamic-module/dinamic-module.component';
+import { DatePipe } from '@angular/common';
 
 @NgModule({
   declarations: [
@@ -53,6 +54,7 @@ import { DinamicModuleComponent } from './components/dinamic-module/dinamic-modu
   ],
   providers: [
     BsiCurrencyPipe,
+    DatePipe,
     LegajoService,
     NgxImageCompressService
   ],

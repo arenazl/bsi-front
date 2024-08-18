@@ -3,7 +3,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { GlobalVariable } from '../../environments/global';
 import { Observable, Observer } from 'rxjs';
 import { map } from 'jquery';
-import { TipoModulo } from '../enums/enums';
+import { TipoMetada, TipoModulo } from '../enums/enums';
 import { Altas_Payload } from '../models/Model';
 
 
@@ -35,16 +35,10 @@ export class FileService {
     }
   }
 
-  getMetaData(tipomodulo: TipoModulo) 
+  getMetaData(tipoModulo: TipoModulo, tipoMetada: TipoMetada) 
   {
-    if (tipomodulo == TipoModulo.PAGOS) 
-      {
-      return this._http.get(`${this.API_URI}/file/PAGO_METADATA_UI`);
-    } 
-    else tipomodulo == TipoModulo.CUENTA 
-    { 
-      return this._http.get(`${this.API_URI}/file/CUENTA_METADATA_UI`);
-    }
+    return this._http.get(`${this.API_URI}/file/GET_METADATA_UI/${tipoModulo}/${tipoMetada}`);
+
   }
 
   getPagos(id: number): Observable<any> {
@@ -99,6 +93,14 @@ export class FileService {
     });
   }
 
+  getListForCombo(tipoModulo: TipoModulo): Observable<any> {
+    const url = `${this.API_URI}/file/LIST_FOR_COMBO/${tipoModulo}`;
+    return this._http.get(url, {
+      responseType: 'json',
+      headers: new HttpHeaders().append('Content-Type', 'application/json')
+    });
+  }
+
   downloadOutputFileAltas(payload: Altas_Payload): Observable<any> {
 
     var body = { payload };
@@ -107,6 +109,8 @@ export class FileService {
       headers: new HttpHeaders().append('Content-Type', 'application/json')
     });
   }
+
+
 
   dropBox(file: string) {
 

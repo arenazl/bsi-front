@@ -145,7 +145,7 @@ export class XslImportComponent implements OnInit {
 
   genTitle(type: string, contrato: string): string {
     const titles: { [key: string]: { [key: string]: string } } = {
-      'pagos': {
+      'PAGO': {
         '1': 'Pago de Haberes',
         '2': 'Pago de Embargos (otros Bancos)',
         '3': 'Pago de Beneficios',
@@ -153,7 +153,7 @@ export class XslImportComponent implements OnInit {
         '9': 'Pago de Honorarios',
         '10': 'Pago de Embargos (Banco Provincia)'
       },
-      'altas': {
+      'CUENTA': {
         '3': 'Alta de Cuentas desde plantillas'
       }
     };

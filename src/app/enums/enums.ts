@@ -15,3 +15,9 @@ export enum TipoModulo {
     PAGOS = 'PAGO',
     CUENTA = 'CUENTA'
 }
+
+
+export enum TipoMetada {
+    IMPORT = 'IMPORT',
+    LIST = 'LIST',
+}

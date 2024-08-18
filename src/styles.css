@@ -260,17 +260,17 @@ height: auto;
   padding-left: 5px;
 }
 
-
-.lds-roller {
-    position: absolute;
-    top: 55%;
+  .lds-roller {
+    position: fixed;
+    top: 50%;
     left: 50%;
     margin-top: -50px;
     margin-left: -50px;
-  width: 80px;
-  z-index: 99999;
-  height: 80px;
+    width: 106px;
+    z-index: 99999;
+    height: 80px;
 }
+
 .lds-roller div {
   animation: lds-roller 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
   transform-origin: 40px 40px;
@@ -409,4 +409,55 @@ body {
   transform: translateY(4px); /* Eleva el botón al pasar el mouse */
   border: 1px solid #097ada;
   box-shadow: 0 6px 11px rgba(146, 146, 146, 0.55);
+}
+
+
+.card
+{
+  BACKGROUND: #ffffffb5 !important
+}
+  
+
+.background-blur {
+  background-image: url('./assets/img/wallpaperbetter.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  filter: blur(12px);
+  width: 100vw;
+  height: 100vh;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1;
+}
+
+
+.background-container {
+  position: relative;
+  min-height: 90vh;
+  display: flow;
+  justify-content: center;
+  padding: 2rem;
+}
+
+.background-container > div {
+  width: 100%; /* Asegura que el contenido del contenedor ocupe todo el ancho disponible */
+  max-width: 100%; /* Esto evita que el contenedor interno se expanda demasiado */
+}
+
+
+.background-container::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url('./assets/img/reunion.jpg');
+  background-size:auto;
+  background-position: center;
+  filter: blur(10px);
+  z-index: -1;
+  opacity: 0.5;
 }
