@@ -34,11 +34,11 @@
       "title": "Obtener CBU (archivo bancario)",
       "description": "Importá la devolución del Banco",
       "icono": "fa-university",
-      "enabled": false,
+      "enabled": true,
       "items": [
         {
           "description": "Importar CBUs",
-          "link": "/import-cbu",
+          "link": "/xslImport/CBUCARGA/1",
           "icono": "fa-download"
         }
       ]

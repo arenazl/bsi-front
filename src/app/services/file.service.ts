@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { GlobalVariable } from '../../environments/global';
-import { Observable, Observer } from 'rxjs';
+import { Observable, Observer, of } from 'rxjs';
 import { map } from 'jquery';
 import { TipoMetada, TipoModulo } from '../enums/enums';
 import { Altas_Payload } from '../models/Model';
@@ -35,10 +35,29 @@ export class FileService {
     }
   }
 
-  getMetaData(tipoModulo: TipoModulo, tipoMetada: TipoMetada) 
+   getComboOptions(endpoint?: string, staticOptions?: string): Observable<{ id: string; value: string }[]> {
+
+    if (staticOptions) {
+      const options = staticOptions.split(',').map((value, index) => ({
+        id: String(index + 1),
+        value: value.trim()
+      }));
+      return of(options);
+    } else if (endpoint) {
+      return this._http.get<{ id: string; value: string }[]>(endpoint);
+    } else {
+      return of([]);
+    }
+  }
+
+  getMetaDataUI(tipoModulo: TipoModulo, tipoMetada: TipoMetada) 
   {
     return this._http.get(`${this.API_URI}/file/GET_METADATA_UI/${tipoModulo}/${tipoMetada}`);
+  }
 
+  getImportMetaDataUI(tipoModulo: TipoModulo, contradoId: string) 
+  {
+    return this._http.get(`${this.API_URI}/file/GET_IMPORT_METADATA_UI/${tipoModulo}/${contradoId}`);
   }
 
   getPagos(id: number): Observable<any> {
@@ -48,7 +67,6 @@ export class FileService {
   getTRList() {
     return this._http.get(`${this.API_URI}/file/responsetrforcombo`);
   }
-
 
   saveValidationData(data: any): void {
     localStorage.setItem(this.storageKey, JSON.stringify(data));

@@ -4,7 +4,8 @@ import { FileUploader, FileItem } from 'ng2-file-upload';
 import { ActivatedRoute, Router } from '@angular/router';
 import { GlobalVariable } from '../../../environments/global';
 import { FileService } from '../../services/file.service';
-import { TipoModulo } from 'src/app/enums/enums';
+import { TipoMetada, TipoModulo } from 'src/app/enums/enums';
+import { ChangeDetectorRef } from '@angular/core';
 
 @Component({
   selector: 'app-xsl-xsl',
@@ -23,21 +24,23 @@ export class XslImportComponent implements OnInit {
   buttonText = 'Subir Archivo';
   errorMessage = '';
   pageTitle = '';
+  uploadUrl="";
   fechaPago: string = new Date(new Date().setDate(new Date().getDate() + 1)).toISOString().split('T')[0];
   ld_header = true;
   controls: any[] = [];
   showFechaPago = false;
-  showOpcionesCarga = false;
   uri = GlobalVariable.BASE_API_URL + "/file";
-
   ENTE="";
   ROTULO="";
+  FileNameTemplate="";
+  data:any;
 
   constructor(
     private fb: FormBuilder,
     private fileService: FileService,
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private cdr: ChangeDetectorRef
   ) {
     this.formGroup = this.fb.group({});
   }
@@ -45,146 +48,118 @@ export class XslImportComponent implements OnInit {
   ngOnInit(): void {
     this.route.params.subscribe(params => {
 
-      this.fileService.clearValidationData();
-
       this.tipoModulo = params['tipomodulo'].toUpperCase();
       this.contrato = params['contrato'].toUpperCase();
 
-      this.pageTitle = this.genTitle(this.tipoModulo, this.contrato);
-
-      this.setUpUploader(this.tipoModulo as TipoModulo);
-
       this.fileService.ObtenerContratoById(1, 71, parseInt(this.contrato)).subscribe((data: any) => {
-        this.ld_header = false;
-        this.initializeControls(data[0]);
-      });
-    });
 
-    this.uploader.onBeforeUploadItem = (item: FileItem) => {
+        this.fileService.getImportMetaDataUI(this.tipoModulo as TipoModulo, this.contrato).subscribe((metadata: any) => {
+                              
+          const formConfig = metadata[0].metadata_json.FORMS.MODULO;   
+          if (formConfig) {
+            this.pageTitle = formConfig.TITLE;
+            this.uploadUrl = formConfig.UPLOAD_URL;
+            this.controls = formConfig.HEADER;
+            this.FileNameTemplate = formConfig.FILENAME_TEMPLATE;
+            this.uploader = new FileUploader({ url: this.uri + this.uploadUrl }); 
+            this.ld_header = false;  
+            
+            this.data=data[0];
+            this.initializeControls(data);
 
-      item.withCredentials = false;
-      item.file.name = this.getFilename(this.tipoModulo);
-      item.file.name =  item.file.name.replace(/\s+/g, '');
-    };
+            }
 
-    this.uploader.onCompleteItem = (item: any, response: any) => {
-
-      this.filesUploaded = true;
-      this.buttonText = 'Completado'
-
-      const parsedResponse = JSON.parse(response);
+            this.uploader.onBeforeUploadItem = (item: FileItem) => {
+              item.withCredentials = false;
+              item.file.name = this.getFilename(this.tipoModulo);
+              item.file.name =  item.file.name.replace(/\s+/g, '');
+            };
         
-      this.router.navigate(['/xslVerified/' + this.tipoModulo + '/' + parsedResponse.ID]);
-      
-    };
+            this.uploader.onCompleteItem = (item: any, response: any) => {
+              this.filesUploaded = true;
+              this.buttonText = 'Completado'
+              const parsedResponse = JSON.parse(response);   
+              this.router.navigate(['/xslVerified/' + this.tipoModulo + '/' + parsedResponse.ID]);
+            };
+        
+            this.uploader.onProgressItem = () => {
+              this.buttonText = 'Importando, espere por favor ...';
+            }
+           
+          });    
 
-    this.uploader.onProgressItem = () => {
-      this.buttonText = 'Importando, espere por favor ...';
-    };
+      });
 
+    });
   }
-  setUpUploader(tipoModulo: TipoModulo) {
 
-    if (tipoModulo == TipoModulo.PAGOS) { this.uploader = new FileUploader({ url: this.uri + '/PagoValidarEntrada' }); }
-    if (tipoModulo == TipoModulo.CUENTA) { this.uploader = new FileUploader({ url: this.uri + '/CuentaValidarEntrada' }); }
-  }
 
-  initializeControls(data: any): void {
+  initializeControls(data: any = {}): void {
 
-    this.ENTE = data.Ente;
-    this.ROTULO = data.Rotulo;
 
-    this.controls = [];
     this.formGroup = this.fb.group({});
 
-    if (this.tipoModulo == TipoModulo.PAGOS) {
-
-      sessionStorage.setItem('Rotulo', data.Rotulo);
-
-      this.controls.push(
-        { type: 'input', label: 'Rótulo', id: 'rotulo', model: data.Rotulo, readonly: true, inputType: 'text' },
-        { type: 'input', label: 'Cuenta Débito', id: 'cuentaDebito', model: data.Cuenta_Debito, readonly: true, inputType: 'text' }
-      );
-
-      this.conceptosList = data.Concepto.split(',');
-
-      if (this.conceptosList.length === 1) {
-        this.controls.push({ type: 'input', label: 'Concepto', id: 'concepto', model: this.conceptosList[0], readonly: true, inputType: 'text' });
-        this.conceptoSeleccionado = true;
-      } else {
-        this.controls.push({
-          type: 'select',
-          label: 'Concepto',
-          id: 'concepto',
-          model: this.conceptosList[0],
-          options: this.conceptosList
-        });
-      }
-
-      this.showFechaPago = true;
-
-    }
-    else if (this.tipoModulo == TipoModulo.CUENTA) {
-      
-      this.controls.push(
-        { type: 'input', label: 'Rótulo', id: 'rotulo', model: data.Rotulo, readonly: true, inputType: 'text' },
-        { type: 'input', label: 'Ente', id: 'ente', model: data.Ente, readonly: true, inputType: 'text' }
-      );
-    }
-
-    this.showOpcionesCarga = this.tipoModulo === TipoModulo.CUENTA || this.conceptoSeleccionado;
-
     this.controls.forEach(control => {
-      this.formGroup.addControl(control.id, this.fb.control(control.model));
-    });
 
-    if (this.showFechaPago) {
-      this.formGroup.addControl('fechaPago', this.fb.control(this.fechaPago));
-    }
-  }
+      let value = data[control.field] || '';
 
-  genTitle(type: string, contrato: string): string {
-    const titles: { [key: string]: { [key: string]: string } } = {
-      'PAGO': {
-        '1': 'Pago de Haberes',
-        '2': 'Pago de Embargos (otros Bancos)',
-        '3': 'Pago de Beneficios',
-        '4': 'Pago de Proveedores',
-        '9': 'Pago de Honorarios',
-        '10': 'Pago de Embargos (Banco Provincia)'
-      },
-      'CUENTA': {
-        '3': 'Alta de Cuentas desde plantillas'
+      if (control.type === 'date') {
+        value = new Date().toISOString().split('T')[0];
       }
-    };
 
-    return titles[type] && titles[type][contrato] ? titles[type][contrato] : '';
+      this.formGroup.addControl(control.field, this.fb.control(value));
+
+      if (control.type === 'select') {  
+        if(this.tipoModulo == TipoModulo.PAGOS)  {
+            this.loadComboOptions(control.field, '', this.data.Concepto);
+          }    
+          else{
+            this.loadComboOptions(control.field, control.endpoint);
+          }
+      }
+    });
   }
 
+  loadComboOptions(controlField: string, endpoint?: string, staticOptions?: string): void {
+    
+    this.fileService.getComboOptions(endpoint, staticOptions).subscribe((options) => {
+
+      const control = this.controls.find(c => c.field === controlField);
+      if (control) {
+        control.options = options.map(option => ({ id: option.id, value: option.value }));
+        if (options.length === 1) {       
+          this.formGroup.get(controlField)?.setValue(options[0].id);
+          control.disabled = true;
+        } else {
+          this.formGroup.get(controlField)?.setValue(options[0].id);
+          control.disabled = false;
+        }
+      }
+    });
+  }
+
+  
   selectCargaArchivo(): void {
     this.cargaArchivoSeleccionada = true;
   }
 
+
   getFilename(tipo: string): string {
-    if (tipo === 'PAGO') 
-      {
 
-      return `${sessionStorage.getItem('Id')}-
-              ${sessionStorage.getItem('IdOrganismo')}-
-              ${this.contrato}-
-              ${this.formGroup.get('concepto')?.value.replace('-', '.').trim()}-
-              ${this.formatDateForFile(this.formGroup.get('fechaPago')?.value)}`;
+  const conceptoId = this.formGroup.get('Concepto')?.value;
+  const control = this.controls.find(c => c.field === 'Concepto');
+  const conceptoDescripcion = control?.options.find((o: { id: any; }) => o.id === conceptoId)?.value || '';
 
-    } else if (tipo === 'CUENTA') 
-      {
-      return `${sessionStorage.getItem('Id')}-
-              ${sessionStorage.getItem('IdOrganismo')}-
-              ${this.contrato}-
-              ${this.ROTULO}-
-              ${this.ENTE}` ;
-    } else {
-      return '';
-    }
+    const template = this.FileNameTemplate;
+    return template
+      .replace('${Id}', sessionStorage.getItem('Id') || '')
+      .replace('${IdOrganismo}', sessionStorage.getItem('IdOrganismo') || '')
+      .replace('${contrato}', this.contrato || '')
+      .replace('${concepto}', conceptoDescripcion || '')
+      .replace('${fechaPago}', this.formatDateForFile(this.formGroup.get('FechaPago')?.value) || '')
+      .replace('${rotulo}', this.data['Rotulo'] || '')
+      .replace('${ente}', this.data['Ente'] || '')
+      .replace(/\s+/g, ''); // Quitar espacios en blanco del nombre de archivo
   }
 
   formatDateForFile(dateString: string): string {

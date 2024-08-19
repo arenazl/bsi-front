@@ -1,17 +1,17 @@
 # See http://help.github.com/ignore-files/ for more about ignoring files.
 
 # Compiled output
+/dist
 /tmp
 /out-tsc
 /bazel-out
-
+/build
+/doc
 
 # Node
-node_modules
+/node_modules
 npm-debug.log
 yarn-error.log
-dist
-
 
 # IDEs and editors
 .idea/
@@ -42,3 +42,4 @@ testem.log
 # System files
 .DS_Store
 Thumbs.db
+src/app/global.ts

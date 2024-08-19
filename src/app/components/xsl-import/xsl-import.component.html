@@ -15,41 +15,70 @@
     </div>
 
     <div class="card-body">
+
       <div class="row">
-        <form [formGroup]="formGroup" class="m-2" (ngSubmit)="onSubmit()">
+
+        <form  [formGroup]="formGroup" class="m-2" (ngSubmit)="onSubmit()">
+     
           <ng-container *ngFor="let control of controls">
-            <div class="form-group m-2" *ngIf="control.type === 'input'">
+            <!-- Input -->
+            <div class="form-group m-2">
               <div class="row">
-                <div class="col-lg-4 col-md-6 col-sm-12">
-                  <label class="label" [for]="control.id">{{
-                    control.label
-                    }}</label>
-                  <input [type]="control.inputType" class="form-control" [id]="control.id"
-                    formControlName="{{ control.id }}" [readonly]="control.readonly" />
+                <div class="col-lg-4 col-md-6 col-sm-12" *ngIf="control.type === 'input'" >
+                  <label class="label" [for]="control.field">{{ control.header }}</label>
+                  <input
+                  [type]="control.inputType || 'text'" 
+                  class="form-control" 
+                  [id]="control.field" 
+                  value="{{ data ? data[control.field] : '' }}"
+                  [readonly]="control.readonly" />
                 </div>
               </div>
             </div>
-
+          
+            <!-- Combo -->
             <div class="form-group m-2" *ngIf="control.type === 'select'">
               <div class="row">
                 <div class="col-lg-4 col-md-6 col-sm-12">
-                  <label class="label" [for]="control.id">{{
-                    control.label
-                    }}</label>
-                  <select class="form-control" [id]="control.id" formControlName="{{ control.id }}">
-                    <option *ngFor="let option of control.options" [value]="option">
-                      {{ option }}
-                    </option>
+                  <label class="label" [for]="control.field">{{ control.header }}</label>
+                  <select class="form-control" [id]="control.field"[disabled]="control.disabled">
+                    <option *ngFor="let option of control.options" [value]="option.id">{{ option.value }}</option>
                   </select>
+                </div>
+              </div>
+            </div>
+          
+            <!-- Date -->
+            <div class="form-group m-2" *ngIf="control.type === 'date'">
+              <div class="row">
+                <div class="col-lg-4 col-md-6 col-sm-12">
+                  <label class="label" [for]="control.field">{{ control.header }}</label>
+                  <input type="date" class="form-control" formControlName="{{ control.field }}" [id]="control.field" />
+                </div>
+              </div>
+            </div>
+          
+            <!-- Range -->
+            <div class="form-group m-2" *ngIf="control.type === 'range'">
+              <div class="row">
+                <div class="col-lg-4 col-md-6 col-sm-12">
+                  <label class="label" [for]="control.field">{{ control.header }}</label>
+                  <input type="range" class="form-control" [id]="control.field" formControlName="{{ control.field }}" [min]="control.min" [max]="control.max" />
+                </div>
+              </div>
+            </div>
+          
+            <!-- Label -->
+            <div class="form-group m-2" *ngIf="control.type === 'label'">
+              <div class="row">
+                <div class="col-lg-4 col-md-6 col-sm-12">
+                  <label class="label">{{ control.header }}</label>
+                  <p>{{ formGroup.get(control.field)?.value }}</p>
                 </div>
               </div>
             </div>
           </ng-container>
 
-          <div class="form-group mt-3 m-2" *ngIf="showFechaPago">
-            <label class="label" for="fechaPago">Fecha de Pago</label>
-            <input type="date" class="form-control" id="fechaPago" formControlName="fechaPago" />
-          </div>
 
           <div class="form-group mt-3 m-2">
             <label class="label">Opciones de Carga</label>
@@ -74,11 +103,13 @@
             <div class="col-md-5 filename" style="padding-top: 7px">
               {{ item.file.name }}
             </div>
+
             <div class="col-md-2" style="padding-top: 13px">
               <div class="progress">
                 <div class="progress-bar bg-success" [ngStyle]="{ width: item.progress + '%' }"></div>
               </div>
             </div>
+
             <div class="col-md-3 d-flex">
               <button type="button" class="btn btn-outline-danger mr-2" (click)="item.remove()">
                 Cancelar
@@ -103,4 +134,5 @@
       </div>
     </div>
   </div>
+
 </div>

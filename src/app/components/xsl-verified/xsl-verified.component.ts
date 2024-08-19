@@ -81,7 +81,7 @@ export class XslVerifiedComponent implements OnInit, AfterViewInit {
 
         this.fileService.getResumen(this.TipoModulo as TipoModulo, this.ID).subscribe((res) => {
 
-          this.fileService.getMetaData(this.TipoModulo as TipoModulo, TipoMetada.LIST).subscribe((metadata) => {
+          this.fileService.getMetaDataUI(this.TipoModulo as TipoModulo, TipoMetada.LIST).subscribe((metadata) => {
               this.metadata = (metadata  as any)[0].metadata_json;
               this.validationData = (res as any)[0].resultado_json;
               

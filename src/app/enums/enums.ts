@@ -13,7 +13,8 @@ export enum TipoPantalla {
 export enum TipoModulo {
     TRANSFERENCIAS = 'TRANSFERENCIA',
     PAGOS = 'PAGO',
-    CUENTA = 'CUENTA'
+    CUENTA = 'CUENTA',
+    CARGCBU = 'CARGCBU'
 }
 
 
