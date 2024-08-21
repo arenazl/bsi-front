@@ -16,8 +16,8 @@
     </div>
 
     <div *ngIf="validationData?.header" class="card-body pb-0">
-      <div class="row">
-        <div *ngFor="let field of metadata.HEADER" class="col-md-3">
+      <div class="d-flex flex-wrap">
+        <div *ngFor="let field of metadata.HEADER" class="d-flex flex-column justify-content-center" style="flex: 1 0 0%;">
           <div class="label fw-normal">{{ field.header }}:</div>
           <p class="fw-500">
             <!-- Apply pipe if it exists -->
@@ -33,12 +33,11 @@
             <ng-template #noPipeHeader>
               {{ validationData.header[field.field] }}
             </ng-template>
-
-
           </p>
         </div>
       </div>
     </div>
+
 
     <div class="card px-0 mb-3">
       <div class="card-header pb-0 pt-3 pb-1">
@@ -93,13 +92,14 @@ class="card px-0 mb-3"
   </button>
 
   <button
-    type="button" *ngIf="areAllRecordsValid"
+    type="button" *ngIf="allRecordsValid"
     class="btn btn-primary col-12 mx-2 col-md-2 d-flex align-items-center justify-content-center"
     (click)="getFile()"
   >
     <i class="fa fa-file-download me-2"></i>
     Descargar Archivo
   </button>
+
 </div>
 </div>
 

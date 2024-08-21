@@ -149,6 +149,7 @@ export class XslImportComponent implements OnInit {
   const conceptoId = this.formGroup.get('Concepto')?.value;
   const control = this.controls.find(c => c.field === 'Concepto');
   const conceptoDescripcion = control?.options.find((o: { id: any; }) => o.id === conceptoId)?.value || '';
+  const fechaPago = this.formatDateForFile(this.formGroup.get('FechaPago')?.value) 
 
     const template = this.FileNameTemplate;
     return template
@@ -156,17 +157,17 @@ export class XslImportComponent implements OnInit {
       .replace('${IdOrganismo}', sessionStorage.getItem('IdOrganismo') || '')
       .replace('${contrato}', this.contrato || '')
       .replace('${concepto}', conceptoDescripcion || '')
-      .replace('${fechaPago}', this.formatDateForFile(this.formGroup.get('FechaPago')?.value) || '')
+      .replace('${fechaPago}', fechaPago || '')
       .replace('${rotulo}', this.data['Rotulo'] || '')
       .replace('${ente}', this.data['Ente'] || '')
       .replace(/\s+/g, ''); // Quitar espacios en blanco del nombre de archivo
   }
 
   formatDateForFile(dateString: string): string {
-    const date = new Date(dateString);
-    const year = date.getFullYear().toString();
-    const month = (date.getMonth() + 1).toString().padStart(2, '0');
-    const day = date.getDate().toString().padStart(2, '0');
+    const date = new Date(dateString + 'T00:00:00Z');
+    const year = date.getUTCFullYear().toString();
+    const month = (date.getUTCMonth() + 1).toString().padStart(2, '0');
+    const day = date.getUTCDate().toString().padStart(2, '0');
     return `${year}${month}${day}`;
   }
 
