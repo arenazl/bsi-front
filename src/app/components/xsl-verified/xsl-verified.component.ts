@@ -49,6 +49,7 @@ export class XslVerifiedComponent implements OnInit, AfterViewInit {
 
   validationData: any;  // Datos reales, como el JSON de ejemplo
   metadata: any;        // Metadata para renderizar la UI
+  allRecordsValid = false;
 
   tranfeResponse: any = { data: [] };
 
@@ -82,8 +83,10 @@ export class XslVerifiedComponent implements OnInit, AfterViewInit {
         this.fileService.getResumen(this.TipoModulo as TipoModulo, this.ID).subscribe((res) => {
 
           this.fileService.getMetaDataUI(this.TipoModulo as TipoModulo, TipoMetada.LIST).subscribe((metadata) => {
+
               this.metadata = (metadata  as any)[0].metadata_json;
               this.validationData = (res as any)[0].resultado_json;
+              this.allRecordsValid = this.areAllRecordsValid();
               
               this.ld_header = false;
             });
@@ -131,10 +134,7 @@ export class XslVerifiedComponent implements OnInit, AfterViewInit {
   areAllRecordsValid(): boolean {
 
     return this.validationData.items.every(
-      (record: any) => record.valido === true ||
-        record.valido === undefined
-    );
-
+      (record: any) => record.valido == 1);
   }
 
   getHeaderText(TipoForm: string): string {
