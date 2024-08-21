@@ -105,14 +105,26 @@ export interface FileForTable {
 export interface PdfConfig {
   headerColor: { r: number, g: number, b: number };
   detailColor: { r: number, g: number, b: number };
+  titleColor: { r: number, g: number, b: number };
   headerFontSize: number;
   detailFontSize: number;
   title: string;
+  titleFontSize: number;
   headerData: { [key: string]: any };
   detailData: Array<{ [key: string]: any }>;
   headerFields: Array<{ label: string, key: string }>;
   detailFields: Array<{ label: string, key: string }>;
 }
+
+
+export interface PdfConfigContrato {
+  municipio: string;
+  fecha: string;
+  cantidadTransferencias: number;
+  totalImporte: number;
+  fechaPago: string;
+}
+
 
 
 export interface Usuario {
