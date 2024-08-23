@@ -332,6 +332,7 @@ export class XslVerifiedComponent implements OnInit, AfterViewInit {
 
   }
 
+
   toProperCase(str: string): string {
     return str
       .split(' ')

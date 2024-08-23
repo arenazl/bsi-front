@@ -75,9 +75,11 @@
             <label class="label w-100">Opciones de Carga</label>
 
             <div class="d-flex"style="width: 98% !important;">
-              <button type="button" class="btn btn-secondary fw-bold mr-2" style="flex: 1 0 24%;" disabled>
+            
+              <button type="button" *ngIf="cargaManual" class="btn btn-primary fw-bold ml-2" style="flex: 1 0 24%;" (click)="navigateToRoute()">
                 Carga Manual
               </button>
+
               <div style="width: 3%;"></div>
               <button type="button" class="btn btn-primary fw-bold ml-2" style="flex: 1 0 24%;" (click)="selectCargaArchivo()">
                 Carga por Archivo

@@ -20,7 +20,8 @@ export class XslImportComponent implements OnInit {
   conceptosList: string[] = [];
   cargaArchivoSeleccionada = false;
   conceptoSeleccionado = false;
-  filesUploaded = false;
+  filesUploaded = true;;
+  cargaManual = false;
   buttonText = 'Subir Archivo';
   errorMessage = '';
   pageTitle = '';
@@ -64,6 +65,7 @@ export class XslImportComponent implements OnInit {
             this.FileNameTemplate = formConfig.FILENAME_TEMPLATE;
             this.uploader = new FileUploader({ url: this.uri + this.uploadUrl }); 
             this.ld_header = false;  
+            this.cargaManual = formConfig.CARGA_OPCIONES_VISIBLE;
             
             this.data=data[0];
             this.initializeControls(data);
@@ -165,6 +167,10 @@ export class XslImportComponent implements OnInit {
       .replace('${rotulo}', this.data['Rotulo'] || '')
       .replace('${ente}', this.data['Ente'] || '')
       .replace(/\s+/g, ''); // Quitar espacios en blanco del nombre de archivo
+  }
+
+  navigateToRoute() {
+    this.router.navigate(['/xslEditabletable']);
   }
 
   formatDateForFile(dateString: string): string {
