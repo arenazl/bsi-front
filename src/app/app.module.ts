@@ -26,6 +26,8 @@ import { XslVerifiedComponent } from './components/xsl-verified/xsl-verified.com
 import { BsiCurrencyPipe } from "./pipes/bsi-currency";
 import { DinamicModuleComponent } from './components/dinamic-module/dinamic-module.component';
 import { DatePipe } from '@angular/common';
+import { XslEditabletableComponent } from './components/xsl-editabletable/xsl-editabletable.component';
+import { CurrencyMaskModule } from "ng2-currency-mask";
 
 @NgModule({
   declarations: [
@@ -43,8 +45,10 @@ import { DatePipe } from '@angular/common';
     XslVerifiedComponent,
     BsiCurrencyPipe,
     DinamicModuleComponent,
+    XslEditabletableComponent,
   ],
   imports: [
+    CurrencyMaskModule,
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,

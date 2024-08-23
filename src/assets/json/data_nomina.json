@@ -1,0 +1,80 @@
+{
+    "head": {
+      "rotulo": "Pago de Servicios",
+      "ente": "Empresa XYZ",
+      "cuentaDebito": "1234567890123456789012"
+    },
+    "data": [
+      {
+        "razonSocial": "Empresa ABC",
+        "cuil": "20601733619",
+        "cbu": "1234567890123456789012"
+      },
+      {
+        "razonSocial": "Empresa DEF",
+        "cuil": "23012078349",
+        "cbu": "0987654321098765432109"
+      },
+      {
+        "razonSocial": "Empresa GHI",
+        "cuil": "27419502369",
+        "cbu": "1122334455667788990011"
+      },
+      {
+        "razonSocial": "Empresa JKL",
+        "cuil": "20745435799",
+        "cbu": "2233445566778899001122"
+      },
+      {
+        "razonSocial": "Empresa MNO",
+        "cuil": "23399696549",
+        "cbu": "3344556677889900112233"
+      },
+      {
+        "razonSocial": "Empresa PQR",
+        "cuil": "20268949799",
+        "cbu": "4455667788990011223344"
+      },
+      {
+        "razonSocial": "Empresa STU",
+        "cuil": "23627333939",
+        "cbu": "5566778899001122334455"
+      },
+      {
+        "razonSocial": "Empresa VWX",
+        "cuil": "27710436279",
+        "cbu": "6677889900112233445566"
+      },
+      {
+        "razonSocial": "Empresa YZ",
+        "cuil": "23765374379",
+        "cbu": "7788990011223344556677"
+      },
+      {
+        "razonSocial": "Empresa A1",
+        "cuil": "23922875419",
+        "cbu": "8899001122334455667788"
+      },
+      {
+        "razonSocial": "Empresa B2",
+        "cuil": "20307408679",
+        "cbu": "9900112233445566778899"
+      },
+      {
+        "razonSocial": "Empresa C3",
+        "cuil": "23388331429",
+        "cbu": "0011223344556677889900"
+      },
+      {
+        "razonSocial": "Empresa D4",
+        "cuil": "20374477379",
+        "cbu": "1122334455667788990011"
+      },
+      {
+        "razonSocial": "Empresa E5",
+        "cuil": "23707602799",
+        "cbu": "2233445566778899001122"
+      }
+    ]
+  }
+  

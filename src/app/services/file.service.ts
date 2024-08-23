@@ -20,19 +20,20 @@ export class FileService {
   constructor(private _http: HttpClient
   ) { }
 
-  getTR(id: string) {
-    return this._http.get(`${this.API_URI}/file/responsetr/${id}`);
+
+  getMetaDataUI(tipoModulo: TipoModulo, tipoMetada: TipoMetada, contrato: string='NONE'): Observable<any>
+  {
+    return this._http.get(`${this.API_URI}/file/GET_METADATA_UI/${tipoModulo}/${tipoMetada}/${contrato}`);
   }
 
   getResumen(tipomodulo: TipoModulo, id: number) 
   {
-    if (tipomodulo == TipoModulo.PAGOS) {
-      return this._http.get(`${this.API_URI}/file/PAGO_OBTENER_RESUMEN/${id}`);
-    }
-    else (tipomodulo == TipoModulo.CUENTA) 
-    {
-      return this._http.get(`${this.API_URI}/file/CUENTA_OBTENER_RESUMEN/${id}`);
-    }
+      return this._http.get(`${this.API_URI}/file/GET_RESUMEN/${tipomodulo}/${id}`);
+  }
+
+  getFill(tipomodulo: TipoModulo, id: number) 
+  {
+      return this._http.get(`${this.API_URI}/file/GET_FILL/${tipomodulo}/${id}`);
   }
 
    getComboOptions(endpoint?: string, staticOptions?: string): Observable<{ id: string; value: string }[]> {
@@ -50,18 +51,8 @@ export class FileService {
     }
   }
 
-  getMetaDataUI(tipoModulo: TipoModulo, tipoMetada: TipoMetada) 
-  {
-    return this._http.get(`${this.API_URI}/file/GET_METADATA_UI/${tipoModulo}/${tipoMetada}`);
-  }
-
-  getImportMetaDataUI(tipoModulo: TipoModulo, contradoId: string) 
-  {
-    return this._http.get(`${this.API_URI}/file/GET_IMPORT_METADATA_UI/${tipoModulo}/${contradoId}`);
-  }
-
-  getPagos(id: number): Observable<any> {
-    return this._http.get(`${this.API_URI}/file/pagoslist/${id}`);
+  getTR(id: string) {
+    return this._http.get(`${this.API_URI}/file/responsetr/${id}`);
   }
 
   getTRList() {
@@ -78,10 +69,6 @@ export class FileService {
 
   clearValidationData(): void {
     localStorage.removeItem(this.storageKey);
-  }
-
-  getPagosList() {
-    return this._http.get(`${this.API_URI}/file/responsepagosforcombo`);
   }
 
   ObtenerContratoById(user: number, municipio: number, contrato: number) {
@@ -119,26 +106,15 @@ export class FileService {
     });
   }
 
-  downloadOutputFileAltas(payload: Altas_Payload): Observable<any> {
-
-    var body = { payload };
-    return this._http.post(`${this.API_URI}/file/exportxlsaltas`, body, {
-      responseType: 'json',
-      headers: new HttpHeaders().append('Content-Type', 'application/json')
-    });
-  }
-
-
 
   dropBox(file: string) {
-
     var body = { filename: file };
-
     return this._http.post(`${this.API_URI}/file/dropbox`, body, {
       responseType: 'blob',
       headers: new HttpHeaders().append('Content-Type', 'application/json')
     });
   }
+  
   getJsonForScreen(jsonName: string) {
     return this._http.get('assets/json/' + jsonName + '.json');
   }

@@ -80,7 +80,7 @@ export class XslVerifiedComponent implements OnInit, AfterViewInit {
 
         this.ld_header = true;
 
-        this.fileService.getResumen(this.TipoModulo as TipoModulo, this.ID).subscribe((res) => {
+        this.fileService.getResumen(this.TipoModulo as TipoModulo,  this.ID).subscribe((res) => {
 
           this.fileService.getMetaDataUI(this.TipoModulo as TipoModulo, TipoMetada.LIST).subscribe((metadata) => {
 
@@ -142,7 +142,7 @@ export class XslVerifiedComponent implements OnInit, AfterViewInit {
     switch (TipoForm) {
       case TipoModulo.TRANSFERENCIAS:
         return "Transferencias Inmediatas";
-      case TipoModulo.PAGOS:
+      case TipoModulo.PAGO:
         return "Pagos Multiples";
       case TipoModulo.CUENTA:
         return "Alta de Cuentas";
@@ -153,21 +153,23 @@ export class XslVerifiedComponent implements OnInit, AfterViewInit {
   }
 
   generatePdfTable() {
-
     const config: PdfConfig = {
-      headerColor: { r: 41, g: 128, b: 185 },
+      headerColor: { r: 219, g: 229, b: 239 },
       detailColor: { r: 230, g: 240, b: 255 },
-      headerFontSize: 12,
+      titleColor: { r: 41, g: 128, b: 185 },
+      titleFontSize: 16,
+      headerFontSize: 10,
       detailFontSize: 10,
-      title: this.municipio,
-      headerData: this.validationData.header,
-      detailData: this.validationData.items,
+      title: this.municipio,  // Título del PDF
+      headerData: this.validationData.header,  // Datos del encabezado
+      detailData: this.validationData.items,  // Datos de los detalles
       headerFields: [
         { label: 'Fecha de pago', key: 'fechapago' },
         { label: 'Cantidad de Transferencias', key: 'cantidad_elementos' },
         { label: 'Importe Total', key: 'importe_total' },
         { label: 'Cuenta Débito', key: 'Cuenta_Debito' },
         { label: 'Concepto', key: 'concepto' },
+        { label: 'Rotulo', key: 'rotulo' },
       ],
       detailFields: [
         { label: 'CBU', key: 'cbu' },
@@ -177,8 +179,10 @@ export class XslVerifiedComponent implements OnInit, AfterViewInit {
     };
     
     this.pdfService.generateGenericPdf(config);
-
   }
+
+
+
 
   generatePdfContrato() {
     const pdf = new jsPDF({
@@ -332,4 +336,5 @@ export class XslVerifiedComponent implements OnInit, AfterViewInit {
       .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
       .join(' ');
   }
+  
 }

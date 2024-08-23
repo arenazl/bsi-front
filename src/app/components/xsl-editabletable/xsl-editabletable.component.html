@@ -1,0 +1,178 @@
+<div *ngIf="ld_header" class="lds-roller">
+  <div></div>
+  <div></div>
+  <div></div>
+  <div></div>
+  <div></div>
+  <div></div>
+  <div></div>
+  <div></div>
+</div>
+
+
+<div class="card px-0 mb-3">
+
+  <div class="card-header pt-3 pb-1">
+    <h6>{{ municipio }}</h6>
+  </div>
+
+  <div *ngIf="validationData?.header" class="card-body pb-0">
+    <div class="d-flex flex-wrap">
+      <div *ngFor="let field of metadata.HEADER" class="d-flex flex-column justify-content-center"
+        style="flex: 1 0 0%;">
+        <div class="label fw-normal">{{ field.header }}:</div>
+        <p class="label fw-bold">
+          <!-- Apply pipe if it exists -->
+          <ng-container *ngIf="field.pipe; else noPipeHeader">
+            <ng-container *ngIf="field.pipe === 'date'">
+              {{ validationData.header[field.field] | date:'dd/MM/yyyy' }}
+            </ng-container>
+            <ng-container *ngIf="field.pipe === 'BsiCurrencyPipe'">
+              {{ validationData.header[field.field] | BsiCurrencyPipe }}
+            </ng-container>
+          </ng-container>
+          <!-- Fallback for no pipe -->
+          <ng-template #noPipeHeader>
+            {{ validationData.header[field.field] }}
+          </ng-template>
+        </p>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ACCIONES -->
+<div class="card px-0 mb-3">
+
+  <div class="card-header pt-3 pb-1">
+    <h6>Acciones</h6>
+  </div>
+
+  <div class="card-body d-flex flex-wrap">
+
+    <!-- Input -->
+
+    <div class="form-group m-2" style="flex: 0 0 15%;">
+
+      <label class="label mb-2"> Importe Masivo</label>
+
+      <input type="text" class="form-control" currencyMask [options]="{
+                            prefix: '$',
+                            thousands: '.',
+                            decimal: ',',
+                            align: 'left',
+                            allowNegative: false,
+                            precision: 2
+                          }" placeholder="Ingrese importe" />
+
+    </div>
+
+
+  </div>
+
+</div>
+
+
+<div class="card px-0 mb-3" *ngIf="validationData?.items.length > 0">
+
+  <div class="card-header pt-3 pb-1">
+    <h6>Cuentas</h6>
+  </div>
+
+
+  <div class="card-body m-3 p-0">
+    <div class="table-responsive table-style">
+      <table class="table table-striped table-condensed table-hover mb-0">
+        <thead class="opacity-style">
+          <tr class="header-style">
+            <th class="text-start">#</th>
+            <th *ngFor="let col of metadata['TABLE-COLUMN']" [class.text-start]="col.type === 'text'"
+              [class.text-center]="col.type === 'result'" [class.text-end]="col.type === 'currency'">
+              {{ col.header }}
+            </th>
+            <th class="text-end">Importe</th> <!-- Nueva columna para Importe -->
+          </tr>
+        </thead>
+
+        <tbody>
+          <ng-container *ngFor="let sol of validationData?.items; let i = index">
+            <tr>
+              <td [ngClass]="{
+                      'text-danger': sol.VALIDO === 0,
+                      'text-start': true
+                    }">
+                {{ i + 1 }}
+              </td>
+              <td *ngFor="let col of metadata['TABLE-COLUMN']" [class.text-start]="col.type === 'text'"
+                [class.text-center]="col.type === 'result'" [class.text-end]="col.type === 'currency'">
+                <ng-container *ngIf="col.type === 'BsiCurrencyPipe'">
+                  {{ sol[col.field] | BsiCurrencyPipe }}
+                </ng-container>
+
+                <ng-container *ngIf="col.type === 'text'">
+                  {{ sol[col.field] }}
+                </ng-container>
+
+                <ng-container *ngIf="col.type === 'number'">
+                  {{ sol[col.field] }}
+                </ng-container>
+
+                <ng-container *ngIf="col.type === 'date'">
+                  {{ sol[col.field] | date:'dd/MM/yyyy' }}
+                </ng-container>
+              </td>
+
+              <td class="text-end"> <!-- Columna de input de Importe -->
+                <input type="text" class="form-control" [(ngModel)]="sol.importe" [disabled]="!sol.toggleEnabled"
+                  (ngModelChange)="updateImporte(sol, $event)" currencyMask [options]="{
+                        prefix: '$',
+                        thousands: '.',
+                        decimal: ',',
+                        align: 'right',
+                        allowNegative: false,
+                        precision: 2
+                      }" placeholder="Ingrese importe" />
+              </td>
+
+              <td class="text-center">
+                <label class="switch">
+                  <input type="checkbox" [(ngModel)]="sol.toggleEnabled" (ngModelChange)="toggleImporte(sol)" />
+                  <span class="slider round"></span>
+                </label>
+              </td>
+
+            </tr>
+          </ng-container>
+        </tbody>
+      </table>
+    </div>
+
+  </div>
+
+</div>
+
+
+  <!-- ACCIONES -->
+  <div
+  class="card px-0 mb-3"
+  >
+  <div class="card-header pt-3 pb-1">
+    <h6>Exportar</h6>
+  </div>
+  
+  <div class="card-body d-flex flex-wrap">
+  
+    <button  
+      type="button"
+      class="btn btn-primary col-12 col-md-2 d-flex align-items-center justify-content-center"
+    >
+      <i class="fa fa-file-contract me-2"></i>
+      Descargar TR
+    </button>
+  
+  </div>
+
+  </div>
+  
+

@@ -43,7 +43,7 @@ export class GameFormComponent implements OnInit {
   edit = false;
 
   phase1 = true;
-  phase2 = false;
+  phase2 = false; 
 
   expand_text_lote = 'Mas de un lote';
   expand_text_propietario = "Mas de un propietario";

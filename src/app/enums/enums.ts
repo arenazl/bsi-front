@@ -12,13 +12,20 @@ export enum TipoPantalla {
 
 export enum TipoModulo {
     TRANSFERENCIAS = 'TRANSFERENCIA',
-    PAGOS = 'PAGO',
+    PAGO = 'PAGO',
     CUENTA = 'CUENTA',
-    CARGCBU = 'CARGCBU'
+    NOMINA = 'NOMINA'
 }
-
 
 export enum TipoMetada {
     IMPORT = 'IMPORT',
     LIST = 'LIST',
+      FILL = 'FILL'
 }
+
+export enum TipoData {
+    EXPORT = 'EXPORT',
+    LIST = 'LIST',
+    FILL = 'FILL'
+}
+

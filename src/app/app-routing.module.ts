@@ -11,6 +11,7 @@ import { RankingComponent } from './components/ranking/ranking.component';
 import { XslVerifiedComponent } from './components/xsl-verified/xsl-verified.component';
 import { DinamicModuleComponent } from './components/dinamic-module/dinamic-module.component';
 import { XslImportComponent } from './components/xsl-import/xsl-import.component';
+import { XslEditabletableComponent } from './components/xsl-editabletable/xsl-editabletable.component';
 
 const routes: Routes = [
   {
@@ -59,6 +60,11 @@ const routes: Routes = [
   {
     path: 'xslImport/:tipomodulo/:contrato',
     component: XslImportComponent
+  },
+
+  {
+    path: 'xslEditabletable',
+    component: XslEditabletableComponent
   },
   {
     path: 'dinamicModule/:screen',

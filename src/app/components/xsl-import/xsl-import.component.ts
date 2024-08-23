@@ -53,9 +53,10 @@ export class XslImportComponent implements OnInit {
 
       this.fileService.ObtenerContratoById(1, 71, parseInt(this.contrato)).subscribe((data: any) => {
 
-        this.fileService.getImportMetaDataUI(this.tipoModulo as TipoModulo, this.contrato).subscribe((metadata: any) => {
-                              
+        this.fileService.getMetaDataUI(this.tipoModulo as TipoModulo, TipoMetada.IMPORT, this.contrato).subscribe((metadata: any) => {
+         
           const formConfig = metadata[0].metadata_json.FORMS.MODULO;   
+
           if (formConfig) {
             this.pageTitle = formConfig.TITLE;
             this.uploadUrl = formConfig.UPLOAD_URL;
@@ -94,6 +95,8 @@ export class XslImportComponent implements OnInit {
   }
 
 
+
+
   initializeControls(data: any = {}): void {
 
 
@@ -110,7 +113,7 @@ export class XslImportComponent implements OnInit {
       this.formGroup.addControl(control.field, this.fb.control(value));
 
       if (control.type === 'select') {  
-        if(this.tipoModulo == TipoModulo.PAGOS)  {
+        if(this.tipoModulo == TipoModulo.PAGO)  {
             this.loadComboOptions(control.field, '', this.data.Concepto);
           }    
           else{
@@ -153,8 +156,9 @@ export class XslImportComponent implements OnInit {
 
     const template = this.FileNameTemplate;
     return template
+      .replace('${tipoModulo}', this.tipoModulo || '')
       .replace('${Id}', sessionStorage.getItem('Id') || '')
-      .replace('${IdOrganismo}', sessionStorage.getItem('IdOrganismo') || '')
+      .replace('${idOrganismo}', sessionStorage.getItem('IdOrganismo') || '')
       .replace('${contrato}', this.contrato || '')
       .replace('${concepto}', conceptoDescripcion || '')
       .replace('${fechaPago}', fechaPago || '')

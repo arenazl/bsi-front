@@ -21,11 +21,11 @@
       "title": "Alta de Cuentas individual",
       "description": "Cargá los datos en pantalla",
       "icono": "fa-file-upload",
-      "enabled": false,
+      "enabled": true,
       "items": [
         {
           "description": "Comenzar la carga",
-          "link": "/start-upload",
+          "link": "/xslEditabletable",
           "icono": "fa-hands"
         }
       ]
@@ -38,7 +38,7 @@
       "items": [
         {
           "description": "Importar CBUs",
-          "link": "/xslImport/CBUCARGA/1",
+          "link": "/xslImport/NOMINA/1",
           "icono": "fa-download"
         }
       ]
