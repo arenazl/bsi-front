@@ -43,6 +43,7 @@ export class XslVerifiedComponent implements OnInit, AfterViewInit {
   headerTitle = "";
   municipio = '';
   columnConfig: any[] = [];
+
   showExportSection = true;
   usuario = <Usuario>{};
   params = <Params>{ tg: 2, id_barrio: 0 };
@@ -185,6 +186,7 @@ export class XslVerifiedComponent implements OnInit, AfterViewInit {
 
 
   generatePdfContrato() {
+
     const pdf = new jsPDF({
       orientation: 'portrait',
       unit: 'mm',
@@ -293,12 +295,12 @@ export class XslVerifiedComponent implements OnInit, AfterViewInit {
   
   Sobre el particular, adjunto archivo y listado de respaldo conteniendo los pagos a abonar de acuerdo al siguiente detalle:
   
-  Cantidad de pagos: ${this.validationData.head.CANTIDAD_TRANSFERENCIAS}
-  Total general a acreditar en Pesos: ${new Intl.NumberFormat('es-AR', { style: 'currency', currency: 'ARS' }).format(Number(this.validationData.head.TOTAL_IMPORTE))}
+  Cantidad de pagos: ${this.validationData.header.cantidad_elementos}
+  Total general a acreditar en Pesos: ${new Intl.NumberFormat('es-AR', { style: 'currency', currency: 'ARS' }).format(Number(this.validationData.header.importe_total))}
   
   Asimismo, autorizo al Banco a debitar de nuestra cuenta corriente radicada en esa sucursal, los fondos necesarios para atender los pagos y la comisión del servicio.
   
-  Los pagos deben estar disponibles en las cajas de ahorros de nuestros beneficiarios el día ${new Date(this.validationData.head.FECHA).toLocaleDateString('es-ES', { year: 'numeric', month: 'long', day: 'numeric' })} 
+  Los pagos deben estar disponibles en las cajas de ahorros de nuestros beneficiarios el día ${new Date(this.validationData.header.fechapago).toLocaleDateString('es-ES', { year: 'numeric', month: 'long', day: 'numeric' })} 
   
   Saluda a Ud. muy atentamente.`;
 
@@ -336,5 +338,5 @@ export class XslVerifiedComponent implements OnInit, AfterViewInit {
       .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
       .join(' ');
   }
-  
+
 }
