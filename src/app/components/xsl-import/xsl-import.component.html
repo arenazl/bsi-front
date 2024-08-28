@@ -11,9 +11,14 @@
   </div>
 
   <div *ngIf="!ld_header" class="card">
-    <div class="card-header pt-3">
-      <h5>{{ pageTitle }}</h5>
+
+    <div class="card-header pt-3 d-flex align-items-center">
+      <button class="btn p-0 me-2" (click)="goBack()">
+        <i class="fas fa-arrow-circle-left" style="font-size: 170%; color:black !important; opacity: 0.7;"></i>
+      </button>
+      <h5 class="m-0">{{ pageTitle }}</h5>
     </div>
+  
 
     <div class="card-body">
       <div class="row">
@@ -55,7 +60,7 @@
                   <label class="label" [for]="control.field">{{ control.header }}</label>
                   <input type="range" class="form-control" [id]="control.field" formControlName="{{ control.field }}" [min]="control.min" [max]="control.max" />
                 </div>
-        
+
                 <!-- Label -->
                 <div class="form-group m-2" *ngIf="control.type === 'label'">
                   <label class="label">{{ control.header }}</label>
@@ -87,7 +92,6 @@
             </div>
             
           </div>
-
     
           <div class="form-group mt-3 m-2" *ngIf="cargaArchivoSeleccionada" style="flex: 0 0 98.5%;">
             <label class="label" for="fileUpload">Carga de Archivo</label>
@@ -101,13 +105,13 @@
               {{ item.file.name }}
             </div>
     
-            <div class="col-md-5" style="padding-top: 13px">
+            <div class="col-md-4" style="padding-top: 13px">
               <div class="progress">
                 <div class="progress-bar bg-progress" [ngStyle]="{ width: item.progress + '%' }"></div>
               </div>
             </div>
     
-            <div class="col-md-3 d-flex" style="  margin-top: 5px;">
+            <div class="col-md-4 d-flex;" style="justify-content: space-around;">
               <button type="button" class="btn btn-outline-danger mr-2" (click)="item.remove()">
                 Cancelar
               </button>
@@ -115,11 +119,12 @@
                 Subido
               </button>
             </div>
+
           </div>
-    
+  
           <div class="form-group m-2 mt-3" *ngIf="cargaArchivoSeleccionada" style="flex: 0 0 98.5%;">
             <button [ngClass]="{ 'btn-completed': filesUploaded }" class="btn btn-primary w-100 display-inherit"
-              type="button" (click)="uploader.uploadAll()">
+              type="button" id="uploadBtn" (click)="uploader.uploadAll()">
               {{ buttonText }}
             </button>
           </div>

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { TipoMetada, TipoModulo } from 'src/app/enums/enums';
 import { FileService } from 'src/app/services/file.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-xsl-editabletable',
@@ -22,6 +23,9 @@ export class XslEditabletableComponent implements OnInit {
   metadata: any;       
 
 
+    importeMasivo: number = 0;
+  totalImporte: number = 0;
+
   constructor(private fileService: FileService ) {
 
    }
@@ -33,12 +37,12 @@ export class XslEditabletableComponent implements OnInit {
 
     this.ld_header = true;
 
-    this.fileService.getFill(TipoModulo.NOMINA, this.ID).subscribe((res) => {
+    this.fileService.getFill(TipoModulo.NOMINA, this.ID).subscribe((res: any) => {
 
-      this.fileService.getMetaDataUI(TipoModulo.NOMINA , TipoMetada.FILL).subscribe((metadata) => {
+      this.fileService.getMetaDataUI(TipoModulo.NOMINA , TipoMetada.FILL).subscribe((data: any) => {
 
-          this.metadata = (metadata  as any)[0].metadata_json;
-          this.validationData = (res as any)[0].resultado_json;
+          this.metadata = data.data.metadata_json;
+          this.validationData = res.result;       
 
           if (this.validationData?.items) {
             this.validationData.items.forEach((sol: any) => {
@@ -57,9 +61,20 @@ export class XslEditabletableComponent implements OnInit {
     },
       (err) => console.error(err)
     );
-  
 
   }
+
+  applyMassiveImporte(value: number): void {
+    if (this.validationData && this.validationData.items) {
+      this.validationData.items.forEach((item: { toggleEnabled: any; importe: number; }) => {
+        if (item.toggleEnabled) {
+          item.importe = value;
+        }
+      });
+      this.recalculateTotal();
+    }
+  }
+
 
   updateImporte(sol: any, newValue: number) {
     sol.importe = newValue;
@@ -87,6 +102,7 @@ export class XslEditabletableComponent implements OnInit {
   }
 
   toggleImporte(sol: any) {
+    sol.importe = sol.toggleEnabled ? sol.importe : 0;
     this.recalculateTotal();
   }
 

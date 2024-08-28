@@ -22,6 +22,10 @@
     transition: 0.4s;
     border-radius: 34px;
   }
+
+  .card {
+    BACKGROUND: #ffffffc9 !important;
+}
   
   .slider:before {
     position: absolute;

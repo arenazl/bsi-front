@@ -64,6 +64,10 @@ export class XslVerifiedComponent implements OnInit, AfterViewInit {
 
   ) { }
 
+  
+  //text-decoration: none;
+  //font-size: 392%;
+
   ngAfterViewInit(): void { }
 
   ngOnInit() {
@@ -81,14 +85,14 @@ export class XslVerifiedComponent implements OnInit, AfterViewInit {
 
         this.ld_header = true;
 
-        this.fileService.getResumen(this.TipoModulo as TipoModulo,  this.ID).subscribe((res) => {
+        this.fileService.getResumen(this.TipoModulo as TipoModulo,  this.ID).subscribe((res: any) => {
 
-          this.fileService.getMetaDataUI(this.TipoModulo as TipoModulo, TipoMetada.LIST).subscribe((metadata) => {
+          this.fileService.getMetaDataUI(this.TipoModulo as TipoModulo, TipoMetada.LIST).subscribe(( data) => {
 
-              this.metadata = (metadata  as any)[0].metadata_json;
-              this.validationData = (res as any)[0].resultado_json;
+              this.metadata = data.metadata_json;
+              this.validationData = res.result;       
               this.allRecordsValid = this.areAllRecordsValid();
-              
+                
               this.ld_header = false;
             });
         },
@@ -98,8 +102,6 @@ export class XslVerifiedComponent implements OnInit, AfterViewInit {
     });
   }
 
-
-   
   getListComboById(id: any) {
     if (id.target.value) {
 
