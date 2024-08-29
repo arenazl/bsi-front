@@ -12,6 +12,8 @@ import { XslVerifiedComponent } from './components/xsl-verified/xsl-verified.com
 import { DinamicModuleComponent } from './components/dinamic-module/dinamic-module.component';
 import { XslImportComponent } from './components/xsl-import/xsl-import.component';
 import { XslEditabletableComponent } from './components/xsl-editabletable/xsl-editabletable.component';
+import { UserManagementWrapperComponent } from './components/user-management-wrapper/user-management-wrapper.component';
+import { DashboardWrapperComponent } from './components/dashboard-wrapper/dashboard-wrapper.component';
 
 const routes: Routes = [
   {
@@ -69,7 +71,16 @@ const routes: Routes = [
   {
     path: 'dinamicModule/:screen',
     component: DinamicModuleComponent
-  }
+  },
+  {
+    path: 'userManagement',
+    component: UserManagementWrapperComponent
+  },
+  {
+    path: 'dashboard',
+    component: DashboardWrapperComponent
+  },
+
 ];
 
 @NgModule({

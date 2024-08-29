@@ -52,13 +52,16 @@ export class XslImportComponent implements OnInit {
   ngOnInit(): void {
     this.route.params.subscribe(params => {
 
+
       this.tipoModulo = params['tipomodulo'].toUpperCase();
       this.contrato = params['contrato'].toUpperCase();
 
       this.fileService.ObtenerContratoById(1, 71, parseInt(this.contrato)).subscribe((data: any) => {
+        this.ROTULO = data[0][0].Rotulo
+        sessionStorage.setItem('Rotulo',  this.ROTULO);
 
         this.fileService.getMetaDataUI(this.tipoModulo as TipoModulo, TipoMetada.IMPORT, this.contrato).subscribe((metadata: any) => {
-         
+
           const formConfig = metadata.data.metadata_json.FORMS.MODULO;   
 
           if (formConfig) {
@@ -70,7 +73,7 @@ export class XslImportComponent implements OnInit {
             this.ld_header = false;  
             this.cargaManual = formConfig.CARGA_OPCIONES_VISIBLE;
             
-            this.data=data[0];
+            this.data=data[0][0];
             this.initializeControls(data);
 
             }
@@ -144,6 +147,7 @@ export class XslImportComponent implements OnInit {
 
       this.formGroup.addControl(control.field, this.fb.control(value));
 
+      
       if (control.type === 'select') {  
         if(this.tipoModulo == TipoModulo.PAGO)  {
             this.loadComboOptions(control.field, '', this.data.Concepto);
@@ -152,6 +156,7 @@ export class XslImportComponent implements OnInit {
             this.loadComboOptions(control.field, control.endpoint);
           }
       }
+
     });
   }
 

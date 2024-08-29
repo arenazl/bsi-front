@@ -28,6 +28,9 @@ import { DinamicModuleComponent } from './components/dinamic-module/dinamic-modu
 import { DatePipe } from '@angular/common';
 import { XslEditabletableComponent } from './components/xsl-editabletable/xsl-editabletable.component';
 import { CurrencyMaskModule } from "ng2-currency-mask";
+import { UserManagementWrapperComponent } from './components/user-management-wrapper/user-management-wrapper.component';
+import { DashboardWrapperComponent } from './components/dashboard-wrapper/dashboard-wrapper.component';
+
 
 @NgModule({
   declarations: [
@@ -46,6 +49,9 @@ import { CurrencyMaskModule } from "ng2-currency-mask";
     BsiCurrencyPipe,
     DinamicModuleComponent,
     XslEditabletableComponent,
+    UserManagementWrapperComponent,
+    DashboardWrapperComponent
+
   ],
   imports: [
     CurrencyMaskModule,

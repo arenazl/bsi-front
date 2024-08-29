@@ -89,7 +89,7 @@ export class XslVerifiedComponent implements OnInit, AfterViewInit {
 
           this.fileService.getMetaDataUI(this.TipoModulo as TipoModulo, TipoMetada.LIST).subscribe(( data) => {
 
-              this.metadata = data.metadata_json;
+              this.metadata = data.data.metadata_json;
               this.validationData = res.result;       
               this.allRecordsValid = this.areAllRecordsValid();
                 
@@ -323,6 +323,7 @@ export class XslVerifiedComponent implements OnInit, AfterViewInit {
     let rotulo = sessionStorage.getItem('Rotulo')
 
     this.fileService.downloadOutputFile(this.TipoModulo as TipoModulo, this.ID).subscribe((blob) => {
+
       const url = window.URL.createObjectURL(blob);
       const link = document.createElement("a");
       link.href = url;

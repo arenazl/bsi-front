@@ -1,0 +1,9 @@
+@import 'tailwindcss/base';
+@import 'tailwindcss/components';
+@import 'tailwindcss/utilities';
+
+/* Envuelve todos los estilos de Tailwind en una clase específica */
+.react-component {
+  /* Aquí van todos los estilos de Tailwind */
+  @apply text-base;
+}

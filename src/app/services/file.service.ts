@@ -120,8 +120,33 @@ export class FileService {
   }
 
   getColumnConfig(tipo: string): Observable<any> {
+
     const url = `assets/json/column_shema_${tipo}.json`;
     return this._http.get<any>(url);
+  }
+
+  getUsers(): Observable<any[]> {
+
+    const url = `${this.API_URI}/file/getUsers`;
+    return this._http.get<any[]>(url);
+  }
+
+  createUser(user: any): Observable<any> {
+
+    const url = `${this.API_URI}/file/createUser`;
+    return this._http.post(url, user);
+  }
+
+  updateUser(id: number, user: any): Observable<any> {
+
+    const url = `${this.API_URI}/file/updateUser`;
+    return this._http.put(url, user);
+  }
+
+  deleteUser(id: number): Observable<any> {
+
+    const url = `${this.API_URI}/file/deleteUser/${id}`;
+    return this._http.delete(url);
   }
 
 

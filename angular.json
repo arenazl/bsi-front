@@ -19,11 +19,11 @@
             "polyfills": "src/polyfills.ts",
             "tsConfig": "tsconfig.app.json",
             "assets": ["src/favicon.ico", "src/assets", "src/assets/js"],
-            "styles": ["src/styles.css"],
-
+            "styles": ["src/styles.css", "src/styles-react.css"],
             "scripts": ["src/assets/js/zoom.js"]
           },
           "configurations": {
+
             "production": {
               "budgets": [
                 {
@@ -43,8 +43,10 @@
                   "with": "src/environments/environment.prod.ts"
                 }
               ],
+              
               "outputHashing": "all"
             },
+
             "development": {
               "buildOptimizer": false,
               "optimization": false,
@@ -57,7 +59,7 @@
           "defaultConfiguration": "production"
         },
         "serve": {
-          "builder": "@angular-devkit/build-angular:dev-server",
+          "builder": "@angular-devkit/build-angular:dev-server",    
           "configurations": {
             "production": {
               "browserTarget": "gestion:build:production"
@@ -82,7 +84,7 @@
             "tsConfig": "tsconfig.spec.json",
             "karmaConfig": "karma.conf.js",
             "assets": ["src/favicon.ico", "src/assets", "src/assets/js"],
-            "styles": ["src/styles.css"],
+            "styles": ["src/styles.css", "src/styles-react.css"],
             "scripts": ["src/assets/js/zoom.js"]
           }
         }

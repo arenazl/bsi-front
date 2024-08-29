@@ -46,25 +46,25 @@
       ]
     },
     {
-      "title": "Tarjetas Recargables",
-      "description": "Gestioná el alta y las cargas de tus tarjetas",
-      "enabled": false,
+      "title": "Administracion Usuarios",
+      "description": "Gestioná el alta y las cargas de los usuario",
+      "enabled": true,
       "items": [
         {
-          "description": "Gestiona tus tarjetas",
-          "link": "/tarjetas",
+          "description": "Usuarios",
+          "link": "/userManagement",
           "icono": "fa-credit-card"
         }
       ]
     },
     {
-      "title": "Débitos Automáticos",
+      "title": "Tableros",
       "description": "Administrá los pagos de tus abonados",
-      "enabled": false,
+      "enabled": true,
       "items": [
         {
-          "description": "Débitos automáticos",
-          "link": "/prestamos",
+          "description": "Tablero de Pagos",
+          "link": "/dashboard",
           "icono": "fa-money-check"
         }
       ]
