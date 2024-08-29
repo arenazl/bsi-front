@@ -131,9 +131,8 @@ export default function UserManagement({ getUsers, createUser, updateUser, delet
         //resetForm();
         
         setError(null);
-
-        showAlert(isEditing ? 'Usuario actualizado exitosamente' : 'Usuario creado exitosamente', 'success');
         
+        showAlert(isEditing ? 'Usuario actualizado exitosamente' : 'Usuario creado exitosamente', 'success');
       } catch (error) {
         console.error('Error al guardar el usuario:', error);
         setError('Hubo un error al guardar el usuario. Por favor, intente de nuevo.');
@@ -256,6 +255,7 @@ export default function UserManagement({ getUsers, createUser, updateUser, delet
               className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
               required
             >
+
               <option value="">Select Position</option>
               {puestosArgentina.map((puesto, index) => (
                 <option key={index} value={puesto}>{puesto}</option>
@@ -309,6 +309,7 @@ export default function UserManagement({ getUsers, createUser, updateUser, delet
       <th className="border p-2">Actions</th>
     </tr>
   </thead>
+  
   <tbody>
     {users.map(user => (
       <tr key={user.ID_USER} className="hover:bg-gray-100">

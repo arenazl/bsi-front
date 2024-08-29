@@ -51,7 +51,7 @@
         
                 <!-- Date -->
                 <div class="form-group m-2" *ngIf="control.type === 'date'">
-                  <label class="label" [for]="control.field">{{ control.header }}</label>
+                  <label class="label" [for]="control.field">{{ control.heade | date:'dd/MM/yyyy' }}</label>
                   <input type="date" class="form-control" formControlName="{{ control.field }}" [id]="control.field" />
                 </div>
         
