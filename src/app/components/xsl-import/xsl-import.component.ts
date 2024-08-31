@@ -32,7 +32,7 @@ export class XslImportComponent implements OnInit {
   ld_header = true;
   controls: any[] = [];
   showFechaPago = false;
-  uri = GlobalVariable.BASE_API_URL + "/file";
+  uri = GlobalVariable.BASE_API_URL + "/Validation";
   ENTE="";
   ROTULO="";
   FileNameTemplate="";
@@ -52,17 +52,16 @@ export class XslImportComponent implements OnInit {
   ngOnInit(): void {
     this.route.params.subscribe(params => {
 
-
       this.tipoModulo = params['tipomodulo'].toUpperCase();
       this.contrato = params['contrato'].toUpperCase();
 
       this.fileService.ObtenerContratoById(1, 71, parseInt(this.contrato)).subscribe((data: any) => {
-        this.ROTULO = data[0][0].Rotulo
-        sessionStorage.setItem('Rotulo',  this.ROTULO);
 
+        this.ROTULO = data[0][0].Rotulo
+        sessionStorage.setItem('Rotulo',  this.ROTULO);    
         this.fileService.getMetaDataUI(this.tipoModulo as TipoModulo, TipoMetada.IMPORT, this.contrato).subscribe((metadata: any) => {
 
-          const formConfig = metadata.data.metadata_json.FORMS.MODULO;   
+          const formConfig = metadata[0][0].metadata_json; 
 
           if (formConfig) {
             this.pageTitle = formConfig.TITLE;

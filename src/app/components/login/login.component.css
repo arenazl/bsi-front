@@ -114,7 +114,6 @@ html {
     background-color: #f6f6f6;
     border: none;
     color: #0d0d0d;
-    padding: 15px 32px;
     text-align: center;
     text-decoration: none;
     display: inline-block;
@@ -130,6 +129,20 @@ html {
     -webkit-border-radius: 5px 5px 5px 5px;
     border-radius: 5px 5px 5px 5px;
   }
+
+
+  /* Animación shake */
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  20%, 60% { transform: translateX(-10px); }
+  40%, 80% { transform: translateX(10px); }
+}
+
+/* Clase que aplicará la animación */
+.shake {
+  animation: shake 0.5s; /* Duración de la animación */
+}
+
 
   input[type=password] {
     background-color: #f6f6f6;

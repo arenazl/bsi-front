@@ -15,7 +15,7 @@
 
     <!-- Login Form -->
     <form [formGroup]="form" (ngSubmit)="onSubmit()">
-      <input type="text" id="login" class="form-control mt-3" placeholder="usuario" formControlName="user">
+      <input type="text" id="login" class="form-control mt-3" (change)="updatetext()" placeholder="usuario" formControlName="user">
       <input type="password" id="password" class="form-control mt-3" placeholder="clave" formControlName="pass">
       <input type="submit" style="width: 90%; background-color:#366bd0;" class="fourth mt-3 btn btn-primary"
         value="{{login_txt}}">

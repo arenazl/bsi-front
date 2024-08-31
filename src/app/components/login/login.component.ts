@@ -1,5 +1,5 @@
 import { LegajoService } from '../../services/legajo.service';
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, Renderer2 } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Usuario } from 'src/app/models/Model';
 import { FormControl, FormGroup } from '@angular/forms';
@@ -15,8 +15,13 @@ import { IfStmt } from '@angular/compiler';
 export class LoginComponent implements OnInit {
 
   login_txt = "Ingresar";
+  shakeError: boolean = false; // Variable para controlar la animación
 
-  constructor(private legajoService: LegajoService, private router: Router, private activatedRoute: ActivatedRoute, private sharedService: SharedService) { }
+  constructor(private legajoService: LegajoService, private router: Router, private activatedRoute: ActivatedRoute, private sharedService: SharedService,
+    private renderer: Renderer2, // Para manipular el DOM de manera segura
+    private el: ElementRef
+    
+  ) { }
 
   form = new FormGroup({
     barrio: new FormControl(null),
@@ -40,6 +45,21 @@ export class LoginComponent implements OnInit {
     this.barrioId = event.target.value as number;
   }
 
+  triggerShake() {
+    // Encuentra el elemento del formulario
+    const formContent = this.el.nativeElement.querySelector('#formContent');
+    // Añadir la clase para la animación
+    this.renderer.addClass(formContent, 'shake');
+    // Remueve la clase después de la animación para poder reutilizarla
+    setTimeout(() => {
+      this.renderer.removeClass(formContent, 'shake');
+    }, 500); // Duración de la animación en milisegundos
+  }
+
+  updatetext() {
+    this.login_txt = "Ingresar";
+  }
+
   onSubmit() {
 
     this.login_txt = "Validando...";
@@ -52,6 +72,14 @@ export class LoginComponent implements OnInit {
     this.legajoService.getUsuario(userPayload)
       .subscribe(
         (res: any) => {
+
+          if (res.ID_USER == undefined) {
+            
+           this.triggerShake();
+           this.login_txt = "Uusario incorrecto";
+            return;
+
+          }
 
           this.login_txt = "Registrado!";
 

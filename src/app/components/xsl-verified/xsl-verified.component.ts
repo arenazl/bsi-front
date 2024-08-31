@@ -61,12 +61,9 @@ export class XslVerifiedComponent implements OnInit, AfterViewInit {
     private route: ActivatedRoute,
     private cdRef: ChangeDetectorRef,
     private pdfService: PdfService
-
   ) { }
 
-  
-  //text-decoration: none;
-  //font-size: 392%;
+
 
   ngAfterViewInit(): void { }
 
@@ -79,7 +76,7 @@ export class XslVerifiedComponent implements OnInit, AfterViewInit {
       this.TipoModulo = params["tipomodulo"]
       this.ID = params["id"]
 
-      this.getListCombo();
+      this.getListCombo(); 
 
       this.headerTitle = this.getHeaderText(this.TipoModulo)
 
@@ -89,8 +86,9 @@ export class XslVerifiedComponent implements OnInit, AfterViewInit {
 
           this.fileService.getMetaDataUI(this.TipoModulo as TipoModulo, TipoMetada.LIST).subscribe(( data) => {
 
-              this.metadata = data.data.metadata_json;
-              this.validationData = res.result;       
+              this.metadata = data[0][0].RESULT;
+              this.validationData = res[0].resultado_json;
+              ;       
               this.allRecordsValid = this.areAllRecordsValid();
                 
               this.ld_header = false;
@@ -114,10 +112,11 @@ export class XslVerifiedComponent implements OnInit, AfterViewInit {
 
   getListCombo() {
 
+    /*
       this.fileService.getListForCombo(this.TipoModulo as TipoModulo).subscribe((data) => {
         this.tranfeList = data;
       });
-    
+    */
   }
 
 

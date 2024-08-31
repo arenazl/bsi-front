@@ -23,17 +23,17 @@ export class FileService {
 
   getMetaDataUI(tipoModulo: TipoModulo, tipoMetada: TipoMetada, contrato: string='NONE'): Observable<any>
   {
-    return this._http.get(`${this.API_URI}/file/GET_METADATA_UI/${tipoModulo}/${tipoMetada}/${contrato}`);
+    return this._http.get(`${this.API_URI}/Metadata/GET_METADATA_UI/${tipoModulo}/${tipoMetada}/${contrato}`);
   }
 
   getResumen(tipomodulo: TipoModulo, id: number) 
   {
-      return this._http.get(`${this.API_URI}/file/GET_RESUMEN/${tipomodulo}/${id}`);
+      return this._http.get(`${this.API_URI}/Metadata/GET_RESUMEN/${tipomodulo}/${id}`);
   }
 
   getFill(tipomodulo: TipoModulo, id: number) 
   {
-      return this._http.get(`${this.API_URI}/file/GET_FILL/${tipomodulo}/${id}`);
+      return this._http.get(`${this.API_URI}/GET_FILL/${tipomodulo}/${id}`);
   }
 
    getComboOptions(endpoint?: string, staticOptions?: string): Observable<{ id: string; value: string }[]> {
@@ -52,11 +52,11 @@ export class FileService {
   }
 
   getTR(id: string) {
-    return this._http.get(`${this.API_URI}/file/responsetr/${id}`);
+    return this._http.get(`${this.API_URI}/responsetr/${id}`);
   }
 
   getTRList() {
-    return this._http.get(`${this.API_URI}/file/responsetrforcombo`);
+    return this._http.get(`${this.API_URI}/responsetrforcombo`);
   }
 
   saveValidationData(data: any): void {
@@ -75,7 +75,7 @@ export class FileService {
 
     var body = { id_user: user, id_organismo: municipio, id_contrato: contrato };
 
-    return this._http.post(`${this.API_URI}/file/ObtenerContratoById`, body, {
+    return this._http.post(`${this.API_URI}/contract/obtenercontratobyid`, body, {
       responseType: 'json',
       headers: new HttpHeaders().append('Content-Type', 'application/json')
     });
