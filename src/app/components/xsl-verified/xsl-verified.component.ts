@@ -185,7 +185,6 @@ export class XslVerifiedComponent implements OnInit, AfterViewInit {
 
 
 
-
   generatePdfContrato() {
 
     const pdf = new jsPDF({

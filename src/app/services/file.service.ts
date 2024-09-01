@@ -91,7 +91,7 @@ export class FileService {
   }
 
   downloadOutputFile(tipoModulo: TipoModulo, id: number): Observable<Blob> {
-    const url = `${this.API_URI}/file/downloadtxtfile/${tipoModulo}/${id}`;
+    const url = `${this.API_URI}/Upload/downloadtxtfile/${tipoModulo}/${id}`;
     return this._http.get(url, {
       responseType: 'blob',
       headers: new HttpHeaders().append('Content-Type', 'application/json')
