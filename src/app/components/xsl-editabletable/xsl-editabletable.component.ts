@@ -41,8 +41,8 @@ export class XslEditabletableComponent implements OnInit {
 
       this.fileService.getMetaDataUI(TipoModulo.NOMINA , TipoMetada.FILL).subscribe((data: any) => {
 
-          this.metadata = data.data.metadata_json;
-          this.validationData = res.result;       
+          this.metadata = data[0][0].metadata_json;
+          this.validationData = res[0].resultado_json;       
 
           if (this.validationData?.items) {
             this.validationData.items.forEach((sol: any) => {

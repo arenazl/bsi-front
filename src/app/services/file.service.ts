@@ -33,7 +33,7 @@ export class FileService {
 
   getFill(tipomodulo: TipoModulo, id: number) 
   {
-      return this._http.get(`${this.API_URI}/GET_FILL/${tipomodulo}/${id}`);
+      return this._http.get(`${this.API_URI}/Metadata/GET_FILL/${tipomodulo}/${id}`);
   }
 
    getComboOptions(endpoint?: string, staticOptions?: string): Observable<{ id: string; value: string }[]> {
