@@ -63,8 +63,6 @@ export class XslVerifiedComponent implements OnInit, AfterViewInit {
     private pdfService: PdfService
   ) { }
 
-
-
   ngAfterViewInit(): void { }
 
   ngOnInit() {
@@ -86,8 +84,8 @@ export class XslVerifiedComponent implements OnInit, AfterViewInit {
 
           this.fileService.getMetaDataUI(this.TipoModulo as TipoModulo, TipoMetada.LIST).subscribe(( data) => {
 
-              this.metadata = data[0][0].RESULT;
-              this.validationData = res[0].resultado_json;
+              this.metadata = data.RESULT;
+              this.validationData = res.data;
               ;       
               this.allRecordsValid = this.areAllRecordsValid();
                 

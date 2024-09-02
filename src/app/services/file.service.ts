@@ -4,7 +4,7 @@ import { GlobalVariable } from '../../environments/global';
 import { Observable, Observer, of } from 'rxjs';
 import { map } from 'jquery';
 import { TipoMetada, TipoModulo } from '../enums/enums';
-import { Altas_Payload } from '../models/Model';
+import { Altas_Payload, dbResponse } from '../models/Model';
 
 
 @Injectable({
@@ -71,7 +71,7 @@ export class FileService {
     localStorage.removeItem(this.storageKey);
   }
 
-  ObtenerContratoById(user: number, municipio: number, contrato: number) {
+  ObtenerContratoById(user: number, municipio: number, contrato: number) : Observable<any> {
 
     var body = { id_user: user, id_organismo: municipio, id_contrato: contrato };
 

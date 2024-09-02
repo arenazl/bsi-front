@@ -8,6 +8,8 @@ import { TipoMetada, TipoModulo } from 'src/app/enums/enums';
 import { ChangeDetectorRef } from '@angular/core';
 import { Location } from '@angular/common';
 import Swal from 'sweetalert2';
+import { dbResponse } from 'src/app/models/Model';
+import { json } from 'stream/consumers';
 
 @Component({
   selector: 'app-xsl-xsl',
@@ -55,13 +57,15 @@ export class XslImportComponent implements OnInit {
       this.tipoModulo = params['tipomodulo'].toUpperCase();
       this.contrato = params['contrato'].toUpperCase();
 
-      this.fileService.ObtenerContratoById(1, 71, parseInt(this.contrato)).subscribe((data: any) => {
+      this.fileService.ObtenerContratoById(1, 71, parseInt(this.contrato)).subscribe((resData: dbResponse) => {
 
-        this.ROTULO = data[0][0].Rotulo
-        sessionStorage.setItem('Rotulo',  this.ROTULO);    
-        this.fileService.getMetaDataUI(this.tipoModulo as TipoModulo, TipoMetada.IMPORT, this.contrato).subscribe((metadata: any) => {
+        this.ROTULO = resData.data.Rotulo;
+    
+        sessionStorage.setItem('Rotulo',  this.ROTULO);  
+  
+        this.fileService.getMetaDataUI(this.tipoModulo as TipoModulo, TipoMetada.IMPORT, this.contrato).subscribe((res: dbResponse) => {
 
-          const formConfig = metadata[0][0].metadata_json; 
+          const formConfig = res.data;
 
           if (formConfig) {
             this.pageTitle = formConfig.TITLE;
@@ -72,8 +76,8 @@ export class XslImportComponent implements OnInit {
             this.ld_header = false;  
             this.cargaManual = formConfig.CARGA_OPCIONES_VISIBLE;
             
-            this.data=data[0][0];
-            this.initializeControls(data);
+            this.data=resData.data;
+            this.initializeControls( this.data);
 
             }
 
@@ -85,13 +89,13 @@ export class XslImportComponent implements OnInit {
         
             this.uploader.onCompleteItem = (item: any, response: any) => {
 
-              const parsedResponse = JSON.parse(response); 
+              res = JSON.parse(response);
 
-              if (parsedResponse.error) {  
+              if (res.estado == 0) {  
 
                 Swal.fire({
                   title: "Error al subir el archivo",
-                  text: "verifique que el archivo sea correcto y vuelva a intentarlo",
+                  text:  res.descripcion,
                   icon: "error",
                 });
 
@@ -103,11 +107,11 @@ export class XslImportComponent implements OnInit {
 
                 return;
               }
-              
+    
               this.filesUploaded = true;
               this.buttonText = 'Completado' 
 
-              this.router.navigate(['/xslVerified/' + this.tipoModulo + '/' + parsedResponse.ID]);
+              this.router.navigate(['/xslVerified/' + this.tipoModulo + '/' + res.data.id_insertado]);
             };
         
             this.uploader.onProgressItem = () => {
@@ -186,6 +190,8 @@ export class XslImportComponent implements OnInit {
   getFilename(tipo: string): string {
 
   const concepto = this.formGroup.get('concepto');
+  const id = sessionStorage.getItem('Id');
+
   const control = this.controls.find(c => c.field === 'Concepto');
   const conceptoDescripcion = control?.options.find((o: { id: any; }) => o.id === concepto)?.value.replace('-', '.').trim() || '';
   const fechaPago = this.formatDateForFile(this.formGroup.get('FechaPago')?.value) 

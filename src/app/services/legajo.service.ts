@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Solicitud, Usuario, Params, Refuerzo, FinPago } from '../models/Model';
+import { Solicitud, Usuario, Params, Refuerzo, FinPago, dbResponse } from '../models/Model';
 import { Observable } from 'rxjs';
 import { GlobalVariable } from '../../environments/global';
 
@@ -56,7 +56,7 @@ export class LegajoService {
     return this.http.put(`${this.API_URI}/legajo/${id}`, updatedGame);
   }
 
-  getUsuario(usuario: any) {
+  getUsuario(usuario: any) : Observable<any> {
     return this.http.post(`${this.API_URI}/legajo/login`, usuario);
   }
 

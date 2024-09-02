@@ -1,7 +1,7 @@
 import { LegajoService } from '../../services/legajo.service';
 import { Component, ElementRef, OnInit, Renderer2 } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { Usuario } from 'src/app/models/Model';
+import { dbResponse, Usuario } from 'src/app/models/Model';
 import { FormControl, FormGroup } from '@angular/forms';
 import { SharedService } from 'src/app/services/shared.service';
 import { throwIfEmpty } from 'rxjs';
@@ -71,33 +71,29 @@ export class LoginComponent implements OnInit {
 
     this.legajoService.getUsuario(userPayload)
       .subscribe(
-        (res: any) => {
+        (res: dbResponse) => {
 
-          if (res.ID_USER == undefined) {
+          if (res.estado == 0) {
             
            this.triggerShake();
            this.login_txt = "Uusario incorrecto";
             return;
-
           }
 
           this.login_txt = "Registrado!";
 
           this.usuario.panel = true
 
-          sessionStorage.setItem('Id', res.ID_USER);
-          sessionStorage.setItem('Nombre', res.Nombre);
-          sessionStorage.setItem('Apellido', res.Apellido);
-          sessionStorage.setItem('IdOrganismo', res.ID_Organismo);
-          sessionStorage.setItem('Organismo', res.Nombre_Organismo);
+          sessionStorage.setItem('Id', res.data.ID_User);
+          sessionStorage.setItem('Nombre', res.data.Nombre);
+          sessionStorage.setItem('Apellido', res.data.Apellido);
+          sessionStorage.setItem('IdOrganismo', res.data.ID_Organismo);
+          sessionStorage.setItem('Organismo', res.data.Nombre_Organismo);
 
-          this.sharedService.sendClickEvent(res);
+          this.sharedService.sendClickEvent(res.data);
 
           this.router.navigate(['/dinamicModule/mainmenu']);
           return;
-
-
-
         },
         err => console.error(err)
       )

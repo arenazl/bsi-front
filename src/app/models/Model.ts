@@ -125,7 +125,11 @@ export interface PdfConfigContrato {
   fechaPago: string;
 }
 
-
+export interface dbResponse {
+  estado: number;            // Representa el estado (1 o 0, por ejemplo)
+  descripcion: string;       // Mensaje descriptivo sobre el resultado
+  data: any | null;          // Datos específicos, pueden ser un objeto o null si no hay datos
+}
 
 export interface Usuario {
 
