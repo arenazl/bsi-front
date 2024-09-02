@@ -16,7 +16,7 @@ export class XslEditabletableComponent implements OnInit {
   TipoModulo = "";
   headerTitle = "";
   municipio = '';
-  ID = 0;
+  ID = 1;
   cantidad = 0;
 
   validationData: any;  
@@ -37,12 +37,12 @@ export class XslEditabletableComponent implements OnInit {
 
     this.ld_header = true;
 
-    this.fileService.getFill(TipoModulo.NOMINA, this.ID).subscribe((res: any) => {
+    this.fileService.getResumen(TipoModulo.NOMINA, this.ID).subscribe((res: any) => {
 
-      this.fileService.getMetaDataUI(TipoModulo.NOMINA , TipoMetada.FILL).subscribe((data: any) => {
+      this.fileService.getMetaDataUI(TipoModulo.NOMINA , TipoMetada.FILL).subscribe((mt: any) => {
 
-          this.metadata = data[0][0].metadata_json;
-          this.validationData = res[0].resultado_json;       
+          this.metadata = mt.RESULT;
+          this.validationData = res.data;
 
           if (this.validationData?.items) {
             this.validationData.items.forEach((sol: any) => {
