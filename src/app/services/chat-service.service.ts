@@ -7,6 +7,7 @@ import { Observable } from 'rxjs';
 })
 export class ChatService {
 
+  
   private apiUrl = 'https://bsi-back-dev-22264eab9225.herokuapp.com/api/openai/message'; // Ajusta la URL para apuntar correctamente a tu endpoint
 
   constructor(private http: HttpClient) {}
