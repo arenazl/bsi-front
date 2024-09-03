@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { TipoMetada, TipoModulo } from 'src/app/enums/enums';
+import { dbResponse } from 'src/app/models/Model';
 import { FileService } from 'src/app/services/file.service';
 import Swal from 'sweetalert2';
 
@@ -16,52 +18,67 @@ export class XslEditabletableComponent implements OnInit {
   TipoModulo = "";
   headerTitle = "";
   municipio = '';
-  ID = 1;
   cantidad = 0;
 
   validationData: any;  
-  metadata: any;       
+  metadata: any;    
+  
+  user = sessionStorage.getItem('Id') as string;
+  contrato = 1; //sessionStorage.getItem('Contrato') as string;
+  organismo = sessionStorage.getItem('IdOrganismo') as string;
+  nomina :any;
 
 
-    importeMasivo: number = 0;
+  importeMasivo: number = 0;
   totalImporte: number = 0;
 
-  constructor(private fileService: FileService ) {
-
-   }
+  constructor(private fileService: FileService,
+              private route: ActivatedRoute) 
+              {}
 
   ngOnInit(): void {
 
-  
     this.municipio = this.toProperCase(sessionStorage.getItem('Organismo') as string)
 
     this.ld_header = true;
 
-    this.fileService.getResumen(TipoModulo.NOMINA, this.ID).subscribe((res: any) => {
+    let payload = { sp_name: 'NOMINA_OBTENER_ID', 
+      body: { id_user: this.user, 
+              id_contrato: this.contrato, 
+              id_organismo: this.organismo } };
 
-      this.fileService.getMetaDataUI(TipoModulo.NOMINA , TipoMetada.FILL).subscribe((mt: any) => {
+              
+    this.fileService.postGenericSP(payload).subscribe((res: dbResponse) => {   
 
-          this.metadata = mt.RESULT;
-          this.validationData = res.data;
+        sessionStorage.setItem('IdNomina', res.data.ID_Nomina);
+        this.nomina = res.data.ID_Nomina;
 
-          if (this.validationData?.items) {
-            this.validationData.items.forEach((sol: any) => {
+        this.fileService.getResumen(TipoModulo.NOMINA, this.nomina).subscribe((res: any) => {
 
-              this.cantidad += 1;    
-              sol.toggleEnabled = true;
-
+          this.fileService.getMetaDataUI(TipoModulo.NOMINA , TipoMetada.FILL).subscribe((mt: any) => {
+    
+              this.metadata = mt.RESULT;
+              this.validationData = res.data;
+    
+              if (this.validationData?.items) {
+                this.validationData.items.forEach((sol: any) => {
+    
+                  this.cantidad += 1;    
+                  sol.toggleEnabled = true;
+    
+                });
+              }
+    
+              this.validationData.header.cantidad = this.cantidad;
+              
+              this.ld_header = false;
             });
-          }
-
-          // Asignar el valor de la cantidad a la variable en la cabecera
-          this.validationData.header.cantidad = this.cantidad;
-          
-          this.ld_header = false;
-        });
-    },
-      (err) => console.error(err)
-    );
-
+        },
+          (err) => console.error(err)
+        );
+      },
+      err => console.error(err)
+    )
   }
 
   applyMassiveImporte(value: number): void {

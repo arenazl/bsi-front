@@ -14,6 +14,7 @@ import { XslImportComponent } from './components/xsl-import/xsl-import.component
 import { XslEditabletableComponent } from './components/xsl-editabletable/xsl-editabletable.component';
 import { UserManagementWrapperComponent } from './components/user-management-wrapper/user-management-wrapper.component';
 import { DashboardWrapperComponent } from './components/dashboard-wrapper/dashboard-wrapper.component';
+import { ChatbotComponent } from './components/chatbot/chatbot.component';
 
 const routes: Routes = [
   {
@@ -80,6 +81,10 @@ const routes: Routes = [
     path: 'dashboard',
     component: DashboardWrapperComponent
   },
+  {
+    path: 'chatbot',
+    component: ChatbotComponent
+  } 
 
 ];
 

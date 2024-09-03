@@ -37,6 +37,10 @@ export class LegajoService {
   }
 
   saveRefuerzo(refuerzo: Refuerzo) {
+
+
+
+
     return this.http.post(`${this.API_URI}/legajo/refuerzo`, refuerzo);
   }
 
@@ -57,7 +61,19 @@ export class LegajoService {
   }
 
   getUsuario(usuario: any) : Observable<any> {
-    return this.http.post(`${this.API_URI}/legajo/login`, usuario);
+    return this.http.post(`${this.API_URI}/User/login`, usuario);
   }
+
+
+  getNominaId(id_user:string, id_contrato:string, id_organismo:string) : Observable<any> {
+
+    let body = { id_user: id_user, id_contrato: id_contrato, id_organismo: id_organismo };
+    return this.http.post(`${this.API_URI}/User/login`, body);
+  }
+
+  
+
+
+
 
 }

@@ -21,6 +21,11 @@ export class FileService {
   ) { }
 
 
+  postGenericSP(body: any): Observable<any>
+  {
+    return this._http.post(`${this.API_URI}/User/GET_GENERIC_SP`,body);
+  }
+
   getMetaDataUI(tipoModulo: TipoModulo, tipoMetada: TipoMetada, contrato: string='NONE'): Observable<any>
   {
     return this._http.get(`${this.API_URI}/Metadata/GET_METADATA_UI/${tipoModulo}/${tipoMetada}/${contrato}`);
@@ -126,26 +131,25 @@ export class FileService {
   }
 
   getUsers(): Observable<any[]> {
-
-    const url = `${this.API_URI}/file/getUsers`;
+    const url = `${this.API_URI}/User/getUsers`;
     return this._http.get<any[]>(url);
   }
 
   createUser(user: any): Observable<any> {
 
-    const url = `${this.API_URI}/file/createUser`;
+    const url = `${this.API_URI}/User/createUser`;
     return this._http.post(url, user);
   }
 
   updateUser(id: number, user: any): Observable<any> {
 
-    const url = `${this.API_URI}/file/updateUser`;
+    const url = `${this.API_URI}/User/updateUser`;
     return this._http.put(url, user);
   }
 
   deleteUser(id: number): Observable<any> {
 
-    const url = `${this.API_URI}/file/deleteUser/${id}`;
+    const url = `${this.API_URI}/User/deleteUser/${id}`;
     return this._http.delete(url);
   }
 

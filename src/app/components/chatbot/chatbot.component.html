@@ -1,0 +1,18 @@
+<div class="chat-container">
+    <div class="chat-header">
+      <h4>Asistente de Atención al Cliente</h4>
+    </div>
+    <div class="chat-messages" #messageContainer>
+      <div *ngFor="let message of messages" [ngClass]="{'user-message': message.isUser, 'bot-message': !message.isUser}">
+        <span>{{ message.text }}</span>
+      </div>
+         <!-- Indicador de carga mientras se espera la respuesta -->
+    <div *ngIf="isThinking" class="loading-message">
+      <span class="loading-dots">...</span>
+    </div>
+    </div>
+    <div class="chat-input">
+      <input type="text" [(ngModel)]="userInput" (keydown.enter)="sendMessage()" placeholder="Escribe tu mensaje aquí..." />
+      <button (click)="sendMessage()">Enviar</button>
+    </div>
+  </div>
