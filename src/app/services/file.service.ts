@@ -20,7 +20,6 @@ export class FileService {
   constructor(private _http: HttpClient
   ) { }
 
-
   postGenericSP(body: any): Observable<any>
   {
     return this._http.post(`${this.API_URI}/User/GET_GENERIC_SP`,body);

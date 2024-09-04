@@ -1,9 +1,18 @@
 
 
 body{
-  font-family: Montserrat, sans-serif;
+  font-family: Montserrat, sans-serif; 
 }
 
+
+.monospace-text {
+  font-family: 'Roboto Mono', monospace;
+}
+
+.table-verified-ft{
+  font-weight: 400;
+  font-size: revert-layer
+}
 
 .icon-md{
   font-size: 50px !important;

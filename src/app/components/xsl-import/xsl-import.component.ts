@@ -23,7 +23,7 @@ export class XslImportComponent implements OnInit {
   contrato: string = '';
   conceptosList: string[] = [];
   cargaArchivoSeleccionada = false;
-  conceptoSeleccionado = false;
+  conceptoSeleccionado = '';
   filesUploaded = true;;
   cargaManual = false;
   buttonText = 'Subir Archivo';
@@ -86,12 +86,12 @@ export class XslImportComponent implements OnInit {
               item.file.name = this.getFilename(this.tipoModulo);
               item.file.name =  item.file.name.replace(/\s+/g, '');
             };
-        
+      
             this.uploader.onCompleteItem = (item: any, response: any) => {
 
               res = JSON.parse(response);
 
-              if (res.estado == 0) {  
+              if (res.estado >= 10) {  
 
                 Swal.fire({
                   title: "Error al subir el archivo",
@@ -137,7 +137,6 @@ export class XslImportComponent implements OnInit {
 
   initializeControls(data: any = {}): void {
 
-
     this.formGroup = this.fb.group({});
 
     this.controls.forEach(control => {
@@ -149,15 +148,16 @@ export class XslImportComponent implements OnInit {
       }
 
       this.formGroup.addControl(control.field, this.fb.control(value));
-
-      
+  
       if (control.type === 'select') {  
+
         if(this.tipoModulo == TipoModulo.PAGO)  {
-            this.loadComboOptions(control.field, '', this.data.Concepto);
+
+            this.loadComboOptions(control.field, '', this.data.Concepto);      
           }    
           else{
             this.loadComboOptions(control.field, control.endpoint);
-          }
+          }    
       }
 
     });
@@ -181,19 +181,19 @@ export class XslImportComponent implements OnInit {
     });
   }
 
-  
+  optionChanged(event: Event): void {
+
+    const target = event.target as HTMLSelectElement;
+    const controlId = target.id;
+    this.conceptoSeleccionado  = target.options[target.selectedIndex].text;
+  }
+
   selectCargaArchivo(): void {
     this.cargaArchivoSeleccionada = true;
   }
 
-
   getFilename(tipo: string): string {
 
-  const concepto = this.formGroup.get('concepto');
-  const id = sessionStorage.getItem('Id');
-
-  const control = this.controls.find(c => c.field === 'Concepto');
-  const conceptoDescripcion = control?.options.find((o: { id: any; }) => o.id === concepto)?.value.replace('-', '.').trim() || '';
   const fechaPago = this.formatDateForFile(this.formGroup.get('FechaPago')?.value) 
 
     const template = this.FileNameTemplate;
@@ -202,7 +202,7 @@ export class XslImportComponent implements OnInit {
       .replace('${Id}', sessionStorage.getItem('Id') || '')
       .replace('${idOrganismo}', sessionStorage.getItem('IdOrganismo') || '')
       .replace('${contrato}', this.contrato || '')
-      .replace('${concepto}', conceptoDescripcion || '')
+      .replace('${concepto}', this.conceptoSeleccionado || '')
       .replace('${fechaPago}', fechaPago || '')
       .replace('${rotulo}', this.data['Rotulo'] || '')
       .replace('${ente}', this.data['Ente'] || '')

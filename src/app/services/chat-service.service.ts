@@ -1,22 +1,21 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { GlobalVariable } from '../../environments/global';
+
 
 @Injectable({
   providedIn: 'root'
 })
 export class ChatService {
 
-  
-  private apiUrl = 'https://bsi-back-dev-22264eab9225.herokuapp.com/api/openai/message'; // Ajusta la URL para apuntar correctamente a tu endpoint
+  private API_URI = GlobalVariable.BASE_API_URL + '/openai/message';
 
-  constructor(private http: HttpClient) {}
+  constructor(private _http: HttpClient) {}
 
-  sendMessage(message: string): Observable<any> {
-    // Configura las opciones de la solicitud si es necesario
+  sendMessage(message: string): Observable<any> 
+  {
     const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
-
-    // Realiza la llamada al endpoint de tu backend
-    return this.http.post<any>(this.apiUrl, { message }, { headers });
+    return this._http.post(`${this.API_URI}/openai/message`, { message }, { headers });
   }
 }

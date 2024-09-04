@@ -44,7 +44,7 @@
                 <!-- Combo -->
                 <div class="form-group m-2" *ngIf="control.type === 'select'">
                   <label class="label" [for]="control.field">{{ control.header }}</label>
-                  <select class="form-control" [id]="control.field" [disabled]="control.disabled">
+                  <select class="form-control" [id]="control.field" (change)="optionChanged($event)" [formControlName]="control.field">
                     <option *ngFor="let option of control.options" [value]="option.id">{{ option.value }}</option>
                   </select>
                 </div>
