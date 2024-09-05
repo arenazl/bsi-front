@@ -4,9 +4,11 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Lotes } from 'src/app/models/Model';
 import { LotesService } from 'src/app/services/lotes.service';
 import { SharedService } from 'src/app/services/shared.service';
+import { Location } from '@angular/common';
 import { isNgTemplate, ThisReceiver } from '@angular/compiler';
 import Swal from 'sweetalert2';
 import { FileService } from 'src/app/services/file.service';
+
 
 @Component({
   selector: 'app-dinamic-module',
@@ -19,6 +21,7 @@ export class DinamicModuleComponent implements OnInit {
 
   constructor(private fileService: FileService,
     private router: Router,
+    private location: Location,
     private activatedRoute: ActivatedRoute,
     private sharedService: SharedService) {
   }
@@ -34,6 +37,11 @@ export class DinamicModuleComponent implements OnInit {
       });
     });
   }
+
+  goBack(): void {
+    this.location.back();
+  }
+
 
   showAds() {
 
@@ -54,6 +62,7 @@ export class DinamicModuleComponent implements OnInit {
     });
 
   }
+
 
 
 
