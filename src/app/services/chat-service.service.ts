@@ -9,7 +9,7 @@ import { GlobalVariable } from '../../environments/global';
 })
 export class ChatService {
 
-  private API_URI = GlobalVariable.BASE_API_URL + '/openai/message';
+  private API_URI = GlobalVariable.BASE_API_URL;
 
   constructor(private _http: HttpClient) {}
 
