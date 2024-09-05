@@ -1,6 +1,6 @@
 # See http://help.github.com/ignore-files/ for more about ignoring files.
 
-# Compiled output
+# Compiled output 
 /tmp
 /out-tsc
 /bazel-out
@@ -25,20 +25,22 @@ dist
 # Visual Studio Code
 .vscode/*
 !.vscode/settings.json
-!.vscode/tasks.json
+!.vscode/tasks.json  
 !.vscode/launch.json
 !.vscode/extensions.json
 .history/*
 
 # Miscellaneous
-/.angular/cache
+/.angular/cache   
 .sass-cache/
 /connect.lock
 /coverage
 /libpeerconnection.log
 testem.log
+/environments/global.ts
 /typings
+/src/environments/global.ts
 
 # System files
-.DS_Store
+.DS_Store        
 Thumbs.db

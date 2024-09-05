@@ -22,22 +22,22 @@ export class FileService {
 
   postGenericSP(body: any): Observable<any>
   {
-    return this._http.post(`${this.API_URI}/User/GET_GENERIC_SP`,body);
+    return this._http.post(`${this.API_URI}/Metadata/GET_GENERIC_SP`,body);
   }
 
-  getMetaDataUI(tipoModulo: TipoModulo, tipoMetada: TipoMetada, contrato: string='NONE'): Observable<any>
+  getMetaData(tipoModulo: TipoModulo, tipoMetada: TipoMetada, contrato: string='NONE'): Observable<any>
   {
     return this._http.get(`${this.API_URI}/Metadata/GET_METADATA_UI/${tipoModulo}/${tipoMetada}/${contrato}`);
   }
 
-  getResumen(tipomodulo: TipoModulo, id: number) 
+  getResumenValidacion(tipomodulo: TipoModulo, id: number) 
   {
-      return this._http.get(`${this.API_URI}/Metadata/GET_RESUMEN/${tipomodulo}/${id}`);
+      return this._http.get(`${this.API_URI}/Metadata/GET_RESUMEN_VALIDACION/${tipomodulo}/${id}`);
   }
 
   getFill(tipomodulo: TipoModulo, id: number) 
   {
-      return this._http.get(`${this.API_URI}/Metadata/GET_FILL/${tipomodulo}/${id}`);
+      return this._http.get(`${this.API_URI}/Metadata/GET_FILL_IMPORTES/${tipomodulo}/${id}`);
   }
 
    getComboOptions(endpoint?: string, staticOptions?: string): Observable<{ id: string; value: string }[]> {
@@ -75,11 +75,11 @@ export class FileService {
     localStorage.removeItem(this.storageKey);
   }
 
-  ObtenerContratoById(user: number, municipio: number, contrato: number) : Observable<any> {
+  getContratoById(user: number, municipio: number, contrato: number) : Observable<any> {
 
     var body = { id_user: user, id_organismo: municipio, id_contrato: contrato };
 
-    return this._http.post(`${this.API_URI}/contract/obtenercontratobyid`, body, {
+    return this._http.post(`${this.API_URI}/helper/GET_CONTRATO_BY_ID`, body, {
       responseType: 'json',
       headers: new HttpHeaders().append('Content-Type', 'application/json')
     });
@@ -95,7 +95,7 @@ export class FileService {
   }
 
   downloadOutputFile(tipoModulo: TipoModulo, id: number): Observable<Blob> {
-    const url = `${this.API_URI}/Upload/downloadtxtfile/${tipoModulo}/${id}`;
+    const url = `${this.API_URI}/IO/downloadtxtfile/${tipoModulo}/${id}`;
     return this._http.get(url, {
       responseType: 'blob',
       headers: new HttpHeaders().append('Content-Type', 'application/json')
@@ -103,7 +103,8 @@ export class FileService {
   }
 
   getListForCombo(tipoModulo: TipoModulo): Observable<any> {
-    const url = `${this.API_URI}/file/LIST_FOR_COMBO/${tipoModulo}`;
+
+    const url = `${this.API_URI}/helper/GET_LIST_FOR_COMBO/${tipoModulo}`;
     return this._http.get(url, {
       responseType: 'json',
       headers: new HttpHeaders().append('Content-Type', 'application/json')
@@ -130,25 +131,25 @@ export class FileService {
   }
 
   getUsers(): Observable<any[]> {
-    const url = `${this.API_URI}/User/getUsers`;
+    const url = `${this.API_URI}/user/getUsers`;
     return this._http.get<any[]>(url);
   }
 
   createUser(user: any): Observable<any> {
 
-    const url = `${this.API_URI}/User/createUser`;
+    const url = `${this.API_URI}/user/createUser`;
     return this._http.post(url, user);
   }
 
   updateUser(id: number, user: any): Observable<any> {
 
-    const url = `${this.API_URI}/User/updateUser`;
+    const url = `${this.API_URI}/user/updateUser`;
     return this._http.put(url, user);
   }
 
   deleteUser(id: number): Observable<any> {
 
-    const url = `${this.API_URI}/User/deleteUser/${id}`;
+    const url = `${this.API_URI}/user/deleteUser/${id}`;
     return this._http.delete(url);
   }
 

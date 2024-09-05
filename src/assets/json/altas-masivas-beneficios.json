@@ -55,6 +55,19 @@
           "icono": "fa-file-export"
         }
       ]
+    },
+    {
+      "title": "Ver Altas Anteriores",
+      "description": "Revisa las altas de cuentas realizadas",
+      "icono": "fa-file-excel",
+      "enabled": true,
+      "items": [
+        {
+          "description": "Historial de Altas",
+          "link": "/xslVerified/CUENTA/0",
+          "icono": "fa-file-export"
+        }
+      ]
     }
   ]
 }

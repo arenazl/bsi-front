@@ -34,7 +34,7 @@ export class XslImportComponent implements OnInit {
   ld_header = true;
   controls: any[] = [];
   showFechaPago = false;
-  uri = GlobalVariable.BASE_API_URL + "/Validation";
+  uri = GlobalVariable.BASE_API_URL + "/Metadata";
   ENTE="";
   ROTULO="";
   FileNameTemplate="";
@@ -57,13 +57,13 @@ export class XslImportComponent implements OnInit {
       this.tipoModulo = params['tipomodulo'].toUpperCase();
       this.contrato = params['contrato'].toUpperCase();
 
-      this.fileService.ObtenerContratoById(1, 71, parseInt(this.contrato)).subscribe((resData: dbResponse) => {
+      this.fileService.getContratoById(1, 71, parseInt(this.contrato)).subscribe((resData: dbResponse) => {
 
         this.ROTULO = resData.data.Rotulo;
     
         sessionStorage.setItem('Rotulo',  this.ROTULO);  
   
-        this.fileService.getMetaDataUI(this.tipoModulo as TipoModulo, TipoMetada.IMPORT, this.contrato).subscribe((res: dbResponse) => {
+        this.fileService.getMetaData(this.tipoModulo as TipoModulo, TipoMetada.IMPORT, this.contrato).subscribe((res: dbResponse) => {
 
           const formConfig = res.data;
 
@@ -129,7 +129,6 @@ export class XslImportComponent implements OnInit {
   goBack(): void {
     this.location.back();
   }
-
 
   refreshPage() {
     window.location.reload();

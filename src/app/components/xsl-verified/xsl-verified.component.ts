@@ -3,6 +3,7 @@ import { LegajoService } from "../../services/legajo.service";
 import { FileService } from "../../services/file.service";
 import { Router, ActivatedRoute, Params } from "@angular/router";
 import html2canvas from "html2canvas";
+import { Location } from '@angular/common';
 import jsPDF from "jspdf";
 import { TipoMetada, TipoModulo } from "src/app/enums/enums";
 import {
@@ -26,6 +27,7 @@ import { registerLocaleData } from "@angular/common";
 import { ElementSchemaRegistry } from "@angular/compiler";
 import { LotesService } from "src/app/services/lotes.service";
 import { PdfService } from "src/app/services/pdf.service";
+import { query } from "express";
 
 @Component({
   selector: 'app-xsl-verified',
@@ -51,6 +53,7 @@ export class XslVerifiedComponent implements OnInit, AfterViewInit {
   validationData: any;  // Datos reales, como el JSON de ejemplo
   metadata: any;        // Metadata para renderizar la UI
   allRecordsValid = false;
+  showHistory = false;
 
   tranfeResponse: any = { data: [] };
 
@@ -60,7 +63,8 @@ export class XslVerifiedComponent implements OnInit, AfterViewInit {
     private sharedService: SharedService,
     private route: ActivatedRoute,
     private cdRef: ChangeDetectorRef,
-    private pdfService: PdfService
+    private pdfService: PdfService,
+    private location: Location
   ) { }
 
   ngAfterViewInit(): void { }
@@ -74,47 +78,72 @@ export class XslVerifiedComponent implements OnInit, AfterViewInit {
       this.TipoModulo = params["tipomodulo"]
       this.ID = params["id"]
 
-      this.getListCombo(); 
-
       this.headerTitle = this.getHeaderText(this.TipoModulo)
 
-        this.ld_header = true;
+        if(this.ID == 0){
+          this.ld_header = false;
+          this.showHistory = true;
+          this.getListCombo(); 
+        }
+        else
+        {
+        
+          this.ld_header = true;
 
-        this.fileService.getResumen(this.TipoModulo as TipoModulo,  this.ID).subscribe((res: any) => {
+          this.fileService.getResumenValidacion(this.TipoModulo as TipoModulo,  this.ID).subscribe((res: any) => {
 
-          this.fileService.getMetaDataUI(this.TipoModulo as TipoModulo, TipoMetada.LIST).subscribe(( data) => {
+            this.fileService.getMetaData(this.TipoModulo as TipoModulo, TipoMetada.LIST).subscribe(( data) => {
 
-              this.metadata = data.RESULT;
-              this.validationData = res.data;
-              ;       
-              this.allRecordsValid = this.areAllRecordsValid();
-                
-              this.ld_header = false;
-            });
-        },
-          (err) => console.error(err)
-        );
-      
+                this.metadata = data.RESULT;
+                this.validationData = res.data;
+                ;       
+                this.allRecordsValid = this.areAllRecordsValid();
+                  
+                this.ld_header = false;
+              });
+          },
+            (err) => console.error(err)
+          );
+
+        }
+     
     });
   }
 
-  getListComboById(id: any) {
-    if (id.target.value) {
+  goBack(): void {
+    this.location.back();
+  }
 
-      this.fileService.getListForCombo(this.TipoModulo as TipoModulo).subscribe((data) => {
-        this.tranfeList = data;
-      });
-    }
+  getListComboById(id: any) {
+
+    this.ID = id.target.value;
+
+    this.ld_header = true;
+
+    this.fileService.getResumenValidacion(this.TipoModulo as TipoModulo,  this.ID).subscribe((res: any) => {
+
+      this.fileService.getMetaData(this.TipoModulo as TipoModulo, TipoMetada.LIST).subscribe(( data) => {
+
+          this.metadata = data.RESULT;
+          this.validationData = res.data;
+          ;       
+          this.allRecordsValid = this.areAllRecordsValid();
+            
+          this.ld_header = false;
+        });
+    },
+      (err) => console.error(err)
+    );
+    
   }
 
 
   getListCombo() {
 
-    /*
       this.fileService.getListForCombo(this.TipoModulo as TipoModulo).subscribe((data) => {
         this.tranfeList = data;
       });
-    */
+    
   }
 
 
