@@ -34,7 +34,10 @@ export class XslEditabletableComponent implements OnInit {
 
   searchTerm: string = '';
   filteredItems: any[] = [];
+  selectedItems: any[] = [];
 
+
+  newItem = { cbu: '', cuil: '', Nombre: '', importe: 0, toggleEnabled: false }; // Objeto para almacenar los nuevos datos ingresados
 
   constructor(private fileService: FileService,
               private location: Location,
@@ -93,7 +96,24 @@ export class XslEditabletableComponent implements OnInit {
     )
   }
 
-    // Método de filtrado
+    // Método para añadir un nuevo elemento a la lista superior, al inicio
+    addNewItem() {
+      if (this.newItem.cbu && this.newItem.cuil && this.newItem.Nombre) {
+        // Añadir el nuevo elemento al inicio de la lista principal (filteredItems)
+        this.filteredItems.unshift({ ...this.newItem });
+        
+        // Limpiar los campos después de agregar
+        this.newItem = { cbu: '', cuil: '', Nombre: '', importe: 0, toggleEnabled: false };
+        
+        // Opcional: recalcular si necesitas actualizar totales o alguna otra lógica
+        this.recalculateTotal();
+      } else {
+        // Puedes mostrar un mensaje de error si algún campo está vacío
+        console.error('Todos los campos deben ser completados.');
+      }
+    }
+
+ // Método de filtrado
     applyFilter() {
 
       if (this.validationData?.items) {
@@ -126,29 +146,45 @@ export class XslEditabletableComponent implements OnInit {
   }
 
 
-   // Método para recalcular el importe total
-   recalculateTotal() {
+  // Método para actualizar la lista de seleccionados al activar el toggle
+  toggleImporte(sol: any) {
+    if (sol.toggleEnabled) {
+      // Mover a lista de seleccionados si se activa
+      this.selectedItems.push(sol);
+      this.filteredItems = this.filteredItems.filter(item => item !== sol);
+    } else {
+      // Resetear el importe si se desactiva
+      sol.importe = 0;
+      this.recalculateTotal();
+    }
+  }
+
+  // Método para eliminar un elemento de la lista de seleccionados y devolverlo a la principal
+  removeFromSelected(item: any) {
+    item.toggleEnabled = false; // Desactivar toggle
+    this.selectedItems = this.selectedItems.filter(selected => selected !== item);
+    this.filteredItems.push(item); // Devolver a la lista principal
+    this.recalculateTotal();
+  }
+
+  // Método existente para recalcular el importe total
+  recalculateTotal() {
     if (this.validationData?.items) {
       let total = 0;
-      let cantidad = 0
-      
-      this.validationData.items.forEach((item: any) => {
+      let cantidad = 0;
+      this.selectedItems.forEach((item: any) => {
         if (item.toggleEnabled) {
-          total += parseFloat(item.importe) || 0; // Sumar sólo si está habilitado
+          total += parseFloat(item.importe) || 0; // Sumar solo si está habilitado
           cantidad += 1;
         }
       });
-      
+
       this.validationData.header.importe_total = total;
       this.validationData.header.cantidad = cantidad;
     }
   }
 
-  toggleImporte(sol: any) {
-    sol.importe = sol.toggleEnabled ? sol.importe : 0;
-    this.recalculateTotal();
-  }
-  
+ 
 
   goBack(): void {
     this.location.back();
