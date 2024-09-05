@@ -81,6 +81,19 @@
           "icono": "fa-balance-scale"
         }
       ]
+    },
+    {
+      "title": "Ver Pagos Anteriores",
+      "description": "Revisa los pagos realizados",
+      "icono": "fa-file-excel",
+      "enabled": true,
+      "items": [
+        {
+          "description": "Historial de Pagos",
+          "link": "/xslVerified/PAGO/0",
+          "icono": "fa-file-export"
+        }
+      ]
     }
   ]
 }

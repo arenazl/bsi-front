@@ -6,6 +6,7 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { SharedService } from 'src/app/services/shared.service';
 import { throwIfEmpty } from 'rxjs';
 import { IfStmt } from '@angular/compiler';
+import { FileService } from 'src/app/services/file.service';
 
 @Component({
   selector: 'app-login',
@@ -17,7 +18,12 @@ export class LoginComponent implements OnInit {
   login_txt = "Ingresar";
   shakeError: boolean = false; // Variable para controlar la animación
 
-  constructor(private legajoService: LegajoService, private router: Router, private activatedRoute: ActivatedRoute, private sharedService: SharedService,
+  constructor(
+    private legajoService: LegajoService, 
+    private fileService: FileService,
+    private router: Router, 
+    private activatedRoute: ActivatedRoute, 
+    private sharedService: SharedService,
     private renderer: Renderer2, // Para manipular el DOM de manera segura
     private el: ElementRef
     

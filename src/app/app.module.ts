@@ -30,6 +30,7 @@ import { XslEditabletableComponent } from './components/xsl-editabletable/xsl-ed
 import { CurrencyMaskModule } from "ng2-currency-mask";
 import { UserManagementWrapperComponent } from './components/user-management-wrapper/user-management-wrapper.component';
 import { DashboardWrapperComponent } from './components/dashboard-wrapper/dashboard-wrapper.component';
+import { ChatbotComponent } from './components/chatbot/chatbot.component';
 
 
 @NgModule({
@@ -50,7 +51,8 @@ import { DashboardWrapperComponent } from './components/dashboard-wrapper/dashbo
     DinamicModuleComponent,
     XslEditabletableComponent,
     UserManagementWrapperComponent,
-    DashboardWrapperComponent
+    DashboardWrapperComponent,
+    ChatbotComponent
 
   ],
   imports: [
