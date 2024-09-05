@@ -3,6 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { TipoMetada, TipoModulo } from 'src/app/enums/enums';
 import { dbResponse } from 'src/app/models/Model';
 import { FileService } from 'src/app/services/file.service';
+import { Location } from '@angular/common';
 import Swal from 'sweetalert2';
 
 @Component({
@@ -36,6 +37,7 @@ export class XslEditabletableComponent implements OnInit {
 
 
   constructor(private fileService: FileService,
+              private location: Location,
               private route: ActivatedRoute) 
               {}
 
@@ -63,7 +65,6 @@ export class XslEditabletableComponent implements OnInit {
               this.metadata = mt.RESULT;
 
               this.validationData = res.data;
-
 
               if (this.validationData?.items) {
                 this.filteredItems = this.validationData.items;
@@ -147,6 +148,12 @@ export class XslEditabletableComponent implements OnInit {
     sol.importe = sol.toggleEnabled ? sol.importe : 0;
     this.recalculateTotal();
   }
+  
+
+  goBack(): void {
+    this.location.back();
+  }
+
 
   toProperCase(str: string): string {
     return str
