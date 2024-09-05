@@ -99,12 +99,16 @@ export class XslEditabletableComponent implements OnInit {
     // Método para añadir un nuevo elemento a la lista superior, al inicio
     addNewItem() {
       if (this.newItem.cbu && this.newItem.cuil && this.newItem.Nombre) {
-        // Añadir el nuevo elemento al inicio de la lista principal (filteredItems)
-        this.filteredItems.unshift({ ...this.newItem });
-        
+        // Crear un nuevo objeto con toggleEnabled en false
+        const newElement = { ...this.newItem, toggleEnabled: false };
+  
+        // Añadir el nuevo elemento al inicio de la lista principal (filteredItems y validationData)
+        this.filteredItems.unshift(newElement);
+        this.validationData.items.unshift(newElement); // También añadirlo a la lista original
+  
         // Limpiar los campos después de agregar
         this.newItem = { cbu: '', cuil: '', Nombre: '', importe: 0, toggleEnabled: false };
-        
+  
         // Opcional: recalcular si necesitas actualizar totales o alguna otra lógica
         this.recalculateTotal();
       } else {
