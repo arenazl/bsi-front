@@ -98,7 +98,16 @@ export class XslVerifiedComponent implements OnInit, AfterViewInit {
                 this.validationData = res.data;
                 ;       
                 this.allRecordsValid = this.areAllRecordsValid();
-                  
+       
+                if (this.validationData?.items) {
+                  this.validationData.items.forEach((sol: any) => {
+
+                    sol.nombre = this.toProperCase(sol.nombre);
+      
+                  });
+                }
+
+
                 this.ld_header = false;
               });
           },
@@ -361,10 +370,11 @@ export class XslVerifiedComponent implements OnInit, AfterViewInit {
   }
 
 
-  toProperCase(str: string): string {
+ toProperCase(str: string): string {
     return str
       .split(' ')
       .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+      .filter((word, index, arr) => !(index === arr.length - 1 && word.length === 1)) // Discard the last element if it's a single letter
       .join(' ');
   }
 

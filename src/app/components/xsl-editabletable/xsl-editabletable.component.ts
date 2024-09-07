@@ -37,7 +37,7 @@ export class XslEditabletableComponent implements OnInit {
   selectedItems: any[] = [];
 
 
-  newItem = { cbu: '', cuil: '', Nombre: '', importe: 0, toggleEnabled: false }; // Objeto para almacenar los nuevos datos ingresados
+  newItem = { cbu: '', cuil: '', nombre: '', importe: 0, toggleEnabled: false }; // Objeto para almacenar los nuevos datos ingresados
 
   constructor(private fileService: FileService,
               private location: Location,
@@ -77,7 +77,8 @@ export class XslEditabletableComponent implements OnInit {
              
               if (this.validationData?.items) {
                 this.validationData.items.forEach((sol: any) => {
-    
+
+                  sol.nombre = this.toProperCase(sol.nombre);
                   this.cantidad += 1;    
                   sol.toggleEnabled = false;
     
@@ -97,12 +98,12 @@ export class XslEditabletableComponent implements OnInit {
   }
 
   addNewItem() {
-    if (this.newItem.cbu && this.newItem.cuil && this.newItem.Nombre) {
+    if (this.newItem.cbu && this.newItem.cuil && this.newItem.nombre) {
       // Añadir el nuevo elemento al inicio de la lista principal (filteredItems)
       this.filteredItems.unshift({ ...this.newItem });
       
       // Limpiar los campos después de agregar
-      this.newItem = { cbu: '', cuil: '', Nombre: '', importe: 0, toggleEnabled: false };
+      this.newItem = { cbu: '', cuil: '', nombre: '', importe: 0, toggleEnabled: false };
       
       // Opcional: recalcular si necesitas actualizar totales o alguna otra lógica
       this.recalculateTotal();
