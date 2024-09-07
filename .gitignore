@@ -37,9 +37,7 @@ dist
 /coverage
 /libpeerconnection.log
 testem.log
-/environments/global.ts
 /typings
-/src/environments/global.ts
 
 # System files
 .DS_Store        
