@@ -13,6 +13,7 @@ usuario = <any>{};
 private subject = new Subject<any>();
   
 
+
 sendClickEvent(usuario:Usuario) {
   this.subject.next(usuario);
 }
