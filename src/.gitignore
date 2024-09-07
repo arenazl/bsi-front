@@ -43,3 +43,6 @@ testem.log
 .DS_Store
 Thumbs.db
 src/app/global.ts
+/environments/global.ts
+/typings
+/src/environments/global.ts
