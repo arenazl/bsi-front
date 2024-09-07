@@ -149,3 +149,28 @@
     font-weight: bold;
     color: #4a90e2;
   }
+
+  .formatted-response {
+    white-space: pre-wrap;
+    margin-bottom: 10px;
+  }
+  
+  .bot-message span {
+    display: block;
+    padding: 8px 12px;
+    border-radius: 8px;
+    background-color: #f0f0f0;
+    margin: 5px 0;
+    font-size: 14px;
+    line-height: 1.5;
+  }
+
+
+  .bot-link
+  { 
+    font-weight: 800;
+  }
+
+  .bot-link img{ 
+    width: 27px;;
+  }

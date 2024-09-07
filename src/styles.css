@@ -493,3 +493,13 @@ body {
   z-index: -1;
   opacity: 0.5;
 }
+
+.bot-link
+{ 
+  font-weight: 800;
+  text-decoration: underline;
+}
+
+.bot-link img{ 
+  width: 27px;;
+}

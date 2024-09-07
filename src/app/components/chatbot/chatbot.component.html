@@ -4,7 +4,7 @@
     </div>
     <div class="chat-messages" #messageContainer>
       <div *ngFor="let message of messages" [ngClass]="{'user-message': message.isUser, 'bot-message': !message.isUser}">
-        <span>{{ message.text }}</span>
+        <div [innerHTML]="message.text"></div>
       </div>
          <!-- Indicador de carga mientras se espera la respuesta -->
     <div *ngIf="isThinking" class="loading-message">
