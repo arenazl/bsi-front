@@ -77,7 +77,8 @@ export class XslEditabletableComponent implements OnInit {
              
               if (this.validationData?.items) {
                 this.validationData.items.forEach((sol: any) => {
-    
+
+                  sol.nombre = this.toProperCase(sol.nombre);
                   this.cantidad += 1;    
                   sol.toggleEnabled = false;
     
@@ -96,26 +97,21 @@ export class XslEditabletableComponent implements OnInit {
     )
   }
 
-    // Método para añadir un nuevo elemento a la lista superior, al inicio
-    addNewItem() {
-      if (this.newItem.cbu && this.newItem.cuil && this.newItem.Nombre) {
-        // Crear un nuevo objeto con toggleEnabled en false
-        const newElement = { ...this.newItem, toggleEnabled: false };
-  
-        // Añadir el nuevo elemento al inicio de la lista principal (filteredItems y validationData)
-        this.filteredItems.unshift(newElement);
-        this.validationData.items.unshift(newElement); // También añadirlo a la lista original
-  
-        // Limpiar los campos después de agregar
-        this.newItem = { cbu: '', cuil: '', Nombre: '', importe: 0, toggleEnabled: false };
-  
-        // Opcional: recalcular si necesitas actualizar totales o alguna otra lógica
-        this.recalculateTotal();
-      } else {
-        // Puedes mostrar un mensaje de error si algún campo está vacío
-        console.error('Todos los campos deben ser completados.');
-      }
+  addNewItem() {
+    if (this.newItem.cbu && this.newItem.cuil && this.newItem.nombre) {
+      // Añadir el nuevo elemento al inicio de la lista principal (filteredItems)
+      this.filteredItems.unshift({ ...this.newItem });
+      
+      // Limpiar los campos después de agregar
+      this.newItem = { cbu: '', cuil: '', nombre: '', importe: 0, toggleEnabled: false };
+      
+      // Opcional: recalcular si necesitas actualizar totales o alguna otra lógica
+      this.recalculateTotal();
+    } else {
+      // Puedes mostrar un mensaje de error si algún campo está vacío
+      console.error('Todos los campos deben ser completados.');
     }
+  } 
 
  // Método de filtrado
     applyFilter() {
@@ -150,8 +146,9 @@ export class XslEditabletableComponent implements OnInit {
   }
 
 
-  // Método para actualizar la lista de seleccionados al activar el toggle
-  toggleImporte(sol: any) {
+toggleImporte(sol: any) {
+  // Verificar si el importe es mayor que cero antes de permitir el cambio de estado del toggle
+  if (sol.importe > 0) {
     if (sol.toggleEnabled) {
       // Mover a lista de seleccionados si se activa
       this.selectedItems.push(sol);
@@ -161,7 +158,13 @@ export class XslEditabletableComponent implements OnInit {
       sol.importe = 0;
       this.recalculateTotal();
     }
+  } else {
+    // Mantener el toggle en apagado si el importe no es válido
+    sol.toggleEnabled = false;
+    console.error('El importe debe ser mayor que cero para activar el toggle.');
   }
+}
+
 
   // Método para eliminar un elemento de la lista de seleccionados y devolverlo a la principal
   removeFromSelected(item: any) {
