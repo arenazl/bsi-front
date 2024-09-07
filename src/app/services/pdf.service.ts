@@ -47,11 +47,10 @@ export class PdfService {
         const labelText = field.label + ':';
         let dataText = String(config.headerData[field.key] || '');
         
-        // Formatear importe total como moneda
-        if (field.key === 'importeTotal') {
-            const numericValue = Number(config.headerData[field.key]);
-            dataText = `$${numericValue.toLocaleString('es-AR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
-        }
+        if (field.key === 'importe_total') {
+          const numericValue = Number(config.headerData[field.key]);
+          dataText = numericValue.toLocaleString('es-AR', { style: 'currency', currency: 'ARS' });
+      }
         
         // Calcular el ancho del texto de la etiqueta y del dato
         const labelWidth = pdf.getTextWidth(labelText);
@@ -73,12 +72,6 @@ export class PdfService {
     config.headerFields.slice(3).forEach((field, index) => {
         const labelText = field.label + ':';
         let dataText = String(config.headerData[field.key] || '');
-
-        // Formatear importe total como moneda
-        if (field.key === 'importeTotal') {
-            const numericValue = Number(config.headerData[field.key]);
-            dataText = `$${numericValue.toLocaleString('es-AR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
-        }
 
         // Calcular el ancho del texto de la etiqueta y del dato
         const labelWidth = pdf.getTextWidth(labelText);
