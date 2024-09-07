@@ -37,7 +37,7 @@ export class XslEditabletableComponent implements OnInit {
   selectedItems: any[] = [];
 
 
-  newItem = { cbu: '', cuil: '', Nombre: '', importe: 0, toggleEnabled: false }; // Objeto para almacenar los nuevos datos ingresados
+  newItem = { cbu: '', cuil: '', nombre: '', importe: 0, toggleEnabled: false }; // Objeto para almacenar los nuevos datos ingresados
 
   constructor(private fileService: FileService,
               private location: Location,

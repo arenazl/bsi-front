@@ -167,6 +167,7 @@ export class XslImportComponent implements OnInit {
     this.fileService.getComboOptions(endpoint, staticOptions).subscribe((options) => {
 
       const control = this.controls.find(c => c.field === controlField);
+
       if (control) {
         control.options = options.map(option => ({ id: option.id, value: option.value }));
         if (options.length === 1) {       
@@ -177,13 +178,16 @@ export class XslImportComponent implements OnInit {
           control.disabled = false;
         }
       }
+
+      if (options.length === 1) {
+        this.conceptoSeleccionado = options[0].value;
+      }
+
     });
   }
 
   optionChanged(event: Event): void {
-
     const target = event.target as HTMLSelectElement;
-    const controlId = target.id;
     this.conceptoSeleccionado  = target.options[target.selectedIndex].text;
   }
 

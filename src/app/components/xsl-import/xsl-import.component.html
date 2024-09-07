@@ -107,13 +107,13 @@
               {{ item.file.name }}
             </div>
     
-            <div class="col-md-4" style="padding-top: 13px">
+            <div class="col-md-5" style="padding-top: 13px">
               <div class="progress">
                 <div class="progress-bar bg-progress" [ngStyle]="{ width: item.progress + '%' }"></div>
               </div>
             </div>
-    
-            <div class="col-md-4 d-flex;" style="justify-content: space-around;">
+         
+            <div class="col-md-3 d-flex" style="justify-content: space-evenly;">
               <button type="button" class="btn btn-outline-danger mr-2" (click)="item.remove()">
                 Cancelar
               </button>
