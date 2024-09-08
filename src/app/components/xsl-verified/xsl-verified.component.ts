@@ -55,7 +55,7 @@ export class XslVerifiedComponent implements OnInit, AfterViewInit {
   allRecordsValid = false;
   showHistory = false;
 
-  tranfeResponse: any = { data: [] };
+  tranfeResponse: any = { data: [] }
 
   constructor(
     private router: Router,

@@ -145,10 +145,20 @@
                   <ng-container *ngIf="col.type === 'date'">
                     {{ sol[col.field] | date:'dd/MM/yyyy' }}
                   </ng-container>
+
                   <ng-container *ngIf="col.type === 'result'">
-                    <i *ngIf="sol[col.field]" class="fas fa-check text-success"></i>
-                    <i *ngIf="!sol[col.field]" class="fas fa-times text-danger"></i>
+                    <!-- Mostrar ícono de edición solo si está en estado 'modificado', evitando mostrar los otros íconos -->
+                    <i *ngIf="sol['descripcion_validacion'] && sol['descripcion_validacion'].includes('modificado')" class="fas fa-pencil-alt" style="
+                    color: #FF9800 !important;
+                "></i>
+                    
+                    <!-- Solo mostrar el check o X si no se muestra el ícono de edición -->
+                    <ng-container *ngIf="!(sol['descripcion_validacion'] && sol['descripcion_validacion'].includes('modificado'))">
+                      <i *ngIf="sol[col.field]" class="fas fa-check text-success"></i> <!-- Ícono de check -->
+                      <i *ngIf="!sol[col.field]" class="fas fa-times text-danger"></i> <!-- Ícono de X -->
+                    </ng-container>
                   </ng-container>
+                  
                   <ng-container *ngIf="col.type === 'errorDescrption'">
                     {{ sol[col.field] }}
                   </ng-container>

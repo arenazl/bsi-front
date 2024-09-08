@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { TipoMetada, TipoModulo } from 'src/app/enums/enums';
-import { dbResponse } from 'src/app/models/Model';
-import { FileService } from 'src/app/services/file.service';
 import { Location } from '@angular/common';
+import { XslTableService } from 'src/app/services/XslTableService.service';
+import { dbResponse } from 'src/app/models/Model';
 import Swal from 'sweetalert2';
+import { Router, ActivatedRoute } from '@angular/router';
+import { TipoModulo } from 'src/app/enums/enums';
 
 @Component({
   selector: 'app-xsl-editabletable',
@@ -12,124 +12,99 @@ import Swal from 'sweetalert2';
   styleUrls: ['./xsl-editabletable.component.css']
 })
 export class XslEditabletableComponent implements OnInit {
-
-
-  ld_header: boolean = false;
-
-  TipoModulo = "";
-  headerTitle = "";
+  ld_header = false;
+  headerTitle = '';
   municipio = '';
   cantidad = 0;
-
-  validationData: any;  
-  metadata: any;    
-  
-  user = sessionStorage.getItem('Id') as string;
-  contrato = 1; //sessionStorage.getItem('Contrato') as string;
-  organismo = sessionStorage.getItem('IdOrganismo') as string;
-  nomina = 0;
-
-  importeMasivo: number = 0;
-  totalImporte: number = 0;
-
-  searchTerm: string = '';
+  validationData: any;
+  metadata: any;
   filteredItems: any[] = [];
   selectedItems: any[] = [];
+  newItem = { cbu: '', cuil: '', nombre: '', importe: 0, toggleEnabled: false };
+  searchTerm = '';
+  
 
-
-  newItem = { cbu: '', cuil: '', nombre: '', importe: 0, toggleEnabled: false }; // Objeto para almacenar los nuevos datos ingresados
-
-  constructor(private fileService: FileService,
-              private location: Location,
-              private route: ActivatedRoute) 
-              {}
+  constructor(
+    private xslTableService: XslTableService,
+    private route: ActivatedRoute,
+    private location: Location,
+    private router: Router
+  ) { }
 
   ngOnInit(): void {
-    
-    this.municipio = this.toProperCase(sessionStorage.getItem('Organismo') as string)
-
+    this.municipio = this.xslTableService.toProperCase(sessionStorage.getItem('Organismo') as string);
     this.ld_header = true;
 
-    let payload = { sp_name: 'NOMINA_OBTENER_ID', 
-      body: { id_user: this.user, 
-              id_contrato: this.contrato, 
-              id_organismo: this.organismo } };
-
-              
-    this.fileService.postGenericSP(payload).subscribe((res: dbResponse) => {   
-
-        sessionStorage.setItem('IdNomina', res.data.ID_Nomina);
-        this.nomina = res.data.ID_Nomina;
-
-        this.fileService.getResumenValidacion(TipoModulo.NOMINA, this.nomina).subscribe((res: any) => {
-
-          this.fileService.getMetaData(TipoModulo.NOMINA , TipoMetada.FILL).subscribe((mt: any) => {
-    
-              this.metadata = mt.RESULT;
-
-              this.validationData = res.data;
-
-              if (this.validationData?.items) {
-                this.filteredItems = this.validationData.items;
-              } else {
-                this.filteredItems = []; // Asigna un array vacío si no hay items
-              }
-             
-              if (this.validationData?.items) {
-                this.validationData.items.forEach((sol: any) => {
-
-                  sol.nombre = this.toProperCase(sol.nombre);
-                  this.cantidad += 1;    
-                  sol.toggleEnabled = false;
-    
-                });
-              }
-    
-              this.validationData.header.cantidad = this.cantidad;
-              
-              this.ld_header = false;
-            });
+    this.xslTableService
+      .getNominaData(sessionStorage.getItem('Id') as string, 1, sessionStorage.getItem('IdOrganismo') as string)
+      .subscribe({
+        next: (res) => {
+          sessionStorage.setItem('IdNomina', res.data.ID_Nomina);
+          this.loadValidationData(res.data.ID_Nomina);
         },
-          (err) => console.error(err)
-        );
-      },
-      err => console.error(err)
-    )
+        error: (err) => console.error(err)
+      });
   }
 
-  addNewItem() {
+  private loadValidationData(nomina: number): void {
+    this.xslTableService.getResumenValidacion(nomina).subscribe({
+      next: (res) => {
+        this.validationData = res.data;
+        this.filteredItems = this.validationData?.items || [];
+        this.loadMetaData();
+      },
+      error: (err) => console.error(err)
+    });
+  }
+
+  private loadMetaData(): void {
+    this.xslTableService.getMetaData().subscribe({
+      next: (mt) => {
+        this.metadata = mt.RESULT;
+        this.processValidationItems();
+        this.ld_header = false;
+      },
+      error: (err) => console.error(err)
+    });
+  }
+
+  private processValidationItems(): void {
+    if (this.validationData?.items) {
+      this.validationData.items.forEach((sol: any) => {
+        sol.nombre = this.xslTableService.toProperCase(sol.nombre);
+        sol.toggleEnabled = false;
+      });
+      this.validationData.header.cantidad = this.validationData.items.length;
+    }
+  }
+
+  addNewItem(): void {
+
+    this.newItem.nombre = this.xslTableService.toProperCase(this.newItem.nombre);
+
     if (this.newItem.cbu && this.newItem.cuil && this.newItem.nombre) {
-      // Añadir el nuevo elemento al inicio de la lista principal (filteredItems)
       this.filteredItems.unshift({ ...this.newItem });
-      
-      // Limpiar los campos después de agregar
       this.newItem = { cbu: '', cuil: '', nombre: '', importe: 0, toggleEnabled: false };
-      
-      // Opcional: recalcular si necesitas actualizar totales o alguna otra lógica
       this.recalculateTotal();
     } else {
-      // Puedes mostrar un mensaje de error si algún campo está vacío
       console.error('Todos los campos deben ser completados.');
     }
-  } 
+  }
 
- // Método de filtrado
-    applyFilter() {
-
-      if (this.validationData?.items) {
-        const term = this.searchTerm.toLowerCase();
-        this.filteredItems = this.validationData.items.filter((item: any) =>
-          Object.values(item).some((value: any) =>
-            value?.toString().toLowerCase().includes(term)
-          )
-        );
-      }
+  applyFilter(): void {
+    if (this.validationData?.items) {
+      const term = this.searchTerm.toLowerCase();
+      this.filteredItems = this.validationData.items.filter((item: any) =>
+        Object.values(item).some((value: any) =>
+          value?.toString().toLowerCase().includes(term)
+        )
+      );
     }
-
+  }
 
   applyMassiveImporte(value: number): void {
-    if (this.validationData && this.validationData.items) {
-      this.validationData.items.forEach((item: { toggleEnabled: any; importe: number; }) => {
+    if (this.validationData?.items) {
+      this.validationData.items.forEach((item: any) => {
         if (item.toggleEnabled) {
           item.importe = value;
         }
@@ -138,71 +113,121 @@ export class XslEditabletableComponent implements OnInit {
     }
   }
 
+  toggleImporte(sol: any): void {
 
-  updateImporte(sol: any, newValue: number) {
-    sol.importe = newValue;
-      // Recalcular el importe total
-      this.recalculateTotal();
-  }
-
-
-toggleImporte(sol: any) {
-  // Verificar si el importe es mayor que cero antes de permitir el cambio de estado del toggle
-  if (sol.importe > 0) {
-    if (sol.toggleEnabled) {
-      // Mover a lista de seleccionados si se activa
-      this.selectedItems.push(sol);
-      this.filteredItems = this.filteredItems.filter(item => item !== sol);
-    } else {
-      // Resetear el importe si se desactiva
-      sol.importe = 0;
-      this.recalculateTotal();
+    if (sol.importe == undefined) {
+      sol.toggleEnabled = false;
+      return;
     }
-  } else {
-    // Mantener el toggle en apagado si el importe no es válido
-    sol.toggleEnabled = false;
-    console.error('El importe debe ser mayor que cero para activar el toggle.');
-  }
-}
 
 
-  // Método para eliminar un elemento de la lista de seleccionados y devolverlo a la principal
-  removeFromSelected(item: any) {
-    item.toggleEnabled = false; // Desactivar toggle
-    this.selectedItems = this.selectedItems.filter(selected => selected !== item);
-    this.filteredItems.push(item); // Devolver a la lista principal
+    if (sol.importe > 0) {
+
+
+      if (sol.toggleEnabled) {
+
+        this.addToSelected(sol);
+      } else {
+
+        this.removeFromSelected(sol);
+      }
+    } else {
+
+      sol.toggleEnabled = false;
+      console.error('El importe debe ser mayor que cero para activar el toggle.');
+    }
     this.recalculateTotal();
   }
 
-  // Método existente para recalcular el importe total
-  recalculateTotal() {
-    if (this.validationData?.items) {
-      let total = 0;
-      let cantidad = 0;
-      this.selectedItems.forEach((item: any) => {
-        if (item.toggleEnabled) {
-          total += parseFloat(item.importe) || 0; // Sumar solo si está habilitado
-          cantidad += 1;
-        }
-      });
+  addToSelected(item: any): void {
 
-      this.validationData.header.importe_total = total;
-      this.validationData.header.cantidad = cantidad;
+    if (!this.selectedItems.includes(item)) {
+      this.selectedItems.push(item);
     }
+
+    this.filteredItems = this.filteredItems.filter(i => i !== item);
   }
 
- 
+  removeFromSelected(item: any): void {
+
+    item.toggleEnabled = false;
+    this.selectedItems = this.selectedItems.filter(selected => selected !== item);
+
+    if (!this.filteredItems.includes(item)) {
+      this.filteredItems.push(item);
+    }
+    this.recalculateTotal();
+  }
+
+  updateImporte(sol: any, newValue: number): void {
+    sol.importe = newValue || 0;
+    this.recalculateTotal();
+  }
+
+
+  recalculateTotal(): void {
+    let total = 0;
+    let cantidad = 0;
+
+    [...this.selectedItems, ...this.filteredItems].forEach((item) => {
+      if (item.toggleEnabled) {
+        total += parseFloat(item.importe) || 0;
+        cantidad += 1;
+      }
+    });
+
+    this.validationData.header.importe_total = total;
+  }
 
   goBack(): void {
     this.location.back();
   }
 
 
-  toProperCase(str: string): string {
-    return str
-      .split(' ')
-      .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
-      .join(' ');
+  sendFile()
+  {
+
+
+    const today = new Date();
+    const formattedDate = today.toISOString().split('T')[0]; // Esto formatea la fecha como 'YYYY-MM-DD'
+
+    const payload = {
+      CONCEPTO: 'SUELDOS',
+      FECHAPAGO: formattedDate,
+      IDCONT: "1",
+      IDORG: sessionStorage.getItem('IdOrganismo'),
+      IDUSER: sessionStorage.getItem('Id'),
+      ITEMS: this.selectedItems.map(item => ({
+        CBU: item.cbu, 
+        CUIL: item.cuil,
+        IMPORTE: item.importe,
+        NOMBRE: item.nombre 
+      }))
+    };
+
+    
+    this.xslTableService.sendFile(payload).subscribe({
+
+      next: (res) => {  
+
+        let response = res as dbResponse;
+      
+        if (response.estado >= 10) {  
+
+          Swal.fire({
+            title: "Error al subir el archivo",
+            text:  response.descripcion,
+            icon: "error",
+          });
+        }
+
+        this.router.navigate(['/xslVerified/' + TipoModulo.PAGO   + '/' + response.data.id_insertado]);
+
+      },
+      error: (err) => console.error(err)
+    });
+
+    
   }
 
 }

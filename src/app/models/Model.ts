@@ -215,3 +215,22 @@ export interface Altas_Payload {
   IDCONT: string,
   ITEMS: Array<any>
 }
+
+
+export interface SendFilePayload {
+  CONCEPTO: string;
+  FECHAPAGO: string;
+  IDCONT: string | null;
+  IDORG: string | null;
+  IDUSER: string | null;
+  ITEMS: Array<ITEMS>;
+ 
+}
+
+export interface ITEMS {
+  CBU: any;
+  CUIL: any;
+  IMPORTE: any;
+  NOMBRE: any;
+}
+
