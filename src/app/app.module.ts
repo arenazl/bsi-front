@@ -71,5 +71,6 @@ import { ChatbotComponent } from './components/chatbot/chatbot.component';
     NgxImageCompressService
   ],
   bootstrap: [AppComponent]
+  
 })
 export class AppModule { }
