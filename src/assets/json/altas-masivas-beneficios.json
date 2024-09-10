@@ -25,7 +25,7 @@
       "items": [
         {
           "description": "Comenzar la carga",
-          "link": "/xslEditabletable",
+          "link": "/xslEditabletable/0",
           "icono": "fa-hands"
         }
       ]
@@ -38,7 +38,7 @@
       "items": [
         {
           "description": "Importar CBUs",
-          "link": "/xslImport/NOMINA/1",
+          "link": "/xslImport/NOMINA/3",
           "icono": "fa-download"
         }
       ]

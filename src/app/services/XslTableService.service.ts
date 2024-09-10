@@ -19,20 +19,20 @@ export class XslTableService {
   ) {}
 
 
-  sendFile(payload: SendFilePayload) 
+  postInsertPagosManual(payload: SendFilePayload) : Observable<any>
   {
     return this.httpclient.post(`${this.API_URI}/metadata/POST_INSERT_PAGOS_MANUAL`, payload);
   }
 
   getNominaData(user: string, contrato: number, organismo: string): Observable<dbResponse> {
+
     const payload = {
       sp_name: 'NOMINA_OBTENER_ID',
       body: { id_user: user, id_contrato: contrato, id_organismo: organismo }
     };
+
     return this.fileService.postGenericSP(payload);
   }
-
-
 
   getResumenValidacion(nomina: number): Observable<any> {
     return this.fileService.getResumenValidacion(TipoModulo.NOMINA, nomina);

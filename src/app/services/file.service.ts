@@ -66,6 +66,7 @@ export class FileService {
   saveValidationData(data: any): void {
     localStorage.setItem(this.storageKey, JSON.stringify(data));
   }
+
   getValidationData(): any {
     const storedData = localStorage.getItem(this.storageKey);
     return storedData ? JSON.parse(storedData) : null;
@@ -75,11 +76,21 @@ export class FileService {
     localStorage.removeItem(this.storageKey);
   }
 
+
   getContratoById(user: number, municipio: number, contrato: number) : Observable<any> {
 
     var body = { id_user: user, id_organismo: municipio, id_contrato: contrato };
 
     return this._http.post(`${this.API_URI}/helper/GET_CONTRATO_BY_ID`, body, {
+      responseType: 'json',
+      headers: new HttpHeaders().append('Content-Type', 'application/json')
+    });
+
+  }
+
+  postInsertValidateAndInsert(nominaPayload: any) : Observable<any> {
+
+    return this._http.post(`${this.API_URI}/metadata/POST_INSERT_NOMINA_MANUAL`, nominaPayload, {
       responseType: 'json',
       headers: new HttpHeaders().append('Content-Type', 'application/json')
     });

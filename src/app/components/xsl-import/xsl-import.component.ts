@@ -10,6 +10,7 @@ import { Location } from '@angular/common';
 import Swal from 'sweetalert2';
 import { dbResponse } from 'src/app/models/Model';
 import { json } from 'stream/consumers';
+import { XslTableService } from 'src/app/services/XslTableService.service';
 
 @Component({
   selector: 'app-xsl-xsl',
@@ -46,7 +47,9 @@ export class XslImportComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private cdr: ChangeDetectorRef,
-    private location: Location
+    private location: Location,
+    private xslTableService: XslTableService,
+
   ) {
     this.formGroup = this.fb.group({});
   }
@@ -68,6 +71,7 @@ export class XslImportComponent implements OnInit {
           const formConfig = res.data;
 
           if (formConfig) {
+
             this.pageTitle = formConfig.TITLE;
             this.uploadUrl = formConfig.UPLOAD_URL;
             this.controls = formConfig.HEADER;
@@ -75,16 +79,16 @@ export class XslImportComponent implements OnInit {
             this.uploader = new FileUploader({ url: this.uri + this.uploadUrl }); 
             this.ld_header = false;  
             this.cargaManual = formConfig.CARGA_OPCIONES_VISIBLE;
-            
             this.data=resData.data;
             this.initializeControls( this.data);
 
             }
 
             this.uploader.onBeforeUploadItem = (item: FileItem) => {
+
               item.withCredentials = false;
               item.file.name = this.getFilename(this.tipoModulo);
-              item.file.name =  item.file.name.replace(/\s+/g, '');
+              item.file.name =  item.file.name.replace(/\s+/g, '');    
             };
       
             this.uploader.onCompleteItem = (item: any, response: any) => {
@@ -195,6 +199,15 @@ export class XslImportComponent implements OnInit {
     this.cargaArchivoSeleccionada = true;
   }
 
+  selectCargaNomina(): void {
+
+    this.tipoModulo = TipoModulo.NOMINA
+    this.contrato = "4"; 
+    this.cargaArchivoSeleccionada = true;
+
+  }
+
+
   getFilename(tipo: string): string {
 
   const fechaPago = this.formatDateForFile(this.formGroup.get('FechaPago')?.value) 
@@ -213,7 +226,30 @@ export class XslImportComponent implements OnInit {
   }
 
   navigateToRoute() {
-    this.router.navigate(['/xslEditabletable']);
+
+    this.xslTableService
+    .getNominaData(sessionStorage.getItem('Id') as string, 1, sessionStorage.getItem('IdOrganismo') as string)
+    .subscribe({
+      next: (res) => {
+
+        if(res.data.ID_Nomina == 0) 
+        {  
+          Swal.fire({
+            title: "Nominas",
+            text:  "No hay nominas cargadas",
+            icon: "warning",
+          });
+        }
+        else{
+          sessionStorage.setItem('IdNomina', res.data.ID_Nomina);
+          this.router.navigate(['/xslEditabletable/' + res.data.ID_Nomina]);
+        }
+      },
+      error: (err) => console.error(err)
+    });
+
+
+   
   }
 
   formatDateForFile(dateString: string): string {

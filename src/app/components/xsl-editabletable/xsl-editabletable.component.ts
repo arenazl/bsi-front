@@ -5,6 +5,7 @@ import { dbResponse } from 'src/app/models/Model';
 import Swal from 'sweetalert2';
 import { Router, ActivatedRoute } from '@angular/router';
 import { TipoModulo } from 'src/app/enums/enums';
+import { FileService } from 'src/app/services/file.service';
 
 @Component({
   selector: 'app-xsl-editabletable',
@@ -18,9 +19,11 @@ export class XslEditabletableComponent implements OnInit {
   cantidad = 0;
   validationData: any;
   metadata: any;
+  ID=0;
   filteredItems: any[] = [];
   selectedItems: any[] = [];
-  newItem = { cbu: '', cuil: '', nombre: '', importe: 0, toggleEnabled: false };
+  nuevasNominas: any[] = []; 
+  newItem = { cbu: '', cuil: '', apellido: '', nombre: '', importe: 0, toggleEnabled: false };
   searchTerm = '';
   
 
@@ -28,22 +31,50 @@ export class XslEditabletableComponent implements OnInit {
     private xslTableService: XslTableService,
     private route: ActivatedRoute,
     private location: Location,
-    private router: Router
+    private router: Router,
+    private fileservice: FileService
   ) { }
 
   ngOnInit(): void {
-    this.municipio = this.xslTableService.toProperCase(sessionStorage.getItem('Organismo') as string);
-    this.ld_header = true;
 
-    this.xslTableService
-      .getNominaData(sessionStorage.getItem('Id') as string, 1, sessionStorage.getItem('IdOrganismo') as string)
-      .subscribe({
-        next: (res) => {
-          sessionStorage.setItem('IdNomina', res.data.ID_Nomina);
-          this.loadValidationData(res.data.ID_Nomina);
-        },
-        error: (err) => console.error(err)
-      });
+    this.route.params.subscribe((params) => {
+
+      this.ID = params["id"]
+      
+      if (this.ID == 0) 
+      {
+        this.xslTableService
+        .getNominaData(sessionStorage.getItem('Id') as string, 3, sessionStorage.getItem('IdOrganismo') as string)
+        .subscribe({
+          next: (res) => {
+
+            this.ID = res.data.ID_Nomina;
+    
+            if(res.data.ID_Nomina == 0) 
+            {  
+              Swal.fire({
+                title: "Error al cargar la nomina",
+                text: "No se encontró la nomina",
+                icon: "error",
+              }).then(() => {
+                this.location.back();
+              });
+             this.location.back();
+            }  
+            else
+            {
+              this.loadValidationData(this.ID);
+            }   
+          },
+          error: (err) => console.error(err)
+        });   
+      } 
+      else
+      {
+        this.loadValidationData(this.ID);
+      }  
+    });
+
   }
 
   private loadValidationData(nomina: number): void {
@@ -77,19 +108,26 @@ export class XslEditabletableComponent implements OnInit {
       this.validationData.header.cantidad = this.validationData.items.length;
     }
   }
+  
 
   addNewItem(): void {
 
     this.newItem.nombre = this.xslTableService.toProperCase(this.newItem.nombre);
+    this.newItem.apellido = this.xslTableService.toProperCase(this.newItem.apellido);
 
     if (this.newItem.cbu && this.newItem.cuil && this.newItem.nombre) {
+
       this.filteredItems.unshift({ ...this.newItem });
-      this.newItem = { cbu: '', cuil: '', nombre: '', importe: 0, toggleEnabled: false };
+      this.nuevasNominas.push({ ...this.newItem }); // 
+
+
+      this.newItem = { cbu: '', cuil: '', apellido: '', nombre: '', importe: 0, toggleEnabled: false };
       this.recalculateTotal();
     } else {
       console.error('Todos los campos deben ser completados.');
     }
   }
+
 
   applyFilter(): void {
     if (this.validationData?.items) {
@@ -188,46 +226,72 @@ export class XslEditabletableComponent implements OnInit {
   {
 
 
-    const today = new Date();
-    const formattedDate = today.toISOString().split('T')[0]; // Esto formatea la fecha como 'YYYY-MM-DD'
+    const payloadNomina = {
 
-    const payload = {
-      CONCEPTO: 'SUELDOS',
-      FECHAPAGO: formattedDate,
-      IDCONT: "1",
+      IDCONT: "3",
       IDORG: sessionStorage.getItem('IdOrganismo'),
       IDUSER: sessionStorage.getItem('Id'),
-      ITEMS: this.selectedItems.map(item => ({
+      ITEMS: this.nuevasNominas.map(item => ({
         CBU: item.cbu, 
         CUIL: item.cuil,
-        IMPORTE: item.importe,
+        APELLIDO: item.apellido, 
         NOMBRE: item.nombre 
       }))
     };
 
-    
-    this.xslTableService.sendFile(payload).subscribe({
+    this.fileservice.postInsertValidateAndInsert(payloadNomina).subscribe({
 
-      next: (res) => {  
+      next: (res_nomina : dbResponse) => {
+       
+        if (res_nomina.estado == 1) {  
 
-        let response = res as dbResponse;
+          const today = new Date();
+          const formattedDate = today.toISOString().split('T')[0];
       
-        if (response.estado >= 10) {  
-
-          Swal.fire({
-            title: "Error al subir el archivo",
-            text:  response.descripcion,
-            icon: "error",
+          const payload = {
+            CONCEPTO: 'SUELDOS',
+            FECHAPAGO: formattedDate,
+            IDCONT: "1",
+            IDORG: sessionStorage.getItem('IdOrganismo'),
+            IDUSER: sessionStorage.getItem('Id'),
+            ITEMS: this.selectedItems.map(item => ({
+              CBU: item.cbu, 
+              CUIL: item.cuil,
+              IMPORTE: item.importe,
+              NOMBRE: item.nombre 
+            }))
+          };
+       
+          this.xslTableService.postInsertPagosManual(payload).subscribe({
+      
+            next: (res_pago: dbResponse) => {  
+            
+              if (res_pago.estado > 10) {  
+      
+                Swal.fire({
+                  title: "Error al subir el archivo",
+                  text:  res_pago.descripcion,
+                  icon: "error",
+                });
+  
+              } 
+     
+              this.router.navigate(['/xslVerified/' + TipoModulo.PAGO   + '/' + res_pago.data.id_insertado]);
+    
+            },
+            error: (err) => console.error(err)
           });
+  
         }
-
-        this.router.navigate(['/xslVerified/' + TipoModulo.PAGO   + '/' + response.data.id_insertado]);
-
+        else
+        {
+          this.router.navigate(['/xslVerified/' + TipoModulo.NOMINA   + '/' + res_nomina.data.id_insertado]);     
+        }
+        
       },
       error: (err) => console.error(err)
     });
 
-    
   }
 
 }

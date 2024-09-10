@@ -66,9 +66,12 @@ const routes: Routes = [
   },
 
   {
-    path: 'xslEditabletable',
+    path: 'xslEditabletable/:id',
     component: XslEditabletableComponent
   },
+
+  { path: 'xslEditabletable/0', 
+    component: XslEditabletableComponent },
   {
     path: 'dinamicModule/:screen',
     component: DinamicModuleComponent

@@ -72,7 +72,7 @@ export class XslVerifiedComponent implements OnInit, AfterViewInit {
   ngOnInit() {
 
     this.municipio = this.toProperCase(sessionStorage.getItem('Organismo') as string)
-
+    
     this.route.params.subscribe((params) => {
 
       this.TipoModulo = params["tipomodulo"]
