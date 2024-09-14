@@ -15,13 +15,12 @@
 <div class="card px-0 mb-3">
 
   <div class="card-header pt-3 pb-23">
-    <h6>{{ municipio }}</h6>
+    <h6>{{ organismo_descripcion }}</h6>
   </div>
 
   <div *ngIf="validationData?.header" class="card-body pb-2">
     <div class="d-flex flex-wrap">
-      <div *ngFor="let field of metadata.HEADER" class="d-flex flex-column justify-content-center"
-        style="flex: 1 0 0%;">
+      <div *ngFor="let field of metadata?.HEADER || []" class="d-flex flex-column justify-content-center" style="flex: 1 0 0%;">
         <div class="label fw-normal">{{ field.header }}:</div>
         <p class="label fw-bold">
           <!-- Apply pipe if it exists -->

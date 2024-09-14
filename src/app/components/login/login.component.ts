@@ -90,7 +90,7 @@ export class LoginComponent implements OnInit {
 
           this.usuario.panel = true
 
-          sessionStorage.setItem('Id', res.data.ID_User);
+          sessionStorage.setItem('idUser', res.data.ID_User);
           sessionStorage.setItem('Nombre', res.data.Nombre);
           sessionStorage.setItem('Apellido', res.data.Apellido);
           sessionStorage.setItem('IdOrganismo', res.data.ID_Organismo);

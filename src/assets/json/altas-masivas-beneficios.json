@@ -15,8 +15,7 @@
           "link": "/xslImport/CUENTA/3",
           "icono": "fa-download"
         }
-      ]
-    },
+      ]    },
     {
       "title": "Alta de Cuentas individual",
       "description": "Cargá los datos en pantalla",
@@ -25,7 +24,7 @@
       "items": [
         {
           "description": "Comenzar la carga",
-          "link": "/xslEditabletable/0",
+          "link": "/xslEditabletable",
           "icono": "fa-hands"
         }
       ]

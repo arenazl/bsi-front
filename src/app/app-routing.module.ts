@@ -60,9 +60,19 @@ const routes: Routes = [
     path: 'xslVerified/:tipomodulo/:id',
     component: XslVerifiedComponent
   },
+
+  {
+    path: 'xslVerified/:tipomodulo/:id/:error',
+    component: XslVerifiedComponent
+  },
+
   {
     path: 'xslImport/:tipomodulo/:contrato',
     component: XslImportComponent
+  },
+  {
+    path: 'xslEditabletable/:id',
+    component: XslEditabletableComponent
   },
 
   {
@@ -70,10 +80,14 @@ const routes: Routes = [
     component: XslEditabletableComponent
   },
 
-  { path: 'xslEditabletable/0', 
+  { path: 'xslEditabletable', 
     component: XslEditabletableComponent },
   {
     path: 'dinamicModule/:screen',
+    component: DinamicModuleComponent
+  },
+  {
+    path: 'dinamicModule/:screen/:contrato',
     component: DinamicModuleComponent
   },
   {

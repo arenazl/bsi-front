@@ -31,7 +31,12 @@ export class DinamicModuleComponent implements OnInit {
     this.activatedRoute.params.subscribe((params) => {
 
       let module = params["screen"];
-
+      
+      if (params["contrato"] != undefined)
+      {
+        sessionStorage.setItem('IdContrato', params["contrato"]);
+      }
+      
       this.fileService.getJsonForScreen(module).subscribe((data: any) => {
         this.data = data;
       });

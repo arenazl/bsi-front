@@ -20,24 +20,19 @@ export class FileService {
   constructor(private _http: HttpClient
   ) { }
 
-  postGenericSP(body: any): Observable<any>
+  postInsertGenericSP(body: any): Observable<any>
   {
-    return this._http.post(`${this.API_URI}/Metadata/GET_GENERIC_SP`,body);
+    return this._http.post(`${this.API_URI}/Metadata/POST_INSERT_GENERIC_SP`,body);
+  }
+
+  postSelectGenericSP(body: any): Observable<any>
+  {
+    return this._http.post(`${this.API_URI}/Metadata/POST_SELECT_GENERIC_SP`,body);
   }
 
   getMetaData(tipoModulo: TipoModulo, tipoMetada: TipoMetada, contrato: string='NONE'): Observable<any>
   {
     return this._http.get(`${this.API_URI}/Metadata/GET_METADATA_UI/${tipoModulo}/${tipoMetada}/${contrato}`);
-  }
-
-  getResumenValidacion(tipomodulo: TipoModulo, id: number) 
-  {
-      return this._http.get(`${this.API_URI}/Metadata/GET_RESUMEN_VALIDACION/${tipomodulo}/${id}`);
-  }
-
-  getFill(tipomodulo: TipoModulo, id: number) 
-  {
-      return this._http.get(`${this.API_URI}/Metadata/GET_FILL_IMPORTES/${tipomodulo}/${id}`);
   }
 
    getComboOptions(endpoint?: string, staticOptions?: string): Observable<{ id: string; value: string }[]> {

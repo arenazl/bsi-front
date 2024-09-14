@@ -20,8 +20,6 @@ import { XslTableService } from 'src/app/services/XslTableService.service';
 export class XslImportComponent implements OnInit {
   uploader: any;
   formGroup: FormGroup;
-  tipoModulo: string = '';
-  contrato: string = '';
   conceptosList: string[] = [];
   cargaArchivoSeleccionada = false;
   conceptoSeleccionado = '';
@@ -38,6 +36,11 @@ export class XslImportComponent implements OnInit {
   uri = GlobalVariable.BASE_API_URL + "/Metadata";
   ENTE="";
   ROTULO="";
+  ID="";
+  tipoModulo: string = '';
+  contrato: string = '';
+  organismo: string = '';
+  user = '';
   FileNameTemplate="";
   data:any;
 
@@ -55,17 +58,21 @@ export class XslImportComponent implements OnInit {
   }
 
   ngOnInit(): void {
+
     this.route.params.subscribe(params => {
 
       this.tipoModulo = params['tipomodulo'].toUpperCase();
       this.contrato = params['contrato'].toUpperCase();
+      this.user = sessionStorage.getItem('idUser') as string;
+      this.organismo = sessionStorage.getItem('IdOrganismo') as string;
 
       this.fileService.getContratoById(1, 71, parseInt(this.contrato)).subscribe((resData: dbResponse) => {
 
         this.ROTULO = resData.data.Rotulo;
     
         sessionStorage.setItem('Rotulo',  this.ROTULO);  
-  
+        sessionStorage.setItem('IdContrato',  this.contrato);  
+
         this.fileService.getMetaData(this.tipoModulo as TipoModulo, TipoMetada.IMPORT, this.contrato).subscribe((res: dbResponse) => {
 
           const formConfig = res.data;
@@ -200,11 +207,9 @@ export class XslImportComponent implements OnInit {
   }
 
   selectCargaNomina(): void {
-
     this.tipoModulo = TipoModulo.NOMINA
     this.contrato = "4"; 
     this.cargaArchivoSeleccionada = true;
-
   }
 
 
@@ -215,8 +220,8 @@ export class XslImportComponent implements OnInit {
     const template = this.FileNameTemplate;
     return template
       .replace('${tipoModulo}', this.tipoModulo || '')
-      .replace('${Id}', sessionStorage.getItem('Id') || '')
-      .replace('${idOrganismo}', sessionStorage.getItem('IdOrganismo') || '')
+      .replace('${idUser}', this.user || '')
+      .replace('${idOrganismo}', this.organismo || '')
       .replace('${contrato}', this.contrato || '')
       .replace('${concepto}', this.conceptoSeleccionado || '')
       .replace('${fechaPago}', fechaPago || '')
@@ -225,31 +230,8 @@ export class XslImportComponent implements OnInit {
       .replace(/\s+/g, ''); // Quitar espacios en blanco del nombre de archivo
   }
 
-  navigateToRoute() {
-
-    this.xslTableService
-    .getNominaData(sessionStorage.getItem('Id') as string, 1, sessionStorage.getItem('IdOrganismo') as string)
-    .subscribe({
-      next: (res) => {
-
-        if(res.data.ID_Nomina == 0) 
-        {  
-          Swal.fire({
-            title: "Nominas",
-            text:  "No hay nominas cargadas",
-            icon: "warning",
-          });
-        }
-        else{
-          sessionStorage.setItem('IdNomina', res.data.ID_Nomina);
-          this.router.navigate(['/xslEditabletable/' + res.data.ID_Nomina]);
-        }
-      },
-      error: (err) => console.error(err)
-    });
-
-
-   
+  navigatToXslEditabletable() {
+    this.router.navigate(['/xslEditabletable']);
   }
 
   formatDateForFile(dateString: string): string {

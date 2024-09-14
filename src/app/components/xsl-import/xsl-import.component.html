@@ -83,7 +83,7 @@
 
             <div class="d-flex"style="width: 98% !important;">
             
-              <button type="button" *ngIf="cargaManual" class="btn btn-primary fw-bold ml-2" style="flex: 1 0 24%;" (click)="navigateToRoute()">
+              <button type="button" *ngIf="cargaManual" class="btn btn-primary fw-bold ml-2" style="flex: 1 0 24%;" (click)="navigatToXslEditabletable()">
                 Carga Manual
               </button>
 
@@ -93,8 +93,8 @@
               </button>
 
             
-              <div style="width: 3%;"></div>
-              <button type="button" class="btn btn-primary fw-bold ml-2 d-none" style="flex: 1 0 24%;" (click)="null">
+              <div style="width: 3%;" class="d-none"></div>
+              <button type="button" class="btn btn-primary fw-bold ml-2 d-none" style="flex: 1 0 24%;" (click)="selectCargaNomina()">
                 Cargar Nomina
               </button>
             </div>

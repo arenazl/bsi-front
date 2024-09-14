@@ -131,6 +131,12 @@ export interface dbResponse {
   data: any | null;          // Datos específicos, pueden ser un objeto o null si no hay datos
 }
 
+export interface dbRequest{
+  sp_name: string,
+  body: any,
+  jsonUnify?: boolean
+}
+
 export interface Usuario {
 
   Id: number;

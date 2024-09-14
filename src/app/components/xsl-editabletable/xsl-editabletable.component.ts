@@ -1,11 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { Location } from '@angular/common';
 import { XslTableService } from 'src/app/services/XslTableService.service';
-import { dbResponse } from 'src/app/models/Model';
+import { dbRequest, dbResponse } from 'src/app/models/Model';
 import Swal from 'sweetalert2';
 import { Router, ActivatedRoute } from '@angular/router';
 import { TipoModulo } from 'src/app/enums/enums';
 import { FileService } from 'src/app/services/file.service';
+import { switchMap, catchError } from 'rxjs/operators';
 
 @Component({
   selector: 'app-xsl-editabletable',
@@ -15,11 +16,14 @@ import { FileService } from 'src/app/services/file.service';
 export class XslEditabletableComponent implements OnInit {
   ld_header = false;
   headerTitle = '';
-  municipio = '';
   cantidad = 0;
-  validationData: any;
-  metadata: any;
+  validationData: any = { header: {}, items: [] }; // Inicialización segura
+  metadata: any = { HEADER: [], 'TABLE-COLUMN': [] }; // Inicialización segura
+  organismo_descripcion="";
   ID=0;
+  contrato=0;
+  organismo = 0;
+  user = 0;
   filteredItems: any[] = [];
   selectedItems: any[] = [];
   nuevasNominas: any[] = []; 
@@ -35,54 +39,44 @@ export class XslEditabletableComponent implements OnInit {
     private fileservice: FileService
   ) { }
 
-  ngOnInit(): void {
+  ngOnInit(): void 
+  {
 
-    this.route.params.subscribe((params) => {
+    //session
+    this.contrato = sessionStorage.getItem('IdContrato') as unknown as number;
+    this.organismo = sessionStorage.getItem('IdOrganismo') as unknown as number;  
+    this.organismo_descripcion = this.toProperCase(sessionStorage.getItem('Organismo') as string)
+    this.user = sessionStorage.getItem('idUser') as unknown as number;
 
-      this.ID = params["id"]
-      
-      if (this.ID == 0) 
-      {
-        this.xslTableService
-        .getNominaData(sessionStorage.getItem('Id') as string, 3, sessionStorage.getItem('IdOrganismo') as string)
-        .subscribe({
-          next: (res) => {
-
-            this.ID = res.data.ID_Nomina;
-    
-            if(res.data.ID_Nomina == 0) 
-            {  
-              Swal.fire({
-                title: "Error al cargar la nomina",
-                text: "No se encontró la nomina",
-                icon: "error",
-              }).then(() => {
-                this.location.back();
-              });
-             this.location.back();
-            }  
-            else
-            {
-              this.loadValidationData(this.ID);
-            }   
-          },
-          error: (err) => console.error(err)
-        });   
-      } 
-      else
-      {
-        this.loadValidationData(this.ID);
-      }  
-    });
+    this.loadNominaImporte();   
 
   }
 
-  private loadValidationData(nomina: number): void {
-    this.xslTableService.getResumenValidacion(nomina).subscribe({
+  private loadNominaImporte(): void {
+
+    const payload = {
+      sp_name: "NOMINA_OBTENER_RESUMEN_BY_ID",
+      body:
+      {
+        id_user: this.user,
+        id_contrato: this.contrato,
+        id_organismo: this.organismo,
+      }};
+
+
+    this.fileservice.postSelectGenericSP(payload).subscribe({  
       next: (res) => {
-        this.validationData = res.data;
+
+        this.validationData = {
+          ...res.data,
+          items: res.data?.items?.filter((sol: any) => {
+              return sol.valido == 1;
+            }) || [],
+        };
+        
         this.filteredItems = this.validationData?.items || [];
         this.loadMetaData();
+
       },
       error: (err) => console.error(err)
     });
@@ -94,6 +88,7 @@ export class XslEditabletableComponent implements OnInit {
         this.metadata = mt.RESULT;
         this.processValidationItems();
         this.ld_header = false;
+        this.recalculateTotal();
       },
       error: (err) => console.error(err)
     });
@@ -140,6 +135,14 @@ export class XslEditabletableComponent implements OnInit {
     }
   }
 
+  toProperCase(str: string): string {
+    return str
+      .split(' ')
+      .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+      .filter((word, index, arr) => !(index === arr.length - 1 && word.length === 1)) 
+      .join(' ');
+  }
+
   applyMassiveImporte(value: number): void {
     if (this.validationData?.items) {
       this.validationData.items.forEach((item: any) => {
@@ -157,7 +160,6 @@ export class XslEditabletableComponent implements OnInit {
       sol.toggleEnabled = false;
       return;
     }
-
 
     if (sol.importe > 0) {
 
@@ -202,7 +204,6 @@ export class XslEditabletableComponent implements OnInit {
     this.recalculateTotal();
   }
 
-
   recalculateTotal(): void {
     let total = 0;
     let cantidad = 0;
@@ -221,77 +222,80 @@ export class XslEditabletableComponent implements OnInit {
     this.location.back();
   }
 
-
-  sendFile()
-  {
-
-
-    const payloadNomina = {
-
-      IDCONT: "3",
-      IDORG: sessionStorage.getItem('IdOrganismo'),
-      IDUSER: sessionStorage.getItem('Id'),
-      ITEMS: this.nuevasNominas.map(item => ({
-        CBU: item.cbu, 
-        CUIL: item.cuil,
-        APELLIDO: item.apellido, 
-        NOMBRE: item.nombre 
-      }))
+  sendFile() {
+    const payloadNomina: dbRequest = {
+      sp_name: "NOMINA_VALIDAD_INSERTAR_FULL_VALIDATION",
+      jsonUnify: true,
+      body: {
+        IDCONT: sessionStorage.getItem('IdContrato'),
+        IDORG: sessionStorage.getItem('IdOrganismo'),
+        IDUSER: sessionStorage.getItem('idUser'),
+        ITEMS: this.nuevasNominas.map(item => ({
+          CBU: item.cbu,
+          CUIL: item.cuil,
+          APELLIDO: item.apellido,
+          NOMBRE: item.nombre
+        }))
+      }
     };
-
-    this.fileservice.postInsertValidateAndInsert(payloadNomina).subscribe({
-
-      next: (res_nomina : dbResponse) => {
-       
-        if (res_nomina.estado == 1) {  
-
-          const today = new Date();
-          const formattedDate = today.toISOString().split('T')[0];
-      
-          const payload = {
+  
+    // Llamada al servicio genérico para la validación de nómina
+    this.fileservice.postInsertGenericSP(payloadNomina).subscribe({
+      next: (res_nomina: dbResponse) => {
+        // Si la validación de nómina falla, redirige a la verificación de nómina
+        if (res_nomina.estado !== 1) {
+          this.router.navigate(['/xslVerified/' + TipoModulo.NOMINA + '/' + res_nomina.data.id_insertado + "/true" ]);
+          return;
+        }
+   
+        // Si la validación de nómina es exitosa, procede con el payload de pagos
+        const today = new Date().toISOString().split('T')[0];
+        const payloadPagos = {
+          sp_name: "PAGO_VALIDAR_INSERTAR_ENTRADA", // Nombre del SP para pagos
+          jsonUnify: true,
+          body: {
             CONCEPTO: 'SUELDOS',
-            FECHAPAGO: formattedDate,
-            IDCONT: "1",
+            FECHAPAGO: today,
+            IDCONT: sessionStorage.getItem('IdContrato'),
             IDORG: sessionStorage.getItem('IdOrganismo'),
-            IDUSER: sessionStorage.getItem('Id'),
+            IDUSER: sessionStorage.getItem('idUser'),
             ITEMS: this.selectedItems.map(item => ({
-              CBU: item.cbu, 
+              CBU: item.cbu,
               CUIL: item.cuil,
               IMPORTE: item.importe,
-              NOMBRE: item.nombre 
+              NOMBRE: item.nombre
             }))
-          };
-       
-          this.xslTableService.postInsertPagosManual(payload).subscribe({
-      
-            next: (res_pago: dbResponse) => {  
-            
-              if (res_pago.estado > 10) {  
-      
-                Swal.fire({
-                  title: "Error al subir el archivo",
-                  text:  res_pago.descripcion,
-                  icon: "error",
-                });
+          }
+        };
   
-              } 
-     
-              this.router.navigate(['/xslVerified/' + TipoModulo.PAGO   + '/' + res_pago.data.id_insertado]);
-    
-            },
-            error: (err) => console.error(err)
-          });
-  
-        }
-        else
-        {
-          this.router.navigate(['/xslVerified/' + TipoModulo.NOMINA   + '/' + res_nomina.data.id_insertado]);     
-        }
-        
-      },
-      error: (err) => console.error(err)
-    });
+        // Llamada al servicio genérico para la inserción de pagos
+        this.fileservice.postInsertGenericSP(payloadPagos).subscribe({
 
+          next: (res_pago: dbResponse) => {
+              this.router.navigate(['/xslVerified/' + TipoModulo.PAGO + '/' + res_pago.data.id_insertado]);
+          },
+          error: (err) => {
+            console.error(err);
+            Swal.fire({
+              title: "Error",
+              text: err.message || "Se produjo un error inesperado",
+              icon: "error",
+            });
+          }
+        });
+      },
+      error: (err) => {
+        console.error(err);
+        Swal.fire({
+          title: "Error",
+          text: err.message || "Se produjo un error inesperado",
+          icon: "error",
+        });
+
+      }
+    });
+    
   }
 
 }
+

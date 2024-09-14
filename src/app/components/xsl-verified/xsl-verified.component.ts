@@ -41,9 +41,14 @@ export class XslVerifiedComponent implements OnInit, AfterViewInit {
   ld_header: boolean = false;
   tranfeList: any = [];
   TipoModulo = "";
-  ID = 0;
   headerTitle = "";
-  municipio = '';
+  organismo_descripcion="";
+  ID=0;
+
+  contrato=0;
+  organismo = 0;
+  user = 0;
+  modulo = 0;
   columnConfig: any[] = [];
 
   showExportSection = true;
@@ -54,6 +59,8 @@ export class XslVerifiedComponent implements OnInit, AfterViewInit {
   metadata: any;        // Metadata para renderizar la UI
   allRecordsValid = false;
   showHistory = false;
+  payload : any = {};
+  error=false;
 
   tranfeResponse: any = { data: [] }
 
@@ -71,12 +78,19 @@ export class XslVerifiedComponent implements OnInit, AfterViewInit {
 
   ngOnInit() {
 
-    this.municipio = this.toProperCase(sessionStorage.getItem('Organismo') as string)
+    
+    this.contrato = sessionStorage.getItem('IdContrato') as unknown as number;
+    this.organismo = sessionStorage.getItem('IdOrganismo') as unknown as number;  
+    this.organismo_descripcion = this.toProperCase(sessionStorage.getItem('Organismo') as string)
+    this.user = sessionStorage.getItem('idUser') as unknown as number;
     
     this.route.params.subscribe((params) => {
 
       this.TipoModulo = params["tipomodulo"]
       this.ID = params["id"]
+
+      this.error = params["error"] as unknown as boolean;
+
 
       this.headerTitle = this.getHeaderText(this.TipoModulo)
 
@@ -89,22 +103,59 @@ export class XslVerifiedComponent implements OnInit, AfterViewInit {
         {
         
           this.ld_header = true;
-
-          this.fileService.getResumenValidacion(this.TipoModulo as TipoModulo,  this.ID).subscribe((res: any) => {
+       
+          if(this.TipoModulo == TipoModulo.CUENTA || this.TipoModulo == TipoModulo.PAGO)
+          {
+             this.payload = {
+              sp_name: this.TipoModulo+ "_OBTENER_RESUMEN_BY_ID",
+              body:
+              {
+                p_id: this.ID,
+              }};
+          } 
+          
+          else if (this.TipoModulo == TipoModulo.NOMINA)
+          {
+             this.payload = {
+              sp_name: "NOMINA_OBTENER_RESUMEN_BY_ID",
+              body:
+              {
+                id_user: this.user,
+                id_contrato: this.contrato,
+                id_organismo: this.organismo,
+              }};
+          }
+          
+          this.fileService.postSelectGenericSP(this.payload).subscribe((res: any) => {
 
             this.fileService.getMetaData(this.TipoModulo as TipoModulo, TipoMetada.LIST).subscribe(( data) => {
 
                 this.metadata = data.RESULT;
-                this.validationData = res.data;
-                ;       
-                this.allRecordsValid = this.areAllRecordsValid();
-       
-                if (this.validationData?.items) {
-                  this.validationData.items.forEach((sol: any) => {
+                    
+                if (this.error) {
 
-                    sol.nombre = this.toProperCase(sol.nombre);
-      
-                  });
+                  const now = new Date();
+                  const fiveMinutesAgo = new Date(now.getTime() - 5 * 60000);
+
+                    this.validationData = {
+                    ...res.data,
+                    items: res.data?.items?.filter((sol: any) => {
+                           // Ajustar la fecha de actualización del servidor restando 1 hora
+                       const updateDate = new Date(new Date(sol.fecha).getTime() - 3 * 60 * 60000);
+                        return sol.valido == 0 && updateDate >= fiveMinutesAgo && updateDate <= now;
+                      }) || [],
+                  };
+
+                } else {
+                  // Procesamiento normal cuando no hay error
+                  this.validationData = res.data;
+                  this.allRecordsValid = this.areAllRecordsValid();
+
+                  if (this.validationData?.items) {
+                    this.validationData.items.forEach((sol: any) => {
+                      sol.nombre = this.toProperCase(sol.nombre);
+                    });
+                  }
                 }
 
 
@@ -125,11 +176,13 @@ export class XslVerifiedComponent implements OnInit, AfterViewInit {
 
   getListComboById(id: any) {
 
+    /*
+
     this.ID = id.target.value;
 
     this.ld_header = true;
 
-    this.fileService.getResumenValidacion(this.TipoModulo as TipoModulo,  this.ID).subscribe((res: any) => {
+    this.fileService.getResumenValidacion(this.TipoModulo as tipo,, this.user).subscribe((res: any) => {
 
       this.fileService.getMetaData(this.TipoModulo as TipoModulo, TipoMetada.LIST).subscribe(( data) => {
 
@@ -143,6 +196,7 @@ export class XslVerifiedComponent implements OnInit, AfterViewInit {
     },
       (err) => console.error(err)
     );
+    */
     
   }
 
@@ -198,7 +252,7 @@ export class XslVerifiedComponent implements OnInit, AfterViewInit {
       titleFontSize: 16,
       headerFontSize: 10,
       detailFontSize: 10,
-      title: this.municipio,  // Título del PDF
+      title: this.organismo_descripcion,  // Título del PDF
       headerData: this.validationData.header,  // Datos del encabezado
       detailData: this.validationData.items,  // Datos de los detalles
       headerFields: [
@@ -300,7 +354,7 @@ export class XslVerifiedComponent implements OnInit, AfterViewInit {
 
     // Agregar el municipio (centrado)
     pdf.setFontSize(16);
-    pdf.text(this.municipio, pageWidth / 2, yPosition, { align: 'center' });
+    pdf.text(this.organismo_descripcion, pageWidth / 2, yPosition, { align: 'center' });
     yPosition += 5;
 
     // Agregar línea horizontal
