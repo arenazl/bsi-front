@@ -10,7 +10,8 @@ import { Location } from '@angular/common';
 import Swal from 'sweetalert2';
 import { dbResponse } from 'src/app/models/Model';
 import { json } from 'stream/consumers';
-import { XslTableService } from 'src/app/services/XslTableService.service';
+import { BsiHelper } from 'src/app/services/bsiHelper.service';
+import { BigIntStats } from 'fs';
 
 @Component({
   selector: 'app-xsl-xsl',
@@ -51,7 +52,7 @@ export class XslImportComponent implements OnInit {
     private router: Router,
     private cdr: ChangeDetectorRef,
     private location: Location,
-    private xslTableService: XslTableService,
+    private bsiHelper: BsiHelper,
 
   ) {
     this.formGroup = this.fb.group({});
@@ -206,16 +207,22 @@ export class XslImportComponent implements OnInit {
     this.cargaArchivoSeleccionada = true;
   }
 
+
   selectCargaNomina(): void {
+
     this.tipoModulo = TipoModulo.NOMINA
     this.contrato = "4"; 
     this.cargaArchivoSeleccionada = true;
+    this.filesUploaded = 
+
+    };
+
   }
 
 
   getFilename(tipo: string): string {
 
-  const fechaPago = this.formatDateForFile(this.formGroup.get('FechaPago')?.value) 
+  const fechaPago = this.bsiHelper.formatDateForFile(this.formGroup.get('FechaPago')?.value) 
 
     const template = this.FileNameTemplate;
     return template
@@ -232,14 +239,6 @@ export class XslImportComponent implements OnInit {
 
   navigatToXslEditabletable() {
     this.router.navigate(['/xslEditabletable']);
-  }
-
-  formatDateForFile(dateString: string): string {
-    const date = new Date(dateString + 'T00:00:00Z');
-    const year = date.getUTCFullYear().toString();
-    const month = (date.getUTCMonth() + 1).toString().padStart(2, '0');
-    const day = date.getUTCDate().toString().padStart(2, '0');
-    return `${year}${month}${day}`;
   }
 
   onSubmit(): void {

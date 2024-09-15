@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Location } from '@angular/common';
-import { XslTableService } from 'src/app/services/XslTableService.service';
+import { BsiHelper as BsiHelper } from 'src/app/services/bsiHelper.service';
 import { dbRequest, dbResponse } from 'src/app/models/Model';
 import Swal from 'sweetalert2';
 import { Router, ActivatedRoute } from '@angular/router';
@@ -17,22 +17,27 @@ export class XslEditabletableComponent implements OnInit {
   ld_header = false;
   headerTitle = '';
   cantidad = 0;
-  validationData: any = { header: {}, items: [] }; // Inicialización segura
-  metadata: any = { HEADER: [], 'TABLE-COLUMN': [] }; // Inicialización segura
+
   organismo_descripcion="";
   ID=0;
   contrato=0;
   organismo = 0;
   user = 0;
-  filteredItems: any[] = [];
-  selectedItems: any[] = [];
+
+  metadata: any = { HEADER: [], 'TABLE-COLUMN': [] }; // Inicialización segura
+  dbNominas: any = { header: {}, items: [] };
+
+  filteredItems: any[] = []; 
+  selectedItems: any[] = []; 
   nuevasNominas: any[] = []; 
+  isNominasEmpty = false;
+
   newItem = { cbu: '', cuil: '', apellido: '', nombre: '', importe: 0, toggleEnabled: false };
   searchTerm = '';
   
 
   constructor(
-    private xslTableService: XslTableService,
+    private bsiHelper: BsiHelper,
     private route: ActivatedRoute,
     private location: Location,
     private router: Router,
@@ -45,7 +50,7 @@ export class XslEditabletableComponent implements OnInit {
     //session
     this.contrato = sessionStorage.getItem('IdContrato') as unknown as number;
     this.organismo = sessionStorage.getItem('IdOrganismo') as unknown as number;  
-    this.organismo_descripcion = this.toProperCase(sessionStorage.getItem('Organismo') as string)
+    this.organismo_descripcion = this.bsiHelper.toProperCase(sessionStorage.getItem('Organismo') as string)
     this.user = sessionStorage.getItem('idUser') as unknown as number;
 
     this.loadNominaImporte();   
@@ -67,67 +72,119 @@ export class XslEditabletableComponent implements OnInit {
     this.fileservice.postSelectGenericSP(payload).subscribe({  
       next: (res) => {
 
-        this.validationData = {
+        if(res == null)
+        {
+          this.isNominasEmpty = true;
+          return;
+        }
+
+        this.dbNominas = {
           ...res.data,
           items: res.data?.items?.filter((sol: any) => {
               return sol.valido == 1;
             }) || [],
         };
+
+        this.dbNominas.header.importe_total = 0
+    
+        this.filteredItems = this.dbNominas?.items || [];
+       
+        this.bsiHelper.getMetaData().subscribe({
+          next: (mt) => {
+            this.metadata = mt.RESULT;
+            this.processValidationItems();
+            this.ld_header = false; 
+          },
+          error: (err) => console.error(err)
+        });
         
-        this.filteredItems = this.validationData?.items || [];
-        this.loadMetaData();
-
       },
       error: (err) => console.error(err)
     });
   }
 
-  private loadMetaData(): void {
-    this.xslTableService.getMetaData().subscribe({
-      next: (mt) => {
-        this.metadata = mt.RESULT;
-        this.processValidationItems();
-        this.ld_header = false;
-        this.recalculateTotal();
-      },
-      error: (err) => console.error(err)
-    });
-  }
+    // Método de ejemplo donde se aplican las validaciones
+    executeValidations(cuil: string, cbu: string, name: string): boolean {
+
+      if(!this.newItem.cbu || !this.newItem.cuil || !this.newItem.nombre)
+      {
+        Swal.fire({
+          icon: 'error',
+          title: 'Error en la Validación',
+          text: 'Todos los campos son obligatorios.',
+          confirmButtonText: 'Entendido'
+        });
+        return false;
+      }
+  
+      if (!this.bsiHelper.validateCuil(cuil)) {
+        Swal.fire({
+          icon: 'error',
+          title: 'Error en la Validación',
+          text: 'El CUIL ingresado es inválido. Asegúrate de que siga el formato correcto y el dígito verificador sea correcto.',
+          confirmButtonText: 'Entendido'
+        });
+        return false;
+      }
+  
+      if (!this.bsiHelper.validateCbu(cbu)) {
+        Swal.fire({
+          icon: 'error',
+          title: 'Error en la Validación',
+          text: 'El CBU ingresado es inválido. Debe tener 22 dígitos y un dígito verificador correcto.',
+          confirmButtonText: 'Entendido'
+        });
+        return false;
+      }
+  
+      if (!this.bsiHelper.validateName(name)) {
+        Swal.fire({
+          icon: 'error',
+          title: 'Error en la Validación',
+          text: 'El nombre ingresado debe tener al menos 5 caracteres.',
+          confirmButtonText: 'Entendido'
+        });
+        return false;
+      }
+  
+      // Si todas las validaciones pasan
+      return true;
+    }
+
 
   private processValidationItems(): void {
-    if (this.validationData?.items) {
-      this.validationData.items.forEach((sol: any) => {
-        sol.nombre = this.xslTableService.toProperCase(sol.nombre);
+    if (this.dbNominas?.items) {
+      this.dbNominas.items.forEach((sol: any) => {
+        sol.nombre = this.bsiHelper.toProperCase(sol.nombre);
         sol.toggleEnabled = false;
       });
-      this.validationData.header.cantidad = this.validationData.items.length;
+      this.dbNominas.header.cantidad = this.dbNominas.items.length;
     }
   }
   
 
   addNewItem(): void {
 
-    this.newItem.nombre = this.xslTableService.toProperCase(this.newItem.nombre);
-    this.newItem.apellido = this.xslTableService.toProperCase(this.newItem.apellido);
-
-    if (this.newItem.cbu && this.newItem.cuil && this.newItem.nombre) {
-
-      this.filteredItems.unshift({ ...this.newItem });
-      this.nuevasNominas.push({ ...this.newItem }); // 
-
-
-      this.newItem = { cbu: '', cuil: '', apellido: '', nombre: '', importe: 0, toggleEnabled: false };
-      this.recalculateTotal();
-    } else {
-      console.error('Todos los campos deben ser completados.');
+    if(!this.executeValidations(this.newItem.cuil, this.newItem.cbu, this.newItem.nombre))
+    {
+      return;
     }
+    else  
+    {
+      this.newItem.nombre = this.bsiHelper.toProperCase(this.newItem.nombre);
+      this.newItem.apellido = this.bsiHelper.toProperCase(this.newItem.apellido);
+  
+        this.filteredItems.unshift({ ...this.newItem });  
+        this.nuevasNominas.push({ ...this.newItem }); 
+  
+        this.newItem = { cbu: '', cuil: '', apellido: '', nombre: '', importe: 0, toggleEnabled: false };  
+    } 
   }
 
-
   applyFilter(): void {
-    if (this.validationData?.items) {
+    if (this.dbNominas?.items) {
       const term = this.searchTerm.toLowerCase();
-      this.filteredItems = this.validationData.items.filter((item: any) =>
+      this.filteredItems = this.dbNominas.items.filter((item: any) =>
         Object.values(item).some((value: any) =>
           value?.toString().toLowerCase().includes(term)
         )
@@ -135,17 +192,9 @@ export class XslEditabletableComponent implements OnInit {
     }
   }
 
-  toProperCase(str: string): string {
-    return str
-      .split(' ')
-      .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
-      .filter((word, index, arr) => !(index === arr.length - 1 && word.length === 1)) 
-      .join(' ');
-  }
-
   applyMassiveImporte(value: number): void {
-    if (this.validationData?.items) {
-      this.validationData.items.forEach((item: any) => {
+    if (this.dbNominas?.items) {
+      this.dbNominas.items.forEach((item: any) => {
         if (item.toggleEnabled) {
           item.importe = value;
         }
@@ -185,13 +234,15 @@ export class XslEditabletableComponent implements OnInit {
       this.selectedItems.push(item);
     }
 
-    this.filteredItems = this.filteredItems.filter(i => i !== item);
+    this.filteredItems = this.filteredItems.filter((i: any) => i !== item);
+
+    this.recalculateTotal();
   }
 
   removeFromSelected(item: any): void {
 
     item.toggleEnabled = false;
-    this.selectedItems = this.selectedItems.filter(selected => selected !== item);
+    this.selectedItems = this.selectedItems.filter((selected: any) => selected !== item);
 
     if (!this.filteredItems.includes(item)) {
       this.filteredItems.push(item);
@@ -205,6 +256,7 @@ export class XslEditabletableComponent implements OnInit {
   }
 
   recalculateTotal(): void {
+
     let total = 0;
     let cantidad = 0;
 
@@ -212,10 +264,10 @@ export class XslEditabletableComponent implements OnInit {
       if (item.toggleEnabled) {
         total += parseFloat(item.importe) || 0;
         cantidad += 1;
+        this.dbNominas.header.importe_total = total;
       }
     });
 
-    this.validationData.header.importe_total = total;
   }
 
   goBack(): void {
@@ -259,7 +311,7 @@ export class XslEditabletableComponent implements OnInit {
             IDCONT: sessionStorage.getItem('IdContrato'),
             IDORG: sessionStorage.getItem('IdOrganismo'),
             IDUSER: sessionStorage.getItem('idUser'),
-            ITEMS: this.selectedItems.map(item => ({
+            ITEMS: this.selectedItems.map((item : any) => ({
               CBU: item.cbu,
               CUIL: item.cuil,
               IMPORTE: item.importe,

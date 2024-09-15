@@ -28,6 +28,7 @@ import { ElementSchemaRegistry } from "@angular/compiler";
 import { LotesService } from "src/app/services/lotes.service";
 import { PdfService } from "src/app/services/pdf.service";
 import { query } from "express";
+import { BsiHelper } from "src/app/services/bsiHelper.service";
 
 @Component({
   selector: 'app-xsl-verified',
@@ -71,17 +72,17 @@ export class XslVerifiedComponent implements OnInit, AfterViewInit {
     private route: ActivatedRoute,
     private cdRef: ChangeDetectorRef,
     private pdfService: PdfService,
-    private location: Location
+    private location: Location,
+    private bsiHelper: BsiHelper
   ) { }
 
   ngAfterViewInit(): void { }
 
   ngOnInit() {
 
-    
     this.contrato = sessionStorage.getItem('IdContrato') as unknown as number;
     this.organismo = sessionStorage.getItem('IdOrganismo') as unknown as number;  
-    this.organismo_descripcion = this.toProperCase(sessionStorage.getItem('Organismo') as string)
+    this.organismo_descripcion = this.bsiHelper.toProperCase(sessionStorage.getItem('Organismo') as string)
     this.user = sessionStorage.getItem('idUser') as unknown as number;
     
     this.route.params.subscribe((params) => {
@@ -101,73 +102,62 @@ export class XslVerifiedComponent implements OnInit, AfterViewInit {
         }
         else
         {
-        
-          this.ld_header = true;
        
-          if(this.TipoModulo == TipoModulo.CUENTA || this.TipoModulo == TipoModulo.PAGO)
-          {
-             this.payload = {
-              sp_name: this.TipoModulo+ "_OBTENER_RESUMEN_BY_ID",
-              body:
-              {
-                p_id: this.ID,
-              }};
-          } 
-          
-          else if (this.TipoModulo == TipoModulo.NOMINA)
-          {
-             this.payload = {
-              sp_name: "NOMINA_OBTENER_RESUMEN_BY_ID",
-              body:
-              {
-                id_user: this.user,
-                id_contrato: this.contrato,
-                id_organismo: this.organismo,
-              }};
-          }
-          
-          this.fileService.postSelectGenericSP(this.payload).subscribe((res: any) => {
+          this.ld_header = true;
 
-            this.fileService.getMetaData(this.TipoModulo as TipoModulo, TipoMetada.LIST).subscribe(( data) => {
-
-                this.metadata = data.RESULT;
-                    
-                if (this.error) {
-
-                  const now = new Date();
-                  const fiveMinutesAgo = new Date(now.getTime() - 5 * 60000);
-
-                    this.validationData = {
-                    ...res.data,
-                    items: res.data?.items?.filter((sol: any) => {
-                           // Ajustar la fecha de actualización del servidor restando 1 hora
-                       const updateDate = new Date(new Date(sol.fecha).getTime() - 3 * 60 * 60000);
-                        return sol.valido == 0 && updateDate >= fiveMinutesAgo && updateDate <= now;
-                      }) || [],
-                  };
-
-                } else {
-                  // Procesamiento normal cuando no hay error
-                  this.validationData = res.data;
-                  this.allRecordsValid = this.areAllRecordsValid();
-
-                  if (this.validationData?.items) {
-                    this.validationData.items.forEach((sol: any) => {
-                      sol.nombre = this.toProperCase(sol.nombre);
-                    });
-                  }
-                }
-
-
-                this.ld_header = false;
-              });
-          },
-            (err) => console.error(err)
-          );
+          this.callDBAndLoadElments();
 
         }
      
     });
+  }
+
+  private callDBAndLoadElments() {
+
+    if (this.TipoModulo == TipoModulo.CUENTA || this.TipoModulo == TipoModulo.PAGO) {
+      this.payload = {
+        sp_name: this.TipoModulo + "_OBTENER_RESUMEN_BY_ID",
+        body: {
+          p_id: this.ID,
+        }
+      };
+    }
+
+    else if (this.TipoModulo == TipoModulo.NOMINA) {
+      this.payload = {
+        sp_name: "NOMINA_OBTENER_RESUMEN_BY_ID",
+        body: {
+          id_user: this.user,
+          id_contrato: this.contrato,
+          id_organismo: this.organismo,
+        }
+      };
+    }
+
+    this.fileService.postSelectGenericSP(this.payload).subscribe((res: any) => {
+
+      this.fileService.getMetaData(this.TipoModulo as TipoModulo, TipoMetada.LIST).subscribe((data) => {
+
+        this.metadata = data.RESULT;
+
+        if (this.error) {
+          
+        }
+
+        this.validationData = res.data;
+        this.allRecordsValid = this.areAllRecordsValid();
+
+        if (this.validationData?.items) {
+          this.validationData.items.forEach((sol: any) => {
+            sol.nombre = this.bsiHelper.toProperCase(sol.nombre);
+          });
+        }
+
+        this.ld_header = false;
+      });
+    },
+      (err) => console.error(err)
+    );
   }
 
   goBack(): void {
@@ -176,30 +166,13 @@ export class XslVerifiedComponent implements OnInit, AfterViewInit {
 
   getListComboById(id: any) {
 
-    /*
-
     this.ID = id.target.value;
 
     this.ld_header = true;
 
-    this.fileService.getResumenValidacion(this.TipoModulo as tipo,, this.user).subscribe((res: any) => {
-
-      this.fileService.getMetaData(this.TipoModulo as TipoModulo, TipoMetada.LIST).subscribe(( data) => {
-
-          this.metadata = data.RESULT;
-          this.validationData = res.data;
-          ;       
-          this.allRecordsValid = this.areAllRecordsValid();
-            
-          this.ld_header = false;
-        });
-    },
-      (err) => console.error(err)
-    );
-    */
+    this.callDBAndLoadElments();      
     
   }
-
 
   getListCombo() {
 
@@ -238,6 +211,8 @@ export class XslVerifiedComponent implements OnInit, AfterViewInit {
         return "Pagos Multiples";
       case TipoModulo.CUENTA:
         return "Alta de Cuentas";
+      case TipoModulo.NOMINA:
+          return "Alta de Nominas";
     }
 
     return '';
@@ -272,7 +247,6 @@ export class XslVerifiedComponent implements OnInit, AfterViewInit {
     
     this.pdfService.generateGenericPdf(config);
   }
-
 
 
   generatePdfContrato() {
@@ -421,15 +395,6 @@ export class XslVerifiedComponent implements OnInit, AfterViewInit {
       document.body.removeChild(link);
     }); 
 
-  }
-
-
- toProperCase(str: string): string {
-    return str
-      .split(' ')
-      .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
-      .filter((word, index, arr) => !(index === arr.length - 1 && word.length === 1)) // Discard the last element if it's a single letter
-      .join(' ');
   }
 
 }
