@@ -12,6 +12,7 @@ import { dbResponse } from 'src/app/models/Model';
 import { json } from 'stream/consumers';
 import { BsiHelper } from 'src/app/services/bsiHelper.service';
 import { BigIntStats } from 'fs';
+import { faTemperature1 } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-xsl-xsl',
@@ -26,7 +27,10 @@ export class XslImportComponent implements OnInit {
   conceptoSeleccionado = '';
   filesUploaded = true;;
   cargaManual = false;
+  cargaNomina = false;
+  cargaArchivo = true;
   buttonText = 'Subir Archivo';
+  selectNominaXsl=false;
   errorMessage = '';
   pageTitle = '';
   uploadUrl="";
@@ -87,16 +91,21 @@ export class XslImportComponent implements OnInit {
             this.uploader = new FileUploader({ url: this.uri + this.uploadUrl }); 
             this.ld_header = false;  
             this.cargaManual = formConfig.CARGA_OPCIONES_VISIBLE;
+            this.cargaNomina = formConfig.CARGA_NOMINA_VISIBLE;     
+            this.cargaArchivo = formConfig.CARGA_ARCHIVO_VISIBLE;
+
             this.data=resData.data;
+
             this.initializeControls( this.data);
 
             }
 
             this.uploader.onBeforeUploadItem = (item: FileItem) => {
 
-              item.withCredentials = false;
-              item.file.name = this.getFilename(this.tipoModulo);
-              item.file.name =  item.file.name.replace(/\s+/g, '');    
+                item.file.name = this.getFilename(this.tipoModulo); 
+                item.file.name =  item.file.name.replace(/\s+/g, '');    
+                item.withCredentials = false;      
+              
             };
       
             this.uploader.onCompleteItem = (item: any, response: any) => {
@@ -123,6 +132,8 @@ export class XslImportComponent implements OnInit {
               this.filesUploaded = true;
               this.buttonText = 'Completado' 
 
+              if(this.tipoModulo == TipoModulo.NOMINA_XSL) this.tipoModulo = TipoModulo.NOMINA;
+              
               this.router.navigate(['/xslVerified/' + this.tipoModulo + '/' + res.data.id_insertado]);
             };
         
@@ -207,22 +218,17 @@ export class XslImportComponent implements OnInit {
     this.cargaArchivoSeleccionada = true;
   }
 
-
   selectCargaNomina(): void {
-
-    this.tipoModulo = TipoModulo.NOMINA
-    this.contrato = "4"; 
+    this.selectNominaXsl = true;
     this.cargaArchivoSeleccionada = true;
-    this.filesUploaded = 
-
-    };
 
   }
-
 
   getFilename(tipo: string): string {
 
   const fechaPago = this.bsiHelper.formatDateForFile(this.formGroup.get('FechaPago')?.value) 
+
+    if(this.selectNominaXsl) this.tipoModulo = this.tipoModulo + "_XSL";
 
     const template = this.FileNameTemplate;
     return template
@@ -234,7 +240,7 @@ export class XslImportComponent implements OnInit {
       .replace('${fechaPago}', fechaPago || '')
       .replace('${rotulo}', this.data['Rotulo'] || '')
       .replace('${ente}', this.data['Ente'] || '')
-      .replace(/\s+/g, ''); // Quitar espacios en blanco del nombre de archivo
+      .replace(/\s+/g, ''); // Quitar espacios en blanco del nombre de archivo   
   }
 
   navigatToXslEditabletable() {

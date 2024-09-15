@@ -27,6 +27,11 @@
           "description": "Pago a proveedores",
           "link": "/xslImport/PAGO/4",
           "icono": "fa-file-invoice"
+        },
+        {
+          "description": "Cargar Nomina desde Archivo de pagos",
+          "link": "/xslImport/NOMINA/4",
+          "icono": "fa-file-invoice"
         }
       ]
     },

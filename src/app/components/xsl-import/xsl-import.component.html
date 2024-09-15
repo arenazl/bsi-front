@@ -88,15 +88,15 @@
               </button>
 
               <div style="width: 3%;"></div>
-              <button type="button" class="btn btn-primary fw-bold ml-2" style="flex: 1 0 24%;" (click)="selectCargaArchivo()">
+              <button type="button" *ngIf="cargaArchivo" class="btn btn-primary fw-bold ml-2" style="flex: 1 0 24%;" (click)="selectCargaArchivo()">
                 Carga por Archivo
               </button>
 
-            
               <div style="width: 3%;" class=""></div>
-              <button type="button" class="btn btn-primary fw-bold ml-2" style="flex: 1 0 24%;" (click)="selectCargaNomina()">
+              <button type="button" *ngIf="cargaNomina" class="btn btn-primary fw-bold ml-2" style="flex: 1 0 24%;" (click)="selectCargaNomina()">
                 Cargar Nomina
               </button>
+              
             </div>
                  
           </div>
