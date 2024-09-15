@@ -75,20 +75,15 @@ export class XslEditabletableComponent implements OnInit {
         if(res == null)
         {
           this.isNominasEmpty = true;
-          return;
+          return
         }
 
-        this.dbNominas = {
-          ...res.data,
-          items: res.data?.items?.filter((sol: any) => {
-              return sol.valido == 1;
-            }) || [],
-        };
+        this.dbNominas.items = res.data.items;
 
         this.dbNominas.header.importe_total = 0
     
-        this.filteredItems = this.dbNominas?.items || [];
-       
+        this.filteredItems = this.dbNominas?.items || [];     
+  
         this.bsiHelper.getMetaData().subscribe({
           next: (mt) => {
             this.metadata = mt.RESULT;
