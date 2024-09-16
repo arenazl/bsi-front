@@ -78,6 +78,7 @@ export class XslEditabletableComponent implements OnInit {
           return
         }
 
+        this.dbNominas.header = res.data.header;
         this.dbNominas.items = res.data.items;
 
         this.dbNominas.header.importe_total = 0
@@ -301,7 +302,7 @@ export class XslEditabletableComponent implements OnInit {
           sp_name: "PAGO_VALIDAR_INSERTAR_ENTRADA", // Nombre del SP para pagos
           jsonUnify: true,
           body: {
-            CONCEPTO: 'SUELDOS',
+            CONCEPTO: sessionStorage.getItem('Concepto'),
             FECHAPAGO: today,
             IDCONT: sessionStorage.getItem('IdContrato'),
             IDORG: sessionStorage.getItem('IdOrganismo'),

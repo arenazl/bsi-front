@@ -76,7 +76,8 @@ export class XslImportComponent implements OnInit {
         this.ROTULO = resData.data.Rotulo;
     
         sessionStorage.setItem('Rotulo',  this.ROTULO);  
-        sessionStorage.setItem('IdContrato',  this.contrato);  
+        sessionStorage.setItem('IdContrato',  this.contrato);        
+        sessionStorage.setItem('Concepto', resData.data.Concepto);  
 
         this.fileService.getMetaData(this.tipoModulo as TipoModulo, TipoMetada.IMPORT, this.contrato).subscribe((res: dbResponse) => {
 
@@ -229,6 +230,7 @@ export class XslImportComponent implements OnInit {
   const fechaPago = this.bsiHelper.formatDateForFile(this.formGroup.get('FechaPago')?.value) 
 
     if(this.selectNominaXsl) this.tipoModulo = this.tipoModulo + "_XSL";
+    if(this.conceptoSeleccionado != '') this.conceptoSeleccionado = sessionStorage.getItem('Concepto') as string;
 
     const template = this.FileNameTemplate;
     return template
