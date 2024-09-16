@@ -31,6 +31,7 @@ import { CurrencyMaskModule } from "ng2-currency-mask";
 import { UserManagementWrapperComponent } from './components/user-management-wrapper/user-management-wrapper.component';
 import { DashboardWrapperComponent } from './components/dashboard-wrapper/dashboard-wrapper.component';
 import { ChatbotComponent } from './components/chatbot/chatbot.component';
+import { PaymentsMetricsComponent } from './components/payments-metrics/payments-metrics.component';
 
 
 @NgModule({
@@ -52,7 +53,8 @@ import { ChatbotComponent } from './components/chatbot/chatbot.component';
     XslEditabletableComponent,
     UserManagementWrapperComponent,
     DashboardWrapperComponent,
-    ChatbotComponent
+    ChatbotComponent,
+    PaymentsMetricsComponent
 
   ],
   imports: [

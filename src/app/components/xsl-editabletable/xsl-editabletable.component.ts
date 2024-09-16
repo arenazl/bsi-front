@@ -47,6 +47,8 @@ export class XslEditabletableComponent implements OnInit {
   ngOnInit(): void 
   {
 
+    this.ld_header = true;
+
     //session
     this.contrato = sessionStorage.getItem('IdContrato') as unknown as number;
     this.organismo = sessionStorage.getItem('IdOrganismo') as unknown as number;  
