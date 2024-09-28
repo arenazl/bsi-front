@@ -1,11 +1,11 @@
 {
-  "header": "Pagos Multiples",
+  "header": "Pagos Múltiples",
   "description": "Gestión de pagos diversos de la empresa",
   "enabled": true,
   "icono": "fa-money-check-alt",
   "items": [
     {
-      "title": "Generación de archivos para Pago de Habres",
+      "title": "Generación de archivos para Pago de Haberes",
       "description": "",
       "icono": "fa-dollar-sign",
       "enabled": true,
@@ -29,7 +29,7 @@
           "icono": "fa-file-invoice"
         },
         {
-          "description": "Cargar Nomina desde Archivo de pagos",
+          "description": "Cargar Nómina desde Archivo de pagos",
           "link": "/xslImport/NOMINA/4",
           "icono": "fa-file-invoice"
         }

@@ -1,5 +1,5 @@
 {
-  "header": "Menu Principal",
+  "header": "Menú Principal",
   "description": "Gestión de pagos diversos",
   "enabled": true,
   "icono": "fa-home",
@@ -46,7 +46,7 @@
       ]
     },
     {
-      "title": "Administracion Usuarios",
+      "title": "Administración Usuarios",
       "description": "Gestioná el alta y las cargas de los usuario",
       "enabled": true,
       "items": [
