@@ -23,6 +23,7 @@ export class XslEditabletableComponent implements OnInit {
   contrato=0;
   organismo = 0;
   user = 0;
+  fechaPago:any;
 
   metadata: any = { HEADER: [], 'TABLE-COLUMN': [] }; // Inicialización segura
   dbNominas: any = { header: {}, items: [] };
@@ -54,6 +55,7 @@ export class XslEditabletableComponent implements OnInit {
     this.organismo = sessionStorage.getItem('IdOrganismo') as unknown as number;  
     this.organismo_descripcion = this.bsiHelper.toProperCase(sessionStorage.getItem('Organismo') as string)
     this.user = sessionStorage.getItem('idUser') as unknown as number;
+    this.fechaPago = sessionStorage.getItem('fechaPago')
 
     this.loadNominaImporte();   
 
@@ -169,7 +171,7 @@ export class XslEditabletableComponent implements OnInit {
     }
     else  
     {
-      this.newItem.nombre = this.bsiHelper.toProperCase(this.newItem.nombre);
+      this.newItem.nombre = this.bsiHelper.toProperCase(this.newItem.apellido) + " " + this.bsiHelper.toProperCase(this.newItem.nombre);
       this.newItem.apellido = this.bsiHelper.toProperCase(this.newItem.apellido);
   
         this.filteredItems.unshift({ ...this.newItem });  
@@ -273,6 +275,7 @@ export class XslEditabletableComponent implements OnInit {
   }
 
   sendFile() {
+
     const payloadNomina: dbRequest = {
       sp_name: "NOMINA_VALIDAD_INSERTAR_FULL_VALIDATION",
       jsonUnify: true,
@@ -282,9 +285,9 @@ export class XslEditabletableComponent implements OnInit {
         IDUSER: sessionStorage.getItem('idUser'),
         ITEMS: this.nuevasNominas.map(item => ({
           CBU: item.cbu,
-          CUIL: item.cuil,
+          CUIL: item.cuil,    
           APELLIDO: item.apellido,
-          NOMBRE: item.nombre
+          NOMBRE: item.nombre.split(' ').slice(1).join(' '),
         }))
       }
     };

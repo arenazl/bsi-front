@@ -20,11 +20,11 @@
       "title": "Alta de Cuentas individual",
       "description": "Cargá los datos en pantalla",
       "icono": "fa-file-upload",
-      "enabled": true,
+      "enabled": false,
       "items": [
         {
           "description": "Comenzar la carga",
-          "link": "/xslEditabletable",
+          "link": "/dinamicModule/ads",
           "icono": "fa-hands"
         }
       ]

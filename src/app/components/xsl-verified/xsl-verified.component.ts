@@ -60,8 +60,8 @@ export class XslVerifiedComponent implements OnInit, AfterViewInit {
   metadata: any;        // Metadata para renderizar la UI
   allRecordsValid = false;
   showHistory = false;
-  payload : any = {};
   error=false;
+  payloadParms: any = {};
 
   tranfeResponse: any = { data: [] }
 
@@ -92,7 +92,6 @@ export class XslVerifiedComponent implements OnInit, AfterViewInit {
 
       this.error = params["error"] as unknown as boolean;
 
-
       this.headerTitle = this.getHeaderText(this.TipoModulo)
 
         if(this.ID == 0){
@@ -105,44 +104,40 @@ export class XslVerifiedComponent implements OnInit, AfterViewInit {
        
           this.ld_header = true;
 
-          this.callDBAndLoadElments();
-
+          let payload = this.generatePayload();
+          this.callDBAndLoadElments(payload);
         }
      
     });
   }
 
-  private callDBAndLoadElments() {
+  private generatePayload() : any {
 
-    if (this.TipoModulo == TipoModulo.CUENTA || this.TipoModulo == TipoModulo.PAGO) {
-      this.payload = {
-        sp_name: this.TipoModulo + "_OBTENER_RESUMEN_BY_ID",
-        body: {
-          p_id: this.ID,
-        }
-      };
+    if (this.TipoModulo == TipoModulo.CUENTA || this.TipoModulo == TipoModulo.PAGO) 
+    {
+      this.bsiHelper.agregarGenericParam('p_id', this.ID);
+      this.payloadParms = this.bsiHelper.generarGenericPayload(this.bsiHelper.contatenarSP(this.TipoModulo, "OBTENER_RESUMEN_BY_ID"));
     }
 
-    else if (this.TipoModulo == TipoModulo.NOMINA) {
-      this.payload = {
-        sp_name: "NOMINA_OBTENER_RESUMEN_BY_ID",
-        body: {
-          id_user: this.user,
-          id_contrato: this.contrato,
-          id_organismo: this.organismo,
-        }
-      };
+    else if (this.TipoModulo == TipoModulo.NOMINA) 
+      {
+      this.bsiHelper.agregarGenericParam('id_user', this.user);
+      this.bsiHelper.agregarGenericParam('id_contrato', this.contrato);
+      this.bsiHelper.agregarGenericParam('id_organismo', this.organismo);
+
+      this.payloadParms = this.bsiHelper.generarGenericPayload(this.bsiHelper.contatenarSP(this.TipoModulo, "OBTENER_RESUMEN_BY_ID"));
     }
 
-    this.fileService.postSelectGenericSP(this.payload).subscribe((res: any) => {
+    return this.payloadParms;
+  }
+
+  callDBAndLoadElments(payloadParms: any) {
+
+    this.fileService.postSelectGenericSP(payloadParms).subscribe((res: any) => {
 
       this.fileService.getMetaData(this.TipoModulo as TipoModulo, TipoMetada.LIST).subscribe((data) => {
 
         this.metadata = data.RESULT;
-
-        if (this.error) {
-          
-        }
 
         this.validationData = res.data;
         this.allRecordsValid = this.areAllRecordsValid();
@@ -170,7 +165,8 @@ export class XslVerifiedComponent implements OnInit, AfterViewInit {
 
     this.ld_header = true;
 
-    this.callDBAndLoadElments();      
+    let payload = this.generatePayload();
+    this.callDBAndLoadElments(payload);
     
   }
 

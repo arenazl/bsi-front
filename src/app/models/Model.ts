@@ -189,6 +189,11 @@ export interface Ventas {
   indice?: number
 };
 
+export interface PropertyValues {
+  descripcion: string;
+  valor: any; 
+}
+
 export interface LotesParams {
   estado?: EnumLotes,
 };

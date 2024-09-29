@@ -246,6 +246,8 @@ export class XslImportComponent implements OnInit {
   }
 
   navigatToXslEditabletable() {
+
+    sessionStorage.setItem("fechaPago", this.formGroup.get('FechaPago')?.value);
     this.router.navigate(['/xslEditabletable']);
   }
 

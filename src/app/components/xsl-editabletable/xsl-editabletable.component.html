@@ -35,7 +35,7 @@
             exists -->
           <ng-container *ngIf="field.pipe; else noPipeHeader">
             <ng-container *ngIf="field.pipe === 'date'">
-              {{ dbNominas.header[field.field] | date:'dd/MM/yyyy' }}
+              {{ fechaPago | date:'dd/MM/yyyy' }}
             </ng-container>
             <ng-container *ngIf="field.pipe === 'BsiCurrencyPipe'">
               {{ dbNominas.header[field.field] | BsiCurrencyPipe }}

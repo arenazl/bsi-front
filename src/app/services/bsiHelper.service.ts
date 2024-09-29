@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { FileService } from 'src/app/services/file.service';
-import { dbResponse, SendFilePayload } from 'src/app/models/Model';
+import { dbResponse, PropertyValues, SendFilePayload } from 'src/app/models/Model';
 import { TipoMetada, TipoModulo } from 'src/app/enums/enums';
 import { HttpClient } from '@angular/common/http';
 import { GlobalVariable } from 'src/environments/global';
@@ -11,6 +11,8 @@ import { GlobalVariable } from 'src/environments/global';
 })
 
 export class BsiHelper {
+   
+   listaPropiedades:  Array<PropertyValues> = [];
 
   public API_URI = GlobalVariable.BASE_API_URL;
 
@@ -18,6 +20,29 @@ export class BsiHelper {
               private httpclient: HttpClient,
   ) {}
 
+  
+ generarGenericPayload(spName: string): any {
+  const body: any = {};
+
+  this.listaPropiedades.forEach((propiedad) => {
+    body[propiedad.descripcion] = propiedad.valor;
+  });
+
+  this.listaPropiedades = [];
+  return {
+    sp_name: spName,
+    body: body,
+  };
+  
+}
+
+contatenarSP(modulo:string, sp:string): string {
+  return `${modulo}_${sp}`;
+}
+
+ agregarGenericParam(descripcion: string, valor: any) {
+  this.listaPropiedades.push({ descripcion, valor });
+}
 
   getMetaData(): Observable<any> {
     return this.fileService.getMetaData(TipoModulo.NOMINA, TipoMetada.FILL);
@@ -62,8 +87,6 @@ export class BsiHelper {
     return verificationDigit === parseInt(cleanedCuil[10]);
   }
 
-
-
   // Validar CBU de Argentina
 validateCbu(cbu: string): boolean {
   // Verificar que el CBU tenga exactamente 22 dígitos y que todos sean numéricos
@@ -97,13 +120,5 @@ validateCbu(cbu: string): boolean {
   validateName(name: string): boolean {
     return typeof name === 'string' && name.trim().length >= 5;
   }
-
-
-
-
-
-
-
-
 
 }
