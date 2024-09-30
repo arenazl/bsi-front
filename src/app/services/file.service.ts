@@ -12,6 +12,9 @@ import { Altas_Payload, dbResponse } from '../models/Model';
 })
 
 export class FileService {
+  getComboData() {
+    throw new Error("Method not implemented.");
+  }
 
   API_URI = GlobalVariable.BASE_API_URL;
   validationData = null;
@@ -100,13 +103,15 @@ export class FileService {
     });
   }
 
-  downloadOutputFile(tipoModulo: TipoModulo, id: number): Observable<Blob> {
+  downloadOutputFile(tipoModulo: string, id: number): Observable<Blob> {
     const url = `${this.API_URI}/IO/downloadtxtfile/${tipoModulo}/${id}`;
     return this._http.get(url, {
       responseType: 'blob',
       headers: new HttpHeaders().append('Content-Type', 'application/json')
     });
   }
+  
+  
 
   getListForCombo(tipoModulo: TipoModulo): Observable<any> {
 
