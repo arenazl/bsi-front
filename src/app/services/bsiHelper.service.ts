@@ -118,7 +118,7 @@ validateCbu(cbu: string): boolean {
 
   // Validar nombre
   validateName(name: string): boolean {
-    return typeof name === 'string' && name.trim().length >= 5;
+    return typeof name === 'string' && name.trim().length >= 3;
   }
 
 }

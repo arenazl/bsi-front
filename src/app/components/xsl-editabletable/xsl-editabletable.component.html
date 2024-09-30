@@ -1,5 +1,5 @@
 
-<div *ngIf="ld_header" class="lds-roller">
+<div *ngIf="isLoading" class="lds-roller">
   <div></div>
   <div></div>
   <div></div>
@@ -20,8 +20,8 @@
       <i class="fas fa-arrow-circle-left" style="font-size: 170%; color:black !important; opacity: 0.7;"></i>
     </button>
   
-    <h6>{{ organismo_descripcion }}</h6>
-
+    <h6>{{ organismoDescription }}</h6>
+S
   </div>
 
   <div *ngIf="dbNominas?.header" class="card-body pb-2">

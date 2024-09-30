@@ -1,9 +1,8 @@
-import { Component, OnInit, AfterViewInit, HostBinding, ChangeDetectorRef } from "@angular/core";
-import { LegajoService } from "../../services/legajo.service";
-import { FileService } from "../../services/file.service";
-import { Router, ActivatedRoute, Params } from "@angular/router";
+import { Component, OnInit, AfterViewInit, HostBinding } from "@angular/core";
+import { ActivatedRoute } from "@angular/router";
 import { Location } from '@angular/common';
 import { TipoMetada, TipoModulo } from "src/app/enums/enums";
+import { FileService } from "../../services/file.service";
 import { PdfService } from "src/app/services/pdf.service";
 import { BsiHelper } from "src/app/services/bsiHelper.service";
 
@@ -13,35 +12,31 @@ import { BsiHelper } from "src/app/services/bsiHelper.service";
   styleUrls: ['./xsl-verified.component.css']
 })
 export class XslVerifiedComponent implements OnInit, AfterViewInit {
-
   @HostBinding("class") classes = "row";
 
-  ld_header: boolean = false;
-  tranfeList: any = [];
-  TipoModulo = "";
+  // Properties
+  isLoading = false;
+  Tipo_Modulo = "";
   headerTitle = "";
-  organismo_descripcion = "";
-  ID = 0;
 
-  contrato = 0;
-  organismo = 0;
-  user = 0;
-  columnConfig: any[] = [];
+  organismoDescription: string = ''; // Cambiado de organismo_descripcion
+  transferList: any[] = []; // Cambiado de tranfeList // Cambiado de tranfeList
+
+  id = 0;
+  contractId = 0;
+  organismoId = 0;
+  userId = 0;
   showExportSection = true;
-  validationData: any;  // Datos que recibimos
-  metadata: any;        // Metadata para renderizar la UI
+  validationData: any;
+  metadata: any;
   allRecordsValid = false;
   showHistory = false;
-  error=false;
-  payloadParms: any = {};
-
-  tranfeResponse: any = { data: [] }
+  hasError = false;
+  payloadParams: any = {};
 
   constructor(
-    private router: Router,
-    private fileService: FileService,
     private route: ActivatedRoute,
-    private cdRef: ChangeDetectorRef,
+    private fileService: FileService,
     private pdfService: PdfService,
     private location: Location,
     private bsiHelper: BsiHelper
@@ -50,141 +45,133 @@ export class XslVerifiedComponent implements OnInit, AfterViewInit {
   ngAfterViewInit(): void { }
 
   ngOnInit() {
-    // Cargar parámetros de la sesión
-    this.contrato = sessionStorage.getItem('IdContrato') as unknown as number;
-    this.organismo = sessionStorage.getItem('IdOrganismo') as unknown as number;
-    this.organismo_descripcion = this.bsiHelper.toProperCase(sessionStorage.getItem('Organismo') as string);
-    this.user = sessionStorage.getItem('idUser') as unknown as number;
+    this.loadSessionData();
+    this.subscribeToRouteParams();
+  }
 
+  private loadSessionData(): void {
+    this.contractId = Number(sessionStorage.getItem('IdContrato'));
+    this.organismoId = Number(sessionStorage.getItem('IdOrganismo'));
+    this.organismoDescription = this.bsiHelper.toProperCase(sessionStorage.getItem('Organismo') || '');
+    this.userId = Number(sessionStorage.getItem('idUser'));
+  }
+
+  private subscribeToRouteParams(): void {
     this.route.params.subscribe((params) => {
-      this.TipoModulo = params["tipomodulo"];
-      this.ID = params["id"];
-      this.error = params["error"] as unknown as boolean;
+      this.Tipo_Modulo = params["tipomodulo"];
+      this.id = Number(params["id"]);
+      this.hasError = Boolean(params["error"]);
 
-      this.headerTitle = this.getHeaderText(this.TipoModulo)
+      this.headerTitle = this.getHeaderText(this.Tipo_Modulo);
 
-        if(this.ID == 0){
-          this.ld_header = false;
-          this.showHistory = true;
-          this.getListCombo(); 
-        }
-        else
-        {
-       
-          this.ld_header = true;
-
-          let payload = this.generatePayload();
-          this.callDBAndLoadElments(payload);
-        }
-     
+      if (this.id === 0) {
+        this.showHistory = true;
+        this.getListCombo();
+      } else {
+        this.isLoading = true;
+        const payload = this.generatePayload();
+        this.callDBAndLoadElements(payload);
+      }
     });
   }
 
-  private generatePayload() : any {
-
-    if (this.TipoModulo == TipoModulo.CUENTA || this.TipoModulo == TipoModulo.PAGO) 
-    {
-      this.bsiHelper.agregarGenericParam('p_id', this.ID);
-      this.payloadParms = this.bsiHelper.generarGenericPayload(this.bsiHelper.contatenarSP(this.TipoModulo, "OBTENER_RESUMEN_BY_ID"));
+  private generatePayload(): any {
+    if (this.Tipo_Modulo === TipoModulo.CUENTA || this.Tipo_Modulo === TipoModulo.PAGO) {
+      this.bsiHelper.agregarGenericParam('p_id', this.id);
+    } else if (this.Tipo_Modulo === TipoModulo.NOMINA) {
+      this.bsiHelper.agregarGenericParam('id_user', this.userId);
+      this.bsiHelper.agregarGenericParam('id_contrato', this.contractId);
+      this.bsiHelper.agregarGenericParam('id_organismo', this.organismoId);
     }
 
-    else if (this.TipoModulo == TipoModulo.NOMINA) 
-      {
-      this.bsiHelper.agregarGenericParam('id_user', this.user);
-      this.bsiHelper.agregarGenericParam('id_contrato', this.contrato);
-      this.bsiHelper.agregarGenericParam('id_organismo', this.organismo);
+    this.payloadParams = this.bsiHelper.generarGenericPayload(
+      this.bsiHelper.contatenarSP(this.Tipo_Modulo, "OBTENER_RESUMEN_BY_ID")
+    );
 
-      this.payloadParms = this.bsiHelper.generarGenericPayload(this.bsiHelper.contatenarSP(this.TipoModulo, "OBTENER_RESUMEN_BY_ID"));
-    }
-
-    return this.payloadParms;
+    return this.payloadParams;
   }
 
-  callDBAndLoadElments(payloadParms: any) {
+  private callDBAndLoadElements(payloadParams: any): void {
+    this.fileService.postSelectGenericSP(payloadParams).subscribe({
+      next: (res: any) => this.handleDBResponse(res),
+      error: (error) => this.handleDBError(error)
+    });
+  }
 
-    this.fileService.postSelectGenericSP(payloadParms).subscribe((res: any) => {
+  private handleDBResponse(res: any): void {
+    this.fileService.getMetaData(this.Tipo_Modulo as TipoModulo, TipoMetada.LIST).subscribe({
+      next: (data) => this.processMetadata(data, res),
+      error: (error) => console.error('Error al cargar metadata:', error)
+    });
+  }
 
-      this.fileService.getMetaData(this.TipoModulo as TipoModulo, TipoMetada.LIST).subscribe((data) => {
-        console.log('Metadata recibida:', data); // Comprobación de metadata
-        this.metadata = data.RESULT;
+  private processMetadata(data: any, res: any): void {
+    console.log('Metadata recibida:', data);
+    this.metadata = data.RESULT;
+    this.validationData = res.data;
+    this.allRecordsValid = this.areAllRecordsValid();
 
-        this.validationData = res.data;
-        this.allRecordsValid = this.areAllRecordsValid();
-
-        if (this.validationData?.items) {
-          this.validationData.items.forEach((sol: any) => {
-            sol.nombre = this.bsiHelper.toProperCase(sol.nombre);
-          });
-        }
-
-        this.ld_header = false;
+    if (this.validationData?.items) {
+      this.validationData.items.forEach((sol: any) => {
+        sol.nombre = this.bsiHelper.toProperCase(sol.nombre);
       });
+    }
 
-    }, error => {
-      console.error('Error al cargar los datos:', error);
-      this.ld_header = false;
-    });
+    this.isLoading = false;
+  }
+
+  private handleDBError(error: any): void {
+    console.error('Error al cargar los datos:', error);
+    this.isLoading = false;
   }
 
   goBack(): void {
     this.location.back();
   }
 
-  getListComboById(id: any) {
-    this.ID = id.target.value;
-    this.ld_header = true;
+  getListComboById(event: any): void {
+    this.id = event.target.value;
+    this.isLoading = true;
 
-    let payload = this.generatePayload();
-    this.callDBAndLoadElments(payload);
-    
+    const payload = this.generatePayload();
+    this.callDBAndLoadElements(payload);
   }
 
-  getListCombo() {
-    this.fileService.getListForCombo(this.TipoModulo as TipoModulo).subscribe((data) => {
-      this.tranfeList = data;
+  getListCombo(): void {
+    this.fileService.getListForCombo(this.Tipo_Modulo as TipoModulo).subscribe({
+      next: (data) => this.transferList = data,
+      error: (error) => console.error('Error al obtener lista para combo:', error)
     });
   }
 
-  parseDate(dateString: string): Date | null {
-    const parts = dateString.split('/');
-    if (parts.length === 3) {
-      const day = parseInt(parts[0], 10);
-      const month = parseInt(parts[1], 10) - 1; // Meses en JavaScript son 0-indexados
-      const year = parseInt(parts[2], 10);
-      return new Date(year, month, day);
-    }
-    return null;
+  public areAllRecordsValid(): boolean {
+    return this.validationData?.items?.every((record: any) => record.valido === 1);
   }
 
-  areAllRecordsValid(): boolean {
-    return this.validationData?.items?.every((record: any) => record.valido == 1);
+  private getHeaderText(moduleType: string): string {
+    const headerTexts: { [key: string]: string } = {
+      "TRANSFERENCIAS": "Transferencias Inmediatas",
+      "PAGO": "Pagos Múltiples",
+      "CUENTA": "Alta de Cuentas",
+      "NOMINA": "Alta de Nóminas"
+    };
+    return headerTexts[moduleType] || '';
   }
 
-  getHeaderText(TipoForm: string): string {
-    switch (TipoForm) {
-      case "TRANSFERENCIAS":
-        return "Transferencias Inmediatas";
-      case "PAGO":
-        return "Pagos Múltiples";
-      case "CUENTA":
-        return "Alta de Cuentas";
-      case "NOMINA":
-        return "Alta de Nóminas";
-      default:
-        return '';
-    }
+  generatePdfTable(): void {
+    const config = this.getPdfTableConfig();
+    this.pdfService.generateGenericPdf(config);
   }
 
-  // Llamada al método en PdfService para generar el PDF de la lista
-  generatePdfTable() {
-    const config = {
+  private getPdfTableConfig(): any {
+    return {
       headerColor: { r: 219, g: 229, b: 239 },
       detailColor: { r: 230, g: 240, b: 255 },
       titleColor: { r: 41, g: 128, b: 185 },
       titleFontSize: 16,
       headerFontSize: 10,
       detailFontSize: 10,
-      title: this.organismo_descripcion,
+      title: this.organismoDescription,
       headerData: this.validationData.header,
       detailData: this.validationData.items,
       headerFields: [
@@ -201,14 +188,16 @@ export class XslVerifiedComponent implements OnInit, AfterViewInit {
         { label: 'Importe', key: 'importe' },
       ]
     };
-
-    this.pdfService.generateGenericPdf(config);
   }
 
-  // Llamada al método en PdfService para generar el contrato en PDF
-  generatePdfContrato() {
-    const config = {
-      municipio: this.organismo_descripcion,
+  generatePdfContrato(): void {
+    const config = this.getPdfContratoConfig();
+    this.pdfService.generateContratoPdf(config);
+  }
+
+  private getPdfContratoConfig(): any {
+    return {
+      municipio: this.organismoDescription,
       fecha: new Date().toLocaleDateString('es-ES', {
         year: 'numeric',
         month: 'long',
@@ -218,19 +207,14 @@ export class XslVerifiedComponent implements OnInit, AfterViewInit {
       totalImporte: this.validationData.header.importe_total,
       fechaPago: this.validationData.header.fechapago
     };
-
-    this.pdfService.generateContratoPdf(config);
   }
 
-  // Método para descargar el archivo
   getFile(): void {
     const rotulo = sessionStorage.getItem('Rotulo');
     if (!rotulo) {
       console.error('El rótulo no está disponible en sessionStorage.');
       return;
     }
-    this.pdfService.getFile(this.TipoModulo, this.ID, rotulo);
+    this.pdfService.getFile(this.Tipo_Modulo, this.id, rotulo);
   }
-  
-  
 }

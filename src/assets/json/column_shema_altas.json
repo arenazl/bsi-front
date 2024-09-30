@@ -14,7 +14,7 @@
     },
     { "header": "Sexo", "field": "Sexo", "type": "text" },
     { "header": "Resultado", "field": "es_valido", "type": "result" },
-    { "header": "Mensaje de error", "field": "mensaje_error", "type": "text" }
+    { "header": "Mensaje de error", "field": "mensaje_error", "type": "errorDescrption" }
   ]
 }
 
