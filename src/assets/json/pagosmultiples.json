@@ -30,7 +30,7 @@
         },
         {
           "description": "Cargar Nómina desde Archivo de pagos",
-          "link": "/xslImport/NOMINA/4",
+          "link": "/xslImport/NOMINA/4/PROVEEDORES",
           "icono": "fa-file-invoice"
         }
       ]
@@ -46,6 +46,7 @@
           "link": "/xslImport/PAGO/3",
           "icono": "fa-hand-holding-usd"
         }
+      
       ]
     },
     {
@@ -58,6 +59,11 @@
           "description": "Pago de Beneficios",
           "link": "/xslImport/PAGO/3",
           "icono": "fa-gift"
+        },
+        {
+          "description": "Cargar Nómina desde Archivo de pagos",
+          "link": "/xslImport/NOMINA/4/BENEFICIOS",
+          "icono": "fa-file-invoice"
         }
       ]
     },

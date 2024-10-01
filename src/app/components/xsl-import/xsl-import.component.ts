@@ -45,6 +45,7 @@ export class XslImportComponent implements OnInit {
   conceptoSeleccionado = '';
   pageTitle = '';
   fileNameTemplate = '';
+  modalidad='';
   data: any;
 
   constructor(
@@ -67,6 +68,16 @@ export class XslImportComponent implements OnInit {
     this.route.params.subscribe(params => {
       this.tipoModulo = params['tipomodulo'].toUpperCase();
       this.contrato = params['contrato'].toUpperCase();
+
+      if( params['modalidad'] != undefined)
+      {
+        this.modalidad = params['modalidad'].toUpperCase();   
+      } 
+      else
+      {
+        this.modalidad = '';
+      }
+    
       this.loadUserData();
       this.loadContractData();
     });
@@ -78,6 +89,10 @@ export class XslImportComponent implements OnInit {
   }
 
   private loadContractData(): void {
+
+      if(this.modalidad == 'PROVEEDORES')  this.contrato = "4";
+      if(this.modalidad == 'BENEFICIOS')  this.contrato = "3"
+
     this.fileService.getContratoById(1, 71, parseInt(this.contrato)).subscribe(
       (resData: dbResponse) => this.handleContractData(resData),
       error => console.error('Error loading contract data:', error)
@@ -97,7 +112,15 @@ export class XslImportComponent implements OnInit {
   }
 
   private loadMetadata(): void {
-    this.fileService.getMetaData(this.tipoModulo as TipoModulo, TipoMetada.IMPORT, this.contrato).subscribe(
+
+    var parametro=this.contrato;
+
+    if(this.modalidad == 'PROVEEDORES' || this.modalidad == "BENEFICIOS")
+    {
+      parametro = '4';
+    }
+
+    this.fileService.getMetaData(this.tipoModulo as TipoModulo, TipoMetada.IMPORT, parametro).subscribe(
       (res: dbResponse) => this.handleMetadata(res),
       error => console.error('Error loading metadata:', error)
     );

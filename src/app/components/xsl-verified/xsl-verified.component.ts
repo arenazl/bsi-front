@@ -113,7 +113,10 @@ export class XslVerifiedComponent implements OnInit, AfterViewInit {
 
     if (this.validationData?.items) {
       this.validationData.items.forEach((sol: any) => {
-        sol.nombre = this.bsiHelper.toProperCase(sol.nombre);
+        if(sol.nombre != null || sol.nombre != undefined)
+        {
+          sol.nombre = this.bsiHelper.toProperCase(sol.nombre);
+        }    
       });
     }
 

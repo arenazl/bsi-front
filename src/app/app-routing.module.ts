@@ -67,6 +67,10 @@ const routes: Routes = [
   },
 
   {
+    path: 'xslImport/:tipomodulo/:contrato/:modalidad',
+    component: XslImportComponent
+  },
+  {
     path: 'xslImport/:tipomodulo/:contrato',
     component: XslImportComponent
   },

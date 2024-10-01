@@ -154,7 +154,11 @@ export class XslEditabletableComponent implements OnInit {
   private processValidationItems(): void {
     if (this.dbNominas?.items) {
       this.dbNominas.items.forEach((sol: NominaItem) => {
-        sol.nombre = this.bsiHelper.toProperCase(sol.nombre);
+
+        if(sol.nombre != null || sol.nombre != undefined)
+        {
+          sol.nombre = this.bsiHelper.toProperCase(sol.nombre);
+        }
         sol.toggleEnabled = false;
       });
       this.dbNominas.header.cantidad = this.dbNominas.items.length;
