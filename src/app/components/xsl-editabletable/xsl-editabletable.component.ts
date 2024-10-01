@@ -58,6 +58,7 @@ export class XslEditabletableComponent implements OnInit {
   }
 
   private loadSessionData(): void {
+
     this.contrato = Number(sessionStorage.getItem('IdContrato'));
     this.organismo = Number(sessionStorage.getItem('IdOrganismo'));
     this.organismoDescription = this.bsiHelper.toProperCase(sessionStorage.getItem('Organismo') || '');

@@ -21,7 +21,7 @@
     </button>
   
     <h6>{{ organismoDescription }}</h6>
-S
+
   </div>
 
   <div *ngIf="dbNominas?.header" class="card-body pb-2">
@@ -93,6 +93,17 @@ S
       <input type="text" class="form-control" [(ngModel)]="newItem.cuil" placeholder="Ingrese CUIL" />
     </div>
 
+    <ng-container *ngIf="contrato == 4">
+
+      <div class="form-group m-2 flex-fill">
+        <label class="label mb-2">Razon Social</label>
+        <input type="text" class="form-control" [(ngModel)]="newItem.nombre" placeholder="Ingrese Razon Social" />
+      </div>
+
+    </ng-container>
+
+    <ng-container *ngIf="contrato == 3">
+
     <div class="form-group m-2 flex-fill">
       <label class="label mb-2">Apellido</label>
       <input type="text" class="form-control" [(ngModel)]="newItem.apellido" placeholder="Ingrese Apellido" />
@@ -102,6 +113,8 @@ S
       <label class="label mb-2">Nombre</label>
       <input type="text" class="form-control" [(ngModel)]="newItem.nombre" placeholder="Ingrese Nombre" />
     </div>
+    
+    </ng-container>
   
     <!-- Botón para agregar a la lista superior -->
     <button class="btn btn-primary m-2 align-self-end" (click)="addNewItem()">Agregar a la Lista</button>
