@@ -33,7 +33,8 @@
               {{ validationData.header[field.field] | date:'dd/MM/yyyy' }}
             </ng-container>
             <ng-container *ngIf="field.pipe === 'BsiCurrencyPipe'">
-              {{ validationData.header[field.field] | BsiCurrencyPipe }}
+              {{ validationData.header[field.field] | BsiCurrencyPipe }
+            }
             </ng-container>
           </ng-container>
           <!-- Fallback for no pipe -->

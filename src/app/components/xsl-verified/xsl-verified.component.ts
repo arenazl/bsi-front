@@ -105,6 +105,7 @@ export class XslVerifiedComponent implements OnInit, AfterViewInit {
     });
   }
 
+  
   private processMetadata(data: any, res: any): void {
     console.log('Metadata recibida:', data);
     this.metadata = data.RESULT;
