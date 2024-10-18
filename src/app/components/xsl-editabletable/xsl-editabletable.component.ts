@@ -58,7 +58,7 @@ export class XslEditabletableComponent implements OnInit {
   }
 
   private loadSessionData(): void {
-
+    
     this.contrato = Number(sessionStorage.getItem('IdContrato'));
     this.organismo = Number(sessionStorage.getItem('IdOrganismo'));
     this.organismoDescription = this.bsiHelper.toProperCase(sessionStorage.getItem('Organismo') || '');
@@ -68,7 +68,7 @@ export class XslEditabletableComponent implements OnInit {
 
   private loadNominaImporte(): void {
     const payload = {
-      sp_name: "NOMINA_OBTENER_RESUMEN_BY_ID",
+      sp_name: "NOMINA_OBTENER_FILL_BY_ID",
       body: {
         id_user: this.user,
         id_contrato: this.contrato,
@@ -87,7 +87,15 @@ export class XslEditabletableComponent implements OnInit {
       this.isNominasEmpty = true;
       this.dbNominas.items = [];
       this.filteredItems = [];
-    } else {
+    } else 
+    {
+      
+      if (res.data.items.length === 1) 
+      {
+        if (res.data.items[0].cbu === null)
+          res.data.items.pop();      
+      }
+   
       this.dbNominas.header = res.data.header;
       this.dbNominas.items = res.data.items;
       this.dbNominas.header.importe_total = 0;
@@ -189,6 +197,7 @@ export class XslEditabletableComponent implements OnInit {
     this.resetNewItem();
     this.recalculateTotal();
   }
+
   private resetNewItem(): void {
     this.newItem = { cbu: '', cuil: '', apellido: '', nombre: '', importe: 0, toggleEnabled: false };
   }
@@ -275,17 +284,11 @@ export class XslEditabletableComponent implements OnInit {
     this.location.back();
   }
 
-  sendFile(): void {
-    const payloadNomina = this.createNominaPayload();
-    
-    this.fileService.postInsertGenericSP(payloadNomina).subscribe({
-      next: (res_nomina: dbResponse) => this.handleNominaResponse(res_nomina),
-      error: (err) => this.handleError(err)
-    });
-  }
 
-  private createNominaPayload(): dbRequest {
-    return {
+  sendFile(): void {
+
+    const payloadNomina =
+    {
       sp_name: "NOMINA_VALIDAD_INSERTAR_FULL_VALIDATION",
       jsonUnify: true,
       body: {
@@ -300,29 +303,27 @@ export class XslEditabletableComponent implements OnInit {
         }))
       }
     };
+    
+    this.fileService.postInsertGenericSP(payloadNomina).subscribe({
+      
+      next: (res_nomina: dbResponse) => this.handleNominaResponse(res_nomina),
+      error: (err) => this.handleError(err)
+    });
   }
 
   private handleNominaResponse(res_nomina: dbResponse): void {
+
     if (res_nomina.estado !== 1) {
       this.router.navigate(['/xslVerified/' + TipoModulo.NOMINA + '/' + res_nomina.data.id_insertado + "/true"]);
       return;
     }
 
-    const payloadPagos = this.createPagosPayload();
-    this.fileService.postInsertGenericSP(payloadPagos).subscribe({
-      next: (res_pago: dbResponse) => this.handlePagoResponse(res_pago),
-      error: (err) => this.handleError(err)
-    });
-  }
-
-  private createPagosPayload(): dbRequest {
-    const today = new Date().toISOString().split('T')[0];
-    return {
+    const payloadPagos =  {
       sp_name: "PAGO_VALIDAR_INSERTAR_ENTRADA",
       jsonUnify: true,
       body: {
         CONCEPTO: sessionStorage.getItem('Concepto'),
-        FECHAPAGO: today,
+        FECHAPAGO: new Date().toISOString().split('T')[0],
         IDCONT: sessionStorage.getItem('IdContrato'),
         IDORG: sessionStorage.getItem('IdOrganismo'),
         IDUSER: sessionStorage.getItem('idUser'),
@@ -334,9 +335,16 @@ export class XslEditabletableComponent implements OnInit {
         }))
       }
     };
+
+    this.fileService.postInsertGenericSP(payloadPagos).subscribe({
+      next: (res_pago: dbResponse) => this.handlePagoResponse(res_pago),
+      error: (err) => this.handleError(err)
+    });
+    
   }
 
   private handlePagoResponse(res_pago: dbResponse): void {
     this.router.navigate(['/xslVerified/' + TipoModulo.PAGO + '/' + res_pago.data.id_insertado]);
   }
+
 }

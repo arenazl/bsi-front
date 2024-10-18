@@ -106,9 +106,12 @@ export class XslImportComponent implements OnInit {
   }
 
   private setSessionData(data: any): void {
+
     sessionStorage.setItem('Rotulo', data.Rotulo);
     sessionStorage.setItem('IdContrato', this.contrato);
     sessionStorage.setItem('Concepto', data.Concepto);
+    sessionStorage.setItem('Ente', data.Ente);
+
   }
 
   private loadMetadata(): void {
@@ -180,9 +183,10 @@ export class XslImportComponent implements OnInit {
   }
 
   private handleUploadSuccess(res: any): void {
+
     this.filesUploaded = true;
     this.buttonText = 'Completado';
-    if (this.tipoModulo === TipoModulo.NOMINA_XSL) this.tipoModulo = TipoModulo.NOMINA;
+    if(res.tipo_modulo == TipoModulo.NOMINA) this.tipoModulo = TipoModulo.NOMINA;
     this.router.navigate(['/xslVerified/' + this.tipoModulo + '/' + res.data.id_insertado]);
   }
 
@@ -257,10 +261,8 @@ export class XslImportComponent implements OnInit {
   }
 
   navigatToXslEditabletable(): void {
-
-    
+  
     sessionStorage.setItem("fechaPago", this.formGroup.get('FechaPago')?.value);
-
     this.router.navigate(['/xslEditabletable']);
   }
 

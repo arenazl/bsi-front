@@ -19,9 +19,7 @@
     <button class="btn p-0 me-2" (click)="goBack()">
       <i class="fas fa-arrow-circle-left" style="font-size: 170%; color:black !important; opacity: 0.7;"></i>
     </button>
-  
     <h6>{{ organismoDescription }}</h6>
-
   </div>
 
   <div *ngIf="dbNominas?.header" class="card-body pb-2">
@@ -102,7 +100,7 @@
 
     </ng-container>
 
-    <ng-container *ngIf="contrato == 3">
+    <ng-container *ngIf="contrato != 4">
 
     <div class="form-group m-2 flex-fill">
       <label class="label mb-2">Apellido</label>

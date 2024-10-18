@@ -27,11 +27,6 @@
           "description": "Pago a proveedores",
           "link": "/xslImport/PAGO/4",
           "icono": "fa-file-invoice"
-        },
-        {
-          "description": "Cargar Nómina desde Archivo de pagos",
-          "link": "/xslImport/NOMINA/4/PROVEEDORES",
-          "icono": "fa-file-invoice"
         }
       ]
     },
@@ -59,11 +54,6 @@
           "description": "Pago de Beneficios",
           "link": "/xslImport/PAGO/3",
           "icono": "fa-gift"
-        },
-        {
-          "description": "Cargar Nómina desde Archivo de pagos",
-          "link": "/xslImport/NOMINA/4/BENEFICIOS",
-          "icono": "fa-file-invoice"
         }
       ]
     },
@@ -88,7 +78,7 @@
       "items": [
         {
           "description": "Embargos (Otros Bancos)",
-          "link": "/xslImport/PAGO/2",
+          "link": "/xslImport/PAGO/10",
           "icono": "fa-balance-scale"
         }
       ]
