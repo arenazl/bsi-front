@@ -29,6 +29,8 @@ export class XslEditabletableComponent implements OnInit {
   contrato = 0;
   organismo = 0;
   user = 0;
+  ente='';
+  rotulo='';
   fechaPago: string = '';
   isLoading = false;
   organismoDescription = '';
@@ -40,6 +42,7 @@ export class XslEditabletableComponent implements OnInit {
   selectedItems: NominaItem[] = [];
   nuevasNominas: NominaItem[] = [];
   isNominasEmpty = false;
+  fecha = new Date().toISOString().split('T')[0]
 
   newItem: NominaItem = { cbu: '', cuil: '', apellido: '', nombre: '', importe: 0, toggleEnabled: false };
   searchTerm = '';
@@ -64,6 +67,9 @@ export class XslEditabletableComponent implements OnInit {
     this.organismoDescription = this.bsiHelper.toProperCase(sessionStorage.getItem('Organismo') || '');
     this.user = Number(sessionStorage.getItem('idUser'));
     this.fechaPago = sessionStorage.getItem('fechaPago') || '';
+    this.ente = sessionStorage.getItem('Ente') || '';
+    this.rotulo = sessionStorage.getItem('Rotulo') || '';
+
   }
 
   private loadNominaImporte(): void {
@@ -84,18 +90,11 @@ export class XslEditabletableComponent implements OnInit {
 
   private handleNominaImporteResponse(res: any): void {
     if (res == null || res.data.items.length === 0) {
-      this.isNominasEmpty = true;
-      this.dbNominas.items = [];
+      this.isNominasEmpty = true;   
+      this.fillHeader();
       this.filteredItems = [];
     } else 
     {
-      
-      if (res.data.items.length === 1) 
-      {
-        if (res.data.items[0].cbu === null)
-          res.data.items.pop();      
-      }
-   
       this.dbNominas.header = res.data.header;
       this.dbNominas.items = res.data.items;
       this.dbNominas.header.importe_total = 0;
@@ -103,6 +102,20 @@ export class XslEditabletableComponent implements OnInit {
     }
 
     this.loadMetadata();
+  }
+
+  private fillHeader(): void {
+
+    this.dbNominas = {
+        items: [], 
+        header: {
+          ente: `${this.ente}`,
+          fecha: `${this.fecha}`, 
+          rotulo: `${this.rotulo}`,
+          cantidad_elementos: 0     
+      }     
+    };
+
   }
 
   private loadMetadata(): void {
