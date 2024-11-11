@@ -66,6 +66,7 @@ export class XslImportComponent implements OnInit {
 
   private initializeComponent(): void {
     this.route.params.subscribe(params => {
+      
       this.tipoModulo = params['tipomodulo'].toUpperCase();
       this.contrato = params['contrato'].toUpperCase();
 

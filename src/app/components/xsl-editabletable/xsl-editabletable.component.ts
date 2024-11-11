@@ -90,6 +90,7 @@ export class XslEditabletableComponent implements OnInit {
 
   private handleNominaImporteResponse(res: any): void {
     if (res == null || res.data.items.length === 0) {
+      this.checkIfContratoisfromBapro();  
       this.isNominasEmpty = true;   
       this.fillHeader();
       this.filteredItems = [];
@@ -102,6 +103,14 @@ export class XslEditabletableComponent implements OnInit {
     }
 
     this.loadMetadata();
+  }
+
+  checkIfContratoisfromBapro() {
+    if (this.contrato === 10) {
+      this.dbNominas.items = this.dbNominas.items.filter(item => item.cbu.startsWith('014'));
+    } else if (this.contrato === 12) {
+      this.dbNominas.items = this.dbNominas.items.filter(item => !item.cbu.startsWith('014'));
+    }
   }
 
   private fillHeader(): void {
