@@ -32,8 +32,7 @@ export class ChatbotComponent  {
           this.isThinking = false;
   
           // Procesar la respuesta del servidor para formatearla
-          // @ts-ignore
-          const response = this.formatResponse(data.response.text.value);
+          const response = this.formatResponse(data.response[0].text.value);
   
           // Añadir la respuesta del bot al chat
           this.messages.push({ text: response, isUser: false });
@@ -83,7 +82,7 @@ export class ChatbotComponent  {
       else if (/^###\s/.test(line)) {
         // Elimina los ### y coloca el contenido en negrita con un icono de estrella
         const content = line.replace(/^###\s*/, ''); // Elimina los ###
-        return `<b>⭐ ${content.trim()}</b>`;
+        return `<b>⭐ ${content.trim()}</b><br>`;
       }
       // Verifica si la línea comienza con cuatro # y lo pone en negrita con un icono de información
       else if (/^####\s/.test(line)) {

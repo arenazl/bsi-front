@@ -32,6 +32,7 @@ import { UserManagementWrapperComponent } from './components/user-management-wra
 import { DashboardWrapperComponent } from './components/dashboard-wrapper/dashboard-wrapper.component';
 import { ChatbotComponent } from './components/chatbot/chatbot.component';
 import { PaymentsMetricsComponent } from './components/payments-metrics/payments-metrics.component';
+import { PentagramLearningComponent } from './components/pentagram-learning/pentagram-learning.component';
 
 
 @NgModule({
@@ -54,7 +55,8 @@ import { PaymentsMetricsComponent } from './components/payments-metrics/payments
     UserManagementWrapperComponent,
     DashboardWrapperComponent,
     ChatbotComponent,
-    PaymentsMetricsComponent
+    PaymentsMetricsComponent,
+    PentagramLearningComponent
 
   ],
   imports: [

@@ -15,6 +15,7 @@ import { XslEditabletableComponent } from './components/xsl-editabletable/xsl-ed
 import { UserManagementWrapperComponent } from './components/user-management-wrapper/user-management-wrapper.component';
 import { DashboardWrapperComponent } from './components/dashboard-wrapper/dashboard-wrapper.component';
 import { ChatbotComponent } from './components/chatbot/chatbot.component';
+import { PentagramLearningComponent } from './components/pentagram-learning/pentagram-learning.component';
 
 const routes: Routes = [
   {
@@ -105,8 +106,11 @@ const routes: Routes = [
   {
     path: 'chatbot',
     component: ChatbotComponent
+  } ,
+  {
+    path: 'penta',
+    component: PentagramLearningComponent
   } 
-
 ];
 
 @NgModule({
