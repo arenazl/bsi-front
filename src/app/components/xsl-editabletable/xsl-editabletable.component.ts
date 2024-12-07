@@ -37,6 +37,7 @@ export class XslEditabletableComponent implements OnInit {
 
   metadata: any = { HEADER: [], 'TABLE-COLUMN': [] };
   dbNominas: { header: any; items: any[] } = { header: {}, items: [] };
+  editingField: { rowIndex: number; field: string } | null = null; 
 
   filteredItems: NominaItem[] = [];
   selectedItems: NominaItem[] = [];
@@ -60,6 +61,63 @@ export class XslEditabletableComponent implements OnInit {
     this.loadNominaImporte();
   }
 
+  showEditPopup(item: any, index: number) {
+    Swal.fire({
+      title: 'Editar CBU',
+      html: `
+        <div style="text-align: left;">
+          <p><strong>Nombre:</strong> ${item.nombre}</p>
+          <p><strong>CUIL:</strong> ${item.cuil}</p>
+          <p><strong>CBU Actual:</strong> ${item.cbu}</p>
+          <label for="newCbu" style="margin-top: 1rem;">Nuevo CBU:</label>
+          <input id="newCbu" class="swal2-input" placeholder="Ingrese nuevo CBU" style="width: 80%;" maxlength="22" /></div>`,
+      focusConfirm: false,
+      confirmButtonText: 'Aceptar',
+      cancelButtonText: 'Cancelar',
+      showCancelButton: true,
+      preConfirm: () => {
+        const newCbu = (document.getElementById('newCbu') as HTMLInputElement).value;
+        if (!newCbu || newCbu.length !== 22) {
+          Swal.showValidationMessage('El CBU debe tener exactamente 22 caracteres.');
+          return false;
+        }
+        return newCbu;
+      },
+    }).then((result) => {
+      if (result.isConfirmed) {
+        // Actualizamos el CBU de la fila seleccionada
+        this.filteredItems[index].cbu = result.value;
+        Swal.fire('¡Actualizado!', 'El CBU ha sido actualizado correctamente.', 'success');
+      }
+    });
+  }
+
+  showDeletePopup(item: any, index: number) {
+    Swal.fire({
+      title: '¿Eliminar registro?',
+      html: `
+        <div style="text-align: left;">
+          <p><strong>Nombre:</strong> ${item.nombre}</p>
+          <p><strong>CUIL:</strong> ${item.cuil}</p>
+          <p><strong>CBU:</strong> ${item.cbu}</p>
+        </div>
+      `,
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Eliminar',
+      cancelButtonText: 'Cancelar',
+      confirmButtonColor: '#d33',
+      cancelButtonColor: '#3085d6',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        // Eliminar el registro seleccionado
+        this.filteredItems.splice(index, 1);
+        Swal.fire('Eliminado', 'El registro ha sido eliminado.', 'success');
+      }
+    });
+  }
+
+
   private loadSessionData(): void {
     
     this.contrato = Number(sessionStorage.getItem('IdContrato'));
@@ -78,7 +136,7 @@ export class XslEditabletableComponent implements OnInit {
       body: {
         id_user: this.user,
         id_contrato: this.contrato,
-        id_organismo: this.organismo,
+        id_organismo: this.organismo
       }
     };
 
@@ -89,6 +147,7 @@ export class XslEditabletableComponent implements OnInit {
   }
 
   private handleNominaImporteResponse(res: any): void {
+
     if (res == null || res.data.items.length === 0) {
       this.checkIfContratoisfromBapro();  
       this.isNominasEmpty = true;   

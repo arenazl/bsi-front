@@ -12,7 +12,7 @@
       "items": [
         {
           "description": "Pago de haberes",
-          "link": "/xslImport/PAGO/1",
+          "link": "/xslImport/PAGO/HABERES",
           "icono": "fa-money-bill"
         }
       ]
@@ -25,7 +25,7 @@
       "items": [
         {
           "description": "Pago a proveedores",
-          "link": "/xslImport/PAGO/4",
+          "link": "/xslImport/PAGO/PROVEEDORES",
           "icono": "fa-file-invoice"
         }
       ]
@@ -38,7 +38,7 @@
       "items": [
         {
           "description": "Pago de honorarios",
-          "link": "/xslImport/PAGO/3",
+          "link": "/xslImport/PAGO/HONORARIOS",
           "icono": "fa-hand-holding-usd"
         }
       
@@ -52,7 +52,7 @@
       "items": [
         {
           "description": "Pago de Beneficios",
-          "link": "/xslImport/PAGO/3",
+          "link": "/xslImport/PAGO/BENEFICIOS",
           "icono": "fa-gift"
         }
       ]
@@ -65,7 +65,7 @@
       "items": [
         {
           "description": "Embargos (Banco Provincia)",
-          "link": "/xslImport/PAGO/10",
+          "link": "/xslImport/PAGO/JUDICIALESBAPRO",
           "icono": "fa-gavel"
         }
       ]
@@ -78,7 +78,7 @@
       "items": [
         {
           "description": "Embargos (Otros Bancos)",
-          "link": "/xslImport/PAGO/16",
+          "link": "/xslImport/PAGO/JUDICIALESOTROS",
           "icono": "fa-balance-scale"
         }
       ]

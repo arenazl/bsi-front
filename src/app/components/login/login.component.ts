@@ -82,7 +82,7 @@ export class LoginComponent implements OnInit {
           if (res.estado == 0) {
             
            this.triggerShake();
-           this.login_txt = "Uusario incorrecto";
+           this.login_txt = "Usuario incorrecto";
             return;
           }
 
@@ -95,6 +95,10 @@ export class LoginComponent implements OnInit {
           sessionStorage.setItem('Apellido', res.data.Apellido);
           sessionStorage.setItem('IdOrganismo', res.data.ID_Organismo);
           sessionStorage.setItem('Organismo', res.data.Nombre_Organismo);
+
+          const contratos = JSON.parse(res.data.Contratos); 
+
+          sessionStorage.setItem('Contratos', res.data.Contratos);
 
           this.sharedService.sendClickEvent(res.data);
 

@@ -9,6 +9,7 @@ import { BsiHelper } from 'src/app/services/bsiHelper.service';
 import { TipoMetada, TipoModulo } from 'src/app/enums/enums';
 import { dbResponse } from 'src/app/models/Model';
 import Swal from 'sweetalert2';
+import { json } from 'stream/consumers';
 
 @Component({
   selector: 'app-xsl-import',
@@ -39,14 +40,18 @@ export class XslImportComponent implements OnInit {
 
   // Data properties
   tipoModulo = '';
-  contrato = '';
-  user = '';
-  organismo = '';
+  contrato = 0;
+  tipocontrato = '';
+  user = 0;
+  organismo = 0;
   conceptoSeleccionado = '';
   pageTitle = '';
   fileNameTemplate = '';
   modalidad='';
   data: any;
+  contratos:any;
+
+  userHasSelected: boolean = false;
 
   constructor(
     private fb: FormBuilder,
@@ -68,7 +73,8 @@ export class XslImportComponent implements OnInit {
     this.route.params.subscribe(params => {
       
       this.tipoModulo = params['tipomodulo'].toUpperCase();
-      this.contrato = params['contrato'].toUpperCase();
+    
+      this.tipocontrato = params['contrato'].toUpperCase();
 
       if( params['modalidad'] != undefined)
       {
@@ -85,21 +91,51 @@ export class XslImportComponent implements OnInit {
   }
 
   private loadUserData(): void {
-    this.user = sessionStorage.getItem('idUser') || '';
-    this.organismo = sessionStorage.getItem('IdOrganismo') || '';
+
+    this.user = sessionStorage.getItem('idUser') as unknown as number;
+    this.organismo = sessionStorage.getItem('IdOrganismo') as unknown as number;
+    this.contratos =  JSON.parse(sessionStorage.getItem('Contratos') as unknown as string)
+
   }
 
   private loadContractData(): void {
 
-      if(this.modalidad == 'PROVEEDORES')  this.contrato = "4";
-      if(this.modalidad == 'BENEFICIOS')  this.contrato = "3"
-
-    this.fileService.getContratoById(1, 71, parseInt(this.contrato)).subscribe(
+    this.contrato = this.getContratoByTipoContrato(this.tipocontrato)
+  
+    this.fileService.getContratoById(this.user, this.organismo, this.contrato).subscribe(
       (resData: dbResponse) => this.handleContractData(resData),
       error => console.error('Error loading contract data:', error)
     );
   }
 
+  getContratoByTipoContrato(tipocontrato: string): number {
+
+    const contratosList = this.contratos;
+  
+    if (!contratosList || contratosList.length === 0) {
+      console.warn("No hay contratos disponibles.");
+      return 0;
+    }
+  
+    let modalidadBuscada = '';
+    if (tipocontrato === 'JUDICIALESBAPRO') {
+      modalidadBuscada = 'JUDICIALES - EMBARGOS Banco Provincia';
+    } else if (tipocontrato === 'JUDICIALESOTROS') {
+      modalidadBuscada = 'JUDICIALES - EMBARGOS Otros Bancos';
+    } else {
+      modalidadBuscada = tipocontrato; 
+    }
+  
+    const contratoEncontrado = contratosList.find((con: { Modalidad: string; }) => con.Modalidad === modalidadBuscada);
+  
+    if (contratoEncontrado) {
+      return contratoEncontrado.Contrato_ID;
+    } else {
+      console.warn(`No se encontró un contrato para la modalidad: ${modalidadBuscada}`);
+      return 0;
+    }
+  }
+  
   private handleContractData(resData: dbResponse): void {
     this.data = resData.data;
     this.setSessionData(resData.data);
@@ -109,7 +145,7 @@ export class XslImportComponent implements OnInit {
   private setSessionData(data: any): void {
 
     sessionStorage.setItem('Rotulo', data.Rotulo);
-    sessionStorage.setItem('IdContrato', this.contrato);
+    sessionStorage.setItem('IdContrato', this.contrato.toString());
     sessionStorage.setItem('Concepto', data.Concepto);
     sessionStorage.setItem('Ente', data.Ente);
 
@@ -117,14 +153,7 @@ export class XslImportComponent implements OnInit {
 
   private loadMetadata(): void {
 
-    var parametro=this.contrato;
-
-    if(this.modalidad == 'PROVEEDORES' || this.modalidad == "BENEFICIOS")
-    {
-      parametro = '4';
-    }
-
-    this.fileService.getMetaData(this.tipoModulo as TipoModulo, TipoMetada.IMPORT, parametro).subscribe(
+    this.fileService.getMetaData(this.tipoModulo as TipoModulo, TipoMetada.IMPORT, this.contrato.toString()).subscribe(
       (res: dbResponse) => this.handleMetadata(res),
       error => console.error('Error loading metadata:', error)
     );
@@ -218,19 +247,22 @@ export class XslImportComponent implements OnInit {
   private handleComboOptions(control: any, options: any[]): void {
     control.options = options.map(option => ({ id: option.id, value: option.value }));
     const formControl = this.formGroup.get(control.field);
-    if (options.length === 1) {
+  
+    if (options.length > 0) {
+      // Default to the first option initially
       formControl?.setValue(options[0].id);
-      control.disabled = true;
       this.conceptoSeleccionado = options[0].value;
-    } else {
-      formControl?.setValue(options[0].id);
-      control.disabled = false;
+  
+      // Enable/disable the dropdown based on number of options
+      control.disabled = options.length === 1;
     }
   }
 
+
   optionChanged(event: Event): void {
     const target = event.target as HTMLSelectElement;
-    this.conceptoSeleccionado = target.options[target.selectedIndex].text;
+    this.userHasSelected = true; // Mark that the user interacted
+    this.conceptoSeleccionado = target.options[target.selectedIndex].text; // Update the selected value
   }
 
   selectCargaArchivo(): void {
@@ -247,13 +279,22 @@ export class XslImportComponent implements OnInit {
     const fechaPago = this.bsiHelper.formatDateForFile(this.formGroup.get('FechaPago')?.value);
 
     if (this.selectNominaXsl) this.tipoModulo += "_XSL";
-    if (this.conceptoSeleccionado !== '') this.conceptoSeleccionado = sessionStorage.getItem('Concepto') || '';
+
+    this.conceptoSeleccionado = sessionStorage.getItem('Concepto') || '';
+
+    if (!this.userHasSelected) {
+      {
+        if (this.conceptoSeleccionado.includes(',')) {
+          this.conceptoSeleccionado = this.conceptoSeleccionado.split(',')[0].trim();
+        }
+      }
+    }
 
     return this.fileNameTemplate
       .replace('${tipoModulo}', this.tipoModulo)
-      .replace('${idUser}', this.user)
-      .replace('${idOrganismo}', this.organismo)
-      .replace('${contrato}', this.contrato)
+      .replace('${idUser}', this.user.toString())
+      .replace('${idOrganismo}', this.organismo.toString())
+      .replace('${contrato}', this.contrato.toString())
       .replace('${concepto}', this.conceptoSeleccionado)
       .replace('${fechaPago}', fechaPago)
       .replace('${rotulo}', this.data['Rotulo'] || '')

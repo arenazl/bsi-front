@@ -192,11 +192,11 @@
               </td>
               <!-- icono de Editar -->
               <td class="text-end">
-                <i class="fa fa-edit" style="font-size: 1.30rem;color: black !important;opacity: 0.5;" ></i>
+                <i class="fa fa-edit" (click)="showEditPopup(sol, i)" style="font-size: 1.30rem;color: black !important;opacity: 0.5;" ></i>
               </td>
               <!-- icono de Eliminar -->
               <td class="text-end">
-                <i class="fa fa-trash text-danger cursor-pointer me-3" style="font-size: 1.30rem;color: black !important;opacity: 0.5;"></i>
+                <i class="fa fa-trash text-danger cursor-pointer me-3"(click)="showDeletePopup(sol, i)" style="font-size: 1.30rem;color: black !important;opacity: 0.5;"></i>
               </td>
             </tr>
           </ng-container>
