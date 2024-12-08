@@ -146,7 +146,6 @@ export class XslImportComponent implements OnInit {
 
     sessionStorage.setItem('Rotulo', data.Rotulo);
     sessionStorage.setItem('IdContrato', this.contrato.toString());
-    sessionStorage.setItem('Concepto', data.Concepto);
     sessionStorage.setItem('Ente', data.Ente);
 
   }
@@ -255,6 +254,8 @@ export class XslImportComponent implements OnInit {
   
       // Enable/disable the dropdown based on number of options
       control.disabled = options.length === 1;
+
+      sessionStorage.setItem('Concepto', this.conceptoSeleccionado);
     }
   }
 
@@ -263,6 +264,8 @@ export class XslImportComponent implements OnInit {
     const target = event.target as HTMLSelectElement;
     this.userHasSelected = true; // Mark that the user interacted
     this.conceptoSeleccionado = target.options[target.selectedIndex].text; // Update the selected value
+
+    sessionStorage.setItem('Concepto', this.conceptoSeleccionado)
   }
 
   selectCargaArchivo(): void {
@@ -280,16 +283,6 @@ export class XslImportComponent implements OnInit {
 
     if (this.selectNominaXsl) this.tipoModulo += "_XSL";
 
-    this.conceptoSeleccionado = sessionStorage.getItem('Concepto') || '';
-
-    if (!this.userHasSelected) {
-      {
-        if (this.conceptoSeleccionado.includes(',')) {
-          this.conceptoSeleccionado = this.conceptoSeleccionado.split(',')[0].trim();
-        }
-      }
-    }
-
     return this.fileNameTemplate
       .replace('${tipoModulo}', this.tipoModulo)
       .replace('${idUser}', this.user.toString())
@@ -305,6 +298,7 @@ export class XslImportComponent implements OnInit {
   navigatToXslEditabletable(): void {
   
     sessionStorage.setItem("fechaPago", this.formGroup.get('FechaPago')?.value);
+    
     this.router.navigate(['/xslEditabletable']);
   }
 

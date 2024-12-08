@@ -45,6 +45,8 @@ export class XslEditabletableComponent implements OnInit {
   isNominasEmpty = false;
   fecha = new Date().toISOString().split('T')[0]
 
+  tranfeList:any;
+
   newItem: NominaItem = { cbu: '', cuil: '', apellido: '', nombre: '', importe: 0, toggleEnabled: false };
   searchTerm = '';
 
@@ -59,6 +61,7 @@ export class XslEditabletableComponent implements OnInit {
     this.isLoading = true;
     this.loadSessionData();
     this.loadNominaImporte();
+    this.getListCombo()
   }
 
   showEditPopup(item: any, index: number) {
@@ -81,15 +84,41 @@ export class XslEditabletableComponent implements OnInit {
           Swal.showValidationMessage('El CBU debe tener exactamente 22 caracteres.');
           return false;
         }
-        return newCbu;
+
+        const payloadUpdate =
+        {
+          sp_name: "NOMINA_ACTUALIZAR_CBU_BYCUIL",
+          jsonUnify: true,
+          body: {
+            IDCONT: sessionStorage.getItem('IdContrato'),
+            IDORG: sessionStorage.getItem('IdOrganismo'),
+            IDUSER: sessionStorage.getItem('idUser'),
+            CUIL: item.cuil,
+            CBU: newCbu,
+           
+          }
+        };
+    
+        this.fileService.postInsertGenericSP(payloadUpdate).subscribe({
+ 
+          next: (res) => this.handleUpdateCuil(index, newCbu),
+          error: (err) => this.handleError(err)
+
+        });
+
+        return ""; 
+
       },
     }).then((result) => {
       if (result.isConfirmed) {
-        // Actualizamos el CBU de la fila seleccionada
-        this.filteredItems[index].cbu = result.value;
+
         Swal.fire('¡Actualizado!', 'El CBU ha sido actualizado correctamente.', 'success');
       }
     });
+  }
+
+  handleUpdateCuil(index: number, newCbu: string){
+    this.filteredItems[index].cbu = newCbu;      
   }
 
   showDeletePopup(item: any, index: number) {
@@ -110,13 +139,62 @@ export class XslEditabletableComponent implements OnInit {
       cancelButtonColor: '#3085d6',
     }).then((result) => {
       if (result.isConfirmed) {
-        // Eliminar el registro seleccionado
+
+        const payloadUpdate =
+        {
+          sp_name: "NOMINA_ELIMINAR_BY_CUIT_CBU",
+          jsonUnify: true,
+          body: {
+            IDCONT: sessionStorage.getItem('IdContrato'),
+            IDORG: sessionStorage.getItem('IdOrganismo'),
+            IDUSER: sessionStorage.getItem('idUser'),
+            CUIL: item.cuil,
+            CBU: item.cbu,
+           
+          }
+        };
+    
+        this.fileService.postInsertGenericSP(payloadUpdate).subscribe({
+ 
+          /*
+          next: (res) => this.handleUpdateCuil(index, newCbu),
+          error: (err) => this.handleError(err)*/
+
+        });
+
         this.filteredItems.splice(index, 1);
         Swal.fire('Eliminado', 'El registro ha sido eliminado.', 'success');
       }
     });
   }
 
+  getListComboById(event: any): void {
+
+    let id = event.target.value;
+
+    const payload = {
+      sp_name: "NOMINA_OBTENER_FILL_BY_PAGO",
+      body: {
+        id_user: this.user,
+        id_contrato: this.contrato,
+        id_organismo: this.organismo, 
+        id_pago: id
+      }
+    };
+
+    this.fileService.postSelectGenericSP(payload).subscribe({
+      next: (res) => this.handleNominaImporteResponse(res),
+      error: (err) => this.handleError(err)
+    });
+
+  }
+
+    getListCombo(): void {
+    this.fileService.getListForCombo( TipoModulo.PAGO ).subscribe({
+      next: (data) => this.tranfeList = data,
+      error: (error) => console.error('Error al obtener lista para combo:', error)
+    });
+  }
 
   private loadSessionData(): void {
     
