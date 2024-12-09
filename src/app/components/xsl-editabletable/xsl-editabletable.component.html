@@ -33,7 +33,7 @@
             exists -->
           <ng-container *ngIf="field.pipe; else noPipeHeader">
             <ng-container *ngIf="field.pipe === 'date'">
-              {{ fechaPago | date:'dd/MM/yyyy' }}
+              {{ fechaPago | date: 'dd/MM/yyyy' }}
             </ng-container>
             <ng-container *ngIf="field.pipe === 'BsiCurrencyPipe'">
               {{ dbNominas.header[field.field] | BsiCurrencyPipe }}
@@ -74,6 +74,17 @@
   </div>
 
   <div class="card-body d-flex flex-wrap">
+
+    <div class="form-group m-2 flex-fill">
+      <label class="label mb-2">Pagos Anteriores</label>
+      <select class="form-select" aria-label="Default select example" (change)="getListComboById($event)">
+        <option selected value="">Elija una pago </option>
+        <option *ngFor="let tran of tranfeList" [value]="tran.id">
+          {{ tran.descripcion }}
+        </option>
+      </select>
+    </div>
+
     <!-- Campo de búsqueda -->
     <div class="form-group m-2 flex-fill">
       <label class="label mb-2">Buscar</label>
