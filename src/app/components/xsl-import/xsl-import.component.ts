@@ -119,12 +119,14 @@ export class XslImportComponent implements OnInit {
   
     let modalidadBuscada = '';
     if (tipocontrato === 'JUDICIALESBAPRO') {
-      modalidadBuscada = 'JUDICIALES - EMBARGOS Banco Provincia';
+      modalidadBuscada = 'JUDICIALES (EMBARGOS Banco Provincia)';
     } else if (tipocontrato === 'JUDICIALESOTROS') {
-      modalidadBuscada = 'JUDICIALES - EMBARGOS Otros Bancos';
+      modalidadBuscada = 'JUDICIALES (EMBARGOS otros Bancos)';
     } else {
       modalidadBuscada = tipocontrato; 
     }
+
+    sessionStorage.setItem('TipoContrato', this.tipocontrato.toString());
   
     const contratoEncontrado = contratosList.find((con: { Modalidad: string; }) => con.Modalidad === modalidadBuscada);
   

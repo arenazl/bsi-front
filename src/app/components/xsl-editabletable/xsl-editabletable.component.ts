@@ -27,6 +27,7 @@ export class XslEditabletableComponent implements OnInit {
  
   headerTitle = '';
   contrato = 0;
+  tipoContrato ='';
   organismo = 0;
   user = 0;
   ente='';
@@ -199,6 +200,7 @@ export class XslEditabletableComponent implements OnInit {
   private loadSessionData(): void {
     
     this.contrato = Number(sessionStorage.getItem('IdContrato'));
+    this.tipoContrato = sessionStorage.getItem('TipoContrato') || '';
     this.organismo = Number(sessionStorage.getItem('IdOrganismo'));
     this.organismoDescription = this.bsiHelper.toProperCase(sessionStorage.getItem('Organismo') || '');
     this.user = Number(sessionStorage.getItem('idUser'));
@@ -227,14 +229,15 @@ export class XslEditabletableComponent implements OnInit {
   private handleNominaImporteResponse(res: any): void {
 
     if (res == null || res.data.items.length === 0) {
-      this.checkIfContratoisfromBapro();  
       this.isNominasEmpty = true;   
       this.fillHeader();
       this.filteredItems = [];
     } else 
     {
+    
       this.dbNominas.header = res.data.header;
       this.dbNominas.items = res.data.items;
+      this.checkIfContratoisfromBapro();  
       this.dbNominas.header.importe_total = 0;
       this.filteredItems = this.dbNominas.items;
     }
@@ -243,9 +246,10 @@ export class XslEditabletableComponent implements OnInit {
   }
 
   checkIfContratoisfromBapro() {
-    if (this.contrato === 10) {
+
+    if (this.tipoContrato === 'JUDICIALESBAPRO') {
       this.dbNominas.items = this.dbNominas.items.filter(item => item.cbu.startsWith('014'));
-    } else if (this.contrato === 12) {
+    } else if (this.tipoContrato === 'JUDICIALESOTROS') {
       this.dbNominas.items = this.dbNominas.items.filter(item => !item.cbu.startsWith('014'));
     }
   }
