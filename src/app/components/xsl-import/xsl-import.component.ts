@@ -125,6 +125,7 @@ export class XslImportComponent implements OnInit {
     } else {
       modalidadBuscada = tipocontrato; 
     }
+    
 
     sessionStorage.setItem('TipoContrato', this.tipocontrato.toString());
   

@@ -244,9 +244,9 @@ export class XslEditabletableComponent implements OnInit {
 
     this.loadMetadata();
   }
-
-  checkIfContratoisfromBapro() {
-
+ 
+  checkIfContratoisfromBapro() 
+  {
     if (this.tipoContrato === 'JUDICIALESBAPRO') {
       this.dbNominas.items = this.dbNominas.items.filter(item => item.cbu.startsWith('014'));
     } else if (this.tipoContrato === 'JUDICIALESOTROS') {
