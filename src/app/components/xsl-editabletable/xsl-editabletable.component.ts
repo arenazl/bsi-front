@@ -79,6 +79,11 @@ export class XslEditabletableComponent implements OnInit {
       confirmButtonText: 'Aceptar',
       cancelButtonText: 'Cancelar',
       showCancelButton: true,
+      customClass: {
+        confirmButton: 'btn-primary',
+        cancelButton: '',
+        title: 'custom-title'
+      },
       preConfirm: () => {
         const newCbu = (document.getElementById('newCbu') as HTMLInputElement).value;
         if (!newCbu || newCbu.length !== 22) {
@@ -136,8 +141,11 @@ export class XslEditabletableComponent implements OnInit {
       showCancelButton: true,
       confirmButtonText: 'Eliminar',
       cancelButtonText: 'Cancelar',
-      confirmButtonColor: '#d33',
-      cancelButtonColor: '#3085d6',
+      customClass: {
+        confirmButton: 'btn-primary',
+        cancelButton: '',
+        title: 'custom-title'
+      },
     }).then((result) => {
       if (result.isConfirmed) {
 
