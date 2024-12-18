@@ -132,12 +132,19 @@
                   {{ sol[col.field] | BsiCurrencyPipe }}
                 </ng-container>
 
-                <ng-container *ngIf="col.type === 'text'">
-                  {{ sol[col.field] }}
+              <ng-container *ngIf="col.type === 'text' && sol.cbu_invalid">
+                  <span [title]="tooltip" style="color: red;">
+                    {{ sol[col.field] }}
+                  </span>
+                </ng-container>
+                <ng-container *ngIf="col.type === 'text' && !sol.cbu_invalid">
+                  <span [title]="tooltip">
+                    {{ sol[col.field] }}
+                  </span>
                 </ng-container>
 
                 <ng-container *ngIf="col.type === 'number'">
-                  {{ sol[col.field] }}
+                    {{ sol[col.field] }}
                 </ng-container>
 
                 <ng-container *ngIf="col.type === 'date'">

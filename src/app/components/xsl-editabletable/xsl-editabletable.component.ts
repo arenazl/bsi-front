@@ -452,7 +452,7 @@ export class XslEditabletableComponent implements OnInit {
 
     const payloadNomina =
     {
-      sp_name: "NOMINA_VALIDAD_INSERTAR_FULL_VALIDATION",
+      sp_name: "NOMINA_VALIDAD_INSERTAR_FULL_VALIDATION_2",
       jsonUnify: true,
       body: {
         IDCONT: sessionStorage.getItem('IdContrato'),
