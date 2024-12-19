@@ -14,31 +14,6 @@ interface User {
   Cuil: string;
   Sexo: string;
   Fecha_nac: string;
-
-  Nro_Suc_Bapro: string;
-  Nombre_Org: string;
-  Cuit: string;
-  Calle: string;
-  NumeroCalle: string;
-  Localidad: string;
-  Cod_postal: string;
-  contratos: contrato[];
-}
-
-const TipoContrato = [
-  'Haberes',
-  'Beneficios',
-  'Proveedores',
-  'Judiciales',
-  'Honorarios',
-]
-
-interface contrato {
-  rotulo: string;
-  ente: string;
-  cbu: string; 
-  tipoContrato: typeof TipoContrato;
-  
 }
 
 
@@ -54,15 +29,6 @@ const initialUser: User = {
   Cuil: '',
   Sexo: '',
   Fecha_nac: '',
-
-  Nro_Suc_Bapro: '',
-  Nombre_Org: '',
-  Cuit: '',
-  Calle: '',
-  NumeroCalle: '',
-  Localidad: '',
-  Cod_postal: '',
-  contratos: [] as contrato[],
 };
 
 interface Props {
@@ -74,26 +40,13 @@ interface Props {
 }
 
 const puestosArgentina = [
-  'Gerente General',
-  'Gerente de Ventas',
-  'Gerente de Marketing',
-  'Gerente de Recursos Humanos',
   'Contador',
-  'Abogado',
-  'Ingeniero',
-  'Médico',
-  'Profesor',
-  'Administrativo',
-  'Técnico',
-  'Operario',
-  'Vendedor',
-  'Recepcionista',
-  'Analista de Sistemas',
-  'Diseñador Gráfico',
-  'Periodista',
-  'Chef',
-  'Arquitecto',
-  'Psicólogo'
+  'Tesorero',
+  'Intendente',
+  'Secretario',
+  'Operador',
+  'Administrador',
+  'Otro',
 ];
 
 const Sexo = [
@@ -169,35 +122,6 @@ export default function UserManagement({ getUsers, createUser, updateUser, delet
       errors.Fecha_nac = 'Fecha de nacimiento es obligatorio';
     }
 
-    if (!currentUser.Nro_Suc_Bapro) {
-      errors.Nro_Suc_Bapro = 'Número de sucursal es obligatorio';
-    }
-
-    if (!currentUser.Nombre_Org) {
-      errors.Nombre_Org = 'Nombre de la organización es obligatorio';
-    }
-
-    if (!currentUser.Cuit) {
-      errors.Cuit = 'Cuit es obligatorio';
-    }
-
-    if (!currentUser.Calle) {
-      errors.Calle = 'Calle es obligatorio';
-    }
-
-    if (!currentUser.NumeroCalle) {
-      errors.NumeroCalle = 'Número de calle es obligatorio';
-    }
-
-    if (!currentUser.Localidad) {
-      errors.Localidad = 'Localidad es obligatorio';
-    }
-
-    if (!currentUser.Cod_postal) {
-      errors.Cod_postal = 'Código postal es obligatorio';
-    }
-
-    
     setFormErrors(errors);
     return Object.keys(errors).length === 0;
   }, [currentUser]);
@@ -281,11 +205,11 @@ export default function UserManagement({ getUsers, createUser, updateUser, delet
           </div>
           <div>
             <input
-              type="id"
-              name="CodigoUsuario"
-              value={currentUser.ID_USER}
+              type="number"
+              name="ID_USER"
+              value={currentUser.ID_USER || ''}
               onChange={handleInputChange}
-              placeholder="Codigo de usuario"
+              placeholder="Código de usuario"
               className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
               required
             />
@@ -294,7 +218,7 @@ export default function UserManagement({ getUsers, createUser, updateUser, delet
           <div>
             <input
               type="text"
-              name="Usuario"
+              name="User_Name"
               value={currentUser.User_Name}
               onChange={handleInputChange}
               placeholder="Usuario"
@@ -412,227 +336,6 @@ export default function UserManagement({ getUsers, createUser, updateUser, delet
               className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
             />
             {formErrors.Cuil && <p className="text-red-500 text-xs italic">{formErrors.Cuil}</p>}
-          </div>
-        </div>
-
-          <br />
-          <br />
-          <br />
-
-
-          <h2 className="text-2xl font-bold mb-4"> Datos del organismo </h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div>
-            <input
-              type="number"
-              name="Nro_Suc_Bapro"
-              value={currentUser.Nro_Suc_Bapro}
-              onChange={handleInputChange}
-              placeholder="Número Sucursal Bapro"
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-            />
-            {formErrors.Nro_Suc_Bapro && <p className="text-red-500 text-xs italic">{formErrors.Nro_Suc_Bapro}</p>}
-          </div>
-          <div>
-            <input
-              type="text"
-              name="Nombre_Org"
-              value={currentUser.Nombre_Org}
-              onChange={handleInputChange}
-              placeholder="Nombre de la organización"
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-            />
-          </div>
-          <div>
-            <input
-              type="number"
-              name="Cuit"
-              value={currentUser.Cuit}
-              onChange={handleInputChange}
-              placeholder="Cuit"
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-            />
-            {formErrors.Cuit && <p className="text-red-500 text-xs italic">{formErrors.Cuit}</p>}
-          </div>
-          <div>
-            <input
-              type="text"
-              name="Calle"
-              value={currentUser.Calle}
-              onChange={handleInputChange}
-              placeholder="Calle"
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-            />
-            {formErrors.Calle && <p className="text-red-500 text-xs italic">{formErrors.Calle}</p>}
-          </div>
-
-          <div>
-            <input
-              type="number"
-              name="NumeroCalle"
-              value={currentUser.NumeroCalle}
-              onChange={handleInputChange}
-              placeholder="Número de Calle"
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-            />
-            {formErrors.NumeroCalle && <p className="text-red-500 text-xs italic">{formErrors.NumeroCalle}</p>}
-          </div>
-          <div>
-            <input
-              type="text"
-              name="Localidad"
-              value={currentUser.Localidad}
-              onChange={handleInputChange}
-              placeholder="Localidad"
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-            />
-            {formErrors.Localidad && <p className="text-red-500 text-xs italic">{formErrors.Localidad}</p>}
-          </div>
-          <div>
-            <input
-              type="number"
-              name="Cod_postal"
-              value={currentUser.Cod_postal}
-              onChange={handleInputChange}
-              placeholder="Código Postal"
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-            />
-            {formErrors.Cod_postal && <p className="text-red-500 text-xs italic">{formErrors.Cod_postal}</p>}
-          </div>
-
-        </div>
-
-        <br />
-        <br />
-
-        <div className="container mt-4">
-          <h2 className="text-2xl font-bold mb-4">Contratos bancarios</h2>
-
-          <div className="row align-items-center mb-3">
-            <div className="col-md-1">
-              <label htmlFor="haberesRotulo" className="form-label">Haberes:</label>
-            </div>
-            <div className="col-md-3">
-              <input
-                type="text"
-                name="haberesRotulo"
-                placeholder="Rótulo"
-                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" 
-              />
-            </div>
-            <div className="col-md-3">
-              <input
-                type="text"
-                name="haberesEnte"
-                placeholder="Ente"
-                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" 
-              />
-            </div>
-            <div className="col-md-4">
-              <input
-                type="text"
-                name="haberesCbu"
-                placeholder="CBU Débito"
-                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" 
-              />
-            </div>
-          </div>
-
-          <div className="row align-items-center mb-3">
-            <div className="col-md-1">
-              <label htmlFor="beneficiosRotulo" className="form-label">Beneficios:</label>
-            </div>
-            <div className="col-md-3">
-              <input
-                type="text"
-                name="beneficiosRotulo"
-                placeholder="Rótulo"
-                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" 
-              />
-            </div>
-            <div className="col-md-3">
-              <input
-                type="text"
-                name="beneficiosEnte"
-                placeholder="Ente"
-                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" 
-              />
-            </div>
-            <div className="col-md-4">
-              <input
-                type="text"
-                name="beneficiosCbu"
-                placeholder="CBU Débito"
-                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" 
-              />
-            </div>
-          </div>
-
-          <div className="row align-items-center mb-3">
-            <div className="col-md-1">
-              <label htmlFor="proveedoresRotulo" className="form-label">Proveedores:</label>
-            </div>
-            <div className="col-md-4">
-              <input
-                type="text"
-                name="proveedoresRotulo"
-                placeholder="Rótulo"
-                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" 
-              />
-            </div>
-            <div className="col-md-6">
-              <input
-                type="text"
-                name="proveedoresCbu"
-                placeholder="CBU Débito"
-                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" 
-              />
-            </div>
-          </div>
-
-          <div className="row align-items-center mb-3">
-            <div className="col-md-1">
-              <label htmlFor="judicialesRotulo" className="form-label">Judiciales:</label>
-            </div>
-            <div className="col-md-4">
-              <input
-                type="text"
-                name="judicialesRotulo"
-                placeholder="Rótulo"
-                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" 
-              />
-            </div>
-            <div className="col-md-6">
-              <input
-                type="text"
-                name="judicialesCbu"
-                placeholder="CBU Débito"
-                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" 
-              />
-            </div>
-          </div>
-
-
-          <div className="row align-items-center mb-3">
-            <div className="col-md-1">
-              <label htmlFor="honorariosRotulo" className="form-label">Honorarios:</label>
-            </div>
-            <div className="col-md-4">
-              <input
-                type="text"
-                name="honorariosRotulo"
-                placeholder="Rótulo"
-                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" 
-              />
-            </div>
-            <div className="col-md-6">
-              <input
-                type="text"
-                name="honorariosCbu"
-                placeholder="CBU Débito"
-                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" 
-              />
-            </div>
           </div>
         </div>
 
