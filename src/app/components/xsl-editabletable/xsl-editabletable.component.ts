@@ -79,6 +79,11 @@ export class XslEditabletableComponent implements OnInit {
       confirmButtonText: 'Aceptar',
       cancelButtonText: 'Cancelar',
       showCancelButton: true,
+      customClass: {
+        confirmButton: 'btn-primary',
+        cancelButton: '',
+        title: 'custom-title'
+      },
       preConfirm: () => {
         const newCbu = (document.getElementById('newCbu') as HTMLInputElement).value;
         if (!newCbu || newCbu.length !== 22) {
@@ -136,8 +141,11 @@ export class XslEditabletableComponent implements OnInit {
       showCancelButton: true,
       confirmButtonText: 'Eliminar',
       cancelButtonText: 'Cancelar',
-      confirmButtonColor: '#d33',
-      cancelButtonColor: '#3085d6',
+      customClass: {
+        confirmButton: 'btn-primary',
+        cancelButton: '',
+        title: 'custom-title'
+      },
     }).then((result) => {
       if (result.isConfirmed) {
 
@@ -232,17 +240,29 @@ export class XslEditabletableComponent implements OnInit {
       this.isNominasEmpty = true;   
       this.fillHeader();
       this.filteredItems = [];
-    } else 
+    } 
+    else 
     {
     
       this.dbNominas.header = res.data.header;
       this.dbNominas.items = res.data.items;
+      this.addTooltip(res);
       this.checkIfContratoisfromBapro();  
       this.dbNominas.header.importe_total = 0;
       this.filteredItems = this.dbNominas.items;
     }
 
     this.loadMetadata();
+  }
+
+  addTooltip(res: any) {
+
+    this.dbNominas.items = res.data.items.map((item: { nombre: string; }) => {
+      return {
+        ...item,
+        toolTip: item.nombre
+      };
+    });
   }
  
   checkIfContratoisfromBapro() 
@@ -452,7 +472,7 @@ export class XslEditabletableComponent implements OnInit {
 
     const payloadNomina =
     {
-      sp_name: "NOMINA_VALIDAD_INSERTAR_FULL_VALIDATION",
+      sp_name: "NOMINA_VALIDAD_INSERTAR_FULL_VALIDATION_2",
       jsonUnify: true,
       body: {
         IDCONT: sessionStorage.getItem('IdContrato'),

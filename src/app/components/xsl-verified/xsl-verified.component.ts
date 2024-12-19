@@ -33,6 +33,7 @@ export class XslVerifiedComponent implements OnInit, AfterViewInit {
   showHistory = false;
   hasError = false;
   payloadParams: any = {};
+  tooltip='';
 
   constructor(
     private route: ActivatedRoute,
@@ -108,20 +109,42 @@ export class XslVerifiedComponent implements OnInit, AfterViewInit {
   
   private processMetadata(data: any, res: any): void {
     console.log('Metadata recibida:', data);
+
     this.metadata = data.RESULT;
     this.validationData = res.data;
     this.allRecordsValid = this.areAllRecordsValid();
 
     if (this.validationData?.items) {
+
+      this.addTooltip(res);
+
       this.validationData.items.forEach((sol: any) => {
+
         if(sol.nombre != null || sol.nombre != undefined)
         {
           sol.nombre = this.bsiHelper.toProperCase(sol.nombre);
-        }    
+        }
+        if (sol.cbu_invalid) 
+          {
+            sol.cbu = sol.cbu_invalid; 
+            this.tooltip = `CBU Vigente: ${sol.cbu}`;
+          } 
+   
       });
+    
     }
 
     this.isLoading = false;
+  }
+
+  addTooltip(res: any) {
+
+    this.validationData.items = res.data.items.map((item: { nombre: string; }) => {
+      return {
+        ...item,
+        toolTip: item.nombre
+      };
+    });
   }
 
   private handleDBError(error: any): void {

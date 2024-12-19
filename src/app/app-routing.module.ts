@@ -16,6 +16,9 @@ import { UserManagementWrapperComponent } from './components/user-management-wra
 import { DashboardWrapperComponent } from './components/dashboard-wrapper/dashboard-wrapper.component';
 import { ChatbotComponent } from './components/chatbot/chatbot.component';
 import { PentagramLearningComponent } from './components/pentagram-learning/pentagram-learning.component';
+import { ContratoManagementWrapperComponent } from './components/contrato-management-wrapper/contrato-management-wrapper.component';
+import OrganismoManagement from './components/organismo-management-wrapper/organismo-management-wrapper';
+import { OrganismoManagementWrapperComponent } from './components/organismo-management-wrapper/organismo-management-wrapper.component';
 
 const routes: Routes = [
   {
@@ -98,6 +101,14 @@ const routes: Routes = [
   {
     path: 'userManagement',
     component: UserManagementWrapperComponent
+  },
+  {
+    path: 'contratoManagement',
+    component: ContratoManagementWrapperComponent
+  },
+  {
+    path: 'organismosManagement',
+    component: OrganismoManagementWrapperComponent
   },
   {
     path: 'dashboard',

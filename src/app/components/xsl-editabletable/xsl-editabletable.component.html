@@ -174,7 +174,9 @@
                   {{ sol[col.field] | BsiCurrencyPipe }}
                 </ng-container>
                 <ng-container *ngIf="col.type === 'text'">
-                  {{ sol[col.field] }}
+                  <span [title]="sol['toolTip']">
+                    {{ sol[col.field] }}
+                  </span>
                 </ng-container>
                 <ng-container *ngIf="col.type === 'number'">
                   {{ sol[col.field] }}
@@ -203,11 +205,11 @@
               </td>
               <!-- icono de Editar -->
               <td class="text-end">
-                <i class="fa fa-edit" (click)="showEditPopup(sol, i)" style="font-size: 1.30rem;color: black !important;opacity: 0.5;" ></i>
+                <i class="fa fa-edit" (click)="showEditPopup(sol, i)" style="font-size: 1.30rem;color: #01948e !important;opacity: 0.9;" ></i>
               </td>
               <!-- icono de Eliminar -->
               <td class="text-end">
-                <i class="fa fa-trash text-danger cursor-pointer me-3"(click)="showDeletePopup(sol, i)" style="font-size: 1.30rem;color: black !important;opacity: 0.5;"></i>
+                <i class="fa fa-trash text-danger cursor-pointer me-3"(click)="showDeletePopup(sol, i)" style="font-size: 1.30rem; color: rgb(255, 0, 0) !important; opacity: 0.;"></i>
               </td>
             </tr>
           </ng-container>
@@ -251,7 +253,7 @@
                   {{ item[col.field] | BsiCurrencyPipe }}
                 </ng-container>
                 <ng-container *ngIf="col.type === 'text'">
-                  {{ item[col.field] }}
+                    {{ item[col.field] }}
                 </ng-container>
                 <ng-container *ngIf="col.type === 'number'">
                   {{ item[col.field] }}
