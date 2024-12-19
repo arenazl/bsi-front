@@ -115,7 +115,8 @@ export default function UserManagement({ getUsers, createUser, updateUser, delet
     try {
       setLoading(true);
       const fetchedUsers = await getUsers();
-      setUsers(fetchedUsers);
+      //@ts-ignore
+      setUsers(fetchedUsers.data);
       setError(null);
     } catch (err) {
       setError('Failed to fetch users. Please try again later.');
@@ -197,7 +198,6 @@ export default function UserManagement({ getUsers, createUser, updateUser, delet
       errors.Cod_postal = 'Código postal es obligatorio';
     }
 
-    
     setFormErrors(errors);
     return Object.keys(errors).length === 0;
   }, [currentUser]);
