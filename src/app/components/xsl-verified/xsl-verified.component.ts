@@ -116,6 +116,8 @@ export class XslVerifiedComponent implements OnInit, AfterViewInit {
 
     if (this.validationData?.items) {
 
+      this.addTooltip(res);
+
       this.validationData.items.forEach((sol: any) => {
 
         if(sol.nombre != null || sol.nombre != undefined)
@@ -133,6 +135,16 @@ export class XslVerifiedComponent implements OnInit, AfterViewInit {
     }
 
     this.isLoading = false;
+  }
+
+  addTooltip(res: any) {
+
+    this.validationData.items = res.data.items.map((item: { nombre: string; }) => {
+      return {
+        ...item,
+        toolTip: item.nombre
+      };
+    });
   }
 
   private handleDBError(error: any): void {

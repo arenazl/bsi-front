@@ -240,17 +240,29 @@ export class XslEditabletableComponent implements OnInit {
       this.isNominasEmpty = true;   
       this.fillHeader();
       this.filteredItems = [];
-    } else 
+    } 
+    else 
     {
     
       this.dbNominas.header = res.data.header;
       this.dbNominas.items = res.data.items;
+      this.addTooltip(res);
       this.checkIfContratoisfromBapro();  
       this.dbNominas.header.importe_total = 0;
       this.filteredItems = this.dbNominas.items;
     }
 
     this.loadMetadata();
+  }
+
+  addTooltip(res: any) {
+
+    this.dbNominas.items = res.data.items.map((item: { nombre: string; }) => {
+      return {
+        ...item,
+        toolTip: item.nombre
+      };
+    });
   }
  
   checkIfContratoisfromBapro() 
