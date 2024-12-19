@@ -2,6 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEdit, faTrash, faPlus, faTimes } from '@fortawesome/free-solid-svg-icons';
 
+
 interface User {
   ID_USER: number;
   User_Name: string;
