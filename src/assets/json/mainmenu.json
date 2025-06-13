@@ -46,13 +46,23 @@
       ]
     },
     {
-      "title": "Administración Usuarios",
-      "description": "Gestioná el alta y las cargas de los usuario",
+      "title": "Administración Backoffice",
+      "description": "Gestioná",
       "enabled": true,
       "items": [
         {
           "description": "Usuarios",
           "link": "/userManagement",
+          "icono": "fa-credit-card"
+        },
+        {
+          "description": "Contratos",
+          "link": "/contratoManagement",
+          "icono": "fa-credit-card"
+        },
+        {
+          "description": "Municipios",
+          "link": "/organismoManagement",
           "icono": "fa-credit-card"
         }
       ]

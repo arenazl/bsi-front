@@ -13,6 +13,8 @@ import { DinamicModuleComponent } from './components/dinamic-module/dinamic-modu
 import { XslImportComponent } from './components/xsl-import/xsl-import.component';
 import { XslEditabletableComponent } from './components/xsl-editabletable/xsl-editabletable.component';
 import { UserManagementWrapperComponent } from './components/user-management-wrapper/user-management-wrapper.component';
+import { ContratoManagementWrapperComponent } from './components/contrato-management-wrapper/contrato-management-wrapper.component';
+import { OrganismoManagementWrapperComponent } from './components/organismo-management-wrapper/organismo-management-wrapper.component';
 import { DashboardWrapperComponent } from './components/dashboard-wrapper/dashboard-wrapper.component';
 import { ChatbotComponent } from './components/chatbot/chatbot.component';
 import { PentagramLearningComponent } from './components/pentagram-learning/pentagram-learning.component';
@@ -96,9 +98,19 @@ const routes: Routes = [
     component: DinamicModuleComponent
   },
   {
-    path: 'userManagement',
-    component: UserManagementWrapperComponent
+  path: 'userManagement',
+  component: UserManagementWrapperComponent
   },
+  {
+    path: 'contratoManagement',
+    component: ContratoManagementWrapperComponent
+  },
+  {
+    path: 'organismoManagement',
+    component: OrganismoManagementWrapperComponent
+  },
+
+
   {
     path: 'dashboard',
     component: DashboardWrapperComponent
