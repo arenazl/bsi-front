@@ -50,9 +50,9 @@
       "description": "Gestioná",
       "enabled": true,
       "items": [
-        {
-          "description": "Usuarios",
-          "link": "/userManagement",
+          {
+          "description": "Municipios",
+          "link": "/organismoManagement",
           "icono": "fa-credit-card"
         },
         {
@@ -61,10 +61,10 @@
           "icono": "fa-credit-card"
         },
         {
-          "description": "Municipios",
-          "link": "/organismoManagement",
+          "description": "Usuarios",
+          "link": "/userManagement",
           "icono": "fa-credit-card"
-        }
+        } 
       ]
     },
     {

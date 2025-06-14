@@ -226,6 +226,7 @@ export class XslEditabletableComponent implements OnInit {
     });
   }
 
+
   private handleNominaImporteResponse(res: any): void {
 
     if (res == null || res.data.items.length === 0) {
@@ -234,6 +235,8 @@ export class XslEditabletableComponent implements OnInit {
       this.filteredItems = [];
     } else 
     {
+
+
     
       this.dbNominas.header = res.data.header;
       this.dbNominas.items = res.data.items;
@@ -271,7 +274,7 @@ export class XslEditabletableComponent implements OnInit {
   private loadMetadata(): void {
     this.bsiHelper.getMetaData().subscribe({
       next: (mt) => {
-        this.metadata = mt.RESULT;
+        this.metadata = mt.data;
         this.processValidationItems();
         this.isLoading = false;
       },
@@ -284,7 +287,7 @@ export class XslEditabletableComponent implements OnInit {
     this.isLoading = false;
     Swal.fire({
       title: "Error",
-      text: err.message || "Se produjo un error inesperado",
+      text: "Se produjo un error inesperado, contacte al administrador.",
       icon: "error",
     });
   }

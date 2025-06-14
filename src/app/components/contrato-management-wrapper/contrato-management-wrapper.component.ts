@@ -41,6 +41,8 @@ export class ContratoManagementWrapperComponent implements OnInit {
       createUser: (user: any) => this.fileService.createUser(user).toPromise(),
       updateUser: (id: number, user: any) => this.fileService.updateUser(id, user).toPromise(),
       deleteUser: (id: number) => this.fileService.deleteUser(id).toPromise(),
+      postSelectGenericSP: (payload: any) => this.fileService.postSelectGenericSP(payload).toPromise(),
+      postInsertGenericSP: (payload: any) => this.fileService.postInsertGenericSP(payload).toPromise(),
       showAlert: showAlert
     };
   
