@@ -1,0 +1,123 @@
+
+<div class="col-md-6 offset-md-3">
+
+  <div class="card">
+
+    <div class="card-header pt-3">
+      <h5>Carga de Transferencia</h5>
+    </div>
+
+    <div class="card-body">
+
+      <div *ngIf="phase1 && !edit" class="row">
+
+        <form class="m-2" action="POST" enctype="multipart/form-data">
+
+          <div class="form-group mt-3 m-2">
+  
+            <div class="row">
+  
+              <div class="col-md-12">
+  
+                <select class="form-select" aria-label="Default select example" (change)="onMotivoSelect($event)">
+                   
+                  <option selected>Elija el motivo</option>
+                  <option value="VAR"> Varios </option>
+                  <option value="ALQ"> Alquileres </option>
+                  <option value="CUO"> Cuotas </option>
+                  <option value="EXP"> Expensas </option>
+                  <option value="FAC"> Factura </option>
+                  <option value="PRE"> Préstamo </option>
+                  <option value="SEG"> Seguros </option>
+                  <option value="HON"> Honorarios </option>
+              </select>
+  
+            </div>
+  
+            </div>
+  
+          </div>
+    
+          <div class="form-group m-2">
+    
+            <select class="form-select" aria-label="Default select example" (change)="onConceptoSelect($event)">
+    
+                <option selected>Elija el concepto</option>
+                <option value="CONCEP1"> Concepto 1 </option>
+                <option value="CONCEP2"> Concepto 2 </option>
+ 
+            </select>
+    
+          </div>
+  
+          <div class="form-group m-2">
+            
+            <input type="file" name="upload" ngf-resize="{width: 200, height: 200, centerCrop: false}" [(ngModel)]="sol.nombre_archivo_1" placeholder="Arhivo" class="form-control" id="fileUpload" multiple ng2FileSelect [uploader]="uploader">
+          </div>
+
+          <div class="row m-1" *ngFor="let item of uploader.queue">
+
+            <div class="col-md-5 filename" style="padding-top: 7px;">{{item.file.name}}</div>
+
+            <div class="col md-2" style="padding-top: 13px;">
+              <div class="progress">
+                <div class="progress-bar bg-success" [ngStyle]="{'width':item.progress+'%'}"></div>
+              </div>
+            </div>
+
+            <div class="col-md-3">
+
+              <div *ngIf="filesUploaded==false">
+                  <button type="button" class="btn btn-outline-danger" (click)="item.remove()"> cancel </button>
+              </div>
+
+              <div *ngIf="filesUploaded==true">
+                <button disabled type="button" class="btn btn-outline-success"> Subido </button>
+              </div>
+
+            </div>
+
+          </div>
+              
+          <!--<div class="row" *ngIf="uploader?.queue?.length! > 0 && filesUploaded==false">-->
+
+          <div class="form-group m-2 text-center">
+
+            <button type="button" class="btn btn-primary w-100" style="display: grid !important;" (click)="uploader.uploadAll()"> {{upload_text}} </button>
+
+          </div>
+  
+        </form>
+
+      </div>
+
+      <div *ngIf="phase2 || edit" class="">
+
+    </div>
+
+    <div class="row card d-none">
+      <h4>Download Section</h4>
+
+      <div class="row" *ngFor="let item of attachments; let i = index"
+      style="margin:10px;padding:5px;background-color:rgb(231, 229, 229); border-radius:5px; line-height:40px;">
+          <div class="col-sm-7">{{item.originalname}}</div>
+          <div class="col-sm-5" style="text-align:center;"><button type="button" class="btn btn-primary" (click)="download(i)">Download</button></div>
+      </div>
+    </div>
+
+    </div>
+
+  </div>
+
+</div>
+
+<!--
+<div class="col-md-4 d-none">
+  <div class="card card-body text-center">
+  <img [src]="game.image == '' ? '/assets/noimage.png' : game.image" alt="No Image" class="card-img-top">
+    <h3>{{game.id}}. {{game.title == '' ? 'Game Title' : game.title}}</h3>
+    <p>{{game.description == '' ? 'Write your Descrition' : game.description}}</p>
+    <p>{{game.created_at | date: 'yyyy-MM-dd'}}</p>
+  </div>
+</div>-->
+

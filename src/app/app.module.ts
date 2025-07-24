@@ -1,78 +1,53 @@
 
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { HttpClientModule } from '@angular/common/http';
-import { FormsModule } from '@angular/forms';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { DatePipe } from '@angular/common';
 
+// App modules and routing
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { NavigationComponent } from './components/navigation/navigation.component';
-import { GamesListComponent } from './components/games-list/games-list.component';
 
-// Services
+// Feature modules
+import { AdminModule } from './components/admin/admin.module';
+import { BsiModule } from './components/bsi/bsi.module';
+import { LegacyModule } from './components/legacy/legacy.module';
+import { TestModule } from './components/test/test.module';
+import { SharedModule } from './shared/shared.module';
+
+// Services and interceptors
+import { AuthInterceptor } from './services/auth.interceptor';
 import { LegajoService } from './services/legajo.service';
-import { GameFormComponent } from './components/game-form/game-form.component';
-import { FileUploadModule } from 'ng2-file-upload';
-import { LoginComponent } from './components/login/login.component';
-import { ReactiveFormsModule } from '@angular/forms';
-import { AuditoriaComponent } from './components/auditoria/auditoria.component';
-import { MapComponent } from './components/map/map.component';
-import { MainMenuComponent } from './components/main-menu/main-menu.component';
-import { RankingComponent } from './components/ranking/ranking.component';
-import { SafeHtmlPipe } from '../app/sanitize'
 import { NgxImageCompressService } from 'ngx-image-compress';
-import { XslImportComponent } from './components/xsl-import/xsl-import.component';
-import { XslVerifiedComponent } from './components/xsl-verified/xsl-verified.component';
-import { BsiCurrencyPipe } from "./pipes/bsi-currency";
-import { DinamicModuleComponent } from './components/dinamic-module/dinamic-module.component';
-import { DatePipe } from '@angular/common';
-import { XslEditabletableComponent } from './components/xsl-editabletable/xsl-editabletable.component';
-import { CurrencyMaskModule } from "ng2-currency-mask";
-import { UserManagementWrapperComponent } from './components/user-management-wrapper/user-management-wrapper.component';
-import { DashboardWrapperComponent } from './components/dashboard-wrapper/dashboard-wrapper.component';
-import { ChatbotComponent } from './components/chatbot/chatbot.component';
-import { PaymentsMetricsComponent } from './components/payments-metrics/payments-metrics.component';
-import { PentagramLearningComponent } from './components/pentagram-learning/pentagram-learning.component';
 
 
 @NgModule({
   declarations: [
-    AppComponent,
-    NavigationComponent,
-    GamesListComponent,
-    GameFormComponent,
-    LoginComponent,
-    AuditoriaComponent,
-    MapComponent,
-    MainMenuComponent,
-    RankingComponent,
-    SafeHtmlPipe,
-    XslImportComponent,
-    XslVerifiedComponent,
-    BsiCurrencyPipe,
-    DinamicModuleComponent,
-    XslEditabletableComponent,
-    UserManagementWrapperComponent,
-    DashboardWrapperComponent,
-    ChatbotComponent,
-    PaymentsMetricsComponent,
-    PentagramLearningComponent
-
+    AppComponent
   ],
   imports: [
-    CurrencyMaskModule,
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
     FormsModule,
-    FileUploadModule,
     ReactiveFormsModule,
+    // Feature modules
+    SharedModule,
+    AdminModule,
+    BsiModule,
+    LegacyModule,
+    TestModule
   ],
   providers: [
-    BsiCurrencyPipe,
     DatePipe,
     LegajoService,
-    NgxImageCompressService
+    NgxImageCompressService,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptor,
+      multi: true
+    }
   ],
   bootstrap: [AppComponent]
   

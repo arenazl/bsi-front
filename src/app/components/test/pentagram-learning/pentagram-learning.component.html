@@ -1,0 +1,31 @@
+<div class="pentagrama-container">
+    <svg width="400" height="200" xmlns="http://www.w3.org/2000/svg">
+      <!-- Dibujar las líneas del pentagrama -->
+      <line x1="10" y1="60" x2="390" y2="60" stroke="black" />
+      <line x1="10" y1="80" x2="390" y2="80" stroke="black" />
+      <line x1="10" y1="100" x2="390" y2="100" stroke="black" />
+      <line x1="10" y1="120" x2="390" y2="120" stroke="black" />
+      <line x1="10" y1="140" x2="390" y2="140" stroke="black" />
+  
+      <!-- Clave de sol -->
+      <text x="15" y="120" font-size="50" fill="black">&</text>
+  
+      <!-- Nota musical generada aleatoriamente -->
+      <circle *ngIf="notaActual" [attr.cx]="200" [attr.cy]="notaActual.y" r="8" fill="black"></circle>
+    </svg>
+  
+  <!-- Botonera para seleccionar la nota correcta -->
+  <div class="botonera">
+    <button *ngFor="let nota of notas" (click)="verificarNota(nota)">
+      {{ nota.nombre }}
+    </button>
+  </div>
+  
+  <!-- Mostrar el mensaje y el consejo -->
+  <div class="resultado">
+    <p>{{ mensaje }}</p>
+    <p *ngIf="consejo">{{ consejo }}</p>
+  </div>
+  
+
+</div>

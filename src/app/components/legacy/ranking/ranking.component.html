@@ -1,0 +1,42 @@
+
+<div id="ranking_div" href="" class="text-black col-sm-12 col-md-8 offset-md-2"  target="_blank" (click)="closeRanking('ranking_div')">
+
+  <div class="row" style="height: 34rem;background: #ffffffd6;">
+
+    <div class=""></div>
+
+    <h3 class="py-1" style="BACKGROUND: linear-gradient(to right, #009fff, #ec2f4b) !important;COLOR: WHITE;BORDER-RADIUS: 9PX;OPACITY: 0.9;">Ranking en tiempo real</h3>
+
+      <table class="charts-css column show-heading show-labels  show-data-axes show-primary-axis custom-effect animations-example-1 custom-effect">
+
+        <thead>
+          <tr>
+            <th scope="col"> Equipo </th>
+            <th scope="col"> Progress </th></tr>
+          </thead>
+          <tbody>
+
+            <ng-container *ngFor="let venta of ventas">
+
+              <ng-container *ngIf="venta.indice == 1">
+
+                <tr><th scope="row"> {{venta.descripcion}} </th>  <td class="highlighted" style="--start:0; --size:{{venta.indice}};"> <span class="data text-white"> {{venta.total}} </span></td> </tr>
+
+              </ng-container>
+
+              <ng-container *ngIf="venta.indice != 1">
+
+                <tr><th scope="row"> {{venta.descripcion}} </th>  <td style="--start:0; --size:{{venta.indice}};"> <span class="data text-white"> {{venta.total}} </span></td> </tr>
+
+              </ng-container>
+
+              </ng-container>
+
+          </tbody>
+      </table>
+
+    </div>
+
+
+
+  </div>

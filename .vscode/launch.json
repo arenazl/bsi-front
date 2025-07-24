@@ -1,30 +1,115 @@
 {
-    // Use IntelliSense para saber los atributos posibles.
-    // Mantenga el puntero para ver las descripciones de los existentes atributos.
-    // Para más información, visite: https://go.microsoft.com/fwlink/?linkid=830387
-    "version": "0.2.0",
-    "configurations": [
-        {
-            "name": "Launch Program",
-            "program": "${workspaceFolder}/app.js",
-            "request": "launch",
-            "skipFiles": [
-                "<node_internals>/**"
-            ],
-            "type": "node"
-        },
-
-        {
-            "type": "node",
-            "request": "launch",
-            "name": "Iniciar el programa",
-            "skipFiles": [
-                "<node_internals>/**"
-            ],
-            "program": "${workspaceFolder}\\server.js",
-            "outFiles": [
-                "${workspaceFolder}/**/*.js"
-            ]
-        }
-    ]
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Debug BSI Server (TypeScript)",
+      "type": "node",
+      "request": "launch",
+      "program": "${workspaceFolder}/bsi-server/src/index.ts",
+      "cwd": "${workspaceFolder}/bsi-server",
+      "runtimeArgs": [
+        "-r",
+        "ts-node/register"
+      ],
+      "env": {
+        "NODE_ENV": "development",
+        "TS_NODE_PROJECT": "${workspaceFolder}/bsi-server/tsconfig.json",
+        "TS_NODE_FILES": "true",
+        "TS_NODE_TRANSPILE_ONLY": "false"
+      },
+      "envFile": "${workspaceFolder}/bsi-server/.env",
+      "console": "integratedTerminal",
+      "restart": true,
+      "protocol": "inspector",
+      "sourceMaps": true,
+      "smartStep": true,
+      "stopOnEntry": false,
+      "resolveSourceMapLocations": [
+        "${workspaceFolder}/bsi-server/**",
+        "!**/node_modules/**"
+      ],
+      "skipFiles": [
+        "<node_internals>/**",
+        "**/node_modules/**"
+      ]
+    },
+    {
+      "name": "Debug BSI Server (Compiled)",
+      "type": "node",
+      "request": "launch",
+      "program": "${workspaceFolder}/bsi-server/build/index.js",
+      "cwd": "${workspaceFolder}/bsi-server",
+      "env": {
+        "NODE_ENV": "development"
+      },
+      "envFile": "${workspaceFolder}/bsi-server/.env",
+      "console": "integratedTerminal",
+      "restart": true,
+      "protocol": "inspector",
+      "sourceMaps": true,
+      "smartStep": true,
+      "outFiles": [
+        "${workspaceFolder}/bsi-server/build/**/*.js"
+      ],
+      "resolveSourceMapLocations": [
+        "${workspaceFolder}/bsi-server/src/**",
+        "${workspaceFolder}/bsi-server/build/**"
+      ],
+      "skipFiles": [
+        "<node_internals>/**",
+        "**/node_modules/**"
+      ],
+      "preLaunchTask": "BSI Server: compile"
+    },
+    {
+      "name": "Debug BSI Server (ts-node with source-map-support)",
+      "type": "node",
+      "request": "launch",
+      "program": "${workspaceFolder}/bsi-server/src/index.ts",
+      "cwd": "${workspaceFolder}/bsi-server",
+      "runtimeArgs": [
+        "-r", 
+        "source-map-support/register",
+        "-r",
+        "ts-node/register"
+      ],
+      "env": {
+        "NODE_ENV": "development",
+        "TS_NODE_PROJECT": "${workspaceFolder}/bsi-server/tsconfig.json"
+      },
+      "envFile": "${workspaceFolder}/bsi-server/.env",
+      "console": "integratedTerminal",
+      "restart": true,
+      "protocol": "inspector",
+      "sourceMaps": true,
+      "smartStep": true,
+      "resolveSourceMapLocations": [
+        "${workspaceFolder}/bsi-server/**",
+        "!**/node_modules/**"
+      ],
+      "skipFiles": [
+        "<node_internals>/**",
+        "**/node_modules/**"
+      ]
+    },
+    {
+      "name": "Attach to BSI Server",
+      "type": "node",
+      "request": "attach",
+      "port": 9229,
+      "restart": true,
+      "localRoot": "${workspaceFolder}/bsi-server",
+      "remoteRoot": "${workspaceFolder}/bsi-server",
+      "protocol": "inspector",
+      "sourceMaps": true,
+      "resolveSourceMapLocations": [
+        "${workspaceFolder}/bsi-server/**",
+        "!**/node_modules/**"
+      ],
+      "skipFiles": [
+        "<node_internals>/**",
+        "**/node_modules/**"
+      ]
+    }
+  ]
 }

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { GlobalVariable } from '../../environments/global';
+import { environment } from '../../environments/environment';
 
 
 @Injectable({
@@ -9,7 +9,7 @@ import { GlobalVariable } from '../../environments/global';
 })
 export class ChatService {
 
-  private API_URI = GlobalVariable.BASE_API_URL;
+  private API_URI = environment.apiUrl;
 
   constructor(private _http: HttpClient) {}
 

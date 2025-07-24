@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Solicitud, Usuario, Params } from '../models/Model';
 import { Observable } from 'rxjs';
-import { GlobalVariable } from '../../environments/global';
+import { environment } from '../../environments/environment';
 
 
 @Injectable({
@@ -12,7 +12,7 @@ import { GlobalVariable } from '../../environments/global';
 
 export class LotesService {
 
-  public API_URI = GlobalVariable.BASE_API_URL;
+  public API_URI = environment.apiUrl;
 
   constructor(private http: HttpClient) { }
 
@@ -21,9 +21,6 @@ export class LotesService {
   }
 
 
-  getMovements() {
-    return this.http.get('assets/json/mainmenu.json')
-  }
 
   updateLote(id: number | undefined, updateLote: Lotes): Observable<any> {
     return this.http.put(`${this.API_URI}/lote/${id}`, updateLote);

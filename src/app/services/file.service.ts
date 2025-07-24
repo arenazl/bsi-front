@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { GlobalVariable } from '../../environments/global';
+import { environment } from '../../environments/environment';
 import { Observable, Observer, of } from 'rxjs';
 import { map } from 'jquery';
 import { TipoMetada, TipoModulo } from '../enums/enums';
@@ -16,26 +16,42 @@ export class FileService {
     throw new Error("Method not implemented.");
   }
 
-  API_URI = GlobalVariable.BASE_API_URL;
+  API_URI = environment.apiUrl;
+  API_V2_URI = environment.apiUrl.replace('/api', `/api/${environment.apiVersion}`);
   validationData = null;
   private storageKey = 'validationData';
 
   constructor(private _http: HttpClient
   ) { }
 
+  // Método de login para V2
+  login(credentials: {nombre: string, password: string}): Observable<any> {
+    return this._http.post(`${this.API_V2_URI}/auth/login`, credentials);
+  }
+
+  // Método para refrescar token
+  refreshToken(refreshToken: string): Observable<any> {
+    return this._http.post(`${this.API_V2_URI}/auth/refresh`, { refreshToken });
+  }
+
+  // Método para logout
+  logout(): Observable<any> {
+    return this._http.post(`${this.API_V2_URI}/auth/logout`, {});
+  }
+
   postInsertGenericSP(body: any): Observable<any>
   {
-    return this._http.post(`${this.API_URI}/Metadata/POST_INSERT_GENERIC_SP`,body);
+    return this._http.post(`${this.API_V2_URI}/generic/execute-insert`,body);
   }
 
   postSelectGenericSP(body: any): Observable<any>
   {
-    return this._http.post(`${this.API_URI}/Metadata/POST_SELECT_GENERIC_SP`,body);
+    return this._http.post(`${this.API_V2_URI}/generic/execute-select`,body);
   }
 
   getMetaData(tipoModulo: TipoModulo, tipoMetada: TipoMetada, contrato: string='NONE'): Observable<any>
   {
-    return this._http.get(`${this.API_URI}/Metadata/GET_METADATA_UI/${tipoModulo}/${tipoMetada}/${contrato}`);
+    return this._http.get(`${this.API_V2_URI}/generic/metadata/${tipoModulo}/${tipoMetada}/${contrato}`);
   }
 
    getComboOptions(endpoint?: string, staticOptions?: string): Observable<{ id: string; value: string }[]> {
@@ -79,7 +95,7 @@ export class FileService {
 
     var body = { id_user: user, id_organismo: municipio, id_contrato: contrato };
 
-    return this._http.post(`${this.API_URI}/helper/GET_CONTRATO_BY_ID`, body, {
+    return this._http.post(`${this.API_V2_URI}/organismos/contratos/${contrato}`, body, {
       responseType: 'json',
       headers: new HttpHeaders().append('Content-Type', 'application/json')
     });
@@ -104,7 +120,7 @@ export class FileService {
   }
 
   downloadOutputFile(tipoModulo: string, id: number): Observable<Blob> {
-    const url = `${this.API_URI}/IO/downloadtxtfile/${tipoModulo}/${id}`;
+    const url = `${this.API_V2_URI}/archivos/${id}/descargar`;
     return this._http.get(url, {
       responseType: 'blob',
       headers: new HttpHeaders().append('Content-Type', 'application/json')
@@ -115,7 +131,7 @@ export class FileService {
 
   getListForCombo(tipoModulo: TipoModulo): Observable<any> {
 
-    const url = `${this.API_URI}/helper/GET_LIST_FOR_COMBO/${tipoModulo}`;
+    const url = `${this.API_V2_URI}/organismos/combo/${tipoModulo}`;
     return this._http.get(url, {
       responseType: 'json',
       headers: new HttpHeaders().append('Content-Type', 'application/json')
@@ -125,7 +141,7 @@ export class FileService {
 
   dropBox(file: string) {
     var body = { filename: file };
-    return this._http.post(`${this.API_URI}/file/dropbox`, body, {
+    return this._http.post(`${this.API_V2_URI}/archivos/subir`, body, {
       responseType: 'blob',
       headers: new HttpHeaders().append('Content-Type', 'application/json')
     });
@@ -142,25 +158,25 @@ export class FileService {
   }
 
   getUsers(): Observable<any[]> {
-    const url = `${this.API_URI}/user/getUsers`;
+    const url = `${this.API_V2_URI}/usuarios`;
     return this._http.get<any[]>(url);
   }
 
   createUser(user: any): Observable<any> {
 
-    const url = `${this.API_URI}/user/createUser`;
+    const url = `${this.API_V2_URI}/usuarios`;
     return this._http.post(url, user);
   }
 
   updateUser(id: number, user: any): Observable<any> {
 
-    const url = `${this.API_URI}/user/updateUser`;
+    const url = `${this.API_V2_URI}/usuarios/${id}`;
     return this._http.put(url, user);
   }
 
   deleteUser(id: number): Observable<any> {
 
-    const url = `${this.API_URI}/user/deleteUser/${id}`;
+    const url = `${this.API_V2_URI}/usuarios/${id}`;
     return this._http.delete(url);
   }
 

@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Solicitud, Usuario, Params, Refuerzo, FinPago, dbResponse } from '../models/Model';
 import { Observable } from 'rxjs';
-import { GlobalVariable } from '../../environments/global';
+import { environment } from '../../environments/environment';
 
 
 @Injectable({
@@ -11,7 +11,7 @@ import { GlobalVariable } from '../../environments/global';
 
 export class LegajoService {
 
-  public API_URI = GlobalVariable.BASE_API_URL;
+  public API_URI = environment.apiUrl;
 
   constructor(private http: HttpClient) { }
 

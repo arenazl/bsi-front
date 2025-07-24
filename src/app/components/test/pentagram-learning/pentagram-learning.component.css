@@ -1,0 +1,15 @@
+.pentagrama-container {
+    text-align: left;
+    margin-top: 20px;
+  }
+  
+  .botonera {
+    margin-top: 20px;
+    text-align: left;
+  }
+  
+  button {
+    margin: 5px;
+    padding: 10px;
+    font-size: 18px;
+  }
