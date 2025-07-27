@@ -1,5 +1,5 @@
 export const environment = {
-  production: true,
+  production: false,
   apiUrl: 'https://bsi-back-new-bee31231bd56.herokuapp.com/api',
   appName: 'BSI Sistema de Gestión de Pagos',
   appVersion: '2.0.0',
