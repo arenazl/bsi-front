@@ -6,8 +6,14 @@ module.exports = {
       {
         test: /\.tsx?$/,
         exclude: /node_modules/,
-        options: {
-          transpileOnly: true
+        use: {
+          loader: 'ts-loader',
+          options: {
+            transpileOnly: true,
+            compilerOptions: {
+              jsx: 'react'
+            }
+          }
         }
       }
     ]

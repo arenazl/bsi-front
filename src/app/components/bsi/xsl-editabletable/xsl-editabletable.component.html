@@ -1,34 +1,52 @@
 
-<div *ngIf="isLoading" class="lds-roller">
-  <div></div>
-  <div></div>
-  <div></div>
-  <div></div>
-  <div></div>
-  <div></div>
-  <div></div>
-  <div></div>
+<div *ngIf="isLoading" class="flex items-center justify-center min-h-screen">
+  <div class="relative">
+    <div class="w-16 h-16 border-4 border-purple-200 border-t-purple-600 rounded-full animate-spin"></div>
+    <div class="absolute inset-0 flex items-center justify-center">
+      <div class="w-8 h-8 bg-purple-100 rounded-full animate-pulse"></div>
+    </div>
+  </div>
 </div>
 
-<div class="">
-
-<div class="card px-0 mb-3">
-
-  <div class="card-header pt-3 d-flex align-items-center">
-     
-    <button class="btn p-0 me-2" (click)="goBack()">
-      <i class="fas fa-arrow-circle-left" style="font-size: 170%; color:black !important; opacity: 0.7;"></i>
-    </button>
-    <h6>{{ organismoDescription }}</h6>
+<!-- Contenedor principal con fondo integrado -->
+<div class="min-h-screen">
+  <!-- Header integrado con el fondo -->
+  <div class="bg-gradient-to-br relative overflow-hidden">
+    <!-- Patrón decorativo de fondo -->
+    <div class="absolute inset-0 opacity-10">
+      <div class="absolute -top-24 -right-24 w-96 h-96 bg-white rounded-full"></div>
+      <div class="absolute -bottom-24 -left-24 w-96 h-96 bg-white rounded-full"></div>
+    </div>
+    
+    <!-- Contenido del header -->
+    <div class="relative z-10 px-8 py-12">
+      <div class="max-w-7xl mx-auto">
+        <button class="mb-4 p-2 hover:bg-white/20 rounded-full transition-colors duration-200 text-white" (click)="goBack()">
+          <i class="fas fa-arrow-circle-left text-3xl"></i>
+        </button>
+        <h1 class="text-2xl sm:text-3xl md:text-4xl font-bold text-white mb-2 whitespace-nowrap overflow-hidden text-ellipsis">{{ organismoDescription }}</h1>
+        <p class="text-xl text-white/90">Gestión de nómina y pagos</p>
+      </div>
+    </div>
   </div>
+  
+  <!-- Contenido principal con margen negativo para superposición -->
+  <div class="-mt-8 relative z-20 px-8 pb-8">
+    <div class="max-w-7xl mx-auto">
 
-  <div *ngIf="dbNominas?.header" class="card-body pb-2">
-    <div class="d-flex flex-wrap">
+<!-- Card de resumen de información -->
+<div class="card-theme rounded-3xl shadow-xl mb-6" *ngIf="dbNominas?.header" style="
+margin-left: 4em;
+margin-right: 4em;
+">
 
-      <div *ngFor="let field of metadata?.HEADER || []" class="d-flex flex-column justify-content-center" style="flex: 1 0 0%;">
+  <div class="p-8">
+    <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-4">
 
-        <div class="label fw-normal">{{ field.header }}:</div>
-        <p class="label fw-bold">
+      <div *ngFor="let field of metadata?.HEADER || []" 
+           class="btn-theme-accent flex-shrink-0">
+        <div class="text-sm text-theme-secondary mb-1">{{ field.header }}</div>
+        <p class="text-lg font-bold text-theme-primary">
           <!-- Apply pipe if it
             exists -->
           <ng-container *ngIf="field.pipe; else noPipeHeader">
@@ -46,18 +64,14 @@
         </p>
       </div>
 
-      <div class="d-flex flex-column justify-content-center" style="flex: 1 0 0%;">
-        <div class="label fw-normal"> Registros </div>
-        <p class="label fw-bold">
-            {{ selectedItems.length }}   
-        </p>
+      <div class="btn-theme-accent flex-shrink-0">
+        <div class="text-sm text-theme-secondary mb-1">Registros</div>
+        <p class="text-lg font-bold text-theme-primary">{{ selectedItems.length }}</p>
       </div>
 
-      <div class="d-flex flex-column justify-content-center" style="flex: 1 0 0%;">
-        <div class="label fw-normal"> Importe Total </div>
-        <p class="label fw-bold">
-            {{  dbNominas.header.importe_total | BsiCurrencyPipe }}   
-        </p>
+      <div class="btn-theme-accent flex-shrink-0">
+        <div class="text-sm text-theme-secondary mb-1">Importe Total</div>
+        <p class="text-lg font-bold text-theme-primary">{{ dbNominas.header.importe_total | BsiCurrencyPipe }}</p>
       </div>
         
       </div>
@@ -67,109 +81,132 @@
 </div>
 
 <!-- ACCIONES -->
-<div class="card px-0 mb-3">
-
-  <div class="card-header pt-3 pb-2">
-    <h6>Acciones</h6>
-  </div>
-
-  <div class="card-body d-flex flex-wrap">
-
-    <div class="form-group m-2 flex-fill">
-      <label class="label mb-2">Pagos Anteriores</label>
-      <select class="form-select" aria-label="Default select example" (change)="getListComboById($event)">
-        <option selected value="">Elija una pago </option>
-        <option *ngFor="let tran of tranfeList" [value]="tran.id">
-          {{ tran.descripcion }}
-        </option>
-      </select>
+<div class="card-theme rounded-3xl shadow-xl mb-6" style="margin-left: 6em;margin-right: 6em;">
+  <div class="px-10 py-8">
+    <!-- Título integrado con línea decorativa -->
+    <div class="flex items-center mb-6">
+      <div class="flex-1">
+        <h3 class="text-lg font-semibold text-gray-800">Acciones</h3>
+        <div class="h-1 w-16 bg-gradient-to-r from-[var(--primary-color)] to-[var(--secondary-color)] rounded-full mt-2"></div>
+      </div>
     </div>
+    <div class="flex flex-wrap gap-4 items-end">
 
-    <!-- Campo de búsqueda -->
-    <div class="form-group m-2 flex-fill">
-      <label class="label mb-2">Buscar</label>
-      <input type="text" class="form-control" [(ngModel)]="searchTerm" (ngModelChange)="applyFilter()" placeholder="Buscar..." />
-    </div>
+      <div class="flex-1 min-w-[180px]">
+        <label class="block text-sm font-medium text-gray-700 mb-2">Pagos Anteriores</label>
+        <select class="input-theme w-full" (change)="getListComboById($event)">
+          <option selected value="">Elija un pago</option>
+          <option *ngFor="let tran of tranfeList" [value]="tran.id">
+            {{ tran.descripcion }}
+          </option>
+        </select>
+      </div>
+
+      <!-- Campo de búsqueda -->
+      <div class="flex-1 min-w-[180px]">
+        <label class="block text-sm font-medium text-gray-700 mb-2">Buscar</label>
+        <input type="text" class="input-theme w-full" [(ngModel)]="searchTerm" (ngModelChange)="applyFilter()" placeholder="Buscar..." />
+      </div>
   
-    <!-- Campos de CBU, CUIL y Nombre dentro de la misma tarjeta -->
-    <div class="form-group m-2 flex-fill">
-      <label class="label mb-2">CBU</label>
-      <input type="text" class="form-control" [(ngModel)]="newItem.cbu" placeholder="Ingrese CBU" />
-    </div>
+      <!-- Campos de CBU, CUIL y Nombre dentro de la misma tarjeta -->
+      <div class="flex-1 min-w-[140px]">
+        <label class="block text-sm font-medium text-gray-700 mb-2">CBU</label>
+        <input type="text" class="input-theme w-full" [(ngModel)]="newItem.cbu" placeholder="Ingrese CBU" />
+      </div>
   
-    <div class="form-group m-2 flex-fill">
-      <label class="label mb-2">CUIL</label>
-      <input type="text" class="form-control" [(ngModel)]="newItem.cuil" placeholder="Ingrese CUIL" />
-    </div>
+      <div class="flex-1 min-w-[140px]">
+        <label class="block text-sm font-medium text-gray-700 mb-2">CUIL</label>
+        <input type="text" class="input-theme w-full" [(ngModel)]="newItem.cuil" placeholder="Ingrese CUIL" />
+      </div>
 
     <ng-container *ngIf="contrato == 4">
 
-      <div class="form-group m-2 flex-fill">
-        <label class="label mb-2">Razon Social</label>
-        <input type="text" class="form-control" [(ngModel)]="newItem.nombre" placeholder="Ingrese Razon Social" />
-      </div>
+        <div class="flex-1 min-w-[180px]">
+          <label class="block text-sm font-medium text-gray-700 mb-2">Razón Social</label>
+          <input type="text" class="input-theme w-full" [(ngModel)]="newItem.nombre" placeholder="Ingrese Razón Social" />
+        </div>
 
     </ng-container>
 
     <ng-container *ngIf="contrato != 4">
 
-    <div class="form-group m-2 flex-fill">
-      <label class="label mb-2">Apellido</label>
-      <input type="text" class="form-control" [(ngModel)]="newItem.apellido" placeholder="Ingrese Apellido" />
-    </div>
+      <div class="flex-1 min-w-[140px]">
+        <label class="block text-sm font-medium text-gray-700 mb-2">Apellido</label>
+        <input type="text" class="input-theme w-full" [(ngModel)]="newItem.apellido" placeholder="Ingrese Apellido" />
+      </div>
   
-    <div class="form-group m-2 flex-fill">
-      <label class="label mb-2">Nombre</label>
-      <input type="text" class="form-control" [(ngModel)]="newItem.nombre" placeholder="Ingrese Nombre" />
-    </div>
+      <div class="flex-1 min-w-[140px]">
+        <label class="block text-sm font-medium text-gray-700 mb-2">Nombre</label>
+        <input type="text" class="input-theme w-full" [(ngModel)]="newItem.nombre" placeholder="Ingrese Nombre" />
+      </div>
     
     </ng-container>
   
-    <!-- Botón para agregar a la lista superior -->
-    <button class="btn btn-primary m-2 align-self-end" (click)="addNewItem()">Agregar a la Lista</button>
+      <!-- Botón para agregar a la lista -->
+      <button class="btn-theme-accent flex-shrink-0" (click)="addNewItem()">
+        <i class="fas fa-plus mr-2"></i>
+        Agregar a la Lista
+      </button>
+    </div>
   </div>
 
 
 </div>
 
 <!-- Lista Principal -->
-
-<div class="card px-0 mb-3">
-
-  <div class="card-header pt-3 pb-2">
-    <h6>Nomina</h6>
-  </div>
+<div class="card-theme rounded-3xl shadow-xl mb-6" style="margin-left: 6em; margin-right: 6em;">
+  <div class="p-6">
+    <!-- Título con diseño minimalista -->
+    <div class="flex items-center justify-between mb-4">
+      <div>
+        <h3 class="text-lg font-semibold text-gray-800 inline-flex items-center gap-2">
+          <span class="w-2 h-2 bg-theme-primary rounded-full"></span>
+          Nómina
+        </h3>
+      </div>
+      <div class="text-sm text-gray-500">
+        <span *ngIf="!isNominasEmpty">{{ filteredItems.length }} registros</span>
+      </div>
+    </div>
 
     <!-- Mostrar mensaje si no hay nóminas cargadas -->
-    <div *ngIf="isNominasEmpty" class="card-body text-center text-muted">
-      <p>No hay nóminas cargadas.</p>
+    <div *ngIf="isNominasEmpty" class="p-8 text-center text-gray-500">
+      <i class="fas fa-inbox text-6xl mb-4 opacity-50 text-theme-secondary"></i>
+      <p class="text-lg">No hay nóminas cargadas.</p>
     </div>
   
     <!-- Tabla de nóminas si hay elementos -->
-    <div class="card-body m-3 p-0" *ngIf="!isNominasEmpty">
-    <div class="table-responsive table-style">
-      <table class="table table-striped table-condensed table-hover mb-0">
-        <thead class="opacity-style">
-          <tr class="header-style">
-            <th class="text-start">#</th>
-            <th *ngFor="let col of metadata['TABLE-COLUMN']" [class.text-start]="col.type === 'text'"
-              [class.text-center]="col.type === 'result'" [class.text-end]="col.type === 'currency'">
+    <div *ngIf="!isNominasEmpty">
+    <div class="overflow-x-auto">
+      <table class="w-full rounded-lg overflow-hidden">
+        <thead class="bg-gradient-to-r from-[var(--primary-color)] via-[var(--secondary-color)] to-[var(--complementary-color)]">
+          <tr>
+            <th class="text-left px-4 py-3 text-white font-semibold bg-black/10">#</th>
+            <th *ngFor="let col of metadata['TABLE-COLUMN']" 
+                [class.text-left]="col.type === 'text'"
+                [class.text-center]="col.type === 'result'" 
+                [class.text-right]="col.type === 'currency'"
+                class="px-4 py-3 text-white font-semibold bg-black/10">
               {{ col.header }}
             </th>
-            <th class="text-end">Importe</th>
-            <th class="text-end">Activo</th>
-            <th class="text-end">Editar</th>
-            <th class="text-end">Eliminar</th>
+            <th class="text-right px-4 py-3 text-white font-semibold bg-black/10">Importe</th>
+            <th class="text-right px-4 py-3 text-white font-semibold bg-black/10">Activo</th>
+            <th class="text-right px-4 py-3 text-white font-semibold bg-black/10">Editar</th>
+            <th class="text-right px-4 py-3 text-white font-semibold bg-black/10">Eliminar</th>
           </tr>
         </thead>
-        <tbody class="monospace-text table-verified-ft">
+        <tbody>
           <ng-container *ngFor="let sol of filteredItems; let i = index">
-            <tr style="line-height: 2;">
-              <td [ngClass]="{ 'text-danger': sol.VALIDO === 0, 'text-start': true }">
+            <tr class="border-b border-gray-200 hover:bg-white/80 transition-all duration-200" 
+                [ngClass]="{'bg-gradient-to-r from-[rgba(var(--primary-color-rgb),0.05)] to-[rgba(var(--complementary-color-rgb),0.1)]': i % 2 === 0, 'bg-white/50': i % 2 !== 0}">
+              <td [ngClass]="{ 'text-red-600 font-semibold': sol.VALIDO === 0 }" class="px-4 py-3 text-gray-800">
                 {{ i + 1 }}
               </td>
-              <td *ngFor="let col of metadata['TABLE-COLUMN']" [class.text-start]="col.type === 'text'"
-                [class.text-center]="col.type === 'result'" [class.text-end]="col.type === 'currency'">
+              <td *ngFor="let col of metadata['TABLE-COLUMN']" 
+                  [class.text-left]="col.type === 'text'"
+                  [class.text-center]="col.type === 'result'" 
+                  [class.text-right]="col.type === 'currency'"
+                  class="px-4 py-3 text-gray-800">
                 <ng-container *ngIf="col.type === 'BsiCurrencyPipe'">
                   {{ sol[col.field] | BsiCurrencyPipe }}
                 </ng-container>
@@ -183,31 +220,40 @@
                   {{ sol[col.field] | date:'dd/MM/yyyy' }}
                 </ng-container>
               </td>
-              <td class="text-end">
-                <input type="text" class="form-control" [(ngModel)]="sol.importe"
-                  (ngModelChange)="updateImporte(sol, $event)" style="line-height: 1;" currencyMask [options]="{
-                    prefix: '$',
-                    thousands: '.',
-                    decimal: ',',
-                    align: 'right',
-                    allowNegative: false,
-                    precision: 2
-                  }" placeholder="Ingrese importe" />
+              <td class="text-right px-4 py-3">
+                <input type="text" 
+                       class="input-theme w-32 text-right" 
+                       [(ngModel)]="sol.importe"
+                       (ngModelChange)="updateImporte(sol, $event)" 
+                       currencyMask 
+                       [options]="{
+                         prefix: '$',
+                         thousands: '.',
+                         decimal: ',',
+                         align: 'right',
+                         allowNegative: false,
+                         precision: 2
+                       }" 
+                       placeholder="Importe" />
               </td>
               
-              <td class="text-end">
-                <label class="switch">
-                  <input type="checkbox" [(ngModel)]="sol.toggleEnabled" (ngModelChange)="toggleImporte(sol)" />
-                  <span class="slider round"></span>
+              <td class="text-right px-4 py-3">
+                <label class="relative inline-flex items-center cursor-pointer">
+                  <input type="checkbox" class="sr-only peer" [(ngModel)]="sol.toggleEnabled" (ngModelChange)="toggleImporte(sol)">
+                  <div class="w-11 h-6 bg-gray-300 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-[var(--complementary-color)]/30 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-blue-600/80 after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-gray-400 after:border after:border-gray-400 after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[var(--complementary-color)] peer-checked:after:bg-blue-600/80 peer-checked:after:border-blue-600/80 shadow-inner hover:bg-gray-400 transition-all duration-200"></div>
                 </label>
               </td>
               <!-- icono de Editar -->
-              <td class="text-end">
-                <i class="fa fa-edit" (click)="showEditPopup(sol, i)" style="font-size: 1.30rem;color: black !important;opacity: 0.5;" ></i>
+              <td class="text-right px-4 py-3">
+                <button class="btn-theme-accent flex-shrink-0" (click)="showEditPopup(sol, i)">
+                  <i class="fas fa-edit text-lg" style="color: #6d6d6d"></i>
+                </button>
               </td>
               <!-- icono de Eliminar -->
-              <td class="text-end">
-                <i class="fa fa-trash text-danger cursor-pointer me-3"(click)="showDeletePopup(sol, i)" style="font-size: 1.30rem;color: black !important;opacity: 0.5;"></i>
+              <td class="text-right px-4 py-3">
+                <button class="btn-theme-accent flex-shrink-0" (click)="showDeletePopup(sol, i)">
+                  <i class="fas fa-trash text-lg" style="color: #6d6d6d"></i>
+                </button>
               </td>
             </tr>
           </ng-container>
@@ -219,34 +265,47 @@
 </div>
 
 <!-- Nueva lista de elementos seleccionados -->
-<div class="card px-0 mb-3" *ngIf="selectedItems.length > 0">
-  <div class="card-header pt-3 pb-2">
-    <h6>Elementos Seleccionados</h6>
-  </div>
-  <div class="card-body">
+<div id="selected-items-section" class="card-theme rounded-3xl shadow-xl mb-6" *ngIf="selectedItems.length > 0">
+  <div class="p-6">
+    <!-- Título con badge de cantidad -->
+    <div class="flex items-center justify-between mb-4">
+      <h3 class="text-lg font-semibold text-gray-800 inline-flex items-center gap-3">
+        <span class="w-2 h-2 bg-theme-complementary rounded-full"></span>
+        Elementos Seleccionados
+        <span class="bg-theme-complementary/10 text-theme-complementary text-sm font-medium px-2.5 py-0.5 rounded-full">
+          {{ selectedItems.length }}
+        </span>
+      </h3>
+    </div>
 
-    <div class="table-responsive table-style">
-
-      <table class="table table-striped table-condensed table-hover mb-0">
-        <thead class="opacity-style">
-          <tr class="header-style">
-            <th class="text-start">#</th>
-            <th *ngFor="let col of metadata['TABLE-COLUMN']" [class.text-start]="col.type === 'text'"
-              [class.text-center]="col.type === 'result'" [class.text-end]="col.type === 'currency'">
+    <div class="overflow-x-auto">
+      <table class="w-full rounded-lg overflow-hidden">
+        <thead class="bg-gradient-to-r from-[var(--primary-color)] via-[var(--complementary-color)] to-[var(--secondary-color)]">
+          <tr>
+            <th class="text-left px-4 py-3 text-white font-semibold bg-black/10">#</th>
+            <th *ngFor="let col of metadata['TABLE-COLUMN']" 
+                [class.text-left]="col.type === 'text'"
+                [class.text-center]="col.type === 'result'" 
+                [class.text-right]="col.type === 'currency'"
+                class="px-4 py-3 text-white font-semibold bg-black/10">
               {{ col.header }}
             </th>
-            <th class="text-end">Importe</th>
-            <th class="text-end">Acciones</th> <!-- Nueva columna para eliminar -->
+            <th class="text-right px-4 py-3 text-white font-semibold bg-black/10">Importe</th>
+            <th class="text-right px-4 py-3 text-white font-semibold bg-black/10">Acciones</th>
           </tr>
         </thead>
-        <tbody class="monospace-text table-verified-ft" style="background: linear-gradient(290deg, #00968725, #0d6dfd11) !important;">
+        <tbody>
           <ng-container *ngFor="let item of selectedItems; let i = index">
-            <tr style="line-height: 2;">
-              <td [ngClass]="{ 'text-danger': item.VALIDO === 0, 'text-start': true }">
+            <tr class="border-b border-theme-complementary/20 hover:bg-white/80 transition-all duration-200"
+                [ngClass]="{'bg-gradient-to-r from-theme-complementary/5 to-theme-primary/10': i % 2 === 0, 'bg-theme-complementary/5': i % 2 !== 0}">
+              <td [ngClass]="{ 'text-red-600 font-semibold': item.VALIDO === 0 }" class="px-4 py-3 text-gray-800">
                 {{ i + 1 }}
               </td>
-              <td *ngFor="let col of metadata['TABLE-COLUMN']" [class.text-start]="col.type === 'text'"
-                [class.text-center]="col.type === 'result'" [class.text-end]="col.type === 'currency'">
+              <td *ngFor="let col of metadata['TABLE-COLUMN']" 
+                  [class.text-left]="col.type === 'text'"
+                  [class.text-center]="col.type === 'result'" 
+                  [class.text-right]="col.type === 'currency'"
+                  class="px-4 py-3 text-gray-800">
                 <ng-container *ngIf="col.type === 'BsiCurrencyPipe'">
                   {{ item[col.field] | BsiCurrencyPipe }}
                 </ng-container>
@@ -260,33 +319,30 @@
                   {{ item[col.field] | date:'dd/MM/yyyy' }}
                 </ng-container>
               </td>
-              <td class="text-end">{{ item.importe | BsiCurrencyPipe }}</td>
+              <td class="text-right px-4 py-3 font-semibold">{{ item.importe | BsiCurrencyPipe }}</td>
               
-              <td class="text-end">
-                <!-- Icono de tacho de basura -->
-                <i class="fa fa-trash text-danger cursor-pointer me-3" style="font-size: 1.30rem;color: black !important;opacity: 0.5;" (click)="removeFromSelected(item)"></i>
+              <td class="text-right px-4 py-3">
+                <button class="btn-theme-accent flex-shrink-0" (click)="removeFromSelected(item)">
+                  <i class="fas fa-trash text-lg" style="color: #6d6d6d"></i>
+                </button>
               </td>
             
             </tr>
           </ng-container>
         </tbody>
         <tfoot>
-          <tr style="padding-right: 24px !important;font-style: italic;">
-            <!-- Usa [attr.colspan] para enlazar dinámicamente el valor de colspan -->
-            <td [attr.colspan]="(metadata['TABLE-COLUMN']?.length || 0) + 3" class="text-end fw-bold" style="
-            padding-right: 24px !important;
-        ">
-              <!-- Footer con la cantidad de elementos seleccionados y el importe total -->
-              <span class="me-3">
-
-                <span class="fw-normal pe-2">Cantidad:</span> 
-                <span class="fw-bold">{{ selectedItems.length }}</span>
-              </span>
-              <span>
-           
-                <span class="fw-normal pe-2">Total:</span> 
-                <span class="fw-bold">{{ dbNominas.header.importe_total | BsiCurrencyPipe }}</span>
-              </span>
+          <tr class="bg-gradient-to-r from-gray-100 to-gray-50 font-semibold">
+            <td [attr.colspan]="(metadata['TABLE-COLUMN']?.length || 0) + 3" class="text-right px-6 py-4">
+              <div class="flex justify-end items-center gap-6">
+                <span>
+                  <span class="text-gray-600">Cantidad:</span> 
+                  <span class="text-lg text-theme-primary">{{ selectedItems.length }}</span>
+                </span>
+                <span>
+                  <span class="text-gray-600">Total:</span> 
+                  <span class="text-lg text-theme-primary">{{ dbNominas.header.importe_total | BsiCurrencyPipe }}</span>
+                </span>
+              </div>
             </td>
           </tr>
         </tfoot>
@@ -297,42 +353,40 @@
 
 
   <!-- ACCIONES -->
-  <div
-  class="card px-0 mb-3"
-  >
-  <div class="card-header pt-3 pb-2">
-    <h6>Acciones</h6>
-  </div>
-  
-  <div class="card-body d-flex flex-wrap">
-  
-    <button (click)="sendFile()"  
-      type="button"
-      class="btn btn-primary col-12 col-md-2 d-flex align-items-center justify-content-center"
-    >
-      <i class="fa fa-file-contract me-2"></i>
-      Enviar Archivo
-    </button>
-  
-  </div>
-
+  <div class="card-theme rounded-3xl shadow-xl mb-6">
+    <div class="p-8">
+      <!-- Título simple y moderno -->
+      <h3 class="text-lg font-semibold text-gray-800 mb-6 flex items-center gap-2">
+        <i class="fas fa-paper-plane text-theme-primary"></i>
+        Acciones Finales
+      </h3>
+      <button (click)="sendFile()"  
+        type="button"
+        class="btn-theme-accent btn-icon"
+      >
+        <i class="fas fa-file-export"></i>
+        <span>Enviar Archivo</span>
+      </button>
+    </div>
   </div>
 
 
+    </div>
+  </div>
+</div>
 
-  
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  
+<!-- Botón flotante fijo en la parte inferior derecha del viewport -->
+<div *ngIf="selectedItems.length > 0" 
+     class="fixed bottom-8 right-8 z-50">
+  <button type="button"
+          (click)="scrollToSelectedItems()"
+          class="bg-gradient-to-r from-[var(--primary-color)] to-[var(--secondary-color)] text-white px-6 py-4 rounded-full shadow-2xl hover:shadow-3xl transform hover:scale-105 transition-all duration-300 flex items-center gap-3 group cursor-pointer">
+    <!-- Círculo blanco con flecha arriba (al hacer click te lleva arriba) -->
+    <span (click)="scrollToTop(); $event.stopPropagation()"
+          class="bg-white text-[var(--primary-color)] w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm group-hover:scale-110 transition-transform cursor-pointer hover:bg-gray-100">
+      <i class="fas fa-arrow-up"></i>
+    </span>
+    <span class="font-semibold">Ver seleccionados</span>
+    <i class="fas fa-arrow-down animate-bounce"></i>
+  </button>
+</div>

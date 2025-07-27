@@ -9,7 +9,7 @@ import Swal from 'sweetalert2';
 @Component({
   selector: 'app-dashboard-wrapper',
   templateUrl: './dashboard-wrapper.component.html',
-  styleUrls: ['../../../styles-react.css']
+  styleUrls: []
 })
 export class DashboardWrapperComponent implements OnInit, AfterViewInit {
 

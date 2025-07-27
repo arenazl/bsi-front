@@ -1,0 +1,181 @@
+/**
+ * MÉTODOS DE GUARDS Y SUS TIPOS DE RETORNO
+ * Todos retornan boolean | Observable<boolean> | Promise<boolean>
+ */
+
+// 1. CanActivate - El más común
+interface CanActivate {
+  canActivate(
+    route: ActivatedRouteSnapshot,
+    state: RouterStateSnapshot
+  ): boolean | Observable<boolean> | Promise<boolean>;
+}
+
+// 2. CanActivateChild - Para rutas hijas
+interface CanActivateChild {
+  canActivateChild(
+    childRoute: ActivatedRouteSnapshot,
+    state: RouterStateSnapshot
+  ): boolean | Observable<boolean> | Promise<boolean>;
+}
+
+// 3. CanDeactivate - Para salir de una ruta
+interface CanDeactivate<T> {
+  canDeactivate(
+    component: T,
+    currentRoute: ActivatedRouteSnapshot,
+    currentState: RouterStateSnapshot,
+    nextState?: RouterStateSnapshot
+  ): boolean | Observable<boolean> | Promise<boolean>;
+}
+
+// 4. CanLoad - Para lazy loading
+interface CanLoad {
+  canLoad(
+    route: Route,
+    segments: UrlSegment[]
+  ): boolean | Observable<boolean> | Promise<boolean>;
+}
+
+/**
+ * EJEMPLOS DE RETORNOS
+ */
+
+// EJEMPLO 1: Retorno directo booleano (síncrono)
+canActivate(): boolean {
+  const isLoggedIn = this.authService.isAuthenticated();
+  
+  if (isLoggedIn) {
+    return true;  // ✅ Permite acceso
+  } else {
+    return false; // ❌ Bloquea acceso
+  }
+}
+
+// EJEMPLO 2: Retorno con Promise (asíncrono)
+canActivate(): Promise<boolean> {
+  return new Promise((resolve) => {
+    // Simular verificación asíncrona
+    setTimeout(() => {
+      const hasPermission = Math.random() > 0.5;
+      resolve(hasPermission); // true o false
+    }, 1000);
+  });
+}
+
+// EJEMPLO 3: Retorno con Observable (reactivo)
+canActivate(): Observable<boolean> {
+  // Verificar permisos en el servidor
+  return this.http.get<{allowed: boolean}>('/api/check-permission')
+    .pipe(
+      map(response => response.allowed), // Mapear a boolean
+      catchError(() => of(false)) // En caso de error, denegar
+    );
+}
+
+// EJEMPLO 4: Lógica compleja con múltiples verificaciones
+canActivate(route: ActivatedRouteSnapshot): Observable<boolean> {
+  // Verificación 1: Usuario autenticado
+  if (!this.authService.isAuthenticated()) {
+    return of(false);
+  }
+  
+  // Verificación 2: Rol correcto
+  const requiredRole = route.data['role'];
+  const userRole = this.authService.getUserRole();
+  
+  if (userRole !== requiredRole) {
+    return of(false);
+  }
+  
+  // Verificación 3: Permisos del servidor (asíncrono)
+  return this.permissionService.checkPermission(route.data['permission'])
+    .pipe(
+      map(hasPermission => {
+        if (hasPermission) {
+          console.log('✅ Todas las verificaciones pasaron');
+          return true;
+        } else {
+          console.log('❌ Sin permisos');
+          return false;
+        }
+      })
+    );
+}
+
+/**
+ * PATRÓN COMÚN: Guard con efectos secundarios
+ */
+canActivate(): boolean {
+  const isAuthenticated = this.authService.isAuthenticated();
+  
+  if (!isAuthenticated) {
+    // Efecto secundario: mostrar mensaje
+    this.showLoginMessage();
+    
+    // Efecto secundario: redirigir
+    this.router.navigate(['/login']);
+    
+    // Retornar false para bloquear
+    return false;
+  }
+  
+  // Si todo está bien, permitir
+  return true;
+}
+
+/**
+ * TRUCOS Y TIPS
+ */
+
+// 1. Combinar múltiples condiciones
+canActivate(): boolean {
+  return this.checkAuth() && 
+         this.checkRole() && 
+         this.checkPermission();
+}
+
+// 2. Early return para código más limpio
+canActivate(): boolean {
+  if (!this.isLoggedIn()) return false;
+  if (!this.hasRole('admin')) return false;
+  if (!this.isBusinessHours()) return false;
+  
+  return true; // Todas las verificaciones pasaron
+}
+
+// 3. Async/Await con Observables
+async canActivate(): Promise<boolean> {
+  try {
+    const user = await this.authService.getCurrentUser().toPromise();
+    const permissions = await this.permissionService.getPermissions().toPromise();
+    
+    return user && permissions.includes('admin');
+  } catch (error) {
+    console.error('Error en guard:', error);
+    return false;
+  }
+}
+
+// 4. Guard que siempre permite pero registra
+canActivate(route: ActivatedRouteSnapshot): boolean {
+  // Registrar acceso para analytics
+  this.analytics.track('route_accessed', {
+    path: route.url.toString(),
+    user: this.authService.getCurrentUser()
+  });
+  
+  return true; // Siempre permite
+}
+
+// 5. Guard con timeout
+canActivate(): Observable<boolean> {
+  return this.authService.verifyToken().pipe(
+    timeout(5000), // Timeout de 5 segundos
+    map(() => true),
+    catchError(() => {
+      console.error('Verificación timeout o falló');
+      return of(false);
+    })
+  );
+}

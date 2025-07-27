@@ -1,6 +1,24 @@
+/* Sobrescribir estilos globales para el diseño personalizado */
+.main-menu-custom-design {
+  /* Forzar que los estilos de Tailwind tengan prioridad */
+  all: initial;
+  font-family: inherit;
+}
 
-.swal2-popup {
+/* Asegurar que el fondo oscuro se aplique */
+.main-menu-custom-design[data-design="dark-neon"] {
+  background-color: rgb(17 24 39) !important; /* gray-900 */
+  color: white !important;
+}
 
-    height: 50vh !important;
+/* Resetear estilos de tarjetas */
+.main-menu-custom-design .activity-card,
+.main-menu-custom-design [class*="card"] {
+  all: unset;
+  display: block;
+}
 
+/* Asegurar que no se apliquen los estilos globales */
+.main-menu-modern .activity-card {
+  display: none !important;
 }

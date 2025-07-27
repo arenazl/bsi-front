@@ -1,8 +1,713 @@
 
+/* ========================================
+   FONDO GLOBAL DE LA APLICACIÓN
+   ======================================== */
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+}
+
+body {
+  position: relative;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* Blurred background image */
+body::after {
+  content: '';
+  position: fixed;
+  top: -10px;
+  left: -10px;
+  right: -10px;
+  bottom: -10px;
+  background-image: url('/assets/images/backgrounds/desktop-wallpaper-modern-home-office-for-inspiration-futuristic-office.jpg');
+  background-size: cover;
+  background-position: center center;
+  background-attachment: fixed;
+  background-repeat: no-repeat;
+  filter: blur(8px);
+  z-index: -2;
+}
+
+/* Theme-based color overlay */
+body::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, 
+    rgba(var(--primary-color-rgb), 0.5),    /* Adjust this value (0-1) for primary color intensity */
+    rgba(var(--secondary-color-rgb), 0.4),  /* Adjust this value (0-1) for secondary color intensity */
+    rgba(var(--accent-color-rgb), 0.5)      /* Adjust this value (0-1) for accent color intensity */
+  );
+  mix-blend-mode: normal;
+  pointer-events: none;
+  z-index: -1;
+}
+
+/* ========================================
+   GRADIENTE GLOBAL PARA HEADERS
+   ======================================== */
+.bg-gradient-to-br {
+  background: linear-gradient(135deg, #1a1a1a, var(--secondary-color)) !important;
+  color: white !important;
+}
+
+.bg-gradient-to-br * {
+  color: white !important;
+}
+
+/* ========================================
+   SISTEMA DE TEMAS - DEBE CARGAR PRIMERO
+   ======================================== */
+
+/* Tema por defecto */
+:root {
+  --primary-color: #1e3a8a;
+  --navbar-bg: #1e3a8a;
+  --navbar-text: #ffffff;
+  --navbar-hover: rgba(255, 255, 255, 0.1);
+  --header-gradient-start: #1e3a8a;
+  --header-gradient-end: #2563eb;
+  --header-text: #ffffff;
+  --btn-primary-bg: #2563eb;
+  --btn-primary-hover: #1d4ed8;
+  --btn-primary-text: #ffffff;
+  --btn-border-radius: 0.75rem;
+  --theme-transition: all 0.3s ease;
+}
+
+/* Tema Enterprise Green */
+[data-theme="enterprise-green"],
+.theme-enterprise-green {
+  --primary-color: #14532d;
+  --navbar-bg: #14532d;
+  --navbar-text: #ffffff;
+  --navbar-hover: rgba(255, 255, 255, 0.1);
+  --header-gradient-start: #166534;
+  --header-gradient-end: #15803d;
+  --header-text: #ffffff;
+  --header-text-secondary: rgba(255, 255, 255, 0.9);
+  --btn-primary-bg: #16a34a;
+  --btn-primary-hover: #15803d;
+  --btn-primary-text: #ffffff;
+  --btn-secondary-bg: #f0fdf4;
+  --btn-secondary-hover: #dcfce7;
+  --btn-secondary-text: #14532d;
+  --btn-border-radius: 0.75rem;
+}
+
+/* Tema Modern Purple */
+[data-theme="modern-purple"],
+.theme-modern-purple {
+  --primary-color: #6b21a8;
+  --navbar-bg: #6b21a8;
+  --navbar-text: #ffffff;
+  --navbar-hover: rgba(255, 255, 255, 0.15);
+  --header-gradient-start: #7c3aed;
+  --header-gradient-end: #8b5cf6;
+  --header-text: #ffffff;
+  --btn-primary-bg: #8b5cf6;
+  --btn-primary-hover: #7c3aed;
+  --btn-primary-text: #ffffff;
+}
+
+/* Tema Executive Gray */
+[data-theme="executive-gray"],
+.theme-executive-gray {
+  --primary-color: #1f2937;
+  --navbar-bg: #1f2937;
+  --navbar-text: #ffffff;
+  --navbar-hover: rgba(255, 255, 255, 0.1);
+  --header-gradient-start: #374151;
+  --header-gradient-end: #4b5563;
+  --header-text: #ffffff;
+  --btn-primary-bg: #374151;
+  --btn-primary-hover: #1f2937;
+  --btn-primary-text: #ffffff;
+}
+
+/* Tema Ocean Teal */
+[data-theme="ocean-teal"],
+.theme-ocean-teal {
+  --primary-color: #0f766e;
+  --navbar-bg: #0f766e;
+  --navbar-text: #ffffff;
+  --navbar-hover: rgba(255, 255, 255, 0.12);
+  --header-gradient-start: #0d9488;
+  --header-gradient-end: #0f766e;
+  --header-text: #ffffff;
+  --btn-primary-bg: #0d9488;
+  --btn-primary-hover: #0f766e;
+  --btn-primary-text: #ffffff;
+}
+
+/* Clases de utilidad */
+.navbar-theme {
+  background-color: var(--navbar-bg) !important;
+  color: var(--navbar-text) !important;
+  transition: var(--theme-transition);
+}
+
+.navbar-theme * {
+  color: inherit !important;
+}
+
+.header-theme {
+  background: linear-gradient(135deg, 
+    rgba(var(--primary-color-rgb, 30, 58, 138), 0.08), 
+    rgba(var(--accent-color-rgb, 96, 165, 250), 0.05)
+  ) !important;
+  border-bottom: 1px solid rgba(var(--primary-color-rgb, 30, 58, 138), 0.1) !important;
+  color: var(--text-primary) !important;
+  transition: var(--theme-transition);
+}
+
+.header-theme * {
+  color: inherit !important;
+}
+
+.btn-theme-primary {
+  background-color: var(--btn-primary-bg) !important;
+  color: var(--btn-primary-text) !important;
+  border-radius: var(--btn-border-radius) !important;
+  transition: var(--theme-transition);
+}
+
+.btn-theme-primary:hover {
+  background-color: var(--btn-primary-hover) !important;
+}
+
+.btn-theme-secondary {
+  background-color: var(--btn-secondary-bg) !important;
+  color: var(--btn-secondary-text) !important;
+  border-radius: var(--btn-border-radius) !important;
+  transition: var(--theme-transition);
+}
+
+.btn-theme-secondary:hover {
+  background-color: var(--btn-secondary-hover) !important;
+}
+
+/* Clases adicionales para bordes y sombras del tema */
+.border-theme {
+  border-color: var(--border-color) !important;
+  transition: var(--theme-transition);
+}
+
+.text-theme-primary {
+  color: var(--text-primary) !important;
+  transition: var(--theme-transition);
+}
+
+.text-theme-secondary {
+  color: var(--text-secondary) !important;
+  transition: var(--theme-transition);
+}
+
+.bg-theme-primary {
+  background-color: var(--bg-primary) !important;
+  transition: var(--theme-transition);
+}
+
+.bg-theme-secondary {
+  background-color: var(--bg-secondary) !important;
+  transition: var(--theme-transition);
+}
+
+.bg-theme-tertiary {
+  background-color: var(--bg-tertiary) !important;
+  transition: var(--theme-transition);
+}
+
+/* Aplicar color primario a bordes de inputs y botones */
+.input-theme {
+  border-color: var(--border-color) !important;
+  transition: var(--theme-transition);
+}
+
+.input-theme:focus {
+  border-color: var(--primary-color) !important;
+  box-shadow: 0 0 0 3px rgba(var(--primary-color), 0.1) !important;
+}
+
+/* Cards y contenedores con tema */
+.card-theme {
+  background-color: rgba(255, 255, 255, 0.95) !important;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(229, 231, 235, 0.8) !important;
+  transition: var(--theme-transition);
+}
+
+.card-theme-secondary {
+  background-color: rgba(249, 250, 251, 0.95) !important;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(229, 231, 235, 0.8) !important;
+  transition: var(--theme-transition);
+}
+
+/* Tailwind CSS - Debe ir después de las variables */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ========================================
+   CLASES GLOBALES DE BOTONES DEL TEMA
+   ======================================== */
+
+/* Botón primario - Color principal del tema */
+.btn-theme-primary {
+  background-color: var(--btn-primary-bg) !important;
+  color: var(--btn-primary-text) !important;
+  border: 2px solid var(--btn-primary-bg) !important;
+  border-radius: var(--btn-border-radius) !important;
+  padding: 0.75rem 1.5rem !important;
+  font-weight: 600 !important;
+  font-size: 0.875rem !important;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-block;
+  box-shadow: 0 4px 15px var(--shadow-color) !important;
+  position: relative;
+  overflow: hidden;
+  transform-style: preserve-3d;
+  perspective: 1000px;
+}
+
+/* Barra de progreso inferior */
+.btn-theme-primary::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: linear-gradient(90deg, 
+    var(--btn-primary-text), 
+    var(--accent-color, var(--btn-primary-text))
+  );
+  transition: width 0.4s ease;
+}
+
+.btn-theme-primary:hover::after {
+  width: 100%;
+}
+
+/* Efecto de brillo que recorre el botón */
+.btn-theme-primary::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.3),
+    transparent
+  );
+  transition: left 0.6s ease;
+}
+
+.btn-theme-primary:hover::before {
+  left: 100%;
+}
+
+.btn-theme-primary:hover {
+  background-color: var(--btn-primary-hover) !important;
+  border-color: var(--btn-primary-hover) !important;
+  transform: translateY(-4px) !important;
+  box-shadow: 
+    0 12px 20px -5px rgba(0, 0, 0, 0.2),
+    0 0 25px -5px var(--primary-color) !important;
+  animation: vibrate 0.3s ease-in-out;
+}
+
+@keyframes vibrate {
+  0%, 100% { transform: translateY(-4px); }
+  25% { transform: translateY(-6px); }
+  75% { transform: translateY(-2px); }
+}
+
+.btn-theme-primary:active {
+  transform: perspective(1000px) rotateX(0deg) translateY(-2px) scale(0.95) !important;
+  box-shadow: 0 4px 15px var(--shadow-color) !important;
+}
+
+/* Botón secundario - Color secundario del tema */
+.btn-theme-secondary {
+  background-color: var(--btn-secondary-bg) !important;
+  color: var(--btn-secondary-text) !important;
+  border: 2px solid var(--border-color) !important;
+  border-radius: var(--btn-border-radius) !important;
+  padding: 0.75rem 1.5rem !important;
+  font-weight: 600 !important;
+  font-size: 0.875rem !important;
+  transition: all 0.3s ease !important;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-block;
+}
+
+.btn-theme-secondary {
+  transform-style: preserve-3d !important;
+}
+
+.btn-theme-secondary::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(45deg, transparent, rgba(255,255,255,0.3), transparent);
+  transform: translateX(-100%);
+  transition: transform 0.6s;
+}
+
+.btn-theme-secondary:hover::after {
+  transform: translateX(100%);
+}
+
+.btn-theme-secondary:hover {
+  background-color: var(--btn-secondary-hover) !important;
+  border-color: var(--primary-color) !important;
+  transform: translateY(-2px) !important;
+  box-shadow: 0 6px 12px -2px rgba(0, 0, 0, 0.15) !important;
+}
+
+.btn-theme-secondary:active {
+  transform: perspective(600px) rotateX(0deg) translateY(-1px) !important;
+}
+
+/* Botón de acento - Color complementario */
+.btn-theme-accent {
+  background-color: var(--btn-accent-bg) !important;
+  color: var(--btn-accent-text) !important;
+  /* Usando color del tema con transparencia del 26% (42 en hex) */
+  border: 1px solid color-mix(in srgb, var(--btn-accent-border, var(--btn-accent-hover)) 26%, transparent) !important;
+  border-radius: var(--btn-border-radius) !important;
+  padding: 0.75rem 1.5rem !important;
+  font-weight: 600 !important;
+  font-size: 0.875rem !important;
+  transition: all 0.3s ease !important;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-block;
+  box-shadow: 
+    0 2px 8px rgba(0, 0, 0, 0.1),
+    0 4px 16px rgba(0, 0, 0, 0.08) !important;
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-theme-accent {
+  transform-style: preserve-3d !important;
+  transform: perspective(1000px) rotateY(0deg) !important;
+}
+
+.btn-theme-accent:hover {
+  background-color: var(--btn-accent-hover) !important;
+  border-color: var(--btn-accent-hover) !important;
+  transform: translateY(-3px) !important;
+  box-shadow: 
+    0 8px 15px -3px rgba(0, 0, 0, 0.3),
+    inset 0 -3px 10px -2px rgba(0, 0, 0, 0.2) !important;
+  animation: bounce 0.4s ease-in-out;
+}
+
+@keyframes bounce {
+  0%, 100% { transform: translateY(-3px); }
+  50% { transform: translateY(-8px); }
+}
+
+.btn-theme-accent:active {
+  transform: perspective(1000px) rotateY(0deg) rotateX(0deg) translateZ(0) scale(0.95) !important;
+  box-shadow: 0 4px 15px var(--shadow-color) !important;
+}
+
+/* Botón outline - Solo borde */
+.btn-theme-outline {
+  background-color: transparent !important;
+  color: var(--primary-color) !important;
+  border: 2px solid var(--primary-color) !important;
+  border-radius: var(--btn-border-radius) !important;
+  padding: 0.75rem 1.5rem !important;
+  font-weight: 600 !important;
+  font-size: 0.875rem !important;
+  transition: all 0.3s ease !important;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-block;
+}
+
+.btn-theme-outline:hover {
+  background-color: var(--primary-color) !important;
+  color: var(--btn-primary-text) !important;
+  transform: translateY(-3px) scale(1.02) !important;
+  box-shadow: 0 6px 20px var(--shadow-hover) !important;
+}
+
+.btn-theme-outline:active {
+  transform: translateY(0) scale(0.98) !important;
+}
+
+/* Botón ghost - Mínimo estilo */
+.btn-theme-ghost {
+  background-color: transparent !important;
+  color: var(--text-primary) !important;
+  border: none !important;
+  padding: 0.75rem 1.5rem !important;
+  font-weight: 600 !important;
+  font-size: 0.875rem !important;
+  transition: all 0.3s ease !important;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-block;
+  position: relative;
+}
+
+.btn-theme-ghost:hover {
+  color: var(--primary-color) !important;
+  background-color: var(--bg-secondary) !important;
+  transform: translateX(5px) !important;
+}
+
+.btn-theme-ghost:active {
+  transform: translateX(2px) !important;
+}
+
+/* Tamaños de botones */
+.btn-sm {
+  padding: 0.5rem 1rem !important;
+  font-size: 0.75rem !important;
+}
+
+.btn-lg {
+  padding: 1rem 2rem !important;
+  font-size: 1rem !important;
+}
+
+/* Estados de botones */
+.btn-theme-primary:disabled,
+.btn-theme-secondary:disabled,
+.btn-theme-accent:disabled,
+.btn-theme-outline:disabled,
+.btn-theme-ghost:disabled {
+  opacity: 0.6 !important;
+  cursor: not-allowed !important;
+  transform: none !important;
+}
+
+/* Botón con icono */
+.btn-icon {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 0.5rem !important;
+}
+
+/* ========================================
+   CLASES GLOBALES DE CARDS DEL TEMA
+   ======================================== */
+
+.card-theme {
+  background-color: rgba(255, 255, 255, 0.95) !important;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(229, 231, 235, 0.8) !important;
+  border-radius: 1rem !important;
+  padding: 1.5rem !important;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05) !important;
+  transition: all 0.3s ease !important;
+}
+
+.card-theme:hover {
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1) !important;
+  border-color: var(--primary-color) !important;
+  transform: translateY(-4px) !important;
+}
+
+.card-theme-secondary {
+  background-color: #f9fafb !important;
+  border: 1px solid #e5e7eb !important;
+  border-radius: 1rem !important;
+  padding: 1.5rem !important;
+  transition: all 0.3s ease !important;
+}
+
+/* ========================================
+   CLASES GLOBALES DE ICONOS DEL TEMA
+   ======================================== */
+
+.icon-theme {
+  width: 3rem !important;
+  height: 3rem !important;
+  background: linear-gradient(135deg, var(--primary-color), var(--secondary-color)) !important;
+  border-radius: 0.75rem !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  color: var(--btn-primary-text) !important;
+  box-shadow: 0 4px 15px var(--shadow-color) !important;
+}
+
+.icon-theme-lg {
+  width: 4rem !important;
+  height: 4rem !important;
+  font-size: 1.5rem !important;
+}
+
+.icon-theme-sm {
+  width: 2rem !important;
+  height: 2rem !important;
+  font-size: 0.875rem !important;
+}
+
+/* ========================================
+   CLASES GLOBALES DE TEXTO DEL TEMA
+   ======================================== */
+
+.text-theme-primary {
+  color: var(--text-primary) !important;
+}
+
+.text-theme-secondary {
+  color: var(--text-secondary) !important;
+}
+
+.text-theme-accent {
+  color: var(--primary-color) !important;
+}
+
+.text-theme-complementary {
+  color: var(--complementary-color) !important;
+}
+
+/* ========================================
+   CLASES GLOBALES DE FONDOS DEL TEMA
+   ======================================== */
+
+.bg-theme-primary {
+  background-color: var(--bg-primary) !important;
+}
+
+.bg-theme-secondary {
+  background-color: var(--bg-secondary) !important;
+}
+
+.bg-theme-tertiary {
+  background-color: var(--bg-tertiary) !important;
+}
+
+.bg-theme-gradient {
+  background: linear-gradient(135deg, var(--primary-color), var(--secondary-color)) !important;
+}
+
+.bg-theme-complementary {
+  background-color: var(--complementary-color) !important;
+}
+
+/* ========================================
+   CLASES GLOBALES DE BORDES DEL TEMA
+   ======================================== */
+
+.border-theme {
+  border-color: var(--border-color) !important;
+}
+
+.border-theme-primary {
+  border-color: var(--primary-color) !important;
+}
+
+.border-theme-secondary {
+  border-color: var(--secondary-color) !important;
+}
+
+.border-theme-complementary {
+  border-color: var(--complementary-color) !important;
+}
+
+.border-theme-accent {
+  border-color: var(--accent-color) !important;
+}
+
+/* ========================================
+   CLASES GLOBALES DE INPUTS DEL TEMA
+   ======================================== */
+
+.input-theme {
+  background-color: var(--bg-primary) !important;
+  border: 2px solid var(--border-color) !important;
+  border-radius: var(--btn-border-radius) !important;
+  padding: 0.75rem 1rem !important;
+  color: var(--text-primary) !important;
+  transition: all 0.3s ease !important;
+}
+
+.input-theme:focus {
+  border-color: var(--primary-color) !important;
+  outline: none !important;
+  box-shadow: 0 0 0 3px rgba(var(--primary-color), 0.1) !important;
+}
+
+.input-theme::placeholder {
+  color: var(--text-secondary) !important;
+  opacity: 0.7 !important;
+}
 
 body{
-  font-family: Montserrat, sans-serif; 
+  font-family: Montserrat, sans-serif;
+  padding-top: 56px; /* Compensar navbar fija (h-14 = 56px) */
 }
+
+/* ESTILOS MENU PRINCIPAL MEJORADO */
+/* COMENTADO - ESTILOS VIEJOS QUE INTERFIEREN
+.main-menu-modern {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+  padding: 3rem 2rem;
+}
+
+.main-menu-modern .activity-card {
+  background: white !important;
+  border-radius: 20px !important;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1) !important;
+  transition: all 0.3s ease !important;
+  border: none !important;
+  overflow: hidden;
+}
+
+.main-menu-modern .activity-card:hover {
+  transform: translateY(-10px) !important;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2) !important;
+}
+
+.main-menu-modern .card-header-custom {
+  background: linear-gradient(135deg, #0d6efd 0%, #0099ff 100%) !important;
+  color: white !important;
+  padding: 1.5rem !important;
+  margin: -1px -1px 0 -1px;
+}
+
+.main-menu-modern .btn-custom {
+  background: linear-gradient(135deg, #0d6efd 0%, #0099ff 100%) !important;
+  border: none !important;
+  color: white !important;
+  font-weight: 600 !important;
+  transition: all 0.3s ease !important;
+}
+
+.main-menu-modern .btn-custom:hover {
+  transform: scale(1.05) !important;
+  box-shadow: 0 5px 15px rgba(13, 110, 253, 0.4) !important;
+}
+*/
 
 
 .monospace-text {
@@ -62,10 +767,7 @@ padding-left: 0px !important;
   padding-right: 4px;
 }
 
-.fa, .fab, .fal, .far, .fas {
-  color: white !important;
-
-}
+/* Removed global white color override for FontAwesome icons to allow Tailwind control */
 
 .swal2-styled.swal2-confirm {
 
@@ -247,6 +949,7 @@ height: auto;
 }
 
 
+/* Comentado para evitar conflictos con la clase fixed de Tailwind CSS
 .fixed{
   position: fixed;
   width: 272px;
@@ -260,7 +963,7 @@ height: auto;
   font-size: 30px;
   box-shadow: 2px 2px 3px #999;
   z-index: 100;
-}
+} */
 
 .color-primary
 {
@@ -388,8 +1091,9 @@ height: auto;
 
 .card-header {
  padding-top: 1%;
-}
 
+
+}
 
 .btn-completed[_ngcontent-kir-c59] {
   background-color: #00958a !important;
@@ -403,7 +1107,8 @@ body {
 }
 
 .background-blur {
-  background-image: url('./assets/img/wallpaperbetter.jpg');
+  /* background-image: url('./assets/img/wallpaperbetter.jpg'); */
+
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -451,7 +1156,8 @@ body {
   
 
 .background-blur {
-  background-image: url('./assets/img/wallpaperbetter.jpg');
+  /* background-image: url('./assets/img/wallpaperbetter.jpg'); */
+
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -470,7 +1176,6 @@ body {
   min-height: 90vh;
   display: flow;
   justify-content: center;
-  padding: 2rem;
 }
 
 .background-container > div {
@@ -486,7 +1191,6 @@ body {
   left: 0;
   width: 100%;
   height: 100%;
-  background-image: url('./assets/img/reunion.jpg');
   background-size:auto;
   background-position: center;
   filter: blur(10px);

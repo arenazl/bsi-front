@@ -1,57 +1,27 @@
 
-
-<div class="card" *ngIf="data">
-  <div class="card-header d-flex align-items-center">  
-
-    <button class="btn p-0 me-2" (click)="goBack()">
-      <i class="fas fa-arrow-circle-left" style="font-size: 170%; color:black !important; opacity: 0.7;"></i>
-    </button>
-   
-    <h5 class="mb-0">{{ data.header }}</h5>
-    
+<!-- Skeleton loader mientras carga -->
+<div *ngIf="!data" class="min-h-screen">
+  <!-- Header skeleton -->
+  <div class="bg-gradient-to-br from-gray-200 to-gray-300 relative overflow-hidden animate-pulse">
+    <div class="relative z-10 px-8 py-12">
+      <div class="max-w-7xl mx-auto">
+        <div class="w-10 h-10 bg-gray-400 rounded-full mb-4"></div>
+        <div class="h-10 bg-gray-400 rounded w-1/3 mb-2"></div>
+        <div class="h-6 bg-gray-400 rounded w-1/4"></div>
+      </div>
+    </div>
   </div>
-
-  <div *ngIf="data.description" class="card-body pt-3 pb-0">
-    <p class="card-text text-muted fst-italic" style="font-size: 0.95em">
-      {{ data.description }}
-    </p>
-  </div>
-
-  <div class="card-body row">
-    <div class="col-lg-4 col-md-6 col-sm-12" *ngFor="let item of data.items">
-      <div class="card mb-3" [ngClass]="{ disabled: !item.enabled }">
-        <div class="card-body">
-          <h6 class="card-title">{{ item.title }}</h6>
-          <p class="card-text font-size-90">{{ item.description }}</p>
-          <div class="d-flex flex-row flex-wrap" *ngIf="item.items">
-            <div
-              *ngFor="let subItem of item.items; let isLast = last"
-              class="flex-grow-1"
-              [class.me-2]="!isLast"
-            >
-              <a
-                [routerLink]="item.enabled ? [subItem.link] : []"
-                class="btn btn-primary fw-bold w-100 d-flex align-items-center"
-                (click)="item.enabled ? null : showAds()"
-              >
-                <i
-                  *ngIf="subItem.icono"
-                  class="fa me-2"
-                  [ngClass]="subItem.icono"
-                ></i>
-                <span>Ir a {{ subItem.description }}</span>
-              </a>
-            </div>
-          </div>
-          <div class="d-flex flex-row flex-wrap" *ngIf="!item.items">
-            <a
-              [routerLink]="item.enabled ? [item.link] : []"
-              class="btn btn-primary fw-bold w-100 d-flex align-items-center"
-              (click)="item.enabled ? null : showAds()"
-            >
-              <i *ngIf="item.icono" class="far me-2" [ngClass]="item.icono"></i>
-              <span>Ir a {{ item.description }}</span>
-            </a>
+  
+  <!-- Content skeleton -->
+  <div class="-mt-8 relative z-20 px-8 pb-8">
+    <div class="max-w-7xl mx-auto">
+      <div class="bg-white rounded-3xl shadow-xl p-8">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div *ngFor="let item of [1,2,3,4,5,6]" class="bg-gray-100 rounded-xl p-6">
+            <div class="h-12 w-12 bg-gray-300 rounded-full mb-3"></div>
+            <div class="h-4 bg-gray-300 rounded w-3/4 mb-2"></div>
+            <div class="h-3 bg-gray-300 rounded w-full mb-4"></div>
+            <div class="h-10 bg-gray-300 rounded"></div>
           </div>
         </div>
       </div>
@@ -59,22 +29,146 @@
   </div>
 </div>
 
-<div class="card mt-3 d-none" *ngIf="data">
+<!-- Contenedor principal con diseño moderno -->
+<div class="min-h-screen" *ngIf="data">
+  <!-- Header integrado con el fondo -->
+  <div class="bg-gradient-to-br relative overflow-hidden">
+    <!-- Patrón decorativo de fondo -->
+    <div class="absolute inset-0 opacity-10">
+      <div class="absolute -top-24 -right-24 w-96 h-96 bg-white rounded-full"></div>
+      <div class="absolute -bottom-24 -left-24 w-96 h-96 bg-white rounded-full"></div>
+    </div>
+    
+    <!-- Gradient fade to blend with content -->
+    <div class="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-transparent to-transparent">
+    </div>
+    
+    <!-- Contenido del header -->
+    <div class="relative z-10 px-8 py-12">
+      <div class="max-w-7xl mx-auto">
+        <button class="mb-4 p-2 hover:bg-white/20 rounded-full transition-colors duration-200 text-white" (click)="goBack()">
+          <i class="fas fa-arrow-circle-left text-3xl"></i>
+        </button>
+        <h1 class="text-2xl sm:text-3xl md:text-4xl font-bold text-white mb-2 whitespace-nowrap overflow-hidden text-ellipsis">{{ data.header }}</h1>
+        <div class="flex items-center justify-between">
+          <p class="text-xl text-white/90">{{ data.description || 'Seleccione una opción del menú' }}</p>
+          
 
-  <div class="card-header d-flex align-items-center">  
 
-    <button class="btn p-0 me-2" (click)="goBack()">
-      <i class="fas fa-arrow-circle-left" style="font-size: 170%; color:black !important; opacity: 0.7;"></i>
+        </div>
+
+      </div>
+    </div>
+  </div>
+  
+  <!-- Contenido principal con margen negativo para superposición -->
+  <div class="-mt-8 relative z-20 pb-8" style="margin-left: -20%; margin-right: -20%; padding-left: 30%; padding-right: 30%;">
+    <div class="max-w-8xl mx-auto">
+      <div class="bg-white rounded-3xl shadow-xl p-8" style="
+      opacity: 0.9;
+  ">
+        <!-- Contenedor de diseños -->
+        <div [ngClass]="'design-' + currentDesign" 
+             class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+             [class.data-loaded]="isDataLoaded">
+          <div *ngFor="let item of data.items; let i = index" 
+               class="menu-card bg-gray-50 rounded-xl shadow-md hover:shadow-xl p-6 transition-all duration-300 hover:-translate-y-1">
+      
+      <!-- Contenedor para diseño 5 (Bento Box) -->
+      <div class="card-content" *ngIf="currentDesign === 5">
+        <div class="flex items-center gap-3 mb-4">
+          <div class="icon-theme icon-theme-sm mb-3" style="width: 2rem !important; height: 2rem !important; min-width: 2rem !important; min-height: 2rem !important;">
+            <i *ngIf="item.icono" [class]="'fas ' + item.icono" style="font-size: 1.25rem !important; line-height: 1 !important;"></i>
+            <i *ngIf="!item.icono && item.items && item.items[0]?.icono" [class]="'fas ' + item.items[0].icono" style="font-size: 1.25rem !important; line-height: 1 !important;"></i>
+            <i *ngIf="!item.icono && (!item.items || !item.items[0]?.icono)" class="fas fa-file-alt" style="font-size: 1.25rem !important; line-height: 1 !important;"></i>
+          </div>
+          <h3 class="text-sm sm:text-base md:text-lg font-semibold text-gray-800 whitespace-nowrap overflow-hidden text-ellipsis">{{ item.title }}</h3>
+        </div>
+        <p class="text-sm text-gray-600 mb-4">{{ item.description }}</p>
+        <div class="menu-buttons" *ngIf="item.items">
+          <button *ngFor="let subItem of item.items; let isFirst = first"
+              [routerLink]="item.enabled ? [subItem.link] : null"
+              [ngClass]="{
+                'btn-theme-primary': isFirst,
+                'btn-theme-secondary': !isFirst
+              }"
+              class="w-full"
+              (click)="item.enabled ? logNavigation(subItem) : showAds()">
+            <span>{{ subItem.text }}</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Contenedor para otros diseños -->
+      <div *ngIf="currentDesign !== 5">
+        <!-- Diseño 3 especial con icono y título juntos -->
+        <div *ngIf="currentDesign === 3" class="flex items-start gap-3 mb-3">
+          <div class="icon-theme icon-theme-sm" style="width: 2rem !important; height: 2rem !important; min-width: 2rem !important; min-height: 2rem !important;">
+            <i [class]="'fas ' + (item.icono || (item.items && item.items[0]?.icono) || 'fa-file-alt')" style="font-size: 1.25rem !important; line-height: 1 !important;"></i>
+          </div>
+          <div class="flex-1">
+            <h3 class="text-sm sm:text-base md:text-lg font-semibold text-gray-800 whitespace-nowrap overflow-hidden text-ellipsis">{{ item.title }}</h3>
+            <p class="text-sm text-gray-600 mb-4">{{ item.description }}</p>
+          </div>
+        </div>
+        
+        <!-- Otros diseños -->
+        <div *ngIf="currentDesign !== 3">
+          <!-- Icono -->
+          <div class="icon-theme icon-theme-sm mb-3" style="width: 2rem !important; height: 2rem !important; min-width: 2rem !important; min-height: 2rem !important;">
+            <i *ngIf="item.icono" [class]="'fas ' + item.icono" style="font-size: 1.25rem !important; line-height: 1 !important;"></i>
+            <i *ngIf="!item.icono && item.items && item.items[0]?.icono" [class]="'fas ' + item.items[0].icono" style="font-size: 1.25rem !important; line-height: 1 !important;"></i>
+            <i *ngIf="!item.icono && (!item.items || !item.items[0]?.icono)" class="fas fa-file-alt" style="font-size: 1.25rem !important; line-height: 1 !important;"></i>
+          </div>
+          <h3 class="text-sm sm:text-base md:text-lg font-semibold text-gray-800 whitespace-nowrap overflow-hidden text-ellipsis">{{ item.title }}</h3>
+          <p class="text-sm text-gray-600 mb-4">{{ item.description }}</p>
+        </div>
+        
+        <div class="flex gap-2" *ngIf="item.items">
+          <button *ngFor="let subItem of item.items"
+              [routerLink]="item.enabled ? [subItem.link] : null"
+              class="btn-theme-accent btn-sm flex-1"
+              (click)="item.enabled ? logNavigation(subItem) : showAds()"
+            >
+              <span class="text-sm truncate">{{ subItem.description }}</span>
+              <i class="fas fa-arrow-right ml-1 group-hover/btn:translate-x-1 transition-transform text-sm" 
+                 *ngIf="item.items.length === 1"></i>
+          </button>
+        </div>
+        
+        <div *ngIf="!item.items" class="w-full">
+          <button
+            [routerLink]="item.enabled ? [item.link] : null"
+            class="btn-theme-primary w-full btn-icon"
+            (click)="item.enabled ? logNavigation(item) : showAds()"
+          >
+            <span>Acceder</span>
+            <i class="fas fa-arrow-right"></i>
+          </button>
+        </div>
+      </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="bg-white rounded-3xl shadow-2xl overflow-hidden mt-6 hidden" *ngIf="data">
+
+  <div class="bg-gradient-to-r from-bsi-green to-green-500 text-white p-6 flex items-center">  
+
+    <button class="p-2 mr-4 hover:bg-white/20 rounded-full transition-colors duration-200" (click)="goBack()">
+      <i class="fas fa-arrow-circle-left text-3xl text-white opacity-90"></i>
     </button>
    
-    <h5 class="mb-0"> Estadisticas </h5>
+    <h5 class="text-2xl font-bold mb-0">Estadísticas</h5>
     
   </div>
 
+  <div class="p-6">
 
-  <div class="card-body pt-0 pb-5">
-
-    <app-payments-metrics></app-payments-metrics>
+    <!-- <app-payments-metrics></app-payments-metrics> -->
 
   </div>
 

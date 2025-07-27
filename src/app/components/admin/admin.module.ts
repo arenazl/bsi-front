@@ -2,31 +2,32 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
+import { AdminRoutingModule } from './admin-routing.module';
 
-// Components
-import { UserManagementWrapperComponent } from './user-management-wrapper/user-management-wrapper.component';
-import { PaymentsMetricsComponent } from './payments-metrics-wrapper/payments-metrics.component';
-import { ContratoManagementWrapperComponent } from './contrato-management-wrapper/contrato-management-wrapper.component';
-import { OrganismoManagementWrapperComponent } from './organismo-management-wrapper/organismo-management-wrapper.component';
+// Componentes nativos de Angular
+import { AdminPanelComponent } from './admin-panel/admin-panel.component';
+import { UserManagementComponent } from './user-management/user-management.component';
+import { OrganismoManagementComponent } from './organismo-management/organismo-management.component';
+import { ContratoManagementComponent } from './contrato-management/contrato-management.component';
 
 @NgModule({
   declarations: [
-    UserManagementWrapperComponent,
-    PaymentsMetricsComponent,
-    ContratoManagementWrapperComponent,
-    OrganismoManagementWrapperComponent
+    AdminPanelComponent,
+    UserManagementComponent,
+    OrganismoManagementComponent,
+    ContratoManagementComponent
   ],
   imports: [
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
-    RouterModule
+    AdminRoutingModule
   ],
   exports: [
-    UserManagementWrapperComponent,
-    PaymentsMetricsComponent,
-    ContratoManagementWrapperComponent,
-    OrganismoManagementWrapperComponent
+    AdminPanelComponent,
+    UserManagementComponent,
+    OrganismoManagementComponent,
+    ContratoManagementComponent
   ]
 })
 export class AdminModule { }

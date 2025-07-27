@@ -1,42 +1,177 @@
-<div *ngIf="showNav==true">
-
-  <nav class="navbar navbar-dark bg-dark navbar-expand-lg"
-    style="background: linear-gradient(270deg,#009688, #0d6efd) !important;">
-    <div class="container-fluid">
-      <a class="navbar-brand" href="#">
-        <span class="material-icons" style="vertical-align: top; font-size: 28px; padding-left: 13px;">
-          public
-        </span>
-      </a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
-        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav me-auto">
-          <li class="nav-item active">
-            <a class="nav-link" routerLink="/dinamicModule/mainmenu" routerLinkActive="active">
-              <i style="padding-right: 7px;" class="far fa-folder-open"></i>
-              <span class="sr-only">(current)</span>Menú Principal
-            </a>
-          </li>
-        </ul>
-
-        <div class="d-flex ms-auto align-items-center">
-
-          <div class="md-form my-0 d-flex align-items-center">
-            <i class="far fa-user" style="padding-right: 6px;"></i>
-            <a class="navbar-brand" style="font-size: 16px; margin-right: 20px;">{{usuario.Nombre}}, {{usuario.Apellido}}</a>
-            <i class="fas fa-building" style="padding-right: 6px;"></i>
-            <a class="navbar-brand" style="font-size: 16px;">{{usuario.Nombre_Organismo}}</a>
-          </div>
+<!-- Navbar moderna con glassmorphism -->
+<nav *ngIf="showNav==true" class="navbar-theme fixed top-0 left-0 right-0 w-full z-50 backdrop-blur-md shadow-lg">
+    <div class="w-full px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-14">
+        
+        <!-- Logo y Menú Principal -->
+        <div class="flex items-center">
+          <!-- Logo BSI -->
+          <a href="#" class="flex items-center">
+            <div class="w-8 h-8 bg-white/20 backdrop-blur-sm rounded-lg flex items-center justify-center mr-2">
+              <i class="fas fa-globe text-sm" style="color: var(--navbar-text)"></i>
+            </div>
+            <span class="font-bold text-base hidden sm:block" style="color: var(--navbar-text)">BSI</span>
+          </a>
+          
+          <!-- Separador -->
+          <div class="h-6 w-px bg-white/30 mx-3 hidden sm:block"></div>
+          
+          <!-- Link Menú Principal -->
+          <a routerLink="/dinamicModule/mainmenu" 
+             routerLinkActive="!bg-white/20" 
+             class="flex items-center px-3 py-1.5 rounded-lg hover:bg-white/10 transition-all duration-300 text-sm"
+             style="color: var(--navbar-text)">
+            <i class="far fa-folder-open mr-1.5 text-sm"></i>
+            <span class="font-medium">Menú Principal</span>
+          </a>
+          
 
         </div>
 
+        <!-- Información del Usuario -->
+        <div class="flex items-center space-x-6">
+          <!-- Usuario -->
+          <div class="hidden md:flex items-center space-x-1.5" style="color: var(--navbar-text); opacity: 0.9;">
+            <div class="w-7 h-7 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center">
+              <i class="far fa-user text-xs"></i>
+            </div>
+            <span class="text-sm font-medium">
+              {{usuario.Nombre || 'Usuario'}}, {{usuario.Apellido || ''}}
+            </span>
+          </div>
+          
+          <!-- Separador -->
+          <div class="h-8 w-px bg-white/30 hidden md:block"></div>
+          
+          <!-- Selector de Temas -->
+          <div class="relative hidden md:block">
+            <button (click)="themeMenuOpen = !themeMenuOpen"
+                    class="flex items-center px-3 py-1.5 bg-white/10 hover:bg-white/20 rounded-lg transition-all duration-300"
+                    style="color: var(--navbar-text)"
+                    title="Cambiar tema">
+              <i class="fas fa-palette text-sm mr-1.5"></i>
+              <span class="text-sm font-medium">Tema</span>
+            </button>
+            
+            <!-- Dropdown de temas -->
+            <div *ngIf="themeMenuOpen" 
+                 class="absolute right-0 mt-2 w-64 rounded-xl bg-gray-900 shadow-2xl overflow-hidden border border-gray-700"
+                 style="transform-origin: top right; z-index: 1000;"
+                 (click)="$event.stopPropagation()">
+              <div class="p-2">
+                <h3 class="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2 px-3">Seleccionar Tema</h3>
+                <button (click)="changeTheme('corporate-blue')"
+                        class="w-full text-left px-3 py-2.5 hover:bg-gray-800 rounded-lg transition-all duration-200 flex items-center gap-3 group"
+                        [class.bg-gray-800]="currentTheme === 'corporate-blue'">
+                  <div class="w-8 h-8 rounded-full shadow-md group-hover:shadow-lg transition-shadow" 
+                       style="background: linear-gradient(135deg, #1e3a8a, #3b82f6)"></div>
+                  <div class="flex-1">
+                    <p class="text-sm font-medium text-white">Corporate Blue</p>
+                    <p class="text-xs text-gray-400">Profesional clásico</p>
+                  </div>
+                  <i *ngIf="currentTheme === 'corporate-blue'" class="fas fa-check text-blue-400"></i>
+                </button>
+                <button (click)="changeTheme('enterprise-green')"
+                        class="w-full text-left px-3 py-2.5 hover:bg-gray-800 rounded-lg transition-all duration-200 flex items-center gap-3 group"
+                        [class.bg-gray-800]="currentTheme === 'enterprise-green'">
+                  <div class="w-8 h-8 rounded-full shadow-md group-hover:shadow-lg transition-shadow"
+                       style="background: linear-gradient(135deg, #14532d, #16a34a)"></div>
+                  <div class="flex-1">
+                    <p class="text-sm font-medium text-white">Enterprise Green</p>
+                    <p class="text-xs text-gray-400">Finanzas y banca</p>
+                  </div>
+                  <i *ngIf="currentTheme === 'enterprise-green'" class="fas fa-check text-green-400"></i>
+                </button>
+                <button (click)="changeTheme('modern-purple')"
+                        class="w-full text-left px-3 py-2.5 hover:bg-gray-800 rounded-lg transition-all duration-200 flex items-center gap-3 group"
+                        [class.bg-gray-800]="currentTheme === 'modern-purple'">
+                  <div class="w-8 h-8 rounded-full shadow-md group-hover:shadow-lg transition-shadow"
+                       style="background: linear-gradient(135deg, #6b21a8, #9333ea)"></div>
+                  <div class="flex-1">
+                    <p class="text-sm font-medium text-white">Modern Purple</p>
+                    <p class="text-xs text-gray-400">Tech e innovación</p>
+                  </div>
+                  <i *ngIf="currentTheme === 'modern-purple'" class="fas fa-check text-purple-400"></i>
+                </button>
+                <button (click)="changeTheme('executive-gray')"
+                        class="w-full text-left px-3 py-2.5 hover:bg-gray-800 rounded-lg transition-all duration-200 flex items-center gap-3 group"
+                        [class.bg-gray-800]="currentTheme === 'executive-gray'">
+                  <div class="w-8 h-8 rounded-full shadow-md group-hover:shadow-lg transition-shadow"
+                       style="background: linear-gradient(135deg, #1f2937, #6b7280)"></div>
+                  <div class="flex-1">
+                    <p class="text-sm font-medium text-white">Executive Gray</p>
+                    <p class="text-xs text-gray-400">Minimalista elegante</p>
+                  </div>
+                  <i *ngIf="currentTheme === 'executive-gray'" class="fas fa-check text-gray-400"></i>
+                </button>
+                <button (click)="changeTheme('ocean-teal')"
+                        class="w-full text-left px-3 py-2.5 hover:bg-gray-800 rounded-lg transition-all duration-200 flex items-center gap-3 group"
+                        [class.bg-gray-800]="currentTheme === 'ocean-teal'">
+                  <div class="w-8 h-8 rounded-full shadow-md group-hover:shadow-lg transition-shadow"
+                       style="background: linear-gradient(135deg, #0f766e, #14b8a6)"></div>
+                  <div class="flex-1">
+                    <p class="text-sm font-medium text-white">Ocean Teal</p>
+                    <p class="text-xs text-gray-400">Fresco y moderno</p>
+                  </div>
+                  <i *ngIf="currentTheme === 'ocean-teal'" class="fas fa-check text-teal-400"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Separador -->
+          <div class="h-8 w-px bg-white/30 hidden md:block"></div>
+          
+          <!-- Organismo -->
+          <div class="hidden md:flex items-center space-x-1.5" style="color: var(--navbar-text); opacity: 0.9;">
+            <div class="w-8 h-8 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center">
+              <i class="fas fa-building text-sm"></i>
+            </div>
+            <span class="text-sm font-medium">
+              {{usuario.Nombre_Organismo || 'Organismo'}}
+            </span>
+          </div>
+          
+          <!-- Botón de logout -->
+          <button (click)="logout()" 
+                  class="ml-4 p-2 bg-white/10 hover:bg-white/20 rounded-xl transition-all duration-300"
+                  style="color: var(--navbar-text)"
+                  title="Cerrar sesión">
+            <i class="fas fa-sign-out-alt"></i>
+          </button>
+        </div>
+
+        <!-- Menú móvil -->
+        <div class="md:hidden">
+          <button type="button" 
+                  class="p-2 rounded-md hover:bg-white/10"
+                  style="color: var(--navbar-text)"
+                  (click)="mobileMenuOpen = !mobileMenuOpen">
+            <i class="fas fa-bars text-xl"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- Menú móvil desplegable -->
+      <div *ngIf="mobileMenuOpen" class="md:hidden">
+        <div class="px-2 pt-2 pb-3 space-y-1">
+          <div class="bg-white/10 rounded-lg p-3 mb-2">
+            <div class="flex items-center mb-2" style="color: var(--navbar-text); opacity: 0.9;">
+              <i class="far fa-user mr-2"></i>
+              <span class="text-sm">{{usuario.Nombre || 'Usuario'}}, {{usuario.Apellido || ''}}</span>
+            </div>
+            <div class="flex items-center" style="color: var(--navbar-text); opacity: 0.9;">
+              <i class="fas fa-building mr-2"></i>
+              <span class="text-sm">{{usuario.Nombre_Organismo || 'Organismo'}}</span>
+            </div>
+          </div>
+          <button (click)="logout()" 
+                  class="w-full text-left px-3 py-2 rounded-md hover:bg-white/10"
+                  style="color: var(--navbar-text)">
+            <i class="fas fa-sign-out-alt mr-2"></i>
+            Cerrar sesión
+          </button>
+        </div>
       </div>
     </div>
-
-  </nav>
-
-
-</div>
+</nav>

@@ -7,14 +7,16 @@ import { GamesListComponent } from './components/legacy/games-list/games-list.co
 import { GameFormComponent } from './components/legacy/game-form/game-form.component';
 import { LoginComponent } from './components/bsi/login/login.component';
 import { MainMenuComponent } from './components/bsi/main-menu/main-menu.component';
+import { MenuShowcaseComponent } from './components/bsi/menu-showcase/menu-showcase.component';
 import { RankingComponent } from './components/legacy/ranking/ranking.component';
 import { XslVerifiedComponent } from './components/bsi/xsl-verified/xsl-verified.component';
 import { DinamicModuleComponent } from './components/bsi/dinamic-module/dinamic-module.component';
 import { XslImportComponent } from './components/bsi/xsl-import/xsl-import.component';
 import { XslEditabletableComponent } from './components/bsi/xsl-editabletable/xsl-editabletable.component';
-import { UserManagementWrapperComponent } from './components/admin/user-management-wrapper/user-management-wrapper.component';
-import { ContratoManagementWrapperComponent } from './components/admin/contrato-management-wrapper/contrato-management-wrapper.component';
-import { OrganismoManagementWrapperComponent } from './components/admin/organismo-management-wrapper/organismo-management-wrapper.component';
+// Legacy admin imports - movidos a módulo admin
+// import { UserManagementWrapperComponent } from './components/admin/legacy/user-management-wrapper/user-management-wrapper.component';
+// import { ContratoManagementWrapperComponent } from './components/admin/legacy/contrato-management-wrapper/contrato-management-wrapper.component';
+// import { OrganismoManagementWrapperComponent } from './components/admin/legacy/organismo-management-wrapper/organismo-management-wrapper.component';
 import { DashboardWrapperComponent } from './components/bsi/dashboard-wrapper/dashboard-wrapper.component';
 import { ChatbotComponent } from './components/test/chatbot/chatbot.component';
 import { PentagramLearningComponent } from './components/test/pentagram-learning/pentagram-learning.component';
@@ -36,6 +38,10 @@ const routes: Routes = [
   {
     path: 'mainmenu',
     component: MainMenuComponent
+  },
+  {
+    path: 'menu-showcase',
+    component: MenuShowcaseComponent
   },
   {
     path: 'legajo',
@@ -97,17 +103,26 @@ const routes: Routes = [
     path: 'dinamicModule/:screen/:contrato',
     component: DinamicModuleComponent
   },
+  // Admin panel con lazy loading
   {
-  path: 'userManagement',
-  component: UserManagementWrapperComponent
+    path: 'admin',
+    loadChildren: () => import('./components/admin/admin.module').then(m => m.AdminModule)
+  },
+  // Redirecciones de rutas legacy al nuevo panel con tabs
+  {
+    path: 'userManagement',
+    redirectTo: '/admin?tab=usuarios',
+    pathMatch: 'full'
   },
   {
     path: 'contratoManagement',
-    component: ContratoManagementWrapperComponent
+    redirectTo: '/admin?tab=contratos',
+    pathMatch: 'full'
   },
   {
     path: 'organismoManagement',
-    component: OrganismoManagementWrapperComponent
+    redirectTo: '/admin?tab=organismos',
+    pathMatch: 'full'
   },
 
 
@@ -122,7 +137,8 @@ const routes: Routes = [
   {
     path: 'penta',
     component: PentagramLearningComponent
-  } 
+  }
+
 ];
 
 @NgModule({

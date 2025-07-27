@@ -1,0 +1,145 @@
+<!-- Selector de diseño -->
+<div class="design-selector">
+  <button *ngFor="let i of [1,2,3,4,5]" 
+          (click)="changeDesign(i)"
+          [class.active]="currentDesign === i"
+          class="design-btn">
+    Diseño {{i}}
+  </button>
+</div>
+
+<!-- Diseño 1: Glassmorphism -->
+<div *ngIf="currentDesign === 1" class="design-1-glass">
+  <div class="container">
+    <h1 class="title">Menú Principal BSI</h1>
+    <div class="grid">
+      <div *ngFor="let activity of menuConfiguration" 
+           class="card-glass"
+           [class.disabled]="!activity.enabled">
+        <div class="icon-float">
+          <i class="fas fa-file-alt"></i>
+        </div>
+        <h3>{{ activity.title }}</h3>
+        <p>{{ activity.description }}</p>
+        <div class="buttons-row">
+          <button *ngFor="let item of activity.items"
+                  [routerLink]="activity.enabled ? [item.link] : []"
+                  (click)="!activity.enabled && showAccessDeniedModal()"
+                  class="btn-glass">
+            {{ item.description }}
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Diseño 2: Neumorphism -->
+<div *ngIf="currentDesign === 2" class="design-2-neumo">
+  <div class="container">
+    <h1 class="title">Menú Principal BSI</h1>
+    <div class="grid">
+      <div *ngFor="let activity of menuConfiguration" 
+           class="card-neumo"
+           [class.disabled]="!activity.enabled">
+        <div class="icon-neumo">
+          <i class="fas fa-file-alt"></i>
+        </div>
+        <h3>{{ activity.title }}</h3>
+        <p>{{ activity.description }}</p>
+        <div class="buttons-row">
+          <button *ngFor="let item of activity.items"
+                  [routerLink]="activity.enabled ? [item.link] : []"
+                  (click)="!activity.enabled && showAccessDeniedModal()"
+                  class="btn-neumo">
+            {{ item.description }}
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Diseño 3: Minimalista -->
+<div *ngIf="currentDesign === 3" class="design-3-minimal">
+  <div class="container">
+    <h1 class="title">Menú Principal BSI</h1>
+    <div class="grid">
+      <div *ngFor="let activity of menuConfiguration" 
+           class="card-minimal"
+           [class.disabled]="!activity.enabled">
+        <div class="icon-minimal">
+          <i class="fas fa-file-alt"></i>
+        </div>
+        <h3>{{ activity.title }}</h3>
+        <p>{{ activity.description }}</p>
+        <div class="buttons-row">
+          <a *ngFor="let item of activity.items"
+             [routerLink]="activity.enabled ? [item.link] : []"
+             (click)="!activity.enabled && showAccessDeniedModal()"
+             class="link-minimal">
+            {{ item.description }}
+            <i class="fas fa-arrow-right"></i>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Diseño 4: Dark Neon -->
+<div *ngIf="currentDesign === 4" class="design-4-dark">
+  <div class="container">
+    <h1 class="title">Menú Principal BSI</h1>
+    <div class="grid">
+      <div *ngFor="let activity of menuConfiguration" 
+           class="card-dark"
+           [class.disabled]="!activity.enabled">
+        <div class="icon-neon">
+          <i class="fas fa-file-alt"></i>
+        </div>
+        <h3>{{ activity.title }}</h3>
+        <p>{{ activity.description }}</p>
+        <div class="buttons-row">
+          <button *ngFor="let item of activity.items"
+                  [routerLink]="activity.enabled ? [item.link] : []"
+                  (click)="!activity.enabled && showAccessDeniedModal()"
+                  class="btn-neon">
+            {{ item.description }}
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Diseño 5: Bento -->
+<div *ngIf="currentDesign === 5" class="design-5-bento">
+  <div class="container">
+    <h1 class="title">Menú Principal BSI</h1>
+    <div class="grid">
+      <div *ngFor="let activity of menuConfiguration" 
+           class="card-bento"
+           [class.disabled]="!activity.enabled">
+        <div class="header">
+          <div class="icon-bento">
+            <i class="fas fa-file-alt"></i>
+          </div>
+          <div class="dots">
+            <span></span><span></span><span></span>
+          </div>
+        </div>
+        <h3>{{ activity.title }}</h3>
+        <p>{{ activity.description }}</p>
+        <div class="buttons-row">
+          <button *ngFor="let item of activity.items"
+                  [routerLink]="activity.enabled ? [item.link] : []"
+                  (click)="!activity.enabled && showAccessDeniedModal()"
+                  class="btn-bento">
+            {{ item.description }}
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

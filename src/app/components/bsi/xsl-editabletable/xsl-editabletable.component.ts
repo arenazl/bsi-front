@@ -1,9 +1,13 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, HostListener } from '@angular/core';
 import { Location } from '@angular/common';
 import { Router } from '@angular/router';
 import { BsiHelper } from 'src/app/services/bsiHelper.service';
-import { FileService } from 'src/app/services/file.service';
+import { DatabaseService } from 'src/app/services/database.service';
+import { OrganismosService } from 'src/app/services/organismos.service';
+import { PagosService } from 'src/app/services/pagos.service';
+import { obtenerContextoActual, tieneContextoValido } from 'src/app/helpers/session.helper';
 import { dbRequest, dbResponse } from 'src/app/models/Model';
+import { NominaItem as ModelNominaItem } from 'src/app/models/operation-context.model';
 import { TipoModulo } from 'src/app/enums/enums';
 import Swal from 'sweetalert2';
 
@@ -24,6 +28,18 @@ interface NominaItem {
   styleUrls: ['./xsl-editabletable.component.css']
 })
 export class XslEditabletableComponent implements OnInit {
+  
+  isButtonVisible = false;
+  
+  @HostListener('window:scroll', ['$event'])
+  onScroll() {
+    this.checkScrollPosition();
+  }
+  
+  checkScrollPosition() {
+    // Mostrar botón siempre que haya elementos seleccionados
+    this.isButtonVisible = this.selectedItems.length > 0;
+  }
  
   headerTitle = '';
   contrato = 0;
@@ -46,7 +62,7 @@ export class XslEditabletableComponent implements OnInit {
   isNominasEmpty = false;
   fecha = new Date().toISOString().split('T')[0]
 
-  tranfeList:any;
+  tranfeList: any[] = [];
 
   newItem: NominaItem = { cbu: '', cuil: '', apellido: '', nombre: '', importe: 0, toggleEnabled: false };
   searchTerm = '';
@@ -55,7 +71,9 @@ export class XslEditabletableComponent implements OnInit {
     private bsiHelper: BsiHelper,
     private location: Location,
     private router: Router,
-    private fileService: FileService
+    private databaseService: DatabaseService,
+    private organismosService: OrganismosService,
+    private pagosService: PagosService
   ) { }
 
   ngOnInit(): void {
@@ -100,7 +118,7 @@ export class XslEditabletableComponent implements OnInit {
           }
         };
     
-        this.fileService.postInsertGenericSP(payloadUpdate).subscribe({
+        this.databaseService.ejecutarInsertSP(payloadUpdate).subscribe({
  
           next: (res) => this.handleUpdateCuil(index, newCbu),
           error: (err) => this.handleError(err)
@@ -155,7 +173,7 @@ export class XslEditabletableComponent implements OnInit {
           }
         };
     
-        this.fileService.postInsertGenericSP(payloadUpdate).subscribe({
+        this.databaseService.ejecutarInsertSP(payloadUpdate).subscribe({
  
           /*
           next: (res) => this.handleUpdateCuil(index, newCbu),
@@ -183,7 +201,7 @@ export class XslEditabletableComponent implements OnInit {
       }
     };
 
-    this.fileService.postSelectGenericSP(payload).subscribe({
+    this.databaseService.ejecutarSelectSP(payload).subscribe({
       next: (res) => this.handleNominaImporteResponse(res),
       error: (err) => this.handleError(err)
     });
@@ -191,9 +209,15 @@ export class XslEditabletableComponent implements OnInit {
   }
 
     getListCombo(): void {
-    this.fileService.getListForCombo( TipoModulo.PAGO ).subscribe({
-      next: (data) => this.tranfeList = data,
-      error: (error) => console.error('Error al obtener lista para combo:', error)
+    this.organismosService.obtenerParaCombo( TipoModulo.PAGO ).subscribe({
+      next: (data) => {
+        this.tranfeList = Array.isArray(data) ? data : [];
+        console.log('Lista de transferencias:', this.tranfeList);
+      },
+      error: (error) => {
+        console.error('Error al obtener lista para combo:', error);
+        this.tranfeList = [];
+      }
     });
   }
 
@@ -220,7 +244,7 @@ export class XslEditabletableComponent implements OnInit {
       }
     };
 
-    this.fileService.postSelectGenericSP(payload).subscribe({
+    this.databaseService.ejecutarSelectSP(payload).subscribe({
       next: (res) => this.handleNominaImporteResponse(res),
       error: (err) => this.handleError(err)
     });
@@ -409,17 +433,23 @@ export class XslEditabletableComponent implements OnInit {
     if (!this.selectedItems.includes(item)) {
       this.selectedItems.push(item);
     }
+    // Remover de filteredItems para que desaparezca de la grilla principal
     this.filteredItems = this.filteredItems.filter((i: NominaItem) => i !== item);
     this.recalculateTotal();
+    // Actualizar visibilidad del botón
+    this.checkScrollPosition();
   }
 
   removeFromSelected(item: NominaItem): void {
     item.toggleEnabled = false;
     this.selectedItems = this.selectedItems.filter((selected: NominaItem) => selected !== item);
+    // Devolver el elemento a filteredItems para que aparezca en la grilla principal
     if (!this.filteredItems.includes(item)) {
       this.filteredItems.push(item);
     }
     this.recalculateTotal();
+    // Actualizar visibilidad del botón
+    this.checkScrollPosition();
   }
 
   updateImporte(sol: NominaItem, newValue: number): void {
@@ -450,67 +480,111 @@ export class XslEditabletableComponent implements OnInit {
     this.location.back();
   }
 
-
-  sendFile(): void {
-
-    const payloadNomina =
-    {
-      sp_name: "NOMINA_VALIDAD_INSERTAR_FULL_VALIDATION",
-      jsonUnify: true,
-      body: {
-        IDCONT: sessionStorage.getItem('IdContrato'),
-        IDORG: sessionStorage.getItem('IdOrganismo'),
-        IDUSER: sessionStorage.getItem('idUser'),
-        ITEMS: this.nuevasNominas.map(item => ({
-          CBU: item.cbu,
-          CUIL: item.cuil,    
-          APELLIDO: item.apellido,
-          NOMBRE: item.nombre.split(' ').slice(1).join(' '),
-        }))
-      }
-    };
-    
-    this.fileService.postInsertGenericSP(payloadNomina).subscribe({
-      
-      next: (res_nomina: dbResponse) => this.handleNominaResponse(res_nomina),
-      error: (err) => this.handleError(err)
-    });
+  scrollToSelectedItems(): void {
+    const selectedSection = document.getElementById('selected-items-section');
+    if (selectedSection) {
+      selectedSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      // Alternativa si scrollIntoView no funciona
+      const yOffset = -100; // Offset para dejar espacio
+      const y = selectedSection.getBoundingClientRect().top + window.pageYOffset + yOffset;
+      window.scrollTo({ top: y, behavior: 'smooth' });
+    } else {
+      console.log('No se encontró la sección de elementos seleccionados');
+    }
   }
 
-  private handleNominaResponse(res_nomina: dbResponse): void {
+  scrollToTop(): void {
+    // Buscar el card de la lista principal (tercera card)
+    const mainTableCard = document.querySelectorAll('.card-theme')[2];
+    if (mainTableCard) {
+      mainTableCard.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    } else {
+      // Si no encuentra la card, ir al top de la página
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  }
 
-    if (res_nomina.estado !== 1) {
-      this.router.navigate(['/xslVerified/' + TipoModulo.NOMINA + '/' + res_nomina.data.id_insertado + "/true"]);
-      return;
+
+  async sendFile(): Promise<void> {
+    try {
+      this.isLoading = true;
+      
+      // Validar que tengamos contexto válido
+      if (!tieneContextoValido()) {
+        throw new Error('Contexto de sesión inválido. Por favor, recargue la página.');
+      }
+
+      // Validar que tengamos al menos elementos seleccionados para procesar pagos
+      if (!this.selectedItems || this.selectedItems.length === 0) {
+        throw new Error('No hay elementos seleccionados para procesar pagos.');
+      }
+
+      console.log('🚀 Iniciando proceso de nómina y pagos...');
+      
+      // Obtener contexto actual
+      const contexto = obtenerContextoActual();
+      
+      // Convertir datos locales al formato del modelo
+      // TODAS las nóminas (nuevas + seleccionadas) deben pasar por el SP de validación
+      // El SP detecta automáticamente si son nuevas o actualizaciones
+      const todasLasNominas: ModelNominaItem[] = [
+        ...this.nuevasNominas,
+        ...this.selectedItems
+      ].map(item => ({
+        cbu: item.cbu,
+        cuil: item.cuil,
+        apellido: item.apellido,
+        nombre: item.nombre,
+        importe: item.importe
+      }));
+
+      const pagosParaProcesar: ModelNominaItem[] = this.selectedItems.map(item => ({
+        cbu: item.cbu,
+        cuil: item.cuil,
+        apellido: item.apellido,
+        nombre: item.nombre,
+        importe: item.importe
+      }));
+
+      // Procesar usando el servicio de pagos (que incluye coordinación con nóminas)
+      const resultado = await this.pagosService.procesarNominaYPagos(
+        todasLasNominas,  // Ahora pasamos TODAS las nóminas
+        pagosParaProcesar,
+        contexto
+      );
+
+      console.log('✅ Proceso completado:', resultado);
+
+      // Navegar directamente a la pantalla de verificación
+      // No mostramos mensaje de éxito porque la pantalla de verificación mostrará los resultados
+      this.router.navigate([resultado.navigateTo]);
+
+    } catch (error: any) {
+      console.error('❌ Error en sendFile():', error);
+      this.handleProcessError(error);
+    } finally {
+      this.isLoading = false;
+    }
+  }
+
+  /**
+   * Manejo específico de errores del proceso de nómina/pagos
+   */
+  private handleProcessError(error: any): void {
+    let errorMessage = 'Se produjo un error inesperado durante el procesamiento.';
+    
+    if (error?.message) {
+      errorMessage = error.message;
+    } else if (error?.error?.descripcion) {
+      errorMessage = error.error.descripcion;
     }
 
-    const payloadPagos =  {
-      sp_name: "PAGO_VALIDAR_INSERTAR_ENTRADA",
-      jsonUnify: true,
-      body: {
-        CONCEPTO: sessionStorage.getItem('Concepto'),
-        FECHAPAGO: new Date().toISOString().split('T')[0],
-        IDCONT: sessionStorage.getItem('IdContrato'),
-        IDORG: sessionStorage.getItem('IdOrganismo'),
-        IDUSER: sessionStorage.getItem('idUser'),
-        ITEMS: this.selectedItems.map((item: NominaItem) => ({
-          CBU: item.cbu,
-          CUIL: item.cuil,
-          IMPORTE: item.importe,
-          NOMBRE: item.nombre
-        }))
-      }
-    };
-
-    this.fileService.postInsertGenericSP(payloadPagos).subscribe({
-      next: (res_pago: dbResponse) => this.handlePagoResponse(res_pago),
-      error: (err) => this.handleError(err)
+    Swal.fire({
+      title: 'Error en Procesamiento',
+      text: errorMessage,
+      icon: 'error',
+      confirmButtonText: 'Entendido'
     });
-    
-  }
-
-  private handlePagoResponse(res_pago: dbResponse): void {
-    this.router.navigate(['/xslVerified/' + TipoModulo.PAGO + '/' + res_pago.data.id_insertado]);
   }
 
 }

@@ -28,7 +28,7 @@ export class XslVerifiedComponent implements OnInit, AfterViewInit {
   userId = 0;
   showExportSection = true;
   validationData: any;
-  metadata: any;
+  metadata: any = { HEADER: [], 'TABLE-COLUMN': [], RESULT: [] };
   allRecordsValid = false;
   showHistory = false;
   hasError = false;
@@ -45,6 +45,7 @@ export class XslVerifiedComponent implements OnInit, AfterViewInit {
   ngAfterViewInit(): void { }
 
   ngOnInit() {
+    console.log('🔍 XslVerified - ngOnInit iniciado');
     this.loadSessionData();
     this.subscribeToRouteParams();
   }
@@ -52,17 +53,29 @@ export class XslVerifiedComponent implements OnInit, AfterViewInit {
   private loadSessionData(): void {
     this.contractId = Number(sessionStorage.getItem('IdContrato'));
     this.organismoId = Number(sessionStorage.getItem('IdOrganismo'));
-    this.organismoDescription = this.bsiHelper.toProperCase(sessionStorage.getItem('Organismo') || '');
+    const organismoFromSession = sessionStorage.getItem('Organismo');
+    this.organismoDescription = organismoFromSession 
+      ? this.bsiHelper.toProperCase(organismoFromSession) 
+      : 'Sistema de Gestión';
     this.userId = Number(sessionStorage.getItem('idUser'));
+    
+    console.log('📌 Datos de sesión cargados:', {
+      contractId: this.contractId,
+      organismoId: this.organismoId,
+      organismoDescription: this.organismoDescription,
+      userId: this.userId
+    });
   }
 
   private subscribeToRouteParams(): void {
     this.route.params.subscribe((params) => {
-      this.Tipo_Modulo = params["tipomodulo"];
-      this.id = Number(params["id"]);
+      console.log('📌 XslVerified - Parámetros de ruta:', params);
+      this.Tipo_Modulo = params["tipomodulo"] || 'PAGO';
+      this.id = Number(params["id"]) || 0;
       this.hasError = Boolean(params["error"]);
 
       this.headerTitle = this.getHeaderText(this.Tipo_Modulo);
+      console.log('📌 Tipo_Modulo:', this.Tipo_Modulo, 'ID:', this.id);
 
       if (this.id === 0) {
         this.showHistory = true;
@@ -107,9 +120,44 @@ export class XslVerifiedComponent implements OnInit, AfterViewInit {
 
   
   private processMetadata(data: any, res: any): void {
-    console.log('Metadata recibida:', data);
-    this.metadata = data.RESULT;
+    console.log('📊 Metadata recibida:', data);
+    console.log('📊 Response del SP:', res);
+    
+    // La metadata viene con estructura { HEADER: [...], RESULT: [...] }
+    this.metadata = data || {};
     this.validationData = res.data;
+    
+    // Si no hay metadata de HEADER definida, crear una por defecto basada en los datos
+    if (!this.metadata.HEADER || this.metadata.HEADER.length === 0) {
+      console.log('⚠️ No hay metadata HEADER definida, creando metadata por defecto');
+      this.metadata.HEADER = [
+        { field: 'rotulo', header: 'Rótulo', type: 'text' },
+        { field: 'concepto', header: 'Concepto', type: 'text' },
+        { field: 'fechapago', header: 'Fecha de Pago', type: 'text', pipe: 'date' },
+        { field: 'Cuenta_Debito', header: 'Cuenta Débito', type: 'text' },
+        { field: 'importe_total', header: 'Importe Total', type: 'currency', pipe: 'BsiCurrencyPipe' },
+        { field: 'cantidad_elementos', header: 'Cantidad', type: 'number' }
+      ];
+    }
+    
+    // Si no hay metadata de TABLE-COLUMN definida, crear una por defecto
+    if (!this.metadata['TABLE-COLUMN'] || this.metadata['TABLE-COLUMN'].length === 0) {
+      console.log('⚠️ No hay metadata TABLE-COLUMN definida, creando metadata por defecto');
+      this.metadata['TABLE-COLUMN'] = [
+        { field: 'cbu', header: 'CBU', type: 'text' },
+        { field: 'cuil', header: 'CUIL', type: 'text' },
+        { field: 'nombre', header: 'Nombre', type: 'text' },
+        { field: 'importe', header: 'Importe', type: 'currency' },
+        { field: 'valido', header: 'Estado', type: 'result' },
+        { field: 'descripcion_validacion', header: 'Descripción', type: 'text' }
+      ];
+    }
+    
+    console.log('📊 validationData asignada:', this.validationData);
+    console.log('📊 Header data:', this.validationData?.header);
+    console.log('📊 Items data:', this.validationData?.items);
+    console.log('📊 Metadata final:', this.metadata);
+    
     this.allRecordsValid = this.areAllRecordsValid();
 
     if (this.validationData?.items) {
@@ -125,8 +173,10 @@ export class XslVerifiedComponent implements OnInit, AfterViewInit {
   }
 
   private handleDBError(error: any): void {
-    console.error('Error al cargar los datos:', error);
+    console.error('❌ XslVerified - Error al cargar los datos:', error);
     this.isLoading = false;
+    // Inicializar con datos vacíos para evitar errores en el template
+    this.validationData = { header: {}, items: [] };
   }
 
   goBack(): void {

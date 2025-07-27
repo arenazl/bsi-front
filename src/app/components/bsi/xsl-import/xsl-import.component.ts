@@ -3,9 +3,10 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { FileUploader, FileItem } from 'ng2-file-upload';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Location } from '@angular/common';
-import { environment } from '../../../../../environments/environment';
+import { environment } from '../../../../environments/environment';
 import { FileService } from '../../../services/file.service';
 import { BsiHelper } from 'src/app/services/bsiHelper.service';
+import { ContractStateService } from 'src/app/services/contract-state.service';
 import { TipoMetada, TipoModulo } from 'src/app/enums/enums';
 import { dbResponse } from 'src/app/models/Model';
 import Swal from 'sweetalert2';
@@ -24,12 +25,12 @@ export class XslImportComponent implements OnInit {
   // Uploader properties
   uploader: FileUploader;
   uploadUrl = '';
-  uri = environment.apiUrl.replace('/api', `/api/${environment.apiVersion}`) + "/archivos";
+  uri = environment.apiUrl + "/archivos";
 
   // UI state properties
   isLoading = true;
   cargaArchivoSeleccionada = false;
-  filesUploaded = true;
+  filesUploaded = false;
   cargaManual = false;
   cargaNomina = false;
   cargaArchivo = true;
@@ -60,6 +61,7 @@ export class XslImportComponent implements OnInit {
     private router: Router,
     private location: Location,
     private bsiHelper: BsiHelper,
+    private contractState: ContractStateService
   ) {
     this.formGroup = this.fb.group({});
     this.uploader = new FileUploader({ url: this.uri });
@@ -92,16 +94,36 @@ export class XslImportComponent implements OnInit {
 
   private loadUserData(): void {
 
-    this.user = sessionStorage.getItem('idUser') as unknown as number;
-    this.organismo = sessionStorage.getItem('IdOrganismo') as unknown as number;
-    this.contratos =  JSON.parse(sessionStorage.getItem('Contratos') as unknown as string)
+    this.user = Number(sessionStorage.getItem('idUser')) || 0;
+    this.organismo = Number(sessionStorage.getItem('IdOrganismo')) || 0;
+    this.contratos = JSON.parse(sessionStorage.getItem('Contratos') || '[]')
 
   }
 
   private loadContractData(): void {
-
-    this.contrato = this.getContratoByTipoContrato(this.tipocontrato)
+    // Primero intentar obtener el contexto del servicio
+    const contractContext = this.contractState.getContractContext();
+    
+    if (contractContext && contractContext.contractId) {
+      // Usar el contrato del contexto
+      this.contrato = contractContext.contractId;
+      console.log('Usando contrato del contexto:', contractContext);
+    } else {
+      // Fallback al método anterior
+      if (!isNaN(Number(this.tipocontrato))) {
+        this.contrato = Number(this.tipocontrato);
+      } else {
+        this.contrato = this.getContratoByTipoContrato(this.tipocontrato);
+      }
+    }
   
+    console.log('=== DEBUG XslImportComponent ===');
+    console.log('Llamando getContratoById con:');
+    console.log('user:', this.user, 'tipo:', typeof this.user);
+    console.log('organismo:', this.organismo, 'tipo:', typeof this.organismo);
+    console.log('contrato:', this.contrato, 'tipo:', typeof this.contrato);
+    console.log('================================');
+    
     this.fileService.getContratoById(this.user, this.organismo, this.contrato).subscribe(
       (resData: dbResponse) => this.handleContractData(resData),
       error => console.error('Error loading contract data:', error)
@@ -194,17 +216,38 @@ export class XslImportComponent implements OnInit {
 
   private onUploadComplete(response: any): void {
     const res = JSON.parse(response);
-    if (res.estado >= 10) {
+    console.log('📥 Upload response:', res);
+    
+    // Si estado === 0, es un error y NO debe avanzar
+    if (res.estado === 0) {
       this.handleUploadError(res);
-    } else {
+    } else if (res.estado === 1) {
+      // Solo si estado === 1 (éxito) debe avanzar
       this.handleUploadSuccess(res);
+    } else {
+      // Cualquier otro estado se trata como error
+      this.handleUploadError(res);
     }
   }
 
   private handleUploadError(res: any): void {
+    console.log('❌ Upload error details:', res);
+    
+    // Intentar obtener el mensaje más específico posible
+    let errorMessage = res.descripcion || res.message || 'Error desconocido al procesar el archivo';
+    
+    // Si el mensaje es genérico, intentar usar detalles adicionales
+    if (errorMessage === 'Internal server error' || errorMessage === 'Error interno del servidor') {
+      if (res.error && res.error.details) {
+        errorMessage = res.error.details;
+      } else if (res.data && res.data.message) {
+        errorMessage = res.data.message;
+      }
+    }
+    
     Swal.fire({
       title: "Error al subir el archivo",
-      text: res.descripcion,
+      text: errorMessage,
       icon: "error",
     });
     this.buttonText = 'Reintentar';

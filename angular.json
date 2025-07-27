@@ -19,7 +19,7 @@
             "polyfills": "src/polyfills.ts",
             "tsConfig": "tsconfig.app.json",
             "assets": ["src/favicon.ico", "src/assets", "src/assets/js"],
-            "styles": ["src/styles.css", "src/styles-react.css"],
+            "styles": ["src/styles.css", "src/styles/themes.css", "src/styles-react.css"],
             "scripts": ["src/assets/js/zoom.js"]
           },
           "configurations": {
@@ -90,7 +90,7 @@
             "tsConfig": "tsconfig.spec.json",
             "karmaConfig": "karma.conf.js",
             "assets": ["src/favicon.ico", "src/assets", "src/assets/js"],
-            "styles": ["src/styles.css", "src/styles-react.css"],
+            "styles": ["src/styles.css", "src/styles/themes.css", "src/styles-react.css"],
             "scripts": ["src/assets/js/zoom.js"]
           }
         }

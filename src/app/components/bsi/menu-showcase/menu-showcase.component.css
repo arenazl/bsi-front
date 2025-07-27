@@ -1,0 +1,494 @@
+/* Selector de diseño */
+.design-selector {
+  position: fixed;
+  top: 80px;
+  right: 20px;
+  z-index: 1000;
+  display: flex;
+  gap: 10px;
+  background: rgba(255, 255, 255, 0.9);
+  padding: 10px;
+  border-radius: 10px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+.design-btn {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 6px;
+  background: #f0f0f0;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.design-btn:hover {
+  background: #e0e0e0;
+}
+
+.design-btn.active {
+  background: #4680FF;
+  color: white;
+}
+
+/* Estilos comunes */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+.title {
+  text-align: center;
+  margin-bottom: 3rem;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 1.5rem;
+}
+
+.buttons-row {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: auto;
+}
+
+.buttons-row button,
+.buttons-row a {
+  flex: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* DISEÑO 1: GLASSMORPHISM */
+.design-1-glass {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  padding: 2rem;
+}
+
+.design-1-glass .title {
+  color: white;
+  font-size: 2.5rem;
+  font-weight: bold;
+}
+
+.card-glass {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 20px;
+  padding: 2rem;
+  position: relative;
+  transition: all 0.3s;
+  min-height: 280px;
+  display: flex;
+  flex-direction: column;
+}
+
+.card-glass:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+}
+
+.card-glass h3 {
+  color: white;
+  margin-bottom: 0.5rem;
+}
+
+.card-glass p {
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 0.9rem;
+  margin-bottom: 1.5rem;
+}
+
+.icon-float {
+  position: absolute;
+  top: -20px;
+  right: -20px;
+  width: 60px;
+  height: 60px;
+  background: linear-gradient(135deg, #4680FF, #6C63FF);
+  border-radius: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transform: rotate(12deg);
+  transition: transform 0.3s;
+}
+
+.card-glass:hover .icon-float {
+  transform: rotate(0deg);
+}
+
+.icon-float i {
+  color: white;
+  font-size: 1.5rem;
+}
+
+.btn-glass {
+  background: rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  color: white;
+  padding: 0.6rem 1rem;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.3s;
+  font-size: 0.85rem;
+}
+
+.btn-glass:hover {
+  background: rgba(255, 255, 255, 0.3);
+  transform: translateY(-2px);
+}
+
+/* DISEÑO 2: NEUMORPHISM */
+.design-2-neumo {
+  min-height: 100vh;
+  background: #e0e5ec;
+  padding: 2rem;
+}
+
+.design-2-neumo .title {
+  color: #333;
+  font-size: 2.5rem;
+}
+
+.card-neumo {
+  background: #e0e5ec;
+  border-radius: 20px;
+  padding: 2rem;
+  box-shadow: 9px 9px 16px #b8bcc2, -9px -9px 16px #ffffff;
+  transition: all 0.3s;
+  min-height: 280px;
+  display: flex;
+  flex-direction: column;
+}
+
+.card-neumo:hover {
+  box-shadow: inset 9px 9px 16px #b8bcc2, inset -9px -9px 16px #ffffff;
+}
+
+.icon-neumo {
+  width: 50px;
+  height: 50px;
+  background: #e0e5ec;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 5px 5px 10px #b8bcc2, -5px -5px 10px #ffffff;
+  margin-bottom: 1rem;
+}
+
+.icon-neumo i {
+  color: #4680FF;
+  font-size: 1.2rem;
+}
+
+.card-neumo h3 {
+  color: #333;
+  margin-bottom: 0.5rem;
+}
+
+.card-neumo p {
+  color: #666;
+  font-size: 0.9rem;
+  margin-bottom: 1.5rem;
+}
+
+.btn-neumo {
+  background: #e0e5ec;
+  border: none;
+  padding: 0.6rem 1rem;
+  border-radius: 10px;
+  box-shadow: 5px 5px 10px #b8bcc2, -5px -5px 10px #ffffff;
+  cursor: pointer;
+  transition: all 0.3s;
+  font-size: 0.85rem;
+  color: #4680FF;
+  font-weight: 600;
+}
+
+.btn-neumo:hover {
+  box-shadow: inset 5px 5px 10px #b8bcc2, inset -5px -5px 10px #ffffff;
+}
+
+/* DISEÑO 3: MINIMALISTA */
+.design-3-minimal {
+  min-height: 100vh;
+  background: #fafafa;
+  padding: 2rem;
+}
+
+.design-3-minimal .title {
+  color: #111;
+  font-size: 2rem;
+  font-weight: 300;
+  letter-spacing: -1px;
+}
+
+.card-minimal {
+  background: white;
+  border: 1px solid #eee;
+  border-radius: 12px;
+  padding: 2rem;
+  transition: all 0.3s;
+  min-height: 280px;
+  display: flex;
+  flex-direction: column;
+}
+
+.card-minimal:hover {
+  border-color: transparent;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
+}
+
+.icon-minimal {
+  width: 40px;
+  height: 40px;
+  background: #f0f7ff;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1rem;
+}
+
+.icon-minimal i {
+  color: #4680FF;
+}
+
+.card-minimal h3 {
+  color: #111;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  font-size: 1.1rem;
+}
+
+.card-minimal p {
+  color: #666;
+  font-size: 0.85rem;
+  margin-bottom: 1.5rem;
+}
+
+.link-minimal {
+  color: #4680FF;
+  text-decoration: none;
+  font-size: 0.85rem;
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  transition: gap 0.3s;
+}
+
+.link-minimal:hover {
+  gap: 0.6rem;
+}
+
+.link-minimal i {
+  font-size: 0.7rem;
+}
+
+/* DISEÑO 4: DARK NEON */
+.design-4-dark {
+  min-height: 100vh;
+  background: #0a0a0a;
+  padding: 2rem;
+}
+
+.design-4-dark .title {
+  color: transparent;
+  background: linear-gradient(to right, #4680FF, #6C63FF);
+  -webkit-background-clip: text;
+  background-clip: text;
+  font-size: 2.5rem;
+  font-weight: bold;
+}
+
+.card-dark {
+  background: #1a1a1a;
+  border: 1px solid #2a2a2a;
+  border-radius: 20px;
+  padding: 2rem;
+  transition: all 0.3s;
+  position: relative;
+  overflow: hidden;
+  min-height: 280px;
+  display: flex;
+  flex-direction: column;
+}
+
+.card-dark:hover {
+  border-color: #4680FF;
+  box-shadow: 0 0 30px rgba(70, 128, 255, 0.3);
+}
+
+.card-dark::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: radial-gradient(circle at center, rgba(70, 128, 255, 0.1), transparent);
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.card-dark:hover::before {
+  opacity: 1;
+}
+
+.icon-neon {
+  width: 50px;
+  height: 50px;
+  background: rgba(70, 128, 255, 0.2);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1rem;
+  transition: all 0.3s;
+}
+
+.card-dark:hover .icon-neon {
+  box-shadow: 0 0 20px rgba(70, 128, 255, 0.5);
+}
+
+.icon-neon i {
+  color: #4680FF;
+  font-size: 1.2rem;
+}
+
+.card-dark h3 {
+  color: white;
+  margin-bottom: 0.5rem;
+  position: relative;
+}
+
+.card-dark p {
+  color: #888;
+  font-size: 0.9rem;
+  margin-bottom: 1.5rem;
+  position: relative;
+}
+
+.btn-neon {
+  background: rgba(70, 128, 255, 0.1);
+  border: 1px solid rgba(70, 128, 255, 0.3);
+  color: #4680FF;
+  padding: 0.6rem 1rem;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.3s;
+  font-size: 0.85rem;
+  position: relative;
+}
+
+.btn-neon:hover {
+  background: #4680FF;
+  color: white;
+  box-shadow: 0 0 20px rgba(70, 128, 255, 0.5);
+}
+
+/* DISEÑO 5: BENTO */
+.design-5-bento {
+  min-height: 100vh;
+  background: #f5f5f7;
+  padding: 2rem;
+}
+
+.design-5-bento .title {
+  color: #1d1d1f;
+  font-size: 2.5rem;
+  font-weight: 600;
+}
+
+.card-bento {
+  background: white;
+  border-radius: 20px;
+  padding: 2rem;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s;
+  min-height: 280px;
+  display: flex;
+  flex-direction: column;
+}
+
+.card-bento:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+}
+
+.card-bento .header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.icon-bento {
+  width: 48px;
+  height: 48px;
+  background: linear-gradient(135deg, #4680FF, #6C63FF);
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 12px rgba(70, 128, 255, 0.3);
+}
+
+.icon-bento i {
+  color: white;
+  font-size: 1.2rem;
+}
+
+.dots {
+  display: flex;
+  gap: 4px;
+}
+
+.dots span {
+  width: 6px;
+  height: 6px;
+  background: #ddd;
+  border-radius: 50%;
+}
+
+.card-bento h3 {
+  color: #1d1d1f;
+  margin-bottom: 0.5rem;
+  font-size: 1.2rem;
+}
+
+.card-bento p {
+  color: #86868b;
+  font-size: 0.9rem;
+  margin-bottom: 1.5rem;
+}
+
+.btn-bento {
+  background: #f5f5f7;
+  border: none;
+  color: #4680FF;
+  padding: 0.6rem 1rem;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.3s;
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+
+.btn-bento:hover {
+  background: #4680FF;
+  color: white;
+}
+
+/* Estilos para cards deshabilitadas */
+.disabled {
+  opacity: 0.5;
+  pointer-events: none;
+}

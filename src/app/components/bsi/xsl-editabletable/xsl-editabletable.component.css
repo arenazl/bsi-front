@@ -1,50 +1,218 @@
-.switch {
-    position: relative;
-    display: inline-block;
-    width: 34px;
-    height: 20px;
-  }
-  
-  .switch input {
-    opacity: 0;
-    width: 0;
-    height: 0;
-  }
-  
-  .slider {
-    position: absolute;
-    cursor: pointer;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: #ccc;
-    transition: 0.4s;
-    border-radius: 34px;
-  }
+/* Solo estilos de layout, sin colores */
+/* Los colores vienen del sistema de temas global */
 
-  .card {
-    BACKGROUND: #ffffffc9 !important;
+/* Gradiente para headers de tabla con color complementario */
+.from-primary-color {
+  --tw-gradient-from: var(--primary-color);
+  --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
 }
-  
-  .slider:before {
-    position: absolute;
-    content: "";
-    height: 12px;
-    width: 12px;
-    left: 4px;
-    bottom: 4px;
-    background-color: white;
-    transition: 0.4s;
-    border-radius: 50%;
+
+.via-secondary-color {
+  --tw-gradient-via: var(--secondary-color);
+  --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-via), var(--tw-gradient-to);
+}
+
+.via-complementary-color {
+  --tw-gradient-via: var(--complementary-color);
+  --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-via), var(--tw-gradient-to);
+}
+
+.to-secondary-color {
+  --tw-gradient-to: var(--secondary-color);
+}
+
+.to-complementary-color {
+  --tw-gradient-to: var(--complementary-color);
+}
+
+thead.bg-gradient-to-r {
+  background: linear-gradient(90deg, 
+    var(--primary-color), 
+    var(--secondary-color) 35%,
+    var(--complementary-color) 65%,
+    var(--secondary-color)
+  ) !important;
+}
+
+/* Gradientes sutiles para filas de tabla */
+.from-primary-color\/5 {
+  --tw-gradient-from: color-mix(in srgb, var(--primary-color) 5%, transparent);
+}
+
+.to-complementary-color\/10 {
+  --tw-gradient-to: color-mix(in srgb, var(--complementary-color) 10%, transparent);
+}
+
+.from-green-500\/5 {
+  --tw-gradient-from: color-mix(in srgb, #10b981 5%, transparent);
+}
+
+/* Asegurar legibilidad del texto */
+tbody td {
+  color: var(--text-primary) !important;
+  font-weight: 500;
+}
+
+/* Hover suave en filas */
+tbody tr:hover {
+  background-blend-mode: multiply;
+  backdrop-filter: brightness(1.05);
+}
+
+/* Botón flotante con gradiente del tema */
+.fixed {
+  position: fixed !important;
+}
+
+.z-50 {
+  z-index: 50;
+}
+
+/* Animación de rebote para el ícono */
+@keyframes bounce {
+  0%, 100% {
+    transform: translateY(0);
   }
-  
-  input:checked + .slider {
-    background-color: #2196F3;
+  50% {
+    transform: translateY(-0.25rem);
   }
-  
-  input:checked + .slider:before {
-    transform: translateX(14px);
+}
+
+.animate-bounce {
+  animation: bounce 1s infinite;
+}
+
+/* Sombra extra grande */
+.shadow-2xl {
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+}
+
+.hover\:shadow-3xl:hover {
+  box-shadow: 0 35px 60px -15px rgba(0, 0, 0, 0.3);
+}
+
+/* Asegurar que el color del tema se aplique correctamente */
+.text-primary-color {
+  color: var(--primary-color) !important;
+}
+
+/* Estilo personalizado para botones accent en esta pantalla */
+.btn-theme-accent {
+  background-color: transparent !important;
+  color: var(--btn-accent-text) !important;
+  border: 1px solid color-mix(in srgb, var(--btn-accent-border, var(--btn-accent-hover)) 26%, transparent) !important;
+  border-radius: var(--btn-border-radius) !important;
+  padding: 0.75rem 1.5rem !important;
+  font-weight: 600 !important;
+  font-size: 0.875rem !important;
+  transition: all 0.3s ease !important;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-block;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1), 0 4px 16px rgba(0, 0, 0, 0.08) !important;
+  position: relative;
+  overflow: hidden;
+  transform-style: preserve-3d !important;
+  transform: perspective(1000px) rotateY(0deg) !important;
+}
+
+/* Efecto hover para los botones */
+.btn-theme-accent:hover {
+  transform: perspective(1000px) rotateY(2deg) translateY(-2px) !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15), 0 8px 24px rgba(0, 0, 0, 0.12) !important;
+  background-color: color-mix(in srgb, var(--btn-accent-bg) 10%, transparent) !important;
+}
+
+/* Ajuste para botones pequeños en la grilla */
+td .btn-theme-accent {
+  padding: 0.5rem 0.75rem !important;
+  font-size: 0.75rem !important;
+}
+
+/* Ajuste para los botones de los cards de resumen */
+.btn-theme-accent.flex-shrink-0:not(button) {
+  min-height: 80px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+/* Cards con colores complementarios y efecto 3D */
+.complementary-card {
+  background-color: color-mix(in srgb, var(--complementary-color) 15%, transparent);
+  border: 2px solid var(--complementary-color);
+  transform: perspective(1000px) rotateX(5deg) rotateY(-5deg);
+  transform-style: preserve-3d;
+  box-shadow: 
+    0 10px 20px -5px color-mix(in srgb, var(--complementary-color) 30%, transparent),
+    0 4px 6px -2px color-mix(in srgb, var(--complementary-color) 20%, transparent),
+    inset 0 1px 0 color-mix(in srgb, var(--complementary-color) 50%, transparent);
+  position: relative;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Efecto de brillo en la superficie */
+.complementary-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(
+    135deg,
+    color-mix(in srgb, var(--complementary-color) 20%, transparent) 0%,
+    transparent 40%,
+    transparent 60%,
+    color-mix(in srgb, var(--complementary-color) 10%, transparent) 100%
+  );
+  border-radius: 0.75rem;
+  pointer-events: none;
+}
+
+/* Efecto de profundidad con pseudo-elemento */
+.complementary-card::after {
+  content: '';
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  right: 2px;
+  bottom: 2px;
+  background: linear-gradient(
+    to bottom,
+    color-mix(in srgb, var(--complementary-color) 5%, transparent),
+    transparent
+  );
+  border-radius: 0.65rem;
+  z-index: -1;
+}
+
+.complementary-card:hover {
+  background-color: color-mix(in srgb, var(--complementary-color) 25%, transparent);
+  border: 3px solid var(--complementary-color);
+  transform: perspective(1000px) rotateX(8deg) rotateY(-8deg) translateY(-4px) scale(1.02);
+  box-shadow: 
+    0 20px 40px -10px color-mix(in srgb, var(--complementary-color) 40%, transparent),
+    0 8px 16px -4px color-mix(in srgb, var(--complementary-color) 30%, transparent),
+    inset 0 2px 0 color-mix(in srgb, var(--complementary-color) 60%, transparent),
+    0 0 0 1px var(--complementary-color);
+}
+
+/* Animación de entrada */
+@keyframes card3DEntry {
+  from {
+    opacity: 0;
+    transform: perspective(1000px) rotateX(20deg) rotateY(-20deg) scale(0.8);
   }
+  to {
+    opacity: 1;
+    transform: perspective(1000px) rotateX(5deg) rotateY(-5deg) scale(1);
+  }
+}
+
+.complementary-card {
+  animation: card3DEntry 0.6s ease-out;
+}
 
   

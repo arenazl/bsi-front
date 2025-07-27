@@ -1,21 +1,22 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable } from 'rxjs';
-import { environment } from '../../environments/environment';
-
+import { Observable, of } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ChatService {
 
-  private API_URI = environment.apiUrl;
+  constructor(private http: HttpClient) { }
 
-  constructor(private _http: HttpClient) {}
-
-  sendMessage(message: string): Observable<any> 
-  {
-    const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
-    return this._http.post(`${this.API_URI}/openai/message`, { message }, { headers });
+  sendMessage(message: string): Observable<any> {
+    // Stub implementation - replace with actual API call
+    return of({
+      response: [{
+        text: {
+          value: 'Servicio de chat no implementado completamente.'
+        }
+      }]
+    });
   }
 }

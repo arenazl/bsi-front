@@ -1,17 +1,14 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
-// Components
-import { UserManagementWrapperComponent } from './user-management-wrapper/user-management-wrapper.component';
-import { PaymentsMetricsComponent } from './payments-metrics-wrapper/payments-metrics.component';
-import { ContratoManagementWrapperComponent } from './contrato-management-wrapper/contrato-management-wrapper.component';
-import { OrganismoManagementWrapperComponent } from './organismo-management-wrapper/organismo-management-wrapper.component';
+// Componente principal
+import { AdminPanelComponent } from './admin-panel/admin-panel.component';
+// Guard para proteger las rutas de admin
+import { AdminGuard } from '../../guards/admin.guard';
 
 const routes: Routes = [
-  { path: 'userManagement', component: UserManagementWrapperComponent },
-  { path: 'payments-metrics', component: PaymentsMetricsComponent },
-  { path: 'contratoManagement', component: ContratoManagementWrapperComponent },
-  { path: 'organismoManagement', component: OrganismoManagementWrapperComponent }
+  { path: '', component: AdminPanelComponent },
+  { path: 'panel', component: AdminPanelComponent }
 ];
 
 @NgModule({

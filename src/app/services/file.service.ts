@@ -17,44 +17,45 @@ export class FileService {
   }
 
   API_URI = environment.apiUrl;
-  API_V2_URI = environment.apiUrl.replace('/api', `/api/${environment.apiVersion}`);
   validationData = null;
   private storageKey = 'validationData';
 
   constructor(private _http: HttpClient
   ) { }
 
-  // Método de login para V2
-  login(credentials: {nombre: string, password: string}): Observable<any> {
-    return this._http.post(`${this.API_V2_URI}/auth/login`, credentials);
+  // Método de login
+  login(credentials: { nombre: string, password: string }): Observable<any> {
+    return this._http.post(`${this.API_URI}/auth/login`, credentials);
   }
 
   // Método para refrescar token
   refreshToken(refreshToken: string): Observable<any> {
-    return this._http.post(`${this.API_V2_URI}/auth/refresh`, { refreshToken });
+    return this._http.post(`${this.API_URI}/auth/refresh`, { refreshToken });
   }
 
   // Método para logout
   logout(): Observable<any> {
-    return this._http.post(`${this.API_V2_URI}/auth/logout`, {});
+    return this._http.post(`${this.API_URI}/auth/logout`, {});
   }
 
-  postInsertGenericSP(body: any): Observable<any>
-  {
-    return this._http.post(`${this.API_V2_URI}/generic/execute-insert`,body);
+  // Método para cargar JSON de configuración de pantallas
+  getJsonForScreen(screen: string): Observable<any> {
+    return this._http.get(`assets/json/${screen}.json`);
   }
 
-  postSelectGenericSP(body: any): Observable<any>
-  {
-    return this._http.post(`${this.API_V2_URI}/generic/execute-select`,body);
+  postInsertGenericSP(body: any): Observable<any> {
+    return this._http.post(`${this.API_URI}/generic/execute-insert`, body);
   }
 
-  getMetaData(tipoModulo: TipoModulo, tipoMetada: TipoMetada, contrato: string='NONE'): Observable<any>
-  {
-    return this._http.get(`${this.API_V2_URI}/generic/metadata/${tipoModulo}/${tipoMetada}/${contrato}`);
+  postSelectGenericSP(body: any): Observable<any> {
+    return this._http.post(`${this.API_URI}/generic/execute-select`, body);
   }
 
-   getComboOptions(endpoint?: string, staticOptions?: string): Observable<{ id: string; value: string }[]> {
+  getMetaData(tipoModulo: TipoModulo, tipoMetada: TipoMetada, contrato: string = 'NONE'): Observable<any> {
+    return this._http.get(`${this.API_URI}/generic/metadata/${tipoModulo}/${tipoMetada}/${contrato}`);
+  }
+
+  getComboOptions(endpoint?: string, staticOptions?: string): Observable<{ id: string; value: string }[]> {
 
     if (staticOptions) {
       const options = staticOptions.split(',').map((value, index) => ({
@@ -91,18 +92,18 @@ export class FileService {
   }
 
 
-  getContratoById(user: number, municipio: number, contrato: number) : Observable<any> {
+  getContratoById(user: number, municipio: number, contrato: number): Observable<any> {
 
     var body = { id_user: user, id_organismo: municipio, id_contrato: contrato };
 
-    return this._http.post(`${this.API_V2_URI}/organismos/contratos/${contrato}`, body, {
+    return this._http.post(`${this.API_URI}/organismos/contratos/${contrato}`, body, {
       responseType: 'json',
       headers: new HttpHeaders().append('Content-Type', 'application/json')
     });
 
   }
 
-  postInsertValidateAndInsert(nominaPayload: any) : Observable<any> {
+  postInsertValidateAndInsert(nominaPayload: any): Observable<any> {
 
     return this._http.post(`${this.API_URI}/metadata/POST_INSERT_NOMINA_MANUAL`, nominaPayload, {
       responseType: 'json',
@@ -120,18 +121,18 @@ export class FileService {
   }
 
   downloadOutputFile(tipoModulo: string, id: number): Observable<Blob> {
-    const url = `${this.API_V2_URI}/archivos/${id}/descargar`;
+    const url = `${this.API_URI}/archivos/${id}/descargar`;
     return this._http.get(url, {
       responseType: 'blob',
       headers: new HttpHeaders().append('Content-Type', 'application/json')
     });
   }
-  
-  
+
+
 
   getListForCombo(tipoModulo: TipoModulo): Observable<any> {
 
-    const url = `${this.API_V2_URI}/organismos/combo/${tipoModulo}`;
+    const url = `${this.API_URI}/organismos/combo/${tipoModulo}`;
     return this._http.get(url, {
       responseType: 'json',
       headers: new HttpHeaders().append('Content-Type', 'application/json')
@@ -141,14 +142,10 @@ export class FileService {
 
   dropBox(file: string) {
     var body = { filename: file };
-    return this._http.post(`${this.API_V2_URI}/archivos/subir`, body, {
+    return this._http.post(`${this.API_URI}/archivos/subir`, body, {
       responseType: 'blob',
       headers: new HttpHeaders().append('Content-Type', 'application/json')
     });
-  }
-  
-  getJsonForScreen(jsonName: string) {
-    return this._http.get('assets/json/' + jsonName + '.json');
   }
 
   getColumnConfig(tipo: string): Observable<any> {
@@ -158,25 +155,25 @@ export class FileService {
   }
 
   getUsers(): Observable<any[]> {
-    const url = `${this.API_V2_URI}/usuarios`;
+    const url = `${this.API_URI}/usuarios`;
     return this._http.get<any[]>(url);
   }
 
   createUser(user: any): Observable<any> {
 
-    const url = `${this.API_V2_URI}/usuarios`;
+    const url = `${this.API_URI}/usuarios`;
     return this._http.post(url, user);
   }
 
   updateUser(id: number, user: any): Observable<any> {
 
-    const url = `${this.API_V2_URI}/usuarios/${id}`;
+    const url = `${this.API_URI}/usuarios/${id}`;
     return this._http.put(url, user);
   }
 
   deleteUser(id: number): Observable<any> {
 
-    const url = `${this.API_V2_URI}/usuarios/${id}`;
+    const url = `${this.API_URI}/usuarios/${id}`;
     return this._http.delete(url);
   }
 

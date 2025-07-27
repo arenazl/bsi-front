@@ -1,30 +1,111 @@
-<div class="card">
-
-  <div class="card-header">
-    <h4>Menú Principal</h4>
+<!-- Contenedor principal con diseño moderno usando clases del tema -->
+<div class="min-h-screen">
+  <!-- Header integrado con el fondo -->
+  <div class="bg-gradient-to-br relative overflow-hidden">
+    <!-- Patrón decorativo de fondo -->
+    <div class="absolute inset-0 opacity-10">
+      <div class="absolute -top-24 -right-24 w-96 h-96 bg-white rounded-full"></div>
+      <div class="absolute -bottom-24 -left-24 w-96 h-96 bg-white rounded-full"></div>
+    </div>
+    
+    <!-- Contenido del header -->
+    <div class="relative z-10 px-8 py-12">
+      <div class="max-w-7xl mx-auto text-center">
+        <h1 class="text-2xl sm:text-3xl md:text-4xl font-bold text-white mb-2">
+          Menú Principal BSI
+        </h1>
+        <p class="text-xl text-white/90">Sistema de gestión avanzada</p>
+      </div>
+    </div>
   </div>
-
-  <div class="card-body row">
-
-    <div class="col-lg-4 col-md-6 col-sm-12" *ngFor="let activity of menuConfiguration">
-      <div class="card" [ngClass]="{'disabled': !activity.enabled}">
-        <div class="card-body">
-          <h5 class="card-title">{{activity.title}}</h5>
-          <p class="card-text">{{activity.description}}</p>
-          <div class="d-flex flex-row flex-wrap">
-
-            <div *ngFor="let item of activity.items; let isLast=last" class="flex-grow-1" [class.me-2]="!isLast">
-
-              <a [routerLink]="activity.enabled ? [item.link] : []" class="btn btn-primary fw-bold w-100"
-                (click)="activity.enabled ? null : showAccessDeniedModal()">
-                Ir a {{ item.description }}
-              </a>
-
+  
+  <!-- Contenido principal con margen negativo para superposición -->
+  <div class="-mt-8 relative z-20 px-8 pb-8">
+    <div class="max-w-7xl mx-auto">
+      <!-- Grid de tarjetas -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        
+        <!-- Tarjetas del menú -->
+        <div *ngFor="let activity of menuConfiguration; let i = index"
+             [style.display]="shouldShowActivity(activity) ? 'block' : 'none'"
+             class="card-theme bg-white rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 p-6 hover:-translate-y-1 relative overflow-hidden group">
+          
+          <!-- Decoración de fondo al hover -->
+          <div class="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-[var(--primary-color)] to-[var(--accent-color)] opacity-0 group-hover:opacity-10 rounded-full transform translate-x-16 -translate-y-16 transition-opacity duration-300"></div>
+          
+          <!-- Icono con clases del tema -->
+          <div class="icon-theme icon-theme-sm mb-4">
+            <i [class]="getCardIcon(activity.title, i)"></i>
+          </div>
+          
+          <!-- NEW badge -->
+          <div *ngIf="isNewFeature(activity.title)" 
+               class="absolute top-4 right-4 px-3 py-1 bg-gradient-to-r from-orange-500 to-red-500 text-white text-xs font-bold rounded-full shadow-lg">
+            NEW
+          </div>
+          
+          <!-- Contenido -->
+          <div class="flex-1">
+            <h3 class="text-lg font-bold text-gray-800 mb-2">
+              {{ activity.title }}
+            </h3>
+            <p class="text-sm text-gray-600 mb-3">
+              {{ activity.description }}
+            </p>
+            <div class="flex items-center text-sm mb-4"
+                 [ngClass]="{'text-theme-accent': activity.enabled, 'text-gray-400': !activity.enabled}">
+              <span class="w-2 h-2 rounded-full bg-current mr-2"></span>
+              {{ activity.enabled ? getCardStats(activity.title) : 'Próximamente' }}
             </div>
-
+          </div>
+          
+          <!-- Botones con clases del tema -->
+          <div class="flex gap-2" *ngIf="activity.items && activity.items.length > 0">
+            <button *ngFor="let item of activity.items; let isFirst = first"
+                    [routerLink]="activity.enabled ? [item.link] : null"
+                    (click)="!activity.enabled && showAccessDeniedModal()"
+                    [ngClass]="{
+                      'btn-theme-primary btn-sm': isFirst && activity.enabled,
+                      'btn-theme-secondary btn-sm': !isFirst && activity.enabled,
+                      'btn-theme-ghost btn-sm opacity-50 cursor-not-allowed': !activity.enabled
+                    }"
+                    class="flex-1">
+              {{ item.description }}
+            </button>
           </div>
         </div>
       </div>
+
+      <!-- Footer con estadísticas -->
+      <div class="mt-12 pt-8 border-t border-gray-200">
+        <div class="flex justify-center gap-8">
+          <div class="flex items-center text-sm text-gray-600">
+            <span class="w-2 h-2 bg-green-500 rounded-full mr-2 animate-pulse"></span>
+            {{ getEnabledCount() }} módulos activos
+          </div>
+          <div class="flex items-center text-sm text-gray-600">
+            <span class="w-2 h-2 bg-theme-primary rounded-full mr-2 animate-pulse"></span>
+            Sistema online
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal de acceso denegado -->
+<div *ngIf="showModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+  <div class="bg-white rounded-2xl shadow-2xl p-8 max-w-md w-full transform transition-all">
+    <div class="text-center">
+      <div class="icon-theme icon-theme-lg mx-auto mb-4">
+        <i class="fas fa-lock"></i>
+      </div>
+      <h3 class="text-2xl font-bold text-gray-800 mb-2">Acceso Denegado</h3>
+      <p class="text-gray-600 mb-6">Esta función estará disponible próximamente.</p>
+      <button (click)="closeModal()" 
+              class="btn-theme-primary">
+        Entendido
+      </button>
     </div>
   </div>
 </div>

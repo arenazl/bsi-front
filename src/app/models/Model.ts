@@ -117,6 +117,17 @@ export interface PdfConfig {
 }
 
 
+export interface ContratoUsuario {
+  IdContrato: number;
+  Contrato_ID?: number;  // Algunos lugares usan este nombre
+  NombreContrato: string;
+  Modalidad: string;
+  IdModalidad?: number;
+  DescripcionModalidad: string;
+  Rotulo?: string;
+  activo?: boolean;
+}
+
 export interface PdfConfigContrato {
   municipio: string;
   fecha: string;

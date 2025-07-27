@@ -1,14 +1,143 @@
 
 
+/* Loader personalizado moderno */
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.animate-spin {
+  animation: spin 1s linear infinite;
+}
+
+/* Animaciones de entrada */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Clases de utilidad */
 .display-inherit {
-    display: inherit !important;
-  }
+  display: inherit !important;
+}
 
-  .label{
-    margin-bottom: 10px;
-  }
+/* Focus styles para inputs */
+input:focus,
+select:focus,
+textarea:focus {
+  outline: none;
+  box-shadow: 0 0 0 4px rgba(147, 51, 234, 0.1);
+}
 
-.bg-progress{
-  background: linear-gradient(270deg, #00BCD4, #0d6efd) !important;
+/* Hover effects para cards */
+.hover-lift {
+  transition: all 0.3s ease;
+}
+
+.hover-lift:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+}
+
+/* Progress bar animada */
+@keyframes progressPulse {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.8;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.progress-animated {
+  animation: progressPulse 2s ease-in-out infinite;
+}
+
+/* Drag and drop zone */
+.drag-zone {
+  transition: all 0.3s ease;
+}
+
+.drag-zone.drag-over {
+  background-color: rgba(147, 51, 234, 0.05);
+  border-color: #9333ea;
+  transform: scale(1.02);
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #9333ea;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #7c3aed;
+}
+
+/* Animación para elementos que aparecen */
+.fade-in-up {
+  animation: fadeInUp 0.5s ease-out;
+}
+
+/* Estilo para range slider */
+input[type="range"] {
+  -webkit-appearance: none;
+  appearance: none;
+  background: transparent;
+  cursor: pointer;
+}
+
+input[type="range"]::-webkit-slider-track {
+  background: #e5e7eb;
+  height: 6px;
+  border-radius: 3px;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  background: #9333ea;
+  height: 20px;
+  width: 20px;
+  border-radius: 50%;
+  margin-top: -7px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  transition: all 0.2s ease;
+}
+
+input[type="range"]::-webkit-slider-thumb:hover {
+  transform: scale(1.2);
+  box-shadow: 0 3px 8px rgba(147, 51, 234, 0.4);
 }
   

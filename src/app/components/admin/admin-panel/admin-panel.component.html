@@ -1,0 +1,159 @@
+<!-- Contenedor principal con diseño moderno -->
+<div class="min-h-screen">
+  <!-- Header integrado con el fondo -->
+  <div class="bg-gradient-to-br relative overflow-hidden">
+    <!-- Patrón decorativo de fondo -->
+    <div class="absolute inset-0 opacity-10">
+      <div class="absolute -top-24 -right-24 w-96 h-96 bg-white rounded-full"></div>
+      <div class="absolute -bottom-24 -left-24 w-96 h-96 bg-white rounded-full"></div>
+    </div>
+    
+    <!-- Contenido del header -->
+    <div class="relative z-10 px-8 py-12">
+      <div class="max-w-7xl mx-auto">
+        <h1 class="text-2xl sm:text-3xl md:text-4xl font-bold text-white mb-2 whitespace-nowrap overflow-hidden text-ellipsis">Panel de Administración</h1>
+        <div class="flex items-center justify-between">
+          <p class="text-xl text-white/90">Gestione organismos, contratos y usuarios del sistema</p>
+          
+          <!-- Estadísticas rápidas -->
+          <div class="hidden md:flex items-center gap-6">
+            <div class="text-center">
+              <div class="text-2xl font-bold text-white">24</div>
+              <div class="text-sm text-white/70">Organismos</div>
+            </div>
+            <div class="text-center">
+              <div class="text-2xl font-bold text-white">156</div>
+              <div class="text-sm text-white/70">Contratos</div>
+            </div>
+            <div class="text-center">
+              <div class="text-2xl font-bold text-white">89</div>
+              <div class="text-sm text-white/70">Usuarios</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Contenido principal con margen negativo para superposición -->
+  <div class="-mt-8 relative z-20 px-8 pb-8">
+    <div class="max-w-7xl mx-auto">
+      <!-- Tabs modernos -->
+      <div class="bg-white rounded-3xl shadow-xl mb-6">
+        <div class="p-2">
+          <div class="flex flex-col sm:flex-row gap-2">
+            <!-- Tab Organismos -->
+            <button 
+              (click)="setActiveTab('organismos')"
+              [ngClass]="{
+                'bg-gradient-to-r from-[var(--primary-color)] to-[var(--secondary-color)] text-white shadow-lg': isTabActive('organismos'),
+                'bg-gray-100 hover:bg-gray-200 text-gray-700': !isTabActive('organismos')
+              }"
+              class="flex-1 px-6 py-4 rounded-2xl font-semibold transition-all duration-300 flex items-center justify-center gap-3">
+              <div [ngClass]="{
+                'bg-white/20': isTabActive('organismos'),
+                'bg-[rgba(var(--primary-color-rgb),0.1)]': !isTabActive('organismos')
+              }" class="w-10 h-10 rounded-xl flex items-center justify-center">
+                <i class="fas fa-building text-lg" [ngClass]="{
+                  'text-white': isTabActive('organismos'),
+                  'text-[var(--primary-color)]': !isTabActive('organismos')
+                }"></i>
+              </div>
+              <span>Organismos</span>
+            </button>
+
+            <!-- Tab Contratos -->
+            <button 
+              (click)="setActiveTab('contratos')"
+              [ngClass]="{
+                'bg-gradient-to-r from-[var(--primary-color)] to-[var(--secondary-color)] text-white shadow-lg': isTabActive('contratos'),
+                'bg-gray-100 hover:bg-gray-200 text-gray-700': !isTabActive('contratos')
+              }"
+              class="flex-1 px-6 py-4 rounded-2xl font-semibold transition-all duration-300 flex items-center justify-center gap-3">
+              <div [ngClass]="{
+                'bg-white/20': isTabActive('contratos'),
+                'bg-[rgba(var(--primary-color-rgb),0.1)]': !isTabActive('contratos')
+              }" class="w-10 h-10 rounded-xl flex items-center justify-center">
+                <i class="fas fa-file-contract text-lg" [ngClass]="{
+                  'text-white': isTabActive('contratos'),
+                  'text-[var(--primary-color)]': !isTabActive('contratos')
+                }"></i>
+              </div>
+              <span>Contratos</span>
+            </button>
+
+            <!-- Tab Usuarios -->
+            <button 
+              (click)="setActiveTab('usuarios')"
+              [ngClass]="{
+                'bg-gradient-to-r from-[var(--primary-color)] to-[var(--secondary-color)] text-white shadow-lg': isTabActive('usuarios'),
+                'bg-gray-100 hover:bg-gray-200 text-gray-700': !isTabActive('usuarios')
+              }"
+              class="flex-1 px-6 py-4 rounded-2xl font-semibold transition-all duration-300 flex items-center justify-center gap-3">
+              <div [ngClass]="{
+                'bg-white/20': isTabActive('usuarios'),
+                'bg-[rgba(var(--primary-color-rgb),0.1)]': !isTabActive('usuarios')
+              }" class="w-10 h-10 rounded-xl flex items-center justify-center">
+                <i class="fas fa-users text-lg" [ngClass]="{
+                  'text-white': isTabActive('usuarios'),
+                  'text-[var(--primary-color)]': !isTabActive('usuarios')
+                }"></i>
+              </div>
+              <span>Usuarios</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Contenido de los tabs -->
+      <div class="bg-white rounded-3xl shadow-xl min-h-[600px]">
+        <div class="p-8">
+          <!-- Organismos Tab -->
+          <div *ngIf="isTabActive('organismos')" class="animate-fade-in">
+            <div class="mb-6">
+              <h2 class="text-2xl font-bold text-gray-800 mb-2">Gestión de Organismos</h2>
+              <p class="text-gray-600">Administre los organismos y municipios del sistema</p>
+            </div>
+            <app-organismo-management></app-organismo-management>
+          </div>
+
+          <!-- Contratos Tab -->
+          <div *ngIf="isTabActive('contratos')" class="animate-fade-in">
+            <div class="mb-6">
+              <h2 class="text-2xl font-bold text-gray-800 mb-2">Administración de Contratos</h2>
+              <p class="text-gray-600">Gestione los contratos y acuerdos</p>
+            </div>
+            <app-contrato-management></app-contrato-management>
+          </div>
+
+          <!-- Usuarios Tab -->
+          <div *ngIf="isTabActive('usuarios')" class="animate-fade-in">
+            <div class="mb-6">
+              <h2 class="text-2xl font-bold text-gray-800 mb-2">Gestión de Usuarios</h2>
+              <p class="text-gray-600">Administre usuarios, roles y permisos</p>
+            </div>
+            <app-user-management></app-user-management>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Estilos para animaciones -->
+<style>
+.animate-fade-in {
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+</style>

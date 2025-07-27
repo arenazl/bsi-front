@@ -7,6 +7,7 @@ export interface UserSession {
   contratos: any[] | null;
   organismo: string | null;
   isAuthenticated: boolean;
+  isSuperUser: boolean;
 }
 
 @Injectable({
@@ -22,7 +23,8 @@ export class UserSessionService {
     ORGANISMO_ID: 'IdOrganismo',
     CONTRATOS: 'Contratos',
     ACCESS_TOKEN: 'accessToken',
-    REFRESH_TOKEN: 'refreshToken'
+    REFRESH_TOKEN: 'refreshToken',
+    IS_SUPER_USER: 'isSuperUser'
   };
 
   private sessionSubject = new BehaviorSubject<UserSession>(this.getInitialSession());
@@ -41,7 +43,8 @@ export class UserSessionService {
       user: null,
       contratos: null,
       organismo: null,
-      isAuthenticated: false
+      isAuthenticated: false,
+      isSuperUser: false
     };
   }
 
@@ -55,6 +58,7 @@ export class UserSessionService {
       const organismo = sessionStorage.getItem(this.SESSION_KEYS.ORGANISMO);
       const contratos = sessionStorage.getItem(this.SESSION_KEYS.CONTRATOS);
       const accessToken = sessionStorage.getItem(this.SESSION_KEYS.ACCESS_TOKEN);
+      const isSuperUser = sessionStorage.getItem(this.SESSION_KEYS.IS_SUPER_USER) === 'true';
 
       if (userName && userLastname && accessToken) {
         const session: UserSession = {
@@ -65,7 +69,8 @@ export class UserSessionService {
           } as Usuario,
           contratos: contratos ? JSON.parse(contratos) : null,
           organismo,
-          isAuthenticated: !!accessToken
+          isAuthenticated: !!accessToken,
+          isSuperUser
         };
 
         this.sessionSubject.next(session);
@@ -90,13 +95,19 @@ export class UserSessionService {
       if (userData.contratos) {
         sessionStorage.setItem(this.SESSION_KEYS.CONTRATOS, JSON.stringify(userData.contratos));
       }
+      
+      // Guardar estado de super usuario
+      if (userData.isSuperUser !== undefined) {
+        sessionStorage.setItem(this.SESSION_KEYS.IS_SUPER_USER, userData.isSuperUser.toString());
+      }
 
       // Actualizar el subject reactivo
       const session: UserSession = {
         user: userData as Usuario,
         contratos: userData.contratos || null,
         organismo: userData.Nombre_Organismo || null,
-        isAuthenticated: true
+        isAuthenticated: true,
+        isSuperUser: userData.isSuperUser === true
       };
 
       this.sessionSubject.next(session);
@@ -152,5 +163,26 @@ export class UserSessionService {
    */
   get isAuthenticated$(): Observable<boolean> {
     return new BehaviorSubject(this.isAuthenticated()).asObservable();
+  }
+
+  /**
+   * Obtiene todos los datos del usuario actual
+   * Método agregado para compatibilidad con DinamicModuleComponent
+   */
+  getCurrentUserData(): any {
+    const session = this.sessionSubject.value;
+    return {
+      ...session.user,
+      Contratos: session.contratos,
+      Nombre_Organismo: session.organismo,
+      isSuperUser: session.isSuperUser
+    };
+  }
+  
+  /**
+   * Verifica si el usuario actual es super usuario
+   */
+  isSuperUser(): boolean {
+    return this.sessionSubject.value.isSuperUser;
   }
 }

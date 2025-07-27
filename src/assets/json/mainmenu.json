@@ -50,21 +50,21 @@
       "description": "Gestioná",
       "enabled": true,
       "items": [
-          {
+        {
           "description": "Municipios",
-          "link": "/organismoManagement",
-          "icono": "fa-credit-card"
+          "link": "/admin?tab=organismos",
+          "icono": "fa-building"
         },
         {
           "description": "Contratos",
-          "link": "/contratoManagement",
-          "icono": "fa-credit-card"
+          "link": "/admin?tab=contratos",
+          "icono": "fa-file-contract"
         },
         {
           "description": "Usuarios",
-          "link": "/userManagement",
-          "icono": "fa-credit-card"
-        } 
+          "link": "/admin?tab=usuarios",
+          "icono": "fa-users"
+        }
       ]
     },
     {

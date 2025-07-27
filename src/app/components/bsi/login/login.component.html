@@ -1,29 +1,173 @@
-<div class="d-flex align-items-center justify-content-center vh-100 position-relative">
-  <div class="background-blur"></div>
-  <div id="formContent" class="text-center p-4 border rounded shadow formContent">
-    <!-- Tabs Titles -->
+<!-- Modern Login Page with Theme System -->
+<div class="min-h-screen flex items-center justify-center relative login-container">
+  
+  <!-- Animated Background Shapes -->
+  <div class="absolute inset-0 pointer-events-none">
+    <div class="absolute top-10 left-10 w-72 h-72 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-blob"
+         style="background: linear-gradient(to bottom right, var(--primary-color), var(--accent-color));"></div>
+    <div class="absolute top-20 right-10 w-72 h-72 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-blob animation-delay-2000"
+         style="background: linear-gradient(to bottom right, var(--secondary-color), var(--primary-color));"></div>
+    <div class="absolute -bottom-8 left-20 w-72 h-72 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-blob animation-delay-4000"
+         style="background: linear-gradient(to bottom right, var(--accent-color), var(--complementary-color));"></div>
+  </div>
 
-    <!-- Icon -->
-    <div class="first d-flex align-items-center justify-content-center mt-2">
-      <span class="material-icons icon-md color-primary">
-        supervisor_account
-      </span>
-      <span class="fw-bold color-primary">
-        Bsi Informática
-      </span>
-    </div>
+  <!-- Decorative Elements with Theme Colors -->
+  <div class="absolute top-1/4 left-8 w-16 h-16 border-2 border-theme rounded-lg transform rotate-45 hidden lg:block opacity-30"></div>
+  <div class="absolute bottom-1/4 right-8 w-20 h-20 border-2 border-theme rounded-full hidden lg:block opacity-30"></div>
+  
+  <!-- Main Login Card -->
+  <div class="relative w-full max-w-md mx-4">
+    <!-- Glass Card Effect with Theme -->
+    <div class="card-theme rounded-3xl shadow-2xl p-8 backdrop-blur-xl login-card"
+         [class.shake-animation]="shakeError"
+         style="background: rgba(255, 255, 255, 0.9); border: 1px solid rgba(var(--primary-color-rgb), 0.1);">
+      
+      <!-- Logo & Brand Section -->
+      <div class="text-center mb-8">
+        <div class="inline-flex items-center justify-center w-20 h-20 bg-theme-gradient rounded-2xl mb-4 shadow-lg">
+          <i class="fas fa-user-shield text-white text-3xl"></i>
+        </div>
+        <h1 class="text-3xl font-bold text-theme-primary mb-2">BSI Informática</h1>
+        <p class="text-theme-secondary text-sm">Sistema de Gestión de Pagos</p>
+      </div>
 
-    <!-- Login Form -->
-    <form [formGroup]="form" (ngSubmit)="onSubmit()">
-      <input type="text" id="login" class="form-control mt-3" (change)="updatetext()" placeholder="usuario" formControlName="user">
-      <input type="password" id="password" class="form-control mt-3" placeholder="clave" formControlName="pass">
-      <input type="submit" style="width: 90%; background-color:#366bd0;" class="fourth mt-3 btn btn-primary"
-        value="{{login_txt}}">
-    </form>
+      <!-- Error Message - Movido aquí arriba para mayor visibilidad -->
+      <div *ngIf="showError" class="mb-6 bg-red-50 border-l-4 border-red-500 p-4 rounded-r-lg error-message-enter">
+        <div class="flex items-center">
+          <i class="fas fa-exclamation-circle text-red-500 text-xl mr-3"></i>
+          <div>
+            <p class="text-sm font-semibold text-red-800">Error de autenticación</p>
+            <p class="text-sm text-red-700">{{errorMessage}}</p>
+          </div>
+        </div>
+      </div>
 
-    <!-- Remind Password -->
-    <div id="formFooter" class="d-none">
-      <a class="underlineHover" href="#">Forgot Password?</a>
+      <!-- Login Form -->
+      <form [formGroup]="form" (ngSubmit)="onSubmit()" class="space-y-6">
+        
+        <!-- Username Field -->
+        <div class="relative">
+          <label for="login" class="block text-sm font-medium text-theme-primary mb-2">
+            Usuario
+          </label>
+          <div class="relative">
+            <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+              <i class="fas fa-user text-theme-secondary text-lg"></i>
+            </div>
+            <input 
+              type="text" 
+              id="login" 
+              formControlName="user"
+              (change)="updatetext()" 
+              placeholder="Ingrese su usuario"
+              class="input-theme pl-12 w-full"
+            >
+          </div>
+        </div>
+
+        <!-- Password Field -->
+        <div class="relative">
+          <label for="password" class="block text-sm font-medium text-theme-primary mb-2">
+            Contraseña
+          </label>
+          <div class="relative">
+            <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+              <i class="fas fa-lock text-theme-secondary text-lg"></i>
+            </div>
+            <input 
+              type="password" 
+              id="password" 
+              formControlName="pass"
+              placeholder="Ingrese su contraseña"
+              class="input-theme pl-12 w-full"
+            >
+          </div>
+        </div>
+
+        <!-- Login Button -->
+        <button 
+          type="submit" 
+          class="btn-theme-primary w-full"
+          [disabled]="login_txt === 'Validando...'"
+          [class.opacity-50]="login_txt === 'Validando...'"
+        >
+          <i class="fas fa-sign-in-alt mr-2" *ngIf="login_txt !== 'Validando...'"></i>
+          <i class="fas fa-spinner fa-spin mr-2" *ngIf="login_txt === 'Validando...'"></i>
+          {{login_txt}}
+        </button>
+      </form>
+
+      <!-- Security Features Info -->
+      <div class="mt-6 p-4 bg-theme-secondary rounded-xl border border-theme">
+        <div class="flex items-center space-x-2 text-theme-accent">
+          <i class="fas fa-shield-alt"></i>
+          <span class="text-sm font-medium">Conexión Segura SSL</span>
+        </div>
+        <p class="text-xs text-theme-secondary mt-1">Sus datos están protegidos con encriptación de nivel bancario</p>
+      </div>
+
+      <!-- Footer -->
+      <div class="mt-6 text-center">
+        <p class="text-xs text-theme-secondary">
+          © 2025 BSI Informática - Todos los derechos reservados
+        </p>
+      </div>
     </div>
   </div>
 </div>
+
+<!-- Additional CSS for animations -->
+<style>
+.animate-blob {
+  animation: blob 7s infinite;
+}
+
+.animation-delay-2000 {
+  animation-delay: 2s;
+}
+
+.animation-delay-4000 {
+  animation-delay: 4s;
+}
+
+@keyframes blob {
+  0% {
+    transform: translate(0px, 0px) scale(1);
+  }
+  33% {
+    transform: translate(30px, -50px) scale(1.1);
+  }
+  66% {
+    transform: translate(-20px, 20px) scale(0.9);
+  }
+  100% {
+    transform: translate(0px, 0px) scale(1);
+  }
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  10%, 30%, 50%, 70%, 90% { transform: translateX(-10px); }
+  20%, 40%, 60%, 80% { transform: translateX(10px); }
+}
+
+.shake-animation {
+  animation: shake 0.6s ease-in-out;
+}
+
+/* Transición suave para el mensaje de error */
+.error-message-enter {
+  animation: slideDown 0.3s ease-out;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+</style>

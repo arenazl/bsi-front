@@ -1,18 +1,562 @@
-.btn .fa, .btn .far {
-    color: #FFC107 !important;
-  }
+/* ========================================
+   ESTILOS ESPECÍFICOS DEL COMPONENTE
+   Solo estructura y layout, sin colores
+   ======================================== */
 
-  .btn span {
-    font-weight: 500 !important;
-  }
+/* Contenedor principal */
+:host {
+  display: block;
+  height: 100%;
+}
 
-  .card-header .fa {
-    color: #0b76ea !important;
-    font-size: 1.3em;
-    margin-bottom: 1px;
-    margin-right: 9px !important;
-  }
+/* Container with transparent background to show global bg */
+.bg-with-image {
+  background: transparent;
+  position: relative;
+}
 
-  .card-header{
-    padding-top: 0.7%;
+/* Estilos generales para todas las cards */
+.menu-card {
+  height: 100%;
+  backdrop-filter: blur(10px);
+  background: rgba(255, 255, 255, 0.95) !important;
+  border: 1px solid rgba(255, 255, 255, 0.5);
+}
+
+/* ========================================
+   DISEÑO 1: LAYOUT MODERNO
+   ======================================== */
+.design-1 .menu-card {
+  position: relative;
+  overflow: hidden;
+}
+
+.design-1 .menu-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 150px;
+  height: 150px;
+  background: var(--primary-color);
+  opacity: 0.1;
+  border-radius: 50%;
+  transform: translate(30%, -30%);
+  transition: all 0.3s ease;
+}
+
+.design-1 .menu-card:hover::before {
+  transform: translate(30%, -30%) scale(1.2);
+  opacity: 0.15;
+}
+
+/* ========================================
+   DISEÑO 2: LAYOUT NEUMORPHISM
+   ======================================== */
+.design-2 {
+  position: relative;
+}
+
+.design-2 .menu-card {
+  position: relative;
+}
+
+/* ========================================
+   DISEÑO 3: LAYOUT GLASSMORPHISM
+   ======================================== */
+
+
+.design-3 .menu-card {
+  backdrop-filter: blur(10px);
+}
+
+.design-3 .menu-card:hover {
+  backdrop-filter: blur(12px);
+}
+
+.design-3 .card-icon {
+  backdrop-filter: blur(10px);
+  background: rgba(255, 255, 255, 0.2);
+}
+
+
+.design-3 .menu-button {
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.design-3 .menu-button:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+/* ========================================
+   DISEÑO 4: LAYOUT MINIMALISTA
+   ======================================== */
+.design-4 .menu-card {
+  position: relative;
+  border-radius: 0;
+}
+
+.design-4 .menu-card::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 2px;
+  transition: width 0.3s ease;
+}
+
+.design-4 .menu-card:hover::after {
+  width: 100%;
+}
+
+/* ========================================
+   DISEÑO 5: LAYOUT BENTO BOX
+   ======================================== */
+.design-5 {
+  gap: 2rem;
+}
+
+.design-5 .menu-card {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.design-5 .card-content {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+.design-5 .card-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.design-5 .card-description {
+  flex-grow: 1;
+}
+
+.design-5 .menu-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-top: auto;
+}
+
+.design-5 .menu-button {
+  width: 100%;
+  text-align: center;
+}
+
+/* ========================================
+   ANIMACIONES Y EFECTOS GENERALES
+   ======================================== */
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+}
+
+/* Quitar la animación float de los iconos por defecto */
+.icon-theme {
+  animation: none !important;
+}
+
+/* Iconos estáticos por defecto */
+.icon-theme {
+  transition: all 0.3s ease;
+}
+
+/* ========================================
+   FIX DEFINITIVO PARA ICONOS FONTAWESOME
+   ======================================== */
+
+/* Sobrescribir TODOS los estilos de FontAwesome con alta especificidad */
+.menu-card .icon-theme i::before,
+.menu-card .icon-theme-sm i::before,
+.menu-card .icon-theme-lg i::before {
+  font-size: inherit !important;
+}
+
+/* Estilos específicos para cada tamaño de contenedor de icono */
+.menu-card .icon-theme-sm > i,
+.menu-card .icon-theme-sm > i.fas,
+.menu-card .icon-theme-sm > i.far,
+.menu-card .icon-theme-sm > i.fab,
+.menu-card .icon-theme-sm > i.fa {
+  font-size: 1.25rem !important;
+  line-height: 1 !important;
+  width: auto !important;
+  height: auto !important;
+  display: block !important;
+  text-align: center !important;
+}
+
+.menu-card .icon-theme > i,
+.menu-card .icon-theme > i.fas,
+.menu-card .icon-theme > i.far,
+.menu-card .icon-theme > i.fab,
+.menu-card .icon-theme > i.fa {
+  font-size: 1.75rem !important;
+  line-height: 1 !important;
+  width: auto !important;
+  height: auto !important;
+  display: block !important;
+  text-align: center !important;
+}
+
+.menu-card .icon-theme-lg > i,
+.menu-card .icon-theme-lg > i.fas,
+.menu-card .icon-theme-lg > i.far,
+.menu-card .icon-theme-lg > i.fab,
+.menu-card .icon-theme-lg > i.fa {
+  font-size: 2.5rem !important;
+  line-height: 1 !important;
+  width: auto !important;
+  height: auto !important;
+  display: block !important;
+  text-align: center !important;
+}
+
+/* Asegurar que los pseudo-elementos de FontAwesome no interfieran */
+.icon-theme::before,
+.icon-theme::after,
+.icon-theme-sm::before,
+.icon-theme-sm::after,
+.icon-theme-lg::before,
+.icon-theme-lg::after {
+  content: none !important;
+}
+
+
+/* Animación del icono al hover en la card */
+.menu-card:hover .icon-theme {
+  transform: translateY(-5px) rotate(10deg) scale(1.1);
+  box-shadow: 0 10px 20px var(--shadow-color);
+}
+
+/* Animación especial para botones dentro de las cards */
+.menu-card button {
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+  z-index: 1;
+}
+
+/* Barra de progreso animada */
+.menu-card button::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.4),
+    transparent
+  );
+  transition: left 0.8s ease;
+  z-index: -1;
+}
+
+.menu-card button:hover::before {
+  left: 100%;
+}
+
+/* Efecto de llenado de progreso */
+.menu-card button::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--primary-color), var(--accent-color));
+  transition: width 0.6s ease;
+  z-index: 2;
+}
+
+.menu-card button:hover::after {
+  width: 100%;
+}
+
+.menu-card button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+.menu-card button:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+/* Animación de pulso para cards deshabilitadas */
+.menu-card.disabled {
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0% { opacity: 0.6; }
+  50% { opacity: 0.4; }
+  100% { opacity: 0.6; }
+}
+
+/* Animación base para todas las cards */
+.menu-card {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  position: relative;
+  transform: translateY(0) scale(1);
+}
+
+/* Efecto simple y elegante */
+.menu-card {
+  position: relative;
+  background: #ffffff;
+  border-radius: 0.75rem;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  transform: scale(1) translateY(0);
+}
+
+/* Sombra con color del tema */
+.menu-card::after {
+  content: '';
+  position: absolute;
+  inset: 10px;
+  border-radius: inherit;
+  background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+  opacity: 0;
+  filter: blur(25px);
+  z-index: -1;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  transform: translateY(0) scale(0.8);
+}
+
+.menu-card:hover {
+  transform: scale(1.02) translateY(-8px);
+  box-shadow: 
+    0 15px 30px -10px rgba(0, 0, 0, 0.2),
+    0 5px 15px -5px rgba(0, 0, 0, 0.1);
+}
+
+.menu-card:hover::after {
+  opacity: 0.4;
+  transform: translateY(10px) scale(1);
+}
+
+/* Diseño 1: Efecto morph con gradiente animado */
+.design-1 .menu-card {
+  background: #ffffff;
+  border: 2px solid transparent;
+  background-clip: padding-box;
+}
+
+.design-1 .menu-card:hover {
+  transform: translateY(-15px) rotateX(-5deg) scale(1.05);
+  box-shadow: 
+    0 30px 60px rgba(0, 0, 0, 0.12),
+    0 10px 20px rgba(0, 0, 0, 0.08),
+    inset 0 0 0 2px var(--primary-color);
+}
+
+/* Efecto mejorado para diseño 1 */
+.design-1 .menu-card:hover {
+  transform: translateY(-15px) scale(1.03);
+  box-shadow: 
+    0 30px 60px rgba(0, 0, 0, 0.12),
+    0 10px 20px rgba(0, 0, 0, 0.08),
+    inset 0 0 0 2px var(--primary-color);
+}
+
+/* Diseño 2: Neumorphism con elevación */
+.design-2 .menu-card {
+  background: #ffffff;
+  box-shadow: 
+    20px 20px 60px #d1d1d1,
+    -20px -20px 60px #ffffff;
+}
+
+.design-2 .menu-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 
+    25px 25px 75px #d1d1d1,
+    -25px -25px 75px #ffffff,
+    inset 2px 2px 5px #d1d1d1,
+    inset -2px -2px 5px #ffffff;
+}
+
+/* Diseño 3: Glassmorphism con reflejos */
+.design-3 .menu-card {
+  background: #ffffff;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  position: relative;
+  overflow: hidden;
+}
+
+.design-3 .menu-card::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(
+    45deg,
+    transparent 30%,
+    rgba(255, 255, 255, 0.5) 50%,
+    transparent 70%
+  );
+  transform: rotate(45deg) translateY(100%);
+  transition: transform 0.6s;
+}
+
+.design-3 .menu-card:hover::before {
+  transform: rotate(45deg) translateY(-100%);
+}
+
+.design-3 .menu-card:hover {
+  transform: translateY(-10px) scale(1.02);
+  box-shadow: 
+    0 20px 40px rgba(0, 0, 0, 0.1),
+    inset 0 0 20px rgba(255, 255, 255, 0.5);
+}
+
+/* Diseño 4: Minimalista con línea animada */
+.design-4 .menu-card {
+  border: none;
+  border-bottom: 3px solid transparent;
+  border-radius: 0;
+  background: #ffffff;
+}
+
+.design-4 .menu-card::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--primary-color), var(--accent-color));
+  transition: width 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.design-4 .menu-card:hover::after {
+  width: 100%;
+}
+
+.design-4 .menu-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.08);
+}
+
+/* Diseño 5: Bento con perspectiva 3D extrema */
+.design-5 {
+  perspective: 1500px;
+}
+
+.design-5 .menu-card {
+  transform-origin: center center;
+  transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+  transform-style: preserve-3d;
+}
+
+.design-5 .menu-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+  opacity: 0;
+  transform: translateZ(-50px) scale(0.9);
+  filter: blur(20px);
+  transition: all 0.6s;
+}
+
+.design-5 .menu-card:hover::before {
+  opacity: 0.3;
+  transform: translateZ(-80px) scale(1);
+}
+
+.design-5 .menu-card:hover {
+  transform: translateY(-15px) scale(1.02);
+  box-shadow: 
+    0 25px 50px -12px rgba(0, 0, 0, 0.25),
+    0 0 30px -5px var(--shadow-color);
+}
+
+/* Efecto de clic simple */
+.menu-card:active {
+  transform: scale(0.98);
+  transition: transform 0.1s;
+}
+
+/* Estados deshabilitados - sin cambios visuales */
+.menu-card.disabled {
+  cursor: pointer;
+}
+
+.menu-card.disabled .menu-button {
+  cursor: pointer;
+}
+
+/* Animación de entrada suave y escalonada */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px) scale(0.95);
   }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* Estado inicial de las cards para evitar parpadeo */
+.menu-card {
+  opacity: 0;
+  transform: translateY(20px) scale(0.95);
+  transition: none;
+}
+
+/* Aplicar animación solo cuando los datos están cargados */
+.data-loaded .menu-card {
+  animation: fadeInUp 0.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  will-change: transform, opacity;
+}
+
+/* Delays escalonados más suaves - solo cuando data-loaded */
+.data-loaded .menu-card:nth-child(1) { animation-delay: 0.05s; }
+.data-loaded .menu-card:nth-child(2) { animation-delay: 0.1s; }
+.data-loaded .menu-card:nth-child(3) { animation-delay: 0.15s; }
+.data-loaded .menu-card:nth-child(4) { animation-delay: 0.2s; }
+.data-loaded .menu-card:nth-child(5) { animation-delay: 0.25s; }
+.data-loaded .menu-card:nth-child(6) { animation-delay: 0.3s; }
+.data-loaded .menu-card:nth-child(7) { animation-delay: 0.35s; }
+.data-loaded .menu-card:nth-child(8) { animation-delay: 0.4s; }
+.data-loaded .menu-card:nth-child(9) { animation-delay: 0.45s; }
+
+/* Animación del contenedor principal */
+.design-1,
+.design-2,
+.design-3,
+.design-4,
+.design-5 {
+  animation: containerFadeIn 0.3s ease-out;
+  position: relative;
+  z-index: 1;
+}
+
+@keyframes containerFadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}

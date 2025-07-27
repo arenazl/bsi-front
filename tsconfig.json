@@ -17,6 +17,7 @@
     "moduleResolution": "node",
     "jsx": "react",
     "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
     "importHelpers": true,
     "target": "es2020",
     "module": "es2020",
@@ -28,6 +29,12 @@
   "include": [
     "src/**/*.ts",
     "src/**/*.tsx"
+  ],
+  "exclude": [
+    "src/**/legacy/**/*",
+    "src/**/test/**/*",
+    "src/**/*.spec.ts",
+    "src/**/*.test.ts"
   ],
   "angularCompilerOptions": {
     "enableI18nLegacyMessageIdFormat": false,

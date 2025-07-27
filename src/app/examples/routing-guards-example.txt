@@ -1,0 +1,139 @@
+import { NgModule } from '@angular/core';
+import { Routes, RouterModule } from '@angular/router';
+
+// Importar los guards
+import { AuthGuard } from '../guards/auth.guard';
+import { AdminGuard } from '../guards/admin.guard';
+import { RoleGuard } from '../guards/role.guard';
+import { PermissionGuard } from '../guards/permission.guard';
+import { CanDeactivateGuard } from '../guards/can-deactivate.guard';
+import { ModuleAccessGuard } from '../guards/module-access.guard';
+
+// Componentes de ejemplo
+import { PublicComponent } from './public.component';
+import { DashboardComponent } from './dashboard.component';
+import { UserEditComponent } from './user-edit.component';
+import { ReportsComponent } from './reports.component';
+import { SettingsComponent } from './settings.component';
+
+/**
+ * EJEMPLOS DE CÓMO USAR GUARDS EN LAS RUTAS
+ */
+const routes: Routes = [
+  // 1. RUTA PÚBLICA - Sin guards
+  {
+    path: 'public',
+    component: PublicComponent
+  },
+
+  // 2. RUTA PROTEGIDA BÁSICA - Solo usuarios autenticados
+  {
+    path: 'dashboard',
+    component: DashboardComponent,
+    canActivate: [AuthGuard] // 👈 Guard básico de autenticación
+  },
+
+  // 3. RUTA ADMIN - Solo super usuarios
+  {
+    path: 'admin',
+    component: AdminPanelComponent,
+    canActivate: [AdminGuard] // 👈 Guard de super usuario
+  },
+
+  // 4. RUTA CON ROLES ESPECÍFICOS
+  {
+    path: 'supervisors',
+    component: SupervisorPanelComponent,
+    canActivate: [AuthGuard, RoleGuard], // 👈 Múltiples guards
+    data: { 
+      roles: ['admin', 'supervisor'] // 👈 Roles permitidos
+    }
+  },
+
+  // 5. RUTA CON PERMISOS ESPECÍFICOS
+  {
+    path: 'users/edit/:id',
+    component: UserEditComponent,
+    canActivate: [AuthGuard, PermissionGuard],
+    data: { 
+      permission: 'users.edit' // 👈 Permiso requerido
+    }
+  },
+
+  // 6. RUTA CON GUARD DE SALIDA - Prevenir pérdida de cambios
+  {
+    path: 'profile/edit',
+    component: ProfileEditComponent,
+    canActivate: [AuthGuard],
+    canDeactivate: [CanDeactivateGuard] // 👈 Guard al salir
+  },
+
+  // 7. MÓDULO LAZY LOADING CON GUARDS
+  {
+    path: 'reports',
+    loadChildren: () => import('./reports/reports.module').then(m => m.ReportsModule),
+    canLoad: [ModuleAccessGuard], // 👈 Previene cargar el módulo
+    canActivate: [ModuleAccessGuard] // 👈 Protege navegación interna
+  },
+
+  // 8. RUTAS ANIDADAS CON GUARDS
+  {
+    path: 'settings',
+    canActivate: [AuthGuard], // 👈 Guard para toda la sección
+    children: [
+      {
+        path: 'general',
+        component: GeneralSettingsComponent
+      },
+      {
+        path: 'security',
+        component: SecuritySettingsComponent,
+        canActivate: [PermissionGuard], // 👈 Guard adicional
+        data: { permission: 'settings.security' }
+      },
+      {
+        path: 'billing',
+        component: BillingSettingsComponent,
+        canActivate: [RoleGuard],
+        data: { roles: ['admin', 'billing'] }
+      }
+    ]
+  },
+
+  // 9. GUARD CON REDIRECCIÓN Y PARÁMETROS
+  {
+    path: 'protected',
+    component: ProtectedComponent,
+    canActivate: [AuthGuard],
+    // El AuthGuard guarda returnUrl para volver después del login
+  },
+
+  // 10. MÚLTIPLES GUARDS EN ORDEN
+  {
+    path: 'super-protected',
+    component: SuperProtectedComponent,
+    canActivate: [
+      AuthGuard,        // 1° Verifica autenticación
+      AdminGuard,       // 2° Verifica super usuario
+      PermissionGuard   // 3° Verifica permiso específico
+    ],
+    data: { permission: 'system.manage' }
+  }
+];
+
+@NgModule({
+  imports: [RouterModule.forRoot(routes)],
+  exports: [RouterModule]
+})
+export class AppRoutingModule { }
+
+/**
+ * NOTAS IMPORTANTES:
+ * 
+ * 1. Los guards se ejecutan en orden
+ * 2. Si un guard retorna false, los siguientes no se ejecutan
+ * 3. canActivate: Se ejecuta cada vez que navegás a la ruta
+ * 4. canLoad: Se ejecuta solo la primera vez (lazy loading)
+ * 5. canDeactivate: Se ejecuta al salir de la ruta
+ * 6. data: Pasa configuración a los guards
+ */

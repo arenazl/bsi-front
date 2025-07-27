@@ -1,0 +1,61 @@
+/* FIX DEFINITIVO PARA ICONOS FONTAWESOME EN DINAMIC-MODULE */
+
+/* Resetear TODOS los estilos de FontAwesome */
+.menu-card .icon-theme i.fas::before,
+.menu-card .icon-theme i.far::before,
+.menu-card .icon-theme i.fab::before,
+.menu-card .icon-theme i.fa::before,
+.menu-card .icon-theme-sm i.fas::before,
+.menu-card .icon-theme-sm i.far::before,
+.menu-card .icon-theme-sm i.fab::before,
+.menu-card .icon-theme-sm i.fa::before,
+.menu-card .icon-theme-lg i.fas::before,
+.menu-card .icon-theme-lg i.far::before,
+.menu-card .icon-theme-lg i.fab::before,
+.menu-card .icon-theme-lg i.fa::before {
+  font-size: inherit !important;
+  line-height: inherit !important;
+  width: auto !important;
+  height: auto !important;
+  vertical-align: middle !important;
+}
+
+/* Forzar tamaños específicos para icon-theme-sm */
+.menu-card .icon-theme-sm > i.fas,
+.menu-card .icon-theme-sm > i.far,
+.menu-card .icon-theme-sm > i.fab,
+.menu-card .icon-theme-sm > i.fa {
+  font-size: 1.25rem !important;
+  line-height: 2rem !important;
+  width: 100% !important;
+  height: 100% !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  transform: none !important;
+}
+
+/* Asegurar que el contenedor no se deforme */
+.menu-card .icon-theme-sm {
+  width: 2rem !important;
+  height: 2rem !important;
+  min-width: 2rem !important;
+  min-height: 2rem !important;
+  font-size: 1.25rem !important;
+  transform: none !important;
+  flex-shrink: 0 !important;
+}
+
+/* Evitar que las animaciones afecten el tamaño inicial */
+.menu-card .icon-theme,
+.menu-card .icon-theme-sm,
+.menu-card .icon-theme-lg {
+  transform: scale(1) !important;
+}
+
+/* Solo aplicar transformaciones en hover */
+.menu-card:hover .icon-theme,
+.menu-card:hover .icon-theme-sm,
+.menu-card:hover .icon-theme-lg {
+  transform: translateY(-5px) rotate(10deg) scale(1.1) !important;
+}

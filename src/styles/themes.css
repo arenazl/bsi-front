@@ -1,0 +1,462 @@
+/* ========================================
+   SISTEMA DE TEMAS EMPRESARIALES
+   ======================================== */
+
+/* Tema 1: Corporate Blue (Profesional Clásico) */
+[data-theme="corporate-blue"] {
+  /* Colores principales */
+  --primary-color: #1e3a8a;        /* Azul corporativo oscuro */
+  --primary-hover: #1e40af;        /* Azul más brillante para hover */
+  --secondary-color: #3b82f6;      /* Azul secundario */
+  --accent-color: #60a5fa;         /* Azul claro para acentos */
+  
+  /* Navbar */
+  --navbar-bg: #1e3a8a;
+  --navbar-text: #ffffff;
+  --navbar-hover: rgba(255, 255, 255, 0.1);
+  --navbar-border: rgba(255, 255, 255, 0.2);
+  
+  /* Headers de componentes */
+  --header-gradient-start: #1e3a8a;
+  --header-gradient-end: #2563eb;
+  --header-text: #ffffff;
+  --header-text-secondary: rgba(255, 255, 255, 0.9);
+  
+  /* Botones */
+  --btn-primary-bg: #2563eb;
+  --btn-primary-hover: #1d4ed8;
+  --btn-primary-text: #ffffff;
+  --btn-secondary-bg: #eff6ff;
+  --btn-secondary-hover: #dbeafe;
+  --btn-secondary-text: #1e3a8a;
+  --btn-border-radius: 0.75rem;
+  
+  /* Estados */
+  --success-color: #10b981;
+  --success-bg: #ecfdf5;
+  --success-text: #064e3b;
+  --warning-color: #f59e0b;
+  --warning-bg: #fffbeb;
+  --warning-text: #78350f;
+  --error-color: #ef4444;
+  --error-bg: #fef2f2;
+  --error-text: #7f1d1d;
+  --info-color: #3b82f6;
+  --info-bg: #eff6ff;
+  --info-text: #1e3a8a;
+  
+  /* Fondos y bordes */
+  --bg-primary: #ffffff;
+  --bg-secondary: #f8fafc;
+  --bg-tertiary: #f1f5f9;
+  --border-color: #e2e8f0;
+  --text-primary: #0f172a;
+  --text-secondary: #475569;
+  --text-muted: #94a3b8;
+}
+
+/* Tema 2: Enterprise Green (Finanzas/Banca) */
+[data-theme="enterprise-green"] {
+  /* Colores principales */
+  --primary-color: #14532d;        /* Verde oscuro empresarial */
+  --primary-hover: #166534;
+  --secondary-color: #16a34a;      /* Verde medio */
+  --accent-color: #4ade80;         /* Verde claro */
+  
+  /* Navbar */
+  --navbar-bg: #14532d;
+  --navbar-text: #ffffff;
+  --navbar-hover: rgba(255, 255, 255, 0.1);
+  --navbar-border: rgba(255, 255, 255, 0.2);
+  
+  /* Headers de componentes */
+  --header-gradient-start: #166534;
+  --header-gradient-end: #15803d;
+  --header-text: #ffffff;
+  --header-text-secondary: rgba(255, 255, 255, 0.9);
+  
+  /* Botones */
+  --btn-primary-bg: #16a34a;
+  --btn-primary-hover: #15803d;
+  --btn-primary-text: #ffffff;
+  --btn-secondary-bg: #f0fdf4;
+  --btn-secondary-hover: #dcfce7;
+  --btn-secondary-text: #14532d;
+  --btn-border-radius: 0.75rem;
+  
+  /* Estados */
+  --success-color: #16a34a;
+  --success-bg: #f0fdf4;
+  --success-text: #14532d;
+  --warning-color: #f59e0b;
+  --warning-bg: #fffbeb;
+  --warning-text: #78350f;
+  --error-color: #dc2626;
+  --error-bg: #fef2f2;
+  --error-text: #7f1d1d;
+  --info-color: #0891b2;
+  --info-bg: #ecfeff;
+  --info-text: #164e63;
+  
+  /* Fondos y bordes */
+  --bg-primary: #ffffff;
+  --bg-secondary: #fafffe;
+  --bg-tertiary: #f0fdf4;
+  --border-color: #d1fae5;
+  --text-primary: #052e16;
+  --text-secondary: #166534;
+  --text-muted: #16a34a;
+}
+
+/* Tema 3: Modern Purple (Tech/Innovación) */
+[data-theme="modern-purple"] {
+  /* Colores principales */
+  --primary-color: #6b21a8;        /* Púrpura profundo */
+  --primary-hover: #7c3aed;
+  --secondary-color: #9333ea;      /* Púrpura brillante */
+  --accent-color: #c084fc;         /* Púrpura claro */
+  
+  /* Navbar */
+  --navbar-bg: #6b21a8;
+  --navbar-text: #ffffff;
+  --navbar-hover: rgba(255, 255, 255, 0.15);
+  --navbar-border: rgba(255, 255, 255, 0.25);
+  
+  /* Headers de componentes */
+  --header-gradient-start: #7c3aed;
+  --header-gradient-end: #8b5cf6;
+  --header-text: #ffffff;
+  --header-text-secondary: rgba(255, 255, 255, 0.95);
+  
+  /* Botones */
+  --btn-primary-bg: #8b5cf6;
+  --btn-primary-hover: #7c3aed;
+  --btn-primary-text: #ffffff;
+  --btn-secondary-bg: #faf5ff;
+  --btn-secondary-hover: #f3e8ff;
+  --btn-secondary-text: #6b21a8;
+  --btn-border-radius: 1rem;
+  
+  /* Estados */
+  --success-color: #10b981;
+  --success-bg: #ecfdf5;
+  --success-text: #064e3b;
+  --warning-color: #f59e0b;
+  --warning-bg: #fffbeb;
+  --warning-text: #78350f;
+  --error-color: #ef4444;
+  --error-bg: #fef2f2;
+  --error-text: #7f1d1d;
+  --info-color: #6366f1;
+  --info-bg: #eef2ff;
+  --info-text: #312e81;
+  
+  /* Fondos y bordes */
+  --bg-primary: #ffffff;
+  --bg-secondary: #fdfcff;
+  --bg-tertiary: #faf5ff;
+  --border-color: #e9d5ff;
+  --text-primary: #1e1b4b;
+  --text-secondary: #581c87;
+  --text-muted: #7e22ce;
+}
+
+/* Tema 4: Executive Gray (Minimalista Elegante) */
+[data-theme="executive-gray"] {
+  /* Colores principales */
+  --primary-color: #1f2937;        /* Gris carbón */
+  --primary-hover: #374151;
+  --secondary-color: #6b7280;      /* Gris medio */
+  --accent-color: #9ca3af;         /* Gris claro */
+  
+  /* Navbar */
+  --navbar-bg: #1f2937;
+  --navbar-text: #ffffff;
+  --navbar-hover: rgba(255, 255, 255, 0.1);
+  --navbar-border: rgba(255, 255, 255, 0.15);
+  
+  /* Headers de componentes */
+  --header-gradient-start: #374151;
+  --header-gradient-end: #4b5563;
+  --header-text: #ffffff;
+  --header-text-secondary: rgba(255, 255, 255, 0.9);
+  
+  /* Botones */
+  --btn-primary-bg: #374151;
+  --btn-primary-hover: #1f2937;
+  --btn-primary-text: #ffffff;
+  --btn-secondary-bg: #f9fafb;
+  --btn-secondary-hover: #f3f4f6;
+  --btn-secondary-text: #1f2937;
+  --btn-border-radius: 0.5rem;
+  
+  /* Estados */
+  --success-color: #059669;
+  --success-bg: #ecfdf5;
+  --success-text: #064e3b;
+  --warning-color: #d97706;
+  --warning-bg: #fffbeb;
+  --warning-text: #78350f;
+  --error-color: #dc2626;
+  --error-bg: #fef2f2;
+  --error-text: #7f1d1d;
+  --info-color: #2563eb;
+  --info-bg: #eff6ff;
+  --info-text: #1e3a8a;
+  
+  /* Fondos y bordes */
+  --bg-primary: #ffffff;
+  --bg-secondary: #fcfcfd;
+  --bg-tertiary: #f9fafb;
+  --border-color: #e5e7eb;
+  --text-primary: #111827;
+  --text-secondary: #4b5563;
+  --text-muted: #9ca3af;
+}
+
+/* Tema 5: Ocean Teal (Fresco y Moderno) */
+[data-theme="ocean-teal"] {
+  /* Colores principales */
+  --primary-color: #0f766e;        /* Teal oscuro */
+  --primary-hover: #0d9488;
+  --secondary-color: #14b8a6;      /* Teal medio */
+  --accent-color: #5eead4;         /* Teal claro */
+  
+  /* Navbar */
+  --navbar-bg: #0f766e;
+  --navbar-text: #ffffff;
+  --navbar-hover: rgba(255, 255, 255, 0.12);
+  --navbar-border: rgba(255, 255, 255, 0.2);
+  
+  /* Headers de componentes */
+  --header-gradient-start: #0d9488;
+  --header-gradient-end: #0f766e;
+  --header-text: #ffffff;
+  --header-text-secondary: rgba(255, 255, 255, 0.9);
+  
+  /* Botones */
+  --btn-primary-bg: #0d9488;
+  --btn-primary-hover: #0f766e;
+  --btn-primary-text: #ffffff;
+  --btn-secondary-bg: #f0fdfa;
+  --btn-secondary-hover: #ccfbf1;
+  --btn-secondary-text: #0f766e;
+  --btn-border-radius: 0.875rem;
+  
+  /* Estados */
+  --success-color: #10b981;
+  --success-bg: #ecfdf5;
+  --success-text: #064e3b;
+  --warning-color: #f59e0b;
+  --warning-bg: #fffbeb;
+  --warning-text: #78350f;
+  --error-color: #ef4444;
+  --error-bg: #fef2f2;
+  --error-text: #7f1d1d;
+  --info-color: #06b6d4;
+  --info-bg: #ecfeff;
+  --info-text: #164e63;
+  
+  /* Fondos y bordes */
+  --bg-primary: #ffffff;
+  --bg-secondary: #fafffc;
+  --bg-tertiary: #f0fdfa;
+  --border-color: #a7f3d0;
+  --text-primary: #042f2e;
+  --text-secondary: #0f766e;
+  --text-muted: #14b8a6;
+}
+
+/* ========================================
+   APLICACIÓN DE VARIABLES GLOBALES
+   ======================================== */
+
+:root {
+  /* Tema por defecto: Corporate Blue */
+  --primary-color: #1e3a8a;
+  --primary-hover: #1e40af;
+  --secondary-color: #3b82f6;
+  --accent-color: #60a5fa;
+  
+  --navbar-bg: #1e3a8a;
+  --navbar-text: #ffffff;
+  --navbar-hover: rgba(255, 255, 255, 0.1);
+  --navbar-border: rgba(255, 255, 255, 0.2);
+  
+  --header-gradient-start: #1e3a8a;
+  --header-gradient-end: #2563eb;
+  --header-text: #ffffff;
+  --header-text-secondary: rgba(255, 255, 255, 0.9);
+  
+  --btn-primary-bg: #2563eb;
+  --btn-primary-hover: #1d4ed8;
+  --btn-primary-text: #ffffff;
+  --btn-secondary-bg: #eff6ff;
+  --btn-secondary-hover: #dbeafe;
+  --btn-secondary-text: #1e3a8a;
+  --btn-border-radius: 0.75rem;
+  
+  --success-color: #10b981;
+  --success-bg: #ecfdf5;
+  --success-text: #064e3b;
+  --warning-color: #f59e0b;
+  --warning-bg: #fffbeb;
+  --warning-text: #78350f;
+  --error-color: #ef4444;
+  --error-bg: #fef2f2;
+  --error-text: #7f1d1d;
+  --info-color: #3b82f6;
+  --info-bg: #eff6ff;
+  --info-text: #1e3a8a;
+  
+  --bg-primary: #ffffff;
+  --bg-secondary: #f8fafc;
+  --bg-tertiary: #f1f5f9;
+  --border-color: #e2e8f0;
+  --text-primary: #0f172a;
+  --text-secondary: #475569;
+  --text-muted: #94a3b8;
+  
+  /* Transiciones suaves al cambiar de tema */
+  --theme-transition: all 0.3s ease;
+}
+
+/* ========================================
+   CLASES UTILITARIAS CON VARIABLES
+   ======================================== */
+
+/* Navbar */
+.navbar-theme {
+  background-color: var(--navbar-bg);
+  color: var(--navbar-text);
+  transition: var(--theme-transition);
+}
+
+.navbar-theme a:hover {
+  background-color: var(--navbar-hover);
+}
+
+/* Headers */
+.header-theme {
+  background: linear-gradient(to right, var(--header-gradient-start), var(--header-gradient-end));
+  color: var(--header-text);
+  transition: var(--theme-transition);
+}
+
+.header-theme-secondary {
+  color: var(--header-text-secondary);
+}
+
+/* Botones */
+.btn-theme-primary {
+  background-color: var(--btn-primary-bg);
+  color: var(--btn-primary-text);
+  border-radius: var(--btn-border-radius);
+  transition: var(--theme-transition);
+}
+
+.btn-theme-primary:hover {
+  background-color: var(--btn-primary-hover);
+}
+
+.btn-theme-secondary {
+  background-color: var(--btn-secondary-bg);
+  color: var(--btn-secondary-text);
+  border-radius: var(--btn-border-radius);
+  transition: var(--theme-transition);
+}
+
+.btn-theme-secondary:hover {
+  background-color: var(--btn-secondary-hover);
+}
+
+/* Backgrounds */
+.bg-theme-primary {
+  background-color: var(--bg-primary);
+  transition: var(--theme-transition);
+}
+
+.bg-theme-secondary {
+  background-color: var(--bg-secondary);
+  transition: var(--theme-transition);
+}
+
+.bg-theme-tertiary {
+  background-color: var(--bg-tertiary);
+  transition: var(--theme-transition);
+}
+
+/* Borders */
+.border-theme {
+  border-color: var(--border-color);
+  transition: var(--theme-transition);
+}
+
+/* Text */
+.text-theme-primary {
+  color: var(--text-primary);
+  transition: var(--theme-transition);
+}
+
+.text-theme-secondary {
+  color: var(--text-secondary);
+  transition: var(--theme-transition);
+}
+
+/* Estados */
+.text-theme-success {
+  color: var(--success-color);
+}
+
+.text-theme-warning {
+  color: var(--warning-color);
+}
+
+.text-theme-error {
+  color: var(--error-color);
+}
+
+.text-theme-info {
+  color: var(--info-color);
+}
+
+.bg-theme-success {
+  background-color: var(--success-bg);
+  color: var(--success-text);
+}
+
+.bg-theme-warning {
+  background-color: var(--warning-bg);
+  color: var(--warning-text);
+}
+
+.bg-theme-error {
+  background-color: var(--error-bg);
+  color: var(--error-text);
+}
+
+.bg-theme-info {
+  background-color: var(--info-bg);
+  color: var(--info-text);
+}
+
+/* Fondos sólidos para estados */
+.bg-theme-success-solid {
+  background-color: var(--success-color);
+  color: white;
+}
+
+.bg-theme-warning-solid {
+  background-color: var(--warning-color);
+  color: white;
+}
+
+.bg-theme-error-solid {
+  background-color: var(--error-color);
+  color: white;
+}
+
+.bg-theme-info-solid {
+  background-color: var(--info-color);
+  color: white;
+}
