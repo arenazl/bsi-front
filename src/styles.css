@@ -744,6 +744,11 @@ body{
   }
 }
 
+/* Clases auxiliares para mobile menu */
+.bg-white-20 {
+  background-color: rgba(255, 255, 255, 0.2) !important;
+}
+
 /* ESTILOS MENU PRINCIPAL MEJORADO */
 /* COMENTADO - ESTILOS VIEJOS QUE INTERFIEREN
 .main-menu-modern {
