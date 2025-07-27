@@ -155,6 +155,7 @@
       <!-- Menú móvil desplegable -->
       <div *ngIf="mobileMenuOpen" class="md:hidden">
         <div class="px-2 pt-2 pb-3 space-y-1">
+          <!-- Información del usuario -->
           <div class="bg-white/10 rounded-lg p-3 mb-2">
             <div class="flex items-center mb-2" style="color: var(--navbar-text); opacity: 0.9;">
               <i class="far fa-user mr-2"></i>
@@ -165,6 +166,58 @@
               <span class="text-sm">{{usuario.Nombre_Organismo || 'Organismo'}}</span>
             </div>
           </div>
+          
+          <!-- Selector de temas mobile -->
+          <div class="bg-white/10 rounded-lg p-3 mb-2">
+            <div class="flex items-center mb-3" style="color: var(--navbar-text);">
+              <i class="fas fa-palette mr-2"></i>
+              <span class="text-sm font-medium">Seleccionar Tema</span>
+            </div>
+            <div class="space-y-2">
+              <button (click)="changeTheme('corporate-blue')"
+                      class="w-full text-left px-3 py-2 hover:bg-white/10 rounded-lg transition-all duration-200 flex items-center gap-3"
+                      [class.bg-white/20]="currentTheme === 'corporate-blue'">
+                <div class="w-5 h-5 rounded-full shadow-md" 
+                     style="background: linear-gradient(135deg, #1e3a8a, #3b82f6)"></div>
+                <span class="text-sm text-white">Corporate Blue</span>
+                <i *ngIf="currentTheme === 'corporate-blue'" class="fas fa-check text-blue-400 ml-auto"></i>
+              </button>
+              <button (click)="changeTheme('enterprise-green')"
+                      class="w-full text-left px-3 py-2 hover:bg-white/10 rounded-lg transition-all duration-200 flex items-center gap-3"
+                      [class.bg-white/20]="currentTheme === 'enterprise-green'">
+                <div class="w-5 h-5 rounded-full shadow-md"
+                     style="background: linear-gradient(135deg, #14532d, #16a34a)"></div>
+                <span class="text-sm text-white">Enterprise Green</span>
+                <i *ngIf="currentTheme === 'enterprise-green'" class="fas fa-check text-green-400 ml-auto"></i>
+              </button>
+              <button (click)="changeTheme('modern-purple')"
+                      class="w-full text-left px-3 py-2 hover:bg-white/10 rounded-lg transition-all duration-200 flex items-center gap-3"
+                      [class.bg-white/20]="currentTheme === 'modern-purple'">
+                <div class="w-5 h-5 rounded-full shadow-md"
+                     style="background: linear-gradient(135deg, #6b21a8, #9333ea)"></div>
+                <span class="text-sm text-white">Modern Purple</span>
+                <i *ngIf="currentTheme === 'modern-purple'" class="fas fa-check text-purple-400 ml-auto"></i>
+              </button>
+              <button (click)="changeTheme('executive-gray')"
+                      class="w-full text-left px-3 py-2 hover:bg-white/10 rounded-lg transition-all duration-200 flex items-center gap-3"
+                      [class.bg-white/20]="currentTheme === 'executive-gray'">
+                <div class="w-5 h-5 rounded-full shadow-md"
+                     style="background: linear-gradient(135deg, #1f2937, #6b7280)"></div>
+                <span class="text-sm text-white">Executive Gray</span>
+                <i *ngIf="currentTheme === 'executive-gray'" class="fas fa-check text-gray-400 ml-auto"></i>
+              </button>
+              <button (click)="changeTheme('ocean-teal')"
+                      class="w-full text-left px-3 py-2 hover:bg-white/10 rounded-lg transition-all duration-200 flex items-center gap-3"
+                      [class.bg-white/20]="currentTheme === 'ocean-teal'">
+                <div class="w-5 h-5 rounded-full shadow-md"
+                     style="background: linear-gradient(135deg, #0f766e, #14b8a6)"></div>
+                <span class="text-sm text-white">Ocean Teal</span>
+                <i *ngIf="currentTheme === 'ocean-teal'" class="fas fa-check text-teal-400 ml-auto"></i>
+              </button>
+            </div>
+          </div>
+          
+          <!-- Botón de logout -->
           <button (click)="logout()" 
                   class="w-full text-left px-3 py-2 rounded-md hover:bg-white/10"
                   style="color: var(--navbar-text)">

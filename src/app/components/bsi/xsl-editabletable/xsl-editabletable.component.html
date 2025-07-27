@@ -19,29 +19,26 @@
     </div>
     
     <!-- Contenido del header -->
-    <div class="relative z-10 px-8 py-12">
+    <div class="relative z-10 px-4 py-8 sm:px-6 sm:py-10 md:px-8 md:py-12">
       <div class="max-w-7xl mx-auto">
         <button class="mb-4 p-2 hover:bg-white/20 rounded-full transition-colors duration-200 text-white" (click)="goBack()">
-          <i class="fas fa-arrow-circle-left text-3xl"></i>
+          <i class="fas fa-arrow-circle-left text-2xl sm:text-3xl"></i>
         </button>
-        <h1 class="text-2xl sm:text-3xl md:text-4xl font-bold text-white mb-2 whitespace-nowrap overflow-hidden text-ellipsis">{{ organismoDescription }}</h1>
-        <p class="text-xl text-white/90">Gestión de nómina y pagos</p>
+        <h1 class="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold text-white mb-2 break-words">{{ organismoDescription }}</h1>
+        <p class="text-lg sm:text-xl text-white/90">Gestión de nómina y pagos</p>
       </div>
     </div>
   </div>
   
   <!-- Contenido principal con margen negativo para superposición -->
-  <div class="-mt-8 relative z-20 px-8 pb-8">
+  <div class="-mt-8 relative z-20 px-4 pb-6 sm:px-6 sm:pb-8 md:px-8">
     <div class="max-w-7xl mx-auto">
 
 <!-- Card de resumen de información -->
-<div class="card-theme rounded-3xl shadow-xl mb-6" *ngIf="dbNominas?.header" style="
-margin-left: 4em;
-margin-right: 4em;
-">
+<div class="card-theme rounded-3xl shadow-xl mb-6 mx-4 sm:mx-8 md:mx-16 lg:mx-24" *ngIf="dbNominas?.header">
 
-  <div class="p-8">
-    <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-4">
+  <div class="p-4 sm:p-6 md:p-8">
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
 
       <div *ngFor="let field of metadata?.HEADER || []" 
            class="btn-theme-accent flex-shrink-0">
@@ -81,8 +78,8 @@ margin-right: 4em;
 </div>
 
 <!-- ACCIONES -->
-<div class="card-theme rounded-3xl shadow-xl mb-6" style="margin-left: 6em;margin-right: 6em;">
-  <div class="px-10 py-8">
+<div class="card-theme rounded-3xl shadow-xl mb-6 mx-4 sm:mx-8 md:mx-20 lg:mx-32">
+  <div class="px-4 py-6 sm:px-6 sm:py-8 md:px-10">
     <!-- Título integrado con línea decorativa -->
     <div class="flex items-center mb-6">
       <div class="flex-1">
@@ -90,7 +87,7 @@ margin-right: 4em;
         <div class="h-1 w-16 bg-gradient-to-r from-[var(--primary-color)] to-[var(--secondary-color)] rounded-full mt-2"></div>
       </div>
     </div>
-    <div class="flex flex-wrap gap-4 items-end">
+    <div class="flex flex-col sm:flex-row flex-wrap gap-4 items-end">
 
       <div class="flex-1 min-w-[180px]">
         <label class="block text-sm font-medium text-gray-700 mb-2">Pagos Anteriores</label>
@@ -154,8 +151,8 @@ margin-right: 4em;
 </div>
 
 <!-- Lista Principal -->
-<div class="card-theme rounded-3xl shadow-xl mb-6" style="margin-left: 6em; margin-right: 6em;">
-  <div class="p-6">
+<div class="card-theme rounded-3xl shadow-xl mb-6 mx-4 sm:mx-8 md:mx-20 lg:mx-32">
+  <div class="p-4 sm:p-6">
     <!-- Título con diseño minimalista -->
     <div class="flex items-center justify-between mb-4">
       <div>
@@ -177,8 +174,8 @@ margin-right: 4em;
   
     <!-- Tabla de nóminas si hay elementos -->
     <div *ngIf="!isNominasEmpty">
-    <div class="overflow-x-auto">
-      <table class="w-full rounded-lg overflow-hidden">
+    <div class="overflow-x-auto -mx-4 sm:-mx-6 px-4 sm:px-6">
+      <table class="w-full rounded-lg overflow-hidden min-w-[800px]">
         <thead class="bg-gradient-to-r from-[var(--primary-color)] via-[var(--secondary-color)] to-[var(--complementary-color)]">
           <tr>
             <th class="text-left px-4 py-3 text-white font-semibold bg-black/10">#</th>
