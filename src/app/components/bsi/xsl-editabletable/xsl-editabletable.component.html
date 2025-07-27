@@ -24,8 +24,8 @@
         <button class="mb-4 p-2 hover:bg-white/20 rounded-full transition-colors duration-200 text-white" (click)="goBack()">
           <i class="fas fa-arrow-circle-left text-2xl sm:text-3xl"></i>
         </button>
-        <h1 class="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold text-white mb-2 break-words">{{ organismoDescription }}</h1>
-        <p class="text-lg sm:text-xl text-white/90">Gestión de nómina y pagos</p>
+        <h1 class="text-base sm:text-2xl md:text-3xl lg:text-4xl font-bold text-white mb-2 break-words leading-tight">{{ organismoDescription }}</h1>
+        <p class="text-sm sm:text-xl text-white/90">Gestión de nómina y pagos</p>
       </div>
     </div>
   </div>
@@ -42,8 +42,8 @@
 
       <div *ngFor="let field of metadata?.HEADER || []" 
            class="btn-theme-accent flex-shrink-0">
-        <div class="text-sm text-theme-secondary mb-1">{{ field.header }}</div>
-        <p class="text-lg font-bold text-theme-primary">
+        <div class="text-xs sm:text-sm text-theme-secondary mb-1 truncate">{{ field.header }}</div>
+        <p class="text-sm sm:text-lg font-bold text-theme-primary break-words">
           <!-- Apply pipe if it
             exists -->
           <ng-container *ngIf="field.pipe; else noPipeHeader">
@@ -62,13 +62,13 @@
       </div>
 
       <div class="btn-theme-accent flex-shrink-0">
-        <div class="text-sm text-theme-secondary mb-1">Registros</div>
-        <p class="text-lg font-bold text-theme-primary">{{ selectedItems.length }}</p>
+        <div class="text-xs sm:text-sm text-theme-secondary mb-1 truncate">Registros</div>
+        <p class="text-sm sm:text-lg font-bold text-theme-primary">{{ selectedItems.length }}</p>
       </div>
 
       <div class="btn-theme-accent flex-shrink-0">
-        <div class="text-sm text-theme-secondary mb-1">Importe Total</div>
-        <p class="text-lg font-bold text-theme-primary">{{ dbNominas.header.importe_total | BsiCurrencyPipe }}</p>
+        <div class="text-xs sm:text-sm text-theme-secondary mb-1 truncate">Importe Total</div>
+        <p class="text-sm sm:text-lg font-bold text-theme-primary break-words">{{ dbNominas.header.importe_total | BsiCurrencyPipe }}</p>
       </div>
         
       </div>
@@ -175,7 +175,77 @@
   
     <!-- Tabla de nóminas si hay elementos -->
     <div *ngIf="!isNominasEmpty">
-    <div class="overflow-x-auto -mx-4 sm:-mx-6 px-4 sm:px-6">
+    
+    <!-- Vista móvil: Tarjetas -->
+    <div class="block lg:hidden space-y-4">
+      <div *ngFor="let sol of filteredItems; let i = index" class="bg-white border border-gray-200 rounded-lg p-4 shadow-sm">
+        <div class="flex justify-between items-start mb-3">
+          <span class="text-sm font-semibold text-gray-500">#{{ i + 1 }}</span>
+          <span class="text-xs px-2 py-1 rounded-full" [ngClass]="sol.VALIDO === 0 ? 'bg-red-100 text-red-800' : 'bg-green-100 text-green-800'">
+            {{ sol.VALIDO === 0 ? 'Inválido' : 'Válido' }}
+          </span>
+        </div>
+        
+        <div class="space-y-2 mb-4">
+          <div *ngFor="let col of metadata['TABLE-COLUMN']" class="flex justify-between">
+            <span class="text-sm text-gray-600 font-medium">{{ col.header }}:</span>
+            <span class="text-sm text-gray-800 text-right break-words max-w-[60%]">
+              <ng-container *ngIf="col.type === 'BsiCurrencyPipe'">
+                {{ sol[col.field] | BsiCurrencyPipe }}
+              </ng-container>
+              <ng-container *ngIf="col.type === 'text'">
+                {{ sol[col.field] }}
+              </ng-container>
+              <ng-container *ngIf="col.type === 'number'">
+                {{ sol[col.field] }}
+              </ng-container>
+              <ng-container *ngIf="col.type === 'date'">
+                {{ sol[col.field] | date:'dd/MM/yyyy' }}
+              </ng-container>
+            </span>
+          </div>
+          
+          <div class="flex justify-between border-t pt-2">
+            <span class="text-sm text-gray-600 font-medium">Importe:</span>
+            <input type="text" 
+                   class="input-theme text-right text-sm w-24" 
+                   [(ngModel)]="sol.importe"
+                   (ngModelChange)="updateImporte(sol, $event)" 
+                   currencyMask 
+                   [options]="{
+                     prefix: '$',
+                     thousands: '.',
+                     decimal: ',',
+                     align: 'right',
+                     allowNegative: false,
+                     precision: 2
+                   }" />
+          </div>
+        </div>
+        
+        <div class="flex justify-between items-center pt-3 border-t">
+          <label class="flex items-center text-sm">
+            <input type="checkbox" 
+                   [checked]="sol.ACTIVO === 1" 
+                   (change)="toggleActivo(sol)" 
+                   class="mr-2 rounded border-gray-300 text-blue-600 focus:ring-blue-500">
+            <span class="text-gray-700">Activo</span>
+          </label>
+          
+          <div class="flex gap-2">
+            <button class="btn-theme-secondary btn-sm text-xs px-3 py-1" (click)="editarSol(sol, i)">
+              <i class="fas fa-edit"></i>
+            </button>
+            <button class="btn-theme-accent btn-sm text-xs px-3 py-1" (click)="eliminarSol(sol, i)">
+              <i class="fas fa-trash"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Vista desktop: Tabla -->
+    <div class="hidden lg:block overflow-x-auto -mx-4 sm:-mx-6 px-4 sm:px-6">
       <table class="w-full rounded-lg overflow-hidden" style="min-width: 800px;">
         <thead class="bg-gradient-to-r" style="background: linear-gradient(90deg, var(--primary-color), var(--secondary-color) 35%, var(--complementary-color) 65%, var(--secondary-color)) !important;">
           <tr>
@@ -258,7 +328,7 @@
         </tbody>
       </table>
     </div>
-  </div>
+    </div>
 
 </div>
 
@@ -276,7 +346,59 @@
       </h3>
     </div>
 
-    <div class="overflow-x-auto">
+    <!-- Vista móvil: Tarjetas para elementos seleccionados -->
+    <div class="block lg:hidden space-y-4">
+      <div *ngFor="let item of selectedItems; let i = index" class="bg-gradient-to-r from-[var(--complementary-color)]/5 to-[var(--primary-color)]/10 border border-gray-200 rounded-lg p-4 shadow-sm">
+        <div class="flex justify-between items-start mb-3">
+          <span class="text-sm font-semibold text-gray-500">#{{ i + 1 }}</span>
+          <button class="text-red-500 hover:text-red-700 text-sm" (click)="removeFromSelected(item)">
+            <i class="fas fa-trash"></i>
+          </button>
+        </div>
+        
+        <div class="space-y-2 mb-4">
+          <div *ngFor="let col of metadata['TABLE-COLUMN']" class="flex justify-between">
+            <span class="text-sm text-gray-600 font-medium">{{ col.header }}:</span>
+            <span class="text-sm text-gray-800 text-right break-words max-w-[60%]">
+              <ng-container *ngIf="col.type === 'BsiCurrencyPipe'">
+                {{ item[col.field] | BsiCurrencyPipe }}
+              </ng-container>
+              <ng-container *ngIf="col.type === 'text'">
+                {{ item[col.field] }}
+              </ng-container>
+              <ng-container *ngIf="col.type === 'number'">
+                {{ item[col.field] }}
+              </ng-container>
+              <ng-container *ngIf="col.type === 'date'">
+                {{ item[col.field] | date:'dd/MM/yyyy' }}
+              </ng-container>
+            </span>
+          </div>
+          
+          <div class="flex justify-between border-t pt-2">
+            <span class="text-sm text-gray-600 font-medium">Importe:</span>
+            <span class="text-sm font-semibold text-gray-800">{{ item.importe | BsiCurrencyPipe }}</span>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Total para móvil -->
+      <div class="bg-gray-100 rounded-lg p-4 border-t-4 border-[var(--primary-color)]">
+        <div class="flex justify-between items-center">
+          <div>
+            <span class="text-sm text-gray-600">Cantidad: </span>
+            <span class="text-lg font-semibold text-[var(--primary-color)]">{{ selectedItems.length }}</span>
+          </div>
+          <div>
+            <span class="text-sm text-gray-600">Total: </span>
+            <span class="text-lg font-bold text-[var(--primary-color)]">{{ getTotalSelected() | BsiCurrencyPipe }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Vista desktop: Tabla para elementos seleccionados -->
+    <div class="hidden lg:block overflow-x-auto">
       <table class="w-full rounded-lg overflow-hidden">
         <thead class="bg-gradient-to-r from-[var(--primary-color)] via-[var(--complementary-color)] to-[var(--secondary-color)]">
           <tr>
@@ -345,6 +467,7 @@
           </tr>
         </tfoot>
       </table>
+    </div>
 
   </div>
 </div>
