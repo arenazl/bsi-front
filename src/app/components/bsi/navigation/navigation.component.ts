@@ -23,7 +23,7 @@ export class NavigationComponent implements OnInit, OnDestroy {
   currentTheme = 'foco-energia';
 
   constructor(
-    private sharedService: SharedService, 
+    private sharedService: SharedService,
     private userSessionService: UserSessionService,
     private router: Router
   ) {
@@ -48,7 +48,7 @@ export class NavigationComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     console.log('NavigationComponent - ngOnInit');
-    
+
     // Verificar autenticación usando el servicio
     if (!this.userSessionService.isAuthenticated()) {
       const nombre = sessionStorage.getItem('Nombre');
@@ -64,7 +64,7 @@ export class NavigationComponent implements OnInit, OnDestroy {
       const nombre = sessionStorage.getItem('Nombre');
       const apellido = sessionStorage.getItem('Apellido');
       const organismo = sessionStorage.getItem('Organismo');
-      
+
       console.log('NavigationComponent - Datos de sessionStorage:', { nombre, apellido, organismo });
 
       if (nombre && apellido) {
@@ -94,7 +94,7 @@ export class NavigationComponent implements OnInit, OnDestroy {
     const target = event.target as HTMLElement;
     const themeButton = document.querySelector('[title="Cambiar tema"]');
     const themeDropdown = document.querySelector('.absolute.right-0.mt-2.w-56');
-    
+
     if (themeButton && !themeButton.contains(target) && themeDropdown && !themeDropdown.contains(target)) {
       this.themeMenuOpen = false;
     }
@@ -124,7 +124,7 @@ export class NavigationComponent implements OnInit, OnDestroy {
    */
   private applyTheme(theme: string) {
     console.log('Aplicando tema:', theme);
-    
+
     // Mapa de temas con sus colores
     const themes: { [key: string]: any } = {
       'foco-energia': {
@@ -478,23 +478,23 @@ export class NavigationComponent implements OnInit, OnDestroy {
         '--shadow-hover': 'rgba(111, 78, 55, 0.2)'
       }
     };
-    
+
     // Aplicar las variables CSS directamente en el elemento root
     const root = document.documentElement;
-    const themeVars = themes[theme] || themes['foco-energia'];
-    
+    const themeVars = themes[theme] || themes['calma-oceanica'];
+
     Object.keys(themeVars).forEach(varName => {
       root.style.setProperty(varName, themeVars[varName]);
     });
-    
+
     // También establecer el atributo para mantener compatibilidad
     root.setAttribute('data-theme', theme);
-    
+
     // Verificar que los estilos se están aplicando
     setTimeout(() => {
       console.log('Variables CSS aplicadas directamente');
       console.log('--navbar-bg:', root.style.getPropertyValue('--navbar-bg'));
-      
+
       const navbarElement = document.querySelector('.navbar-theme');
       if (navbarElement) {
         const navbarStyle = window.getComputedStyle(navbarElement);
