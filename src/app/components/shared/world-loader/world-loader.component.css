@@ -1,0 +1,50 @@
+.world-loader-container {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.world-icon {
+  animation: spin-world 2s linear infinite;
+  color: var(--primary-color, #0d6efd);
+}
+
+.loader-text {
+  color: var(--text-secondary, #6c757d);
+  font-weight: 500;
+}
+
+/* Tamaños */
+.size-small .world-icon {
+  font-size: 1rem;
+}
+
+.size-small .loader-text {
+  font-size: 0.875rem;
+}
+
+.size-medium .world-icon {
+  font-size: 1.5rem;
+}
+
+.size-medium .loader-text {
+  font-size: 1rem;
+}
+
+.size-large .world-icon {
+  font-size: 2.5rem;
+}
+
+.size-large .loader-text {
+  font-size: 1.25rem;
+}
+
+@keyframes spin-world {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}

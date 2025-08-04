@@ -65,6 +65,11 @@ body::before {
   color: white !important;
 }
 
+.bg-gray-50 {
+  opacity: 0.85 !important;
+}
+
+
 /* ========================================
    SISTEMA DE TEMAS - DEBE CARGAR PRIMERO
    ======================================== */
@@ -842,6 +847,46 @@ body {
 .header-style {
   color: white;
   background: linear-gradient(270deg, #009688, #0d6efd) !important;
+}
+
+/* Global World Spinner Loader */
+.world-spinner {
+  display: inline-block;
+  animation: spin-world 2s linear infinite;
+}
+
+@keyframes spin-world {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.loading-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.loading-world {
+  font-size: 1.5rem;
+  color: var(--primary-color, #0d6efd);
+  animation: spin-world 2s linear infinite;
+}
+
+.loading-world-small {
+  font-size: 1rem;
+  color: var(--primary-color, #0d6efd);
+  animation: spin-world 2s linear infinite;
+}
+
+.loading-text {
+  color: var(--text-secondary, #6c757d);
+  font-weight: 500;
 }
 
 table thead th:first-child {

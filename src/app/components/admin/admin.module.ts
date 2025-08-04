@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { AdminRoutingModule } from './admin-routing.module';
+import { SharedModule } from '../../shared/shared.module';
 
 // Componentes nativos de Angular
 import { AdminPanelComponent } from './admin-panel/admin-panel.component';
@@ -21,7 +22,8 @@ import { ContratoManagementComponent } from './contrato-management/contrato-mana
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
-    AdminRoutingModule
+    AdminRoutingModule,
+    SharedModule
   ],
   exports: [
     AdminPanelComponent,

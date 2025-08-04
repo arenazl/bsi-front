@@ -82,11 +82,25 @@ export class UserManagementComponent implements OnInit {
   async loadUsers(): Promise<void> {
     try {
       this.loading = true;
-      const users = await this.fileService.getUsers().toPromise();
-      this.users = users || [];
+      const response = await this.fileService.getUsers().toPromise();
+      console.log('Response from getUsers:', response);
+      
+      // Manejar diferentes formatos de respuesta
+      if (Array.isArray(response)) {
+        this.users = response;
+      } else if (response && typeof response === 'object') {
+        // Si la respuesta es un objeto con una propiedad data o users
+        const res = response as any;
+        this.users = res.data || res.users || [];
+      } else {
+        this.users = [];
+      }
+      
       this.filterUsers(this.searchForm.get('searchTerm')?.value || '');
     } catch (error) {
       console.error('Error fetching users:', error);
+      this.users = [];
+      this.filteredUsers = [];
       Swal.fire('Error', 'Error al cargar usuarios', 'error');
     } finally {
       this.loading = false;

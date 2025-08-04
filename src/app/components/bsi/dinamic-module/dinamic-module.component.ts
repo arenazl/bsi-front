@@ -623,8 +623,11 @@ export class DinamicModuleComponent implements OnInit {
     // Obtener el módulo actual de los parámetros de ruta
     const currentModule = this.activatedRoute.snapshot.params['screen'];
     
+    // Manejar URLs con query parameters
+    const [path, queryString] = (item.link || '').split('?');
+    
     // Analizar la ruta para extraer información
-    const linkParts = item.link?.split('/').filter((p: string) => p) || [];
+    const linkParts = path?.split('/').filter((p: string) => p) || [];
     
     if (linkParts.length >= 2) {
       // Por ejemplo: /xslImport/NOMINA/3
@@ -687,6 +690,22 @@ export class DinamicModuleComponent implements OnInit {
       next: () => console.log('Acceso registrado'),
       error: (error) => console.warn('Error registrando acceso:', error)
     });
+    
+    // Navegar con manejo de query parameters
+    if (queryString) {
+      // Si hay query parameters, parsearlos
+      const queryParams: any = {};
+      queryString.split('&').forEach((param: string) => {
+        const [key, value] = param.split('=');
+        queryParams[key] = value;
+      });
+      
+      // Navegar con query parameters
+      this.router.navigate([path], { queryParams });
+    } else if (path) {
+      // Navegar sin query parameters
+      this.router.navigate([path]);
+    }
   }
 
 

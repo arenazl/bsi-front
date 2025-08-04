@@ -30,10 +30,14 @@ interface NominaItem {
 export class XslEditabletableComponent implements OnInit {
   
   isButtonVisible = false;
+  overlayOpacity = 0; // Opacidad del overlay con color primario (0 = 0%, 1 = 100%)
   
   @HostListener('window:scroll', ['$event'])
   onScroll() {
     this.checkScrollPosition();
+    // Ajustar opacidad del overlay basado en scroll
+    const scrollY = window.pageYOffset;
+    this.overlayOpacity = Math.min(1, scrollY / 300); // Máximo 100% de opacidad a los 300px de scroll
   }
   
   checkScrollPosition() {
@@ -481,29 +485,6 @@ export class XslEditabletableComponent implements OnInit {
     this.location.back();
   }
 
-  scrollToSelectedItems(): void {
-    const selectedSection = document.getElementById('selected-items-section');
-    if (selectedSection) {
-      selectedSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      // Alternativa si scrollIntoView no funciona
-      const yOffset = -100; // Offset para dejar espacio
-      const y = selectedSection.getBoundingClientRect().top + window.pageYOffset + yOffset;
-      window.scrollTo({ top: y, behavior: 'smooth' });
-    } else {
-      console.log('No se encontró la sección de elementos seleccionados');
-    }
-  }
-
-  scrollToTop(): void {
-    // Buscar el card de la lista principal (tercera card)
-    const mainTableCard = document.querySelectorAll('.card-theme')[2];
-    if (mainTableCard) {
-      mainTableCard.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    } else {
-      // Si no encuentra la card, ir al top de la página
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
-  }
 
   toggleCardExpansion(index: number): void {
     if (this.expandedCards.has(index)) {
@@ -622,6 +603,26 @@ export class XslEditabletableComponent implements OnInit {
       total += parseFloat(item.importe?.toString() || '0') || 0;
     });
     return total;
+  }
+
+  scrollToTop(): void {
+    // Buscar el contenedor de acciones que está justo después del sticky header
+    const accionesSection = document.querySelector('.px-4.pb-2.sm\\:px-6.sm\\:pb-8.md\\:px-8.pt-4');
+    if (accionesSection) {
+      // Hacer scroll al inicio del contenido principal
+      accionesSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    } else {
+      // Fallback: scroll a una posición específica
+      window.scrollTo({ top: 300, behavior: 'smooth' });
+    }
+  }
+
+  scrollToSelectedItems(): void {
+    // Buscar la sección de elementos seleccionados
+    const selectedSection = document.getElementById('selected-items-section');
+    if (selectedSection) {
+      selectedSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
   }
 
 }

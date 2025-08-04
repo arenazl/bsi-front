@@ -4,8 +4,8 @@
   "scripts": {
     "ng": "ng",
     "start": "node server.js",
-    "build": "ng build gestion",
-    "dev": "ng serve gestion",
+    "build": "ng build",
+    "dev": "ng serve --port 4000",
     "lint": "ng lint",
     "e2e": "ng e2e",
     "heroku-postbuild": "ng build"

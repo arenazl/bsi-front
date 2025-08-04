@@ -148,7 +148,7 @@
               class="btn-theme-primary"
               [disabled]="loading || contratoForm.invalid"
             >
-              <i *ngIf="loading" class="fa fa-spinner fa-spin mr-2"></i>
+              <i *ngIf="loading" class="fas fa-globe-americas world-spinner mr-2"></i>
               {{ isEditing ? 'Actualizar' : 'Crear' }}
             </button>
           </div>
@@ -177,7 +177,7 @@
             <tbody>
               <tr *ngIf="loading && filteredContratos.length === 0">
                 <td colspan="7" class="text-center py-8">
-                  <i class="fa fa-spinner fa-spin mr-2"></i> Cargando...
+                  <app-world-loader [size]="'large'" [text]="'Cargando contratos...'"></app-world-loader>
                 </td>
               </tr>
               <tr *ngIf="!loading && filteredContratos.length === 0">

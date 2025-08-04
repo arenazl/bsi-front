@@ -1,6 +1,6 @@
 
 <!-- Skeleton loader mientras carga -->
-<div *ngIf="!data" class="min-h-screen">
+<div *ngIf="!data">
   <!-- Header skeleton -->
   <div class="bg-gradient-to-br from-gray-200 to-gray-300 relative overflow-hidden animate-pulse">
     <div class="relative z-10 px-4 sm:px-6 md:px-8 py-8 sm:py-10 md:py-12">
@@ -30,7 +30,7 @@
 </div>
 
 <!-- Contenedor principal con diseño moderno -->
-<div class="min-h-screen" *ngIf="data">
+<div *ngIf="data">
   <!-- Header integrado con el fondo -->
   <div class="bg-gradient-to-br relative overflow-hidden">
     <!-- Patrón decorativo de fondo -->
@@ -62,7 +62,7 @@
   </div>
   
   <!-- Contenido principal con margen negativo para superposición -->
-  <div class="-mt-8 relative z-20 pb-6 sm:pb-8 px-4 sm:px-6 md:px-8 lg:px-16 xl:px-24">
+  <div class="-mt-8 relative z-20 px-4 sm:px-6 md:px-8 lg:px-16 xl:px-24">
     <div class="max-w-8xl mx-auto">
       <div class="bg-white rounded-3xl shadow-xl p-8" style="
       opacity: 0.9;
@@ -82,12 +82,11 @@
             <i *ngIf="!item.icono && item.items && item.items[0]?.icono" [class]="'fas ' + item.items[0].icono" style="font-size: 1.25rem !important; line-height: 1 !important;"></i>
             <i *ngIf="!item.icono && (!item.items || !item.items[0]?.icono)" class="fas fa-file-alt" style="font-size: 1.25rem !important; line-height: 1 !important;"></i>
           </div>
-          <h3 class="text-sm sm:text-base md:text-lg font-semibold text-gray-800 break-words">{{ item.title }}</h3>
+          <h3 class="text-sm sm:text-base md:text-lg font-semibold text-gray-800 break-words shimmer-text">{{ item.title }}</h3>
         </div>
         <p class="text-xs sm:text-sm text-gray-600 mb-4 break-words">{{ item.description }}</p>
         <div class="menu-buttons" *ngIf="item.items">
           <button *ngFor="let subItem of item.items; let isFirst = first"
-              [routerLink]="item.enabled ? [subItem.link] : null"
               [ngClass]="{
                 'btn-theme-primary': isFirst,
                 'btn-theme-secondary': !isFirst
@@ -107,7 +106,7 @@
             <i [class]="'fas ' + (item.icono || (item.items && item.items[0]?.icono) || 'fa-file-alt')" style="font-size: 1.25rem !important; line-height: 1 !important;"></i>
           </div>
           <div class="flex-1">
-            <h3 class="text-sm sm:text-base md:text-lg font-semibold text-gray-800 break-words">{{ item.title }}</h3>
+            <h3 class="text-sm sm:text-base md:text-lg font-semibold text-gray-800 break-words shimmer-text">{{ item.title }}</h3>
             <p class="text-xs sm:text-sm text-gray-600 mb-4 break-words">{{ item.description }}</p>
           </div>
         </div>
@@ -120,13 +119,12 @@
             <i *ngIf="!item.icono && item.items && item.items[0]?.icono" [class]="'fas ' + item.items[0].icono" style="font-size: 1.25rem !important; line-height: 1 !important;"></i>
             <i *ngIf="!item.icono && (!item.items || !item.items[0]?.icono)" class="fas fa-file-alt" style="font-size: 1.25rem !important; line-height: 1 !important;"></i>
           </div>
-          <h3 class="text-sm sm:text-base md:text-lg font-semibold text-gray-800 break-words">{{ item.title }}</h3>
+          <h3 class="text-sm sm:text-base md:text-lg font-semibold text-gray-800 break-words shimmer-text">{{ item.title }}</h3>
           <p class="text-xs sm:text-sm text-gray-600 mb-4 break-words">{{ item.description }}</p>
         </div>
         
         <div class="flex gap-2" *ngIf="item.items">
           <button *ngFor="let subItem of item.items"
-              [routerLink]="item.enabled ? [subItem.link] : null"
               class="btn-theme-accent btn-sm flex-1"
               (click)="item.enabled ? logNavigation(subItem) : showAds()"
             >
@@ -138,7 +136,6 @@
         
         <div *ngIf="!item.items" class="w-full">
           <button
-            [routerLink]="item.enabled ? [item.link] : null"
             class="btn-theme-primary w-full btn-icon"
             (click)="item.enabled ? logNavigation(item) : showAds()"
           >

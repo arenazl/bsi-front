@@ -1,14 +1,9 @@
 
 <!-- Contenedor principal con diseño moderno -->
-<div class="min-h-screen">
+<div>
   <!-- Loader moderno -->
-  <div *ngIf="isLoading" class="flex items-center justify-center min-h-screen">
-    <div class="relative">
-      <div class="w-16 h-16 border-4 border-purple-200 border-t-purple-600 rounded-full animate-spin"></div>
-      <div class="absolute inset-0 flex items-center justify-center">
-        <div class="w-8 h-8 bg-purple-100 rounded-full animate-pulse"></div>
-      </div>
-    </div>
+  <div *ngIf="isLoading" class="flex items-center justify-center" style="height: 400px;">
+    <app-world-loader [size]="'large'" [text]="'Cargando formulario...'"></app-world-loader>
   </div>
 
   <div *ngIf="!isLoading">
@@ -41,7 +36,7 @@
     </div>
     
     <!-- Contenido principal con margen negativo para superposición -->
-    <div class="-mt-8 relative z-20 px-8 pb-8">
+    <div class="-mt-8 relative z-20 px-8">
       <div class="max-w-7xl mx-auto">
         <div class="bg-white rounded-3xl shadow-xl p-8">
       <form [formGroup]="formGroup" (ngSubmit)="onSubmit()">
@@ -127,7 +122,7 @@
         <!-- Sección de Opciones de Carga -->
         <div class="bg-gradient-to-r from-purple-50 to-indigo-50 rounded-2xl p-6 mb-8">
           <h3 class="text-lg font-bold text-gray-800 mb-4 flex items-center gap-2">
-            <i class="fas fa-upload text-purple-600"></i>
+            <i class="fas fa-upload text-theme-primary"></i>
             Opciones de Carga
           </h3>
 
@@ -177,7 +172,7 @@
         <!-- Sección de carga de archivos -->
         <div *ngIf="cargaArchivoSeleccionada" class="bg-gray-50 border-2 border-dashed border-gray-300 rounded-2xl p-8 mb-8 transition-all duration-300">
           <div class="text-center mb-6">
-            <i class="fas fa-cloud-upload-alt text-6xl text-purple-400 mb-4"></i>
+            <i class="fas fa-cloud-upload-alt text-6xl text-theme-primary mb-4"></i>
             <h3 class="text-lg font-semibold text-gray-800 mb-2">Arrastra y suelta tus archivos aquí</h3>
             <p class="text-gray-500 mb-4">o haz clic para seleccionar</p>
             
@@ -202,8 +197,8 @@
               
               <!-- Icono del archivo -->
               <div class="flex-shrink-0">
-                <div class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center">
-                  <i class="fas fa-file text-purple-600 text-xl"></i>
+                <div class="w-12 h-12 rounded-lg flex items-center justify-center" style="background-color: color-mix(in srgb, var(--primary-color) 15%, transparent);">
+                  <i class="fas fa-file text-xl text-theme-primary"></i>
                 </div>
               </div>
               
@@ -211,8 +206,9 @@
               <div class="flex-1">
                 <p class="font-medium text-gray-800 mb-1">{{ item.file.name }}</p>
                 <div class="w-full bg-gray-200 rounded-full h-2 overflow-hidden">
-                  <div class="h-full bg-gradient-to-r from-purple-600 to-indigo-600 transition-all duration-300" 
-                       [style.width.%]="item.progress"></div>
+                  <div class="h-full transition-all duration-300" 
+                       [style.width.%]="item.progress"
+                       [style.background]="'linear-gradient(to right, var(--primary-color), var(--secondary-color))'"></div>
                 </div>
                 <p class="text-xs text-gray-500 mt-1">{{ item.progress }}% completado</p>
               </div>

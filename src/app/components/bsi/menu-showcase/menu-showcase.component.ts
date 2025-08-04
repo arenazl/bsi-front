@@ -65,4 +65,29 @@ export class MenuShowcaseComponent implements OnInit {
       text: 'Esta funcionalidad estará disponible pronto'
     });
   }
+
+  navigateToLink(link: string, enabled: boolean) {
+    if (!enabled) {
+      this.showAccessDeniedModal();
+      return;
+    }
+
+    // Separar la ruta de los query parameters
+    const [path, queryString] = link.split('?');
+    
+    if (queryString) {
+      // Si hay query parameters, parsearlos
+      const queryParams: any = {};
+      queryString.split('&').forEach(param => {
+        const [key, value] = param.split('=');
+        queryParams[key] = value;
+      });
+      
+      // Navegar con query parameters
+      this.router.navigate([path], { queryParams });
+    } else {
+      // Navegar sin query parameters
+      this.router.navigate([link]);
+    }
+  }
 }

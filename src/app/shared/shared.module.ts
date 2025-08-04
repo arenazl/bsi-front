@@ -5,10 +5,14 @@ import { CommonModule } from '@angular/common';
 import { SafeHtmlPipe } from './pipes/sanitize.pipe';
 import { BsiCurrencyPipe } from './pipes/bsi-currency.pipe';
 
+// Components
+import { WorldLoaderComponent } from '../components/shared/world-loader/world-loader.component';
+
 @NgModule({
   declarations: [
     SafeHtmlPipe,
-    BsiCurrencyPipe
+    BsiCurrencyPipe,
+    WorldLoaderComponent
   ],
   imports: [
     CommonModule
@@ -16,7 +20,8 @@ import { BsiCurrencyPipe } from './pipes/bsi-currency.pipe';
   exports: [
     SafeHtmlPipe,
     BsiCurrencyPipe,
-    CommonModule
+    CommonModule,
+    WorldLoaderComponent
   ],
   providers: [
     BsiCurrencyPipe
