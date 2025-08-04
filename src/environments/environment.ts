@@ -4,14 +4,15 @@
 
 export const environment = {
   production: false,
-  apiUrl: 'https://bsi-back-new-bee31231bd56.herokuapp.com/api',
+  //apiUrl: 'https://bsi-back-new-bee31231bd56.herokuapp.com/api',
+  apiUrl: 'http://localhost:3000/api',
   appName: 'BSI Sistema de Gestión de Pagos',
   appVersion: '2.0.0',
-  
+
   // JWT Configuration
   tokenKey: 'accessToken',
   refreshTokenKey: 'refreshToken',
-  
+
   // Feature flags
   features: {
     enableAudit: true,
@@ -19,7 +20,7 @@ export const environment = {
     enableAI: false,  // OpenAI deshabilitado por ahora
     enableDebugMode: true
   },
-  
+
   // Timeouts (en milisegundos)
   httpTimeout: 30000,
   uploadTimeout: 120000

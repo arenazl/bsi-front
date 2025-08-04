@@ -35,7 +35,7 @@
     <div class="max-w-7xl mx-auto">
 
 <!-- Card de resumen de información -->
-<div class="card-theme rounded-3xl shadow-xl mb-6 mx-4 sm:mx-8 md:mx-16 lg:mx-24" *ngIf="dbNominas?.header">
+<div class="card-theme rounded-3xl shadow-xl mb-6 mx-2 sm:mx-4 md:mx-8 lg:mx-16 xl:mx-24" *ngIf="dbNominas?.header">
 
   <div class="p-4 sm:p-6 md:p-8">
     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
@@ -78,7 +78,7 @@
 </div>
 
 <!-- ACCIONES -->
-<div class="card-theme rounded-3xl shadow-xl mb-6 mx-4 sm:mx-8 md:mx-20 lg:mx-32">
+<div class="card-theme rounded-3xl shadow-xl mb-6 mx-2 sm:mx-4 md:mx-8 lg:mx-16 xl:mx-24">
   <div class="px-4 py-6 sm:px-6 sm:py-8 md:px-10">
     <!-- Título integrado con línea decorativa -->
     <div class="flex items-center mb-6">
@@ -152,7 +152,7 @@
 </div>
 
 <!-- Lista Principal -->
-<div class="card-theme rounded-3xl shadow-xl mb-6 mx-4 sm:mx-8 md:mx-20 lg:mx-32">
+<div class="card-theme rounded-3xl shadow-xl mb-6 mx-2 sm:mx-4 md:mx-8 lg:mx-16 xl:mx-24">
   <div class="p-4 sm:p-6">
     <!-- Título con diseño minimalista -->
     <div class="flex items-center justify-between mb-4">
@@ -186,8 +186,10 @@
           </span>
         </div>
         
+        <!-- Campos principales siempre visibles -->
         <div class="space-y-2 mb-4">
-          <div *ngFor="let col of metadata['TABLE-COLUMN']" class="flex justify-between">
+          <!-- Mostrar solo los primeros 2 campos -->
+          <div *ngFor="let col of metadata['TABLE-COLUMN'].slice(0, 2); let j = index" class="flex justify-between">
             <span class="text-sm text-gray-600 font-medium">{{ col.header }}:</span>
             <span class="text-sm text-gray-800 text-right break-words max-w-[60%]">
               <ng-container *ngIf="col.type === 'BsiCurrencyPipe'">
@@ -203,6 +205,35 @@
                 {{ sol[col.field] | date:'dd/MM/yyyy' }}
               </ng-container>
             </span>
+          </div>
+          
+          <!-- Botón expandir si hay más de 2 campos -->
+          <button *ngIf="metadata['TABLE-COLUMN'].length > 2" 
+                  (click)="toggleCardExpansion(i)"
+                  class="w-full text-center text-blue-600 hover:text-blue-800 text-sm font-medium py-1">
+            <i class="fas" [ngClass]="isCardExpanded(i) ? 'fa-chevron-up' : 'fa-chevron-down'"></i>
+            {{ isCardExpanded(i) ? 'Ver menos' : 'Ver más campos' }}
+          </button>
+          
+          <!-- Campos adicionales expandibles -->
+          <div *ngIf="isCardExpanded(i)" class="space-y-2 mt-2 pt-2 border-t border-gray-200">
+            <div *ngFor="let col of metadata['TABLE-COLUMN'].slice(2)" class="flex justify-between">
+              <span class="text-sm text-gray-600 font-medium">{{ col.header }}:</span>
+              <span class="text-sm text-gray-800 text-right break-words max-w-[60%]">
+                <ng-container *ngIf="col.type === 'BsiCurrencyPipe'">
+                  {{ sol[col.field] | BsiCurrencyPipe }}
+                </ng-container>
+                <ng-container *ngIf="col.type === 'text'">
+                  {{ sol[col.field] }}
+                </ng-container>
+                <ng-container *ngIf="col.type === 'number'">
+                  {{ sol[col.field] }}
+                </ng-container>
+                <ng-container *ngIf="col.type === 'date'">
+                  {{ sol[col.field] | date:'dd/MM/yyyy' }}
+                </ng-container>
+              </span>
+            </div>
           </div>
           
           <div class="flex justify-between border-t pt-2">
@@ -226,7 +257,7 @@
         <div class="flex justify-between items-center pt-3 border-t">
           <label class="flex items-center text-sm">
             <input type="checkbox" 
-                   [checked]="sol.ACTIVO === 1" 
+                   [checked]="sol['ACTIVO'] === 1" 
                    (change)="toggleActivo(sol)" 
                    class="mr-2 rounded border-gray-300 text-blue-600 focus:ring-blue-500">
             <span class="text-gray-700">Activo</span>
@@ -356,8 +387,10 @@
           </button>
         </div>
         
+        <!-- Campos principales siempre visibles -->
         <div class="space-y-2 mb-4">
-          <div *ngFor="let col of metadata['TABLE-COLUMN']" class="flex justify-between">
+          <!-- Mostrar solo los primeros 2 campos -->
+          <div *ngFor="let col of metadata['TABLE-COLUMN'].slice(0, 2); let j = index" class="flex justify-between">
             <span class="text-sm text-gray-600 font-medium">{{ col.header }}:</span>
             <span class="text-sm text-gray-800 text-right break-words max-w-[60%]">
               <ng-container *ngIf="col.type === 'BsiCurrencyPipe'">
@@ -373,6 +406,35 @@
                 {{ item[col.field] | date:'dd/MM/yyyy' }}
               </ng-container>
             </span>
+          </div>
+          
+          <!-- Botón expandir si hay más de 2 campos -->
+          <button *ngIf="metadata['TABLE-COLUMN'].length > 2" 
+                  (click)="toggleCardExpansion(1000 + i)"
+                  class="w-full text-center text-blue-600 hover:text-blue-800 text-sm font-medium py-1">
+            <i class="fas" [ngClass]="isCardExpanded(1000 + i) ? 'fa-chevron-up' : 'fa-chevron-down'"></i>
+            {{ isCardExpanded(1000 + i) ? 'Ver menos' : 'Ver más campos' }}
+          </button>
+          
+          <!-- Campos adicionales expandibles -->
+          <div *ngIf="isCardExpanded(1000 + i)" class="space-y-2 mt-2 pt-2 border-t border-gray-200">
+            <div *ngFor="let col of metadata['TABLE-COLUMN'].slice(2)" class="flex justify-between">
+              <span class="text-sm text-gray-600 font-medium">{{ col.header }}:</span>
+              <span class="text-sm text-gray-800 text-right break-words max-w-[60%]">
+                <ng-container *ngIf="col.type === 'BsiCurrencyPipe'">
+                  {{ item[col.field] | BsiCurrencyPipe }}
+                </ng-container>
+                <ng-container *ngIf="col.type === 'text'">
+                  {{ item[col.field] }}
+                </ng-container>
+                <ng-container *ngIf="col.type === 'number'">
+                  {{ item[col.field] }}
+                </ng-container>
+                <ng-container *ngIf="col.type === 'date'">
+                  {{ item[col.field] | date:'dd/MM/yyyy' }}
+                </ng-container>
+              </span>
+            </div>
           </div>
           
           <div class="flex justify-between border-t pt-2">

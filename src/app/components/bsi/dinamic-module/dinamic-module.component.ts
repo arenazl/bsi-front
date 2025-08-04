@@ -51,46 +51,8 @@ export class DinamicModuleComponent implements OnInit {
   }
 
   private loadModuleConfig(module: string) {
-    // Casos especiales que aún no están en BD
-    if (module === 'mainmenu') {
-      // Usar el endpoint de menú principal
-      this.navigationService.getMainMenu().subscribe({
-        next: (response: any) => {
-          console.log('Respuesta del menú principal:', response);
-          
-          // Si la respuesta tiene la estructura {estado, descripcion, data}
-          if (response && response.estado === 1 && response.data) {
-            // Si data.items existe, usar esa estructura
-            if (response.data.items && Array.isArray(response.data.items)) {
-              this.data = response.data;
-              // Pequeño delay para evitar parpadeo
-              setTimeout(() => {
-                this.isDataLoaded = true;
-              }, 50);
-            } else {
-              console.error('Estructura inesperada en response.data:', response.data);
-              this.loadFromJson(module);
-            }
-          } else {
-            console.error('Respuesta inválida del servidor:', response);
-            this.loadFromJson(module);
-          }
-        },
-        error: (error) => {
-          console.warn('Error cargando menú desde BD, usando JSON fallback:', error);
-          this.loadFromJson(module);
-        }
-      });
-    } else if (module === 'pagos' || module === 'nominas' || module === 'cuentas') {
-      // Módulos que usan navegación dinámica
-      this.loadDynamicModule(module);
-    } else if (module === 'pagosmultiples' || module === 'altas-masivas') {
-      // Módulos del menú principal que cargan desde JSON
-      this.loadFromJson(module);
-    } else {
-      // Otros módulos que aún usan JSON
-      this.loadFromJson(module);
-    }
+    // Siempre cargar desde archivos JSON
+    this.loadFromJson(module);
   }
 
   private loadDynamicModule(module: string) {

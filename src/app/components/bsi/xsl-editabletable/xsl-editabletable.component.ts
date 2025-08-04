@@ -61,6 +61,7 @@ export class XslEditabletableComponent implements OnInit {
   nuevasNominas: NominaItem[] = [];
   isNominasEmpty = false;
   fecha = new Date().toISOString().split('T')[0]
+  expandedCards: Set<number> = new Set();
 
   tranfeList: any[] = [];
 
@@ -504,6 +505,18 @@ export class XslEditabletableComponent implements OnInit {
     }
   }
 
+  toggleCardExpansion(index: number): void {
+    if (this.expandedCards.has(index)) {
+      this.expandedCards.delete(index);
+    } else {
+      this.expandedCards.add(index);
+    }
+  }
+
+  isCardExpanded(index: number): boolean {
+    return this.expandedCards.has(index);
+  }
+
 
   async sendFile(): Promise<void> {
     try {
@@ -585,6 +598,30 @@ export class XslEditabletableComponent implements OnInit {
       icon: 'error',
       confirmButtonText: 'Entendido'
     });
+  }
+
+  toggleActivo(sol: NominaItem): void {
+    if (sol['ACTIVO'] === 1) {
+      sol['ACTIVO'] = 0;
+    } else {
+      sol['ACTIVO'] = 1;
+    }
+  }
+
+  editarSol(sol: NominaItem, index: number): void {
+    this.showEditPopup(sol, index);
+  }
+
+  eliminarSol(sol: NominaItem, index: number): void {
+    this.showDeletePopup(sol, index);
+  }
+
+  getTotalSelected(): number {
+    let total = 0;
+    this.selectedItems.forEach((item) => {
+      total += parseFloat(item.importe?.toString() || '0') || 0;
+    });
+    return total;
   }
 
 }
