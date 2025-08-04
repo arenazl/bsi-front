@@ -53,56 +53,142 @@
               <span class="text-sm font-medium">Tema</span>
             </button>
             
-            <!-- Dropdown de temas -->
+            <!-- Dropdown de temas - 10 temas -->
             <div *ngIf="themeMenuOpen" 
-                 class="absolute right-0 mt-2 w-64 rounded-xl bg-gray-900 shadow-2xl overflow-hidden border border-gray-700"
-                 style="transform-origin: top right; z-index: 1000;"
+                 class="absolute right-0 mt-2 w-80 rounded-xl bg-gray-900 shadow-2xl overflow-hidden border border-gray-700"
+                 style="transform-origin: top right; z-index: 1000; max-height: 500px; overflow-y: auto;"
                  (click)="$event.stopPropagation()">
               <div class="p-2">
                 <h3 class="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2 px-3">Seleccionar Tema</h3>
-                <button (click)="changeTheme('azul-etereo')"
-                        class="w-full text-left px-3 py-2.5 hover:bg-gray-800 rounded-lg transition-all duration-200 flex items-center gap-3 group"
-                        [class.bg-gray-800]="currentTheme === 'azul-etereo'">
-                  <div class="w-8 h-8 rounded-full shadow-md group-hover:shadow-lg transition-shadow" 
-                       style="background: linear-gradient(135deg, #E0EFFF, #FF6B00)"></div>
+                
+                <!-- Tema 1: Foco y Energía -->
+                <button (click)="changeTheme('foco-energia')"
+                        class="w-full text-left px-3 py-2 hover:bg-gray-800 rounded-lg transition-all duration-200 flex items-center gap-3 group mb-1"
+                        [class.bg-gray-800]="currentTheme === 'foco-energia'">
+                  <div class="w-7 h-7 rounded-full shadow-md group-hover:shadow-lg transition-shadow flex-shrink-0" 
+                       style="background: linear-gradient(135deg, #FDEEAA, #2C3E50)"></div>
                   <div class="flex-1">
-                    <p class="text-sm font-medium text-white">Azul Etéreo</p>
-                    <p class="text-xs text-gray-400">Innovación y tecnología</p>
+                    <p class="text-sm font-medium text-white">Foco y Energía</p>
+                    <p class="text-xs text-gray-400">Calidez y optimismo</p>
                   </div>
-                  <i *ngIf="currentTheme === 'azul-etereo'" class="fas fa-check text-blue-400"></i>
+                  <i *ngIf="currentTheme === 'foco-energia'" class="fas fa-check text-yellow-400"></i>
                 </button>
-                <button (click)="changeTheme('verde-natural')"
-                        class="w-full text-left px-3 py-2.5 hover:bg-gray-800 rounded-lg transition-all duration-200 flex items-center gap-3 group"
-                        [class.bg-gray-800]="currentTheme === 'verde-natural'">
-                  <div class="w-8 h-8 rounded-full shadow-md group-hover:shadow-lg transition-shadow"
-                       style="background: linear-gradient(135deg, #4A5D23, #F5F5DC)"></div>
+                
+                <!-- Tema 2: Confianza Natural -->
+                <button (click)="changeTheme('confianza-natural')"
+                        class="w-full text-left px-3 py-2 hover:bg-gray-800 rounded-lg transition-all duration-200 flex items-center gap-3 group mb-1"
+                        [class.bg-gray-800]="currentTheme === 'confianza-natural'">
+                  <div class="w-7 h-7 rounded-full shadow-md group-hover:shadow-lg transition-shadow flex-shrink-0"
+                       style="background: linear-gradient(135deg, #556B2F, #F5F5DC)"></div>
                   <div class="flex-1">
-                    <p class="text-sm font-medium text-white">Verde Natural</p>
-                    <p class="text-xs text-gray-400">Natural y sostenible</p>
+                    <p class="text-sm font-medium text-white">Confianza Natural</p>
+                    <p class="text-xs text-gray-400">Orgánico y equilibrado</p>
                   </div>
-                  <i *ngIf="currentTheme === 'verde-natural'" class="fas fa-check text-green-400"></i>
+                  <i *ngIf="currentTheme === 'confianza-natural'" class="fas fa-check text-green-400"></i>
                 </button>
-                <button (click)="changeTheme('indigo-mistico')"
-                        class="w-full text-left px-3 py-2.5 hover:bg-gray-800 rounded-lg transition-all duration-200 flex items-center gap-3 group"
-                        [class.bg-gray-800]="currentTheme === 'indigo-mistico'">
-                  <div class="w-8 h-8 rounded-full shadow-md group-hover:shadow-lg transition-shadow"
-                       style="background: linear-gradient(135deg, #4C51A2, #FBEAEB)"></div>
+                
+                <!-- Tema 3: Innovación Audaz -->
+                <button (click)="changeTheme('innovacion-audaz')"
+                        class="w-full text-left px-3 py-2 hover:bg-gray-800 rounded-lg transition-all duration-200 flex items-center gap-3 group mb-1"
+                        [class.bg-gray-800]="currentTheme === 'innovacion-audaz'">
+                  <div class="w-7 h-7 rounded-full shadow-md group-hover:shadow-lg transition-shadow flex-shrink-0"
+                       style="background: linear-gradient(135deg, #3F00FF, #FFFFFF)"></div>
                   <div class="flex-1">
-                    <p class="text-sm font-medium text-white">Índigo Místico</p>
-                    <p class="text-xs text-gray-400">Creativo y sofisticado</p>
+                    <p class="text-sm font-medium text-white">Innovación Audaz</p>
+                    <p class="text-xs text-gray-400">Futurista y tecnológico</p>
                   </div>
-                  <i *ngIf="currentTheme === 'indigo-mistico'" class="fas fa-check text-purple-400"></i>
+                  <i *ngIf="currentTheme === 'innovacion-audaz'" class="fas fa-check text-purple-400"></i>
                 </button>
-                <button (click)="changeTheme('negro-intenso')"
-                        class="w-full text-left px-3 py-2.5 hover:bg-gray-800 rounded-lg transition-all duration-200 flex items-center gap-3 group"
-                        [class.bg-gray-800]="currentTheme === 'negro-intenso'">
-                  <div class="w-8 h-8 rounded-full shadow-md group-hover:shadow-lg transition-shadow"
-                       style="background: linear-gradient(135deg, #1A1A1A, #FFD700)"></div>
+                
+                <!-- Tema 4: Lujo Sutil -->
+                <button (click)="changeTheme('lujo-sutil')"
+                        class="w-full text-left px-3 py-2 hover:bg-gray-800 rounded-lg transition-all duration-200 flex items-center gap-3 group mb-1"
+                        [class.bg-gray-800]="currentTheme === 'lujo-sutil'">
+                  <div class="w-7 h-7 rounded-full shadow-md group-hover:shadow-lg transition-shadow flex-shrink-0"
+                       style="background: linear-gradient(135deg, #D8BFD8, #B76E79)"></div>
                   <div class="flex-1">
-                    <p class="text-sm font-medium text-white">Negro Intenso</p>
-                    <p class="text-xs text-gray-400">Modo oscuro elegante</p>
+                    <p class="text-sm font-medium text-white">Lujo Sutil</p>
+                    <p class="text-xs text-gray-400">Elegante y refinado</p>
                   </div>
-                  <i *ngIf="currentTheme === 'negro-intenso'" class="fas fa-check text-yellow-400"></i>
+                  <i *ngIf="currentTheme === 'lujo-sutil'" class="fas fa-check text-pink-400"></i>
+                </button>
+                
+                <!-- Tema 5: Pasión y Poder -->
+                <button (click)="changeTheme('pasion-poder')"
+                        class="w-full text-left px-3 py-2 hover:bg-gray-800 rounded-lg transition-all duration-200 flex items-center gap-3 group mb-1"
+                        [class.bg-gray-800]="currentTheme === 'pasion-poder'">
+                  <div class="w-7 h-7 rounded-full shadow-md group-hover:shadow-lg transition-shadow flex-shrink-0"
+                       style="background: linear-gradient(135deg, #990000, #000000)"></div>
+                  <div class="flex-1">
+                    <p class="text-sm font-medium text-white">Pasión y Poder</p>
+                    <p class="text-xs text-gray-400">Dramático y fuerte</p>
+                  </div>
+                  <i *ngIf="currentTheme === 'pasion-poder'" class="fas fa-check text-red-400"></i>
+                </button>
+                
+                <!-- Tema 6: Calma Oceánica -->
+                <button (click)="changeTheme('calma-oceanica')"
+                        class="w-full text-left px-3 py-2 hover:bg-gray-800 rounded-lg transition-all duration-200 flex items-center gap-3 group mb-1"
+                        [class.bg-gray-800]="currentTheme === 'calma-oceanica'">
+                  <div class="w-7 h-7 rounded-full shadow-md group-hover:shadow-lg transition-shadow flex-shrink-0"
+                       style="background: linear-gradient(135deg, #4169E1, #87CEEB)"></div>
+                  <div class="flex-1">
+                    <p class="text-sm font-medium text-white">Calma Oceánica</p>
+                    <p class="text-xs text-gray-400">Sereno y profesional</p>
+                  </div>
+                  <i *ngIf="currentTheme === 'calma-oceanica'" class="fas fa-check text-blue-400"></i>
+                </button>
+                
+                <!-- Tema 7: Contraste Juguetón -->
+                <button (click)="changeTheme('contraste-jugueton')"
+                        class="w-full text-left px-3 py-2 hover:bg-gray-800 rounded-lg transition-all duration-200 flex items-center gap-3 group mb-1"
+                        [class.bg-gray-800]="currentTheme === 'contraste-jugueton'">
+                  <div class="w-7 h-7 rounded-full shadow-md group-hover:shadow-lg transition-shadow flex-shrink-0"
+                       style="background: linear-gradient(135deg, #FF6F61, #40E0D0)"></div>
+                  <div class="flex-1">
+                    <p class="text-sm font-medium text-white">Contraste Juguetón</p>
+                    <p class="text-xs text-gray-400">Divertido y vibrante</p>
+                  </div>
+                  <i *ngIf="currentTheme === 'contraste-jugueton'" class="fas fa-check text-cyan-400"></i>
+                </button>
+                
+                <!-- Tema 8: Atardecer en el Desierto -->
+                <button (click)="changeTheme('atardecer-desierto')"
+                        class="w-full text-left px-3 py-2 hover:bg-gray-800 rounded-lg transition-all duration-200 flex items-center gap-3 group mb-1"
+                        [class.bg-gray-800]="currentTheme === 'atardecer-desierto'">
+                  <div class="w-7 h-7 rounded-full shadow-md group-hover:shadow-lg transition-shadow flex-shrink-0"
+                       style="background: linear-gradient(135deg, #E2725B, #FFDAB9)"></div>
+                  <div class="flex-1">
+                    <p class="text-sm font-medium text-white">Atardecer Desierto</p>
+                    <p class="text-xs text-gray-400">Cálido y acogedor</p>
+                  </div>
+                  <i *ngIf="currentTheme === 'atardecer-desierto'" class="fas fa-check text-orange-400"></i>
+                </button>
+                
+                <!-- Tema 9: Misterio Botánico -->
+                <button (click)="changeTheme('misterio-botanico')"
+                        class="w-full text-left px-3 py-2 hover:bg-gray-800 rounded-lg transition-all duration-200 flex items-center gap-3 group mb-1"
+                        [class.bg-gray-800]="currentTheme === 'misterio-botanico'">
+                  <div class="w-7 h-7 rounded-full shadow-md group-hover:shadow-lg transition-shadow flex-shrink-0"
+                       style="background: linear-gradient(135deg, #50C878, #6A0DAD)"></div>
+                  <div class="flex-1">
+                    <p class="text-sm font-medium text-white">Misterio Botánico</p>
+                    <p class="text-xs text-gray-400">Creativo y místico</p>
+                  </div>
+                  <i *ngIf="currentTheme === 'misterio-botanico'" class="fas fa-check text-emerald-400"></i>
+                </button>
+                
+                <!-- Tema 10: Minimalismo Cálido -->
+                <button (click)="changeTheme('minimalismo-calido')"
+                        class="w-full text-left px-3 py-2 hover:bg-gray-800 rounded-lg transition-all duration-200 flex items-center gap-3 group mb-1"
+                        [class.bg-gray-800]="currentTheme === 'minimalismo-calido'">
+                  <div class="w-7 h-7 rounded-full shadow-md group-hover:shadow-lg transition-shadow flex-shrink-0"
+                       style="background: linear-gradient(135deg, #6F4E37, #F8F8F8)"></div>
+                  <div class="flex-1">
+                    <p class="text-sm font-medium text-white">Minimalismo Cálido</p>
+                    <p class="text-xs text-gray-400">Simple y acogedor</p>
+                  </div>
+                  <i *ngIf="currentTheme === 'minimalismo-calido'" class="fas fa-check text-amber-600"></i>
                 </button>
               </div>
             </div>
@@ -156,44 +242,82 @@
             </div>
           </div>
           
-          <!-- Selector de temas mobile -->
+          <!-- Selector de temas mobile - Versión compacta para 10 temas -->
           <div class="bg-white/10 rounded-lg p-3 mb-2">
             <div class="flex items-center mb-3" style="color: var(--navbar-text);">
               <i class="fas fa-palette mr-2"></i>
               <span class="text-sm font-medium">Seleccionar Tema</span>
             </div>
-            <div class="space-y-2">
-              <button (click)="changeTheme('azul-etereo')"
-                      class="w-full text-left px-3 py-2 hover:bg-white/10 rounded-lg transition-all duration-200 flex items-center gap-3"
-                      [class.bg-white-20]="currentTheme === 'azul-etereo'">
-                <div class="w-5 h-5 rounded-full shadow-md" 
-                     style="background: linear-gradient(135deg, #E0EFFF, #FF6B00)"></div>
-                <span class="text-sm text-white">Azul Etéreo</span>
-                <i *ngIf="currentTheme === 'azul-etereo'" class="fas fa-check text-blue-400 ml-auto"></i>
+            <div class="grid grid-cols-2 gap-2">
+              <!-- Versión compacta para móvil -->
+              <button (click)="changeTheme('foco-energia')"
+                      class="flex items-center gap-2 p-2 hover:bg-white/10 rounded-lg"
+                      [class.bg-white/20]="currentTheme === 'foco-energia'">
+                <div class="w-4 h-4 rounded-full" style="background: linear-gradient(135deg, #FDEEAA, #2C3E50)"></div>
+                <span class="text-xs text-white">Foco</span>
               </button>
-              <button (click)="changeTheme('verde-natural')"
-                      class="w-full text-left px-3 py-2 hover:bg-white/10 rounded-lg transition-all duration-200 flex items-center gap-3"
-                      [class.bg-white-20]="currentTheme === 'verde-natural'">
-                <div class="w-5 h-5 rounded-full shadow-md"
-                     style="background: linear-gradient(135deg, #4A5D23, #F5F5DC)"></div>
-                <span class="text-sm text-white">Verde Natural</span>
-                <i *ngIf="currentTheme === 'verde-natural'" class="fas fa-check text-green-400 ml-auto"></i>
+              
+              <button (click)="changeTheme('confianza-natural')"
+                      class="flex items-center gap-2 p-2 hover:bg-white/10 rounded-lg"
+                      [class.bg-white/20]="currentTheme === 'confianza-natural'">
+                <div class="w-4 h-4 rounded-full" style="background: linear-gradient(135deg, #556B2F, #F5F5DC)"></div>
+                <span class="text-xs text-white">Natural</span>
               </button>
-              <button (click)="changeTheme('indigo-mistico')"
-                      class="w-full text-left px-3 py-2 hover:bg-white/10 rounded-lg transition-all duration-200 flex items-center gap-3"
-                      [class.bg-white-20]="currentTheme === 'indigo-mistico'">
-                <div class="w-5 h-5 rounded-full shadow-md"
-                     style="background: linear-gradient(135deg, #4C51A2, #FBEAEB)"></div>
-                <span class="text-sm text-white">Índigo Místico</span>
-                <i *ngIf="currentTheme === 'indigo-mistico'" class="fas fa-check text-purple-400 ml-auto"></i>
+              
+              <button (click)="changeTheme('innovacion-audaz')"
+                      class="flex items-center gap-2 p-2 hover:bg-white/10 rounded-lg"
+                      [class.bg-white/20]="currentTheme === 'innovacion-audaz'">
+                <div class="w-4 h-4 rounded-full" style="background: linear-gradient(135deg, #3F00FF, #FFFFFF)"></div>
+                <span class="text-xs text-white">Innovación</span>
               </button>
-              <button (click)="changeTheme('negro-intenso')"
-                      class="w-full text-left px-3 py-2 hover:bg-white/10 rounded-lg transition-all duration-200 flex items-center gap-3"
-                      [class.bg-white-20]="currentTheme === 'negro-intenso'">
-                <div class="w-5 h-5 rounded-full shadow-md"
-                     style="background: linear-gradient(135deg, #1A1A1A, #FFD700)"></div>
-                <span class="text-sm text-white">Negro Intenso</span>
-                <i *ngIf="currentTheme === 'negro-intenso'" class="fas fa-check text-yellow-400 ml-auto"></i>
+              
+              <button (click)="changeTheme('lujo-sutil')"
+                      class="flex items-center gap-2 p-2 hover:bg-white/10 rounded-lg"
+                      [class.bg-white/20]="currentTheme === 'lujo-sutil'">
+                <div class="w-4 h-4 rounded-full" style="background: linear-gradient(135deg, #D8BFD8, #B76E79)"></div>
+                <span class="text-xs text-white">Lujo</span>
+              </button>
+              
+              <button (click)="changeTheme('pasion-poder')"
+                      class="flex items-center gap-2 p-2 hover:bg-white/10 rounded-lg"
+                      [class.bg-white/20]="currentTheme === 'pasion-poder'">
+                <div class="w-4 h-4 rounded-full" style="background: linear-gradient(135deg, #990000, #000000)"></div>
+                <span class="text-xs text-white">Pasión</span>
+              </button>
+              
+              <button (click)="changeTheme('calma-oceanica')"
+                      class="flex items-center gap-2 p-2 hover:bg-white/10 rounded-lg"
+                      [class.bg-white/20]="currentTheme === 'calma-oceanica'">
+                <div class="w-4 h-4 rounded-full" style="background: linear-gradient(135deg, #4169E1, #87CEEB)"></div>
+                <span class="text-xs text-white">Oceánico</span>
+              </button>
+              
+              <button (click)="changeTheme('contraste-jugueton')"
+                      class="flex items-center gap-2 p-2 hover:bg-white/10 rounded-lg"
+                      [class.bg-white/20]="currentTheme === 'contraste-jugueton'">
+                <div class="w-4 h-4 rounded-full" style="background: linear-gradient(135deg, #FF6F61, #40E0D0)"></div>
+                <span class="text-xs text-white">Juguetón</span>
+              </button>
+              
+              <button (click)="changeTheme('atardecer-desierto')"
+                      class="flex items-center gap-2 p-2 hover:bg-white/10 rounded-lg"
+                      [class.bg-white/20]="currentTheme === 'atardecer-desierto'">
+                <div class="w-4 h-4 rounded-full" style="background: linear-gradient(135deg, #E2725B, #FFDAB9)"></div>
+                <span class="text-xs text-white">Atardecer</span>
+              </button>
+              
+              <button (click)="changeTheme('misterio-botanico')"
+                      class="flex items-center gap-2 p-2 hover:bg-white/10 rounded-lg"
+                      [class.bg-white/20]="currentTheme === 'misterio-botanico'">
+                <div class="w-4 h-4 rounded-full" style="background: linear-gradient(135deg, #50C878, #6A0DAD)"></div>
+                <span class="text-xs text-white">Botánico</span>
+              </button>
+              
+              <button (click)="changeTheme('minimalismo-calido')"
+                      class="flex items-center gap-2 p-2 hover:bg-white/10 rounded-lg"
+                      [class.bg-white/20]="currentTheme === 'minimalismo-calido'">
+                <div class="w-4 h-4 rounded-full" style="background: linear-gradient(135deg, #6F4E37, #F8F8F8)"></div>
+                <span class="text-xs text-white">Minimal</span>
               </button>
             </div>
           </div>
