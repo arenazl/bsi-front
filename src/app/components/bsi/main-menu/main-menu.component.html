@@ -63,8 +63,7 @@
           <!-- Botones con clases del tema -->
           <div class="flex gap-2" *ngIf="activity.items && activity.items.length > 0">
             <button *ngFor="let item of activity.items; let isFirst = first"
-                    [routerLink]="activity.enabled ? [item.link] : null"
-                    (click)="!activity.enabled && showAccessDeniedModal()"
+                    (click)="navigateToItem(item, activity.enabled)"
                     [ngClass]="{
                       'btn-theme-primary btn-sm': isFirst && activity.enabled,
                       'btn-theme-secondary btn-sm': !isFirst && activity.enabled,

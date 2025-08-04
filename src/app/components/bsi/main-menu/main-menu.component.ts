@@ -309,4 +309,40 @@ export class MainMenuComponent implements OnInit {
     // Todas las secciones ahora son visibles para cualquier usuario autenticado
     return true;
   }
+
+  // Método para navegar con query params
+  navigateToItem(item: any, enabled: boolean): void {
+    if (!enabled) {
+      this.showAccessDeniedModal();
+      return;
+    }
+
+    // Parse the link to extract route and query params
+    const link = item.link;
+    if (!link) return;
+
+    // Check if link has query params
+    const queryIndex = link.indexOf('?');
+    if (queryIndex !== -1) {
+      const route = link.substring(0, queryIndex);
+      const queryString = link.substring(queryIndex + 1);
+      
+      // Parse query params
+      const queryParams: any = {};
+      queryString.split('&').forEach((param: string) => {
+        const [key, value] = param.split('=');
+        if (key && value) {
+          queryParams[key] = decodeURIComponent(value);
+        }
+      });
+
+      console.log('Navigating to route:', route, 'with query params:', queryParams);
+      // Navigate with query params
+      this.router.navigate([route], { queryParams });
+    } else {
+      console.log('Navigating to route:', link);
+      // Normal navigation without query params
+      this.router.navigate([link]);
+    }
+  }
 }
