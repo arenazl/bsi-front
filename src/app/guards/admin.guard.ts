@@ -21,7 +21,6 @@ export class AdminGuard implements CanActivate {
     
     // DEBUG: Mostrar info del usuario
     console.log('AdminGuard - Usuario autenticado:', this.userSessionService.isAuthenticated());
-    console.log('AdminGuard - Es super usuario:', this.userSessionService.isSuperUser());
     console.log('AdminGuard - Datos del usuario:', this.userSessionService.getCurrentUser());
     
     // Verificar si el usuario está autenticado
@@ -30,22 +29,8 @@ export class AdminGuard implements CanActivate {
       return false;
     }
 
-    // Verificar si es super usuario
-    if (this.userSessionService.isSuperUser()) {
-      console.log('AdminGuard - Acceso permitido: Usuario es super admin');
-      return true;
-    } else {
-      // Mostrar mensaje de acceso denegado
-      Swal.fire({
-        icon: 'error',
-        title: 'Acceso Denegado',
-        text: 'Solo los super usuarios pueden acceder al panel de administración',
-        confirmButtonText: 'Entendido'
-      }).then(() => {
-        this.router.navigate(['/mainMenu']);
-      });
-      
-      return false;
-    }
+    // PERMITIR ACCESO A TODOS LOS USUARIOS AUTENTICADOS
+    console.log('AdminGuard - Acceso permitido: Usuario autenticado (acceso universal habilitado)');
+    return true;
   }
 }

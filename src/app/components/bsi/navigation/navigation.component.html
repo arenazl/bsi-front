@@ -60,60 +60,49 @@
                  (click)="$event.stopPropagation()">
               <div class="p-2">
                 <h3 class="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2 px-3">Seleccionar Tema</h3>
-                <button (click)="changeTheme('corporate-blue')"
+                <button (click)="changeTheme('azul-etereo')"
                         class="w-full text-left px-3 py-2.5 hover:bg-gray-800 rounded-lg transition-all duration-200 flex items-center gap-3 group"
-                        [class.bg-gray-800]="currentTheme === 'corporate-blue'">
+                        [class.bg-gray-800]="currentTheme === 'azul-etereo'">
                   <div class="w-8 h-8 rounded-full shadow-md group-hover:shadow-lg transition-shadow" 
-                       style="background: linear-gradient(135deg, #1e3a8a, #3b82f6)"></div>
+                       style="background: linear-gradient(135deg, #E0EFFF, #FF6B00)"></div>
                   <div class="flex-1">
-                    <p class="text-sm font-medium text-white">Corporate Blue</p>
-                    <p class="text-xs text-gray-400">Profesional clásico</p>
+                    <p class="text-sm font-medium text-white">Azul Etéreo</p>
+                    <p class="text-xs text-gray-400">Tecnología y confianza</p>
                   </div>
-                  <i *ngIf="currentTheme === 'corporate-blue'" class="fas fa-check text-blue-400"></i>
+                  <i *ngIf="currentTheme === 'azul-etereo'" class="fas fa-check text-blue-400"></i>
                 </button>
-                <button (click)="changeTheme('enterprise-green')"
+                <button (click)="changeTheme('verde-natural')"
                         class="w-full text-left px-3 py-2.5 hover:bg-gray-800 rounded-lg transition-all duration-200 flex items-center gap-3 group"
-                        [class.bg-gray-800]="currentTheme === 'enterprise-green'">
+                        [class.bg-gray-800]="currentTheme === 'verde-natural'">
                   <div class="w-8 h-8 rounded-full shadow-md group-hover:shadow-lg transition-shadow"
-                       style="background: linear-gradient(135deg, #14532d, #16a34a)"></div>
+                       style="background: linear-gradient(135deg, #4A5D23, #F5F5DC)"></div>
                   <div class="flex-1">
-                    <p class="text-sm font-medium text-white">Enterprise Green</p>
-                    <p class="text-xs text-gray-400">Finanzas y banca</p>
+                    <p class="text-sm font-medium text-white">Verde Natural</p>
+                    <p class="text-xs text-gray-400">Sostenibilidad y calma</p>
                   </div>
-                  <i *ngIf="currentTheme === 'enterprise-green'" class="fas fa-check text-green-400"></i>
+                  <i *ngIf="currentTheme === 'verde-natural'" class="fas fa-check text-green-400"></i>
                 </button>
-                <button (click)="changeTheme('modern-purple')"
+                <button (click)="changeTheme('indigo-mistico')"
                         class="w-full text-left px-3 py-2.5 hover:bg-gray-800 rounded-lg transition-all duration-200 flex items-center gap-3 group"
-                        [class.bg-gray-800]="currentTheme === 'modern-purple'">
+                        [class.bg-gray-800]="currentTheme === 'indigo-mistico'">
                   <div class="w-8 h-8 rounded-full shadow-md group-hover:shadow-lg transition-shadow"
-                       style="background: linear-gradient(135deg, #6b21a8, #9333ea)"></div>
+                       style="background: linear-gradient(135deg, #4C51A2, #FBEAEB)"></div>
                   <div class="flex-1">
-                    <p class="text-sm font-medium text-white">Modern Purple</p>
-                    <p class="text-xs text-gray-400">Tech e innovación</p>
+                    <p class="text-sm font-medium text-white">Índigo Místico</p>
+                    <p class="text-xs text-gray-400">Creatividad y lujo</p>
                   </div>
-                  <i *ngIf="currentTheme === 'modern-purple'" class="fas fa-check text-purple-400"></i>
+                  <i *ngIf="currentTheme === 'indigo-mistico'" class="fas fa-check text-purple-400"></i>
                 </button>
-                <button (click)="changeTheme('executive-gray')"
+                <button (click)="changeTheme('negro-intenso')"
                         class="w-full text-left px-3 py-2.5 hover:bg-gray-800 rounded-lg transition-all duration-200 flex items-center gap-3 group"
-                        [class.bg-gray-800]="currentTheme === 'executive-gray'">
+                        [class.bg-gray-800]="currentTheme === 'negro-intenso'">
                   <div class="w-8 h-8 rounded-full shadow-md group-hover:shadow-lg transition-shadow"
-                       style="background: linear-gradient(135deg, #1f2937, #6b7280)"></div>
+                       style="background: linear-gradient(135deg, #1A1A1A, #FFD700)"></div>
                   <div class="flex-1">
-                    <p class="text-sm font-medium text-white">Executive Gray</p>
-                    <p class="text-xs text-gray-400">Minimalista elegante</p>
+                    <p class="text-sm font-medium text-white">Negro Intenso</p>
+                    <p class="text-xs text-gray-400">Elegante y moderno</p>
                   </div>
-                  <i *ngIf="currentTheme === 'executive-gray'" class="fas fa-check text-gray-400"></i>
-                </button>
-                <button (click)="changeTheme('ocean-teal')"
-                        class="w-full text-left px-3 py-2.5 hover:bg-gray-800 rounded-lg transition-all duration-200 flex items-center gap-3 group"
-                        [class.bg-gray-800]="currentTheme === 'ocean-teal'">
-                  <div class="w-8 h-8 rounded-full shadow-md group-hover:shadow-lg transition-shadow"
-                       style="background: linear-gradient(135deg, #0f766e, #14b8a6)"></div>
-                  <div class="flex-1">
-                    <p class="text-sm font-medium text-white">Ocean Teal</p>
-                    <p class="text-xs text-gray-400">Fresco y moderno</p>
-                  </div>
-                  <i *ngIf="currentTheme === 'ocean-teal'" class="fas fa-check text-teal-400"></i>
+                  <i *ngIf="currentTheme === 'negro-intenso'" class="fas fa-check text-yellow-400"></i>
                 </button>
               </div>
             </div>
@@ -174,45 +163,37 @@
               <span class="text-sm font-medium">Seleccionar Tema</span>
             </div>
             <div class="space-y-2">
-              <button (click)="changeTheme('corporate-blue')"
+              <button (click)="changeTheme('azul-etereo')"
                       class="w-full text-left px-3 py-2 hover:bg-white/10 rounded-lg transition-all duration-200 flex items-center gap-3"
-                      [class.bg-white-20]="currentTheme === 'corporate-blue'">
+                      [class.bg-white-20]="currentTheme === 'azul-etereo'">
                 <div class="w-5 h-5 rounded-full shadow-md" 
-                     style="background: linear-gradient(135deg, #1e3a8a, #3b82f6)"></div>
-                <span class="text-sm text-white">Corporate Blue</span>
-                <i *ngIf="currentTheme === 'corporate-blue'" class="fas fa-check text-blue-400 ml-auto"></i>
+                     style="background: linear-gradient(135deg, #E0EFFF, #FF6B00)"></div>
+                <span class="text-sm text-white">Azul Etéreo</span>
+                <i *ngIf="currentTheme === 'azul-etereo'" class="fas fa-check text-blue-400 ml-auto"></i>
               </button>
-              <button (click)="changeTheme('enterprise-green')"
+              <button (click)="changeTheme('verde-natural')"
                       class="w-full text-left px-3 py-2 hover:bg-white/10 rounded-lg transition-all duration-200 flex items-center gap-3"
-                      [class.bg-white-20]="currentTheme === 'enterprise-green'">
+                      [class.bg-white-20]="currentTheme === 'verde-natural'">
                 <div class="w-5 h-5 rounded-full shadow-md"
-                     style="background: linear-gradient(135deg, #14532d, #16a34a)"></div>
-                <span class="text-sm text-white">Enterprise Green</span>
-                <i *ngIf="currentTheme === 'enterprise-green'" class="fas fa-check text-green-400 ml-auto"></i>
+                     style="background: linear-gradient(135deg, #4A5D23, #F5F5DC)"></div>
+                <span class="text-sm text-white">Verde Natural</span>
+                <i *ngIf="currentTheme === 'verde-natural'" class="fas fa-check text-green-400 ml-auto"></i>
               </button>
-              <button (click)="changeTheme('modern-purple')"
+              <button (click)="changeTheme('indigo-mistico')"
                       class="w-full text-left px-3 py-2 hover:bg-white/10 rounded-lg transition-all duration-200 flex items-center gap-3"
-                      [class.bg-white-20]="currentTheme === 'modern-purple'">
+                      [class.bg-white-20]="currentTheme === 'indigo-mistico'">
                 <div class="w-5 h-5 rounded-full shadow-md"
-                     style="background: linear-gradient(135deg, #6b21a8, #9333ea)"></div>
-                <span class="text-sm text-white">Modern Purple</span>
-                <i *ngIf="currentTheme === 'modern-purple'" class="fas fa-check text-purple-400 ml-auto"></i>
+                     style="background: linear-gradient(135deg, #4C51A2, #FBEAEB)"></div>
+                <span class="text-sm text-white">Índigo Místico</span>
+                <i *ngIf="currentTheme === 'indigo-mistico'" class="fas fa-check text-purple-400 ml-auto"></i>
               </button>
-              <button (click)="changeTheme('executive-gray')"
+              <button (click)="changeTheme('negro-intenso')"
                       class="w-full text-left px-3 py-2 hover:bg-white/10 rounded-lg transition-all duration-200 flex items-center gap-3"
-                      [class.bg-white-20]="currentTheme === 'executive-gray'">
+                      [class.bg-white-20]="currentTheme === 'negro-intenso'">
                 <div class="w-5 h-5 rounded-full shadow-md"
-                     style="background: linear-gradient(135deg, #1f2937, #6b7280)"></div>
-                <span class="text-sm text-white">Executive Gray</span>
-                <i *ngIf="currentTheme === 'executive-gray'" class="fas fa-check text-gray-400 ml-auto"></i>
-              </button>
-              <button (click)="changeTheme('ocean-teal')"
-                      class="w-full text-left px-3 py-2 hover:bg-white/10 rounded-lg transition-all duration-200 flex items-center gap-3"
-                      [class.bg-white-20]="currentTheme === 'ocean-teal'">
-                <div class="w-5 h-5 rounded-full shadow-md"
-                     style="background: linear-gradient(135deg, #0f766e, #14b8a6)"></div>
-                <span class="text-sm text-white">Ocean Teal</span>
-                <i *ngIf="currentTheme === 'ocean-teal'" class="fas fa-check text-teal-400 ml-auto"></i>
+                     style="background: linear-gradient(135deg, #1A1A1A, #FFD700)"></div>
+                <span class="text-sm text-white">Negro Intenso</span>
+                <i *ngIf="currentTheme === 'negro-intenso'" class="fas fa-check text-yellow-400 ml-auto"></i>
               </button>
             </div>
           </div>

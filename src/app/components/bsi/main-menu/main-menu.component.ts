@@ -305,14 +305,8 @@ export class MainMenuComponent implements OnInit {
   
   // Método para verificar si debe mostrar la sección
   shouldShowActivity(activity: MenuActivity): boolean {
-    // Si es la sección de administración
-    if (activity.title === 'Administración Backoffice' || 
-        activity.title === 'Administración Usuarios') {
-      // Solo mostrar si es super usuario
-      return this.userSessionService.isSuperUser();
-    }
-    
-    // Para todas las demás secciones, mostrar siempre
+    // PERMITIR ACCESO A TODOS LOS USUARIOS AUTENTICADOS
+    // Todas las secciones ahora son visibles para cualquier usuario autenticado
     return true;
   }
 }
