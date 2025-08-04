@@ -129,7 +129,6 @@ export class FileService {
   }
 
 
-
   getListForCombo(tipoModulo: TipoModulo): Observable<any> {
 
     const url = `${this.API_URI}/organismos/combo/${tipoModulo}`;
