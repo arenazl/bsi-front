@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { FileService } from '../../../services/file.service';
+import { OrganismosService } from '../../../services/organismos.service'; // Cambiado a OrganismosService
 import Swal from 'sweetalert2';
 
 interface Contrato {
@@ -32,13 +32,6 @@ interface Modalidad {
   requiere_ente?: boolean;
 }
 
-interface ModalidadFormData {
-  Rotulo: string;
-  Ente: string;
-  Cuenta_Debito: string;
-  Informacion_Discrecional: string;
-}
-
 @Component({
   selector: 'app-contrato-management',
   templateUrl: './contrato-management.component.html',
@@ -47,7 +40,6 @@ interface ModalidadFormData {
 export class ContratoManagementComponent implements OnInit {
   organismos: Organismo[] = [];
   modalidades: Modalidad[] = [];
-  niveles: any[] = [];  // Array para niveles
   contratos: Contrato[] = [];
   filteredContratos: Contrato[] = [];
   organismoForm!: FormGroup;
@@ -62,33 +54,9 @@ export class ContratoManagementComponent implements OnInit {
   editingRowId: number | null = null;
   editingForm!: FormGroup;
 
-  // Listados fijos
-  rotulos = [
-    { value: 'ABONO', label: 'Abono' },
-    { value: 'CONTRIB', label: 'Contribución' },
-    { value: 'TASA', label: 'Tasa' },
-    { value: 'IMPUESTO', label: 'Impuesto' },
-    { value: 'SERVICIO', label: 'Servicio' },
-    { value: 'MULTA', label: 'Multa' },
-    { value: 'CANON', label: 'Canon' },
-    { value: 'PERMISO', label: 'Permiso' },
-    { value: 'HABILI', label: 'Habilitación' },
-    { value: 'OTROS', label: 'Otros' }
-  ];
-
-  entes = [
-    { value: '5147', label: 'Banco Provincia (5147)' },
-    { value: '0014', label: 'Banco Provincia - Cuenta Corriente (0014)' },
-    { value: '0027', label: 'Banco Nación (0027)' },
-    { value: '0198', label: 'Banco Ciudad (0198)' },
-    { value: '0072', label: 'Banco Santander (0072)' },
-    { value: '0150', label: 'Banco HSBC (0150)' },
-    { value: '0011', label: 'Banco Nación - Cuenta Corriente (0011)' }
-  ];
-
   constructor(
     private fb: FormBuilder,
-    private fileService: FileService
+    private organismosService: OrganismosService // Usar OrganismosService
   ) {}
 
   ngOnInit(): void {
@@ -103,12 +71,6 @@ export class ContratoManagementComponent implements OnInit {
     });
 
     this.contratoForm = this.fb.group({
-      ID_Modalidad: ['', Validators.required],
-      ID_Nivel: ['', Validators.required],
-      Programa: ['', Validators.required],
-      Beneficio: ['', Validators.required],
-      Descripcion: [''],
-      Estado: [1],
       Id_Modalidad: ['', Validators.required],
       Rotulo: ['', [Validators.required, Validators.maxLength(10)]],
       Ente: ['', Validators.maxLength(4)],
@@ -131,7 +93,7 @@ export class ContratoManagementComponent implements OnInit {
       Tipo_Estado: [1]
     });
 
-    // Observar cambios en el organismo seleccionado
+        // Observar cambios en el organismo seleccionado
     this.organismoForm.get('organismoSeleccionado')?.valueChanges.subscribe(async (value) => {
       if (value) {
         this.selectedOrganismoId = parseInt(value);
@@ -144,14 +106,6 @@ export class ContratoManagementComponent implements OnInit {
   }
 
   private async loadInitialData(): Promise<void> {
-    // Cargar niveles de ejemplo
-    this.niveles = [
-      { id: 1, descripcion: 'Nivel 1 - Básico' },
-      { id: 2, descripcion: 'Nivel 2 - Intermedio' },
-      { id: 3, descripcion: 'Nivel 3 - Avanzado' },
-      { id: 4, descripcion: 'Nivel 4 - Experto' }
-    ];
-
     await Promise.all([
       this.loadOrganismos(),
       this.loadModalidades()
@@ -161,7 +115,7 @@ export class ContratoManagementComponent implements OnInit {
   private async loadOrganismos(): Promise<void> {
     console.log('Cargando lista de organismos...');
     try {
-      const response = await this.fileService.postSelectGenericSP({
+      const response = await this.organismosService.postSelectGenericSP({
         sp_name: 'ORGANISMO_OBTENER_LISTA',
         body: {}
       }).toPromise();
@@ -179,7 +133,7 @@ export class ContratoManagementComponent implements OnInit {
 
   private async loadModalidades(): Promise<void> {
     try {
-      const response = await this.fileService.postSelectGenericSP({
+      const response = await this.organismosService.postSelectGenericSP({
         sp_name: 'GetModalidades',
         body: {}
       }).toPromise();
@@ -190,7 +144,6 @@ export class ContratoManagementComponent implements OnInit {
           id: m.Id_Modalidad,
           descripcion: m.Modalidad
         }));
-        this.initializeModalidadForms();
       } else {
         Swal.fire('Error', 'Error al cargar modalidades', 'error');
       }
@@ -211,12 +164,10 @@ export class ContratoManagementComponent implements OnInit {
     try {
       this.loadingContratos = true;
       // Temporal: probar con GetContratos para ver todos
-      const response = await this.fileService.postSelectGenericSP({
-        sp_name: 'GetContratos',  // Ver todos los contratos
-        body: {}
+      const response = await this.organismosService.postSelectGenericSP({
+        sp_name: 'CONTRATOS_OBTENER_POR_ORGANISMO', // Ver todos los contratos
+        body: { p_id_organismo: this.selectedOrganismoId }
       }).toPromise();
-      
-      console.log('Response de contratos:', response);
       
       if (response.estado === 1) {
         this.contratos = response.data || [];
@@ -273,16 +224,16 @@ export class ContratoManagementComponent implements OnInit {
     this.loading = true;
     const formData = {
       ...this.contratoForm.value,
-      ID_Organismo: this.selectedOrganismoId
+      p_ID_Organismo: this.selectedOrganismoId
     };
 
     try {
       const spName = this.isEditing ? 'CONTRATO_ACTUALIZAR' : 'CONTRATO_CREAR';
       const body = this.isEditing 
-        ? { ...formData, contrato_id: this.selectedContrato?.Contrato_ID }
+        ? { ...formData, p_contrato_id: this.selectedContrato?.Contrato_ID }
         : formData;
 
-      const response = await this.fileService.postInsertGenericSP({
+      const response = await this.organismosService.postInsertGenericSP({
         sp_name: spName,
         body
       }).toPromise();
@@ -324,9 +275,9 @@ export class ContratoManagementComponent implements OnInit {
     if (result.isConfirmed) {
       try {
         this.loading = true;
-        const response = await this.fileService.postInsertGenericSP({
+        const response = await this.organismosService.postInsertGenericSP({
           sp_name: 'CONTRATO_ELIMINAR',
-          body: { contrato_id: contrato.Contrato_ID }
+          body: { p_contrato_id: contrato.Contrato_ID }
         }).toPromise();
 
         if (response.estado === 1) {
@@ -407,13 +358,13 @@ export class ContratoManagementComponent implements OnInit {
     this.loading = true;
     const formData = {
       ...this.editingForm.value,
-      ID_Organismo: this.selectedOrganismoId
+      p_ID_Organismo: this.selectedOrganismoId
     };
 
     try {
-      const response = await this.fileService.postInsertGenericSP({
+      const response = await this.organismosService.postInsertGenericSP({
         sp_name: 'CONTRATO_ACTUALIZAR',
-        body: { ...formData, contrato_id: contrato.Contrato_ID }
+        body: { ...formData, p_contrato_id: contrato.Contrato_ID }
       }).toPromise();
 
       if (response.estado === 1) {

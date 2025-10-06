@@ -4,15 +4,19 @@ import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
 
 export interface Usuario {
-  id?: number;
-  nombre: string;
-  email?: string;
-  password?: string;
-  organismo_id?: number;
-  rol?: string;
-  activo?: boolean;
-  fecha_creacion?: string;
-  ultimo_acceso?: string;
+  ID_USER?: number;
+  User_Name: string;
+  CUIL?: string;
+  Apellido: string;
+  Nombre: string;
+  Email?: string;
+  Telefono?: string;
+  ID_Organismo?: number;
+  Nombre_Organismo: string;
+  Cargo_Funcion?: string;
+  Perfil?: string;
+  Tipo_Estado?: number;
+  Fecha_Alta?: string;
 }
 
 export interface UsuarioFiltros {
