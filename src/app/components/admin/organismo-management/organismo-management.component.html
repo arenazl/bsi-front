@@ -9,35 +9,28 @@
           </div>
           Gestión de Organismos/Municipios
         </h3>
-        <button
-          class="btn-theme-secondary btn-sm"
-          (click)="openNewForm()"
-          [disabled]="loading"
-        >
+        <button class="btn-theme-secondary btn-sm" (click)="openNewForm()" [disabled]="loading">
           <i [class]="showForm ? 'fa fa-times' : 'fa fa-plus'" class="mr-2"></i>
           {{ showForm ? 'Cancelar' : 'Nuevo Organismo' }}
         </button>
       </div>
     </div>
-    
+
     <div class="p-6">
       <!-- Formulario -->
       <div *ngIf="showForm" class="bg-gray-50 p-6 rounded-2xl mb-6">
         <h5 class="text-lg font-semibold text-gray-800 mb-4">
           {{ isEditing ? 'Editar Organismo' : 'Nuevo Organismo' }}
         </h5>
+
         <form [formGroup]="organismoForm" (ngSubmit)="onSubmit()">
           <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
             <!-- Nombre -->
             <div>
               <label class="block text-sm font-medium text-gray-700 mb-2">Nombre *</label>
-              <input
-                type="text"
-                class="input-theme w-full"
-                formControlName="Nombre"
+              <input type="text" class="input-theme w-full" formControlName="Nombre"
                 [class.border-red-500]="hasError('Nombre', 'required') || hasError('Nombre', 'minlength')"
-                placeholder="Nombre completo del organismo"
-              />
+                placeholder="Nombre completo del organismo" />
               <div *ngIf="hasError('Nombre', 'required')" class="text-red-500 text-sm mt-1">
                 El nombre es obligatorio
               </div>
@@ -45,17 +38,13 @@
                 El nombre debe tener al menos 3 caracteres
               </div>
             </div>
-            
+
             <!-- Nombre Corto -->
             <div>
               <label class="block text-sm font-medium text-gray-700 mb-2">Nombre Corto *</label>
-              <input
-                type="text"
-                class="input-theme w-full"
-                formControlName="Nombre_Corto"
+              <input type="text" class="input-theme w-full" formControlName="Nombre_Corto"
                 [class.border-red-500]="hasError('Nombre_Corto', 'required') || hasError('Nombre_Corto', 'maxlength')"
-                placeholder="Abreviación o sigla"
-              />
+                placeholder="Abreviación o sigla" />
               <div *ngIf="hasError('Nombre_Corto', 'required')" class="text-red-500 text-sm mt-1">
                 El nombre corto es obligatorio
               </div>
@@ -63,17 +52,13 @@
                 El nombre corto no puede exceder 20 caracteres
               </div>
             </div>
-            
+
             <!-- CUIT -->
             <div>
               <label class="block text-sm font-medium text-gray-700 mb-2">CUIT *</label>
-              <input
-                type="text"
-                class="input-theme w-full"
-                formControlName="CUIT"
+              <input type="text" class="input-theme w-full" formControlName="CUIT"
                 [class.border-red-500]="hasError('CUIT', 'required') || hasError('CUIT', 'pattern')"
-                placeholder="XX-XXXXXXXX-X"
-              />
+                placeholder="XX-XXXXXXXX-X" />
               <div *ngIf="hasError('CUIT', 'required')" class="text-red-500 text-sm mt-1">
                 El CUIT es obligatorio
               </div>
@@ -81,51 +66,33 @@
                 Formato de CUIT inválido
               </div>
             </div>
-            
+
             <!-- Código Banco -->
             <div>
               <label class="block text-sm font-medium text-gray-700 mb-2">Código Banco</label>
-              <input
-                type="text"
-                class="input-theme w-full"
-                formControlName="Codigo_Banco"
-                placeholder="Código del banco"
-              />
+              <input type="text" class="input-theme w-full" formControlName="Codigo_Banco"
+                placeholder="Código del banco" />
             </div>
-            
+
             <!-- Banco -->
             <div>
               <label class="block text-sm font-medium text-gray-700 mb-2">Banco</label>
-              <input
-                type="text"
-                class="input-theme w-full"
-                formControlName="Banco"
-                placeholder="Nombre del banco"
-              />
+              <input type="text" class="input-theme w-full" formControlName="Banco" placeholder="Nombre del banco" />
             </div>
-            
+
             <!-- Cuenta Bancaria -->
             <div>
               <label class="block text-sm font-medium text-gray-700 mb-2">Cuenta Bancaria</label>
-              <input
-                type="text"
-                class="input-theme w-full"
-                formControlName="Cuenta_Bancaria"
-                placeholder="Número de cuenta"
-              />
+              <input type="text" class="input-theme w-full" formControlName="Cuenta_Bancaria"
+                placeholder="Número de cuenta" />
             </div>
-            
+
             <!-- CBU -->
             <div>
               <label class="block text-sm font-medium text-gray-700 mb-2">CBU</label>
-              <input
-                type="text"
-                class="input-theme w-full"
-                formControlName="CBU"
-                placeholder="CBU completo"
-              />
+              <input type="text" class="input-theme w-full" formControlName="CBU" placeholder="CBU completo" />
             </div>
-            
+
             <!-- Estado -->
             <div>
               <label class="block text-sm font-medium text-gray-700 mb-2">Estado</label>
@@ -135,27 +102,20 @@
               </select>
             </div>
           </div>
-          
+
           <div class="flex justify-end gap-3 mt-6">
-            <button
-              type="button"
-              class="btn-theme-secondary"
-              (click)="cancelForm()"
-            >
+            <button type="button" class="btn-theme-secondary" (click)="cancelForm()">
               Cancelar
             </button>
-            <button
-              type="submit"
-              class="btn-theme-primary"
-              [disabled]="loading || organismoForm.invalid"
-            >
+            <button type="submit" class="btn-theme-primary" [disabled]="loading || organismoForm.invalid">
               <i *ngIf="loading" class="fas fa-globe-americas world-spinner mr-2"></i>
               {{ isEditing ? 'Actualizar' : 'Crear' }}
             </button>
           </div>
         </form>
+
       </div>
-      
+
       <!-- Búsqueda -->
       <div class="mb-6">
         <form [formGroup]="searchForm">
@@ -163,20 +123,17 @@
             <span class="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400">
               <i class="fa fa-search"></i>
             </span>
-            <input
-              type="text"
-              class="input-theme w-full pl-12"
-              formControlName="searchTerm"
-              placeholder="Buscar por nombre, CUIT o banco..."
-            />
+            <input type="text" class="input-theme w-full pl-12" formControlName="searchTerm"
+              placeholder="Buscar por nombre, CUIT o banco..." />
           </div>
         </form>
       </div>
-      
+
       <!-- Tabla -->
       <div class="overflow-x-auto">
         <table class="w-full rounded-lg overflow-hidden">
-          <thead class="bg-gradient-to-r from-[var(--primary-color)] via-[var(--secondary-color)] to-[var(--complementary-color)]">
+          <thead
+            class="bg-gradient-to-r from-[var(--primary-color)] via-[var(--secondary-color)] to-[var(--complementary-color)]">
             <tr>
               <th class="text-left px-4 py-3 text-white font-semibold bg-black/10">ID</th>
               <th class="text-left px-4 py-3 text-white font-semibold bg-black/10">Nombre</th>
@@ -199,21 +156,17 @@
               </td>
             </tr>
             <tr *ngFor="let organismo of filteredOrganismos; let i = index"
-                class="border-b border-gray-200 hover:bg-white/80 transition-all duration-200"
-                [ngClass]="{'bg-gradient-to-r from-[rgba(var(--primary-color-rgb),0.05)] to-[rgba(var(--complementary-color-rgb),0.1)]': i % 2 === 0, 'bg-white/50': i % 2 !== 0}">
+              class="border-b border-gray-200 hover:bg-white/80 transition-all duration-200"
+              [ngClass]="{'bg-gradient-to-r from-[rgba(var(--primary-color-rgb),0.05)] to-[rgba(var(--complementary-color-rgb),0.1)]': i % 2 === 0, 'bg-white/50': i % 2 !== 0}">
               <td class="px-4 py-3 text-gray-800">{{ organismo.ID_Organismo }}</td>
               <td class="px-4 py-3 text-gray-800">{{ organismo.Nombre }}</td>
               <td class="px-4 py-3 text-gray-800">{{ organismo.Nombre_Corto }}</td>
               <td class="px-4 py-3 text-gray-800">{{ organismo.CUIT }}</td>
               <td class="px-4 py-3 text-gray-800">{{ organismo.Banco || '-' }}</td>
               <td class="px-4 py-3">
-                <span 
-                  class="px-2 py-1 text-xs font-medium rounded-full"
-                  [class.bg-green-100]="organismo.Estado === 1"
-                  [class.text-green-800]="organismo.Estado === 1"
-                  [class.bg-red-100]="organismo.Estado !== 1"
-                  [class.text-red-800]="organismo.Estado !== 1"
-                >
+                <span class="px-2 py-1 text-xs font-medium rounded-full" [class.bg-green-100]="organismo.Estado === 1"
+                  [class.text-green-800]="organismo.Estado === 1" [class.bg-red-100]="organismo.Estado !== 1"
+                  [class.text-red-800]="organismo.Estado !== 1">
                   {{ organismo.Estado === 1 ? 'Activo' : 'Inactivo' }}
                 </span>
               </td>
@@ -221,18 +174,11 @@
                 <div class="flex justify-end gap-2">
                   <button
                     class="p-2 hover:bg-[rgba(var(--primary-color-rgb),0.1)] rounded-lg transition-colors duration-200 text-[var(--primary-color)]"
-                    (click)="editOrganismo(organismo)"
-                    [disabled]="loading"
-                    title="Editar"
-                  >
+                    (click)="editOrganismo(organismo)" [disabled]="loading" title="Editar">
                     <i class="fa fa-edit"></i>
                   </button>
-                  <button
-                    class="p-2 hover:bg-red-100 rounded-lg transition-colors duration-200 text-red-600"
-                    (click)="deleteOrganismo(organismo)"
-                    [disabled]="loading"
-                    title="Eliminar"
-                  >
+                  <button class="p-2 hover:bg-red-100 rounded-lg transition-colors duration-200 text-red-600"
+                    (click)="deleteOrganismo(organismo)" [disabled]="loading" title="Eliminar">
                     <i class="fa fa-trash"></i>
                   </button>
                 </div>
