@@ -2,10 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from '../../environments/environment';
 import { Observable, Observer, of } from 'rxjs';
-import { map } from 'jquery';
 import { TipoMetada, TipoModulo } from '../enums/enums';
-import { Altas_Payload, dbResponse } from '../models/Model';
-
 
 @Injectable({
   providedIn: 'root'

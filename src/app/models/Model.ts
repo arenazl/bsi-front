@@ -149,15 +149,21 @@ export interface dbRequest{
 }
 
 export interface Usuario {
-
-  Id: number;
-  IdOrganismo: number;
-  Nombre_Organismo: string;
+  ID_USER?: number;
+  User_Name: string;
+  CUIL?: string;
   Apellido: string;
   Nombre: string;
-  Cargo_Funcion: string;
-  Pass: string;
+  Email?: string;
+  Telefono?: string;
+  ID_Organismo?: number;
+  Nombre_Organismo: string;
+  Cargo_Funcion?: string;
+  Perfil?: string;
+  Tipo_Estado?: number;
+  Fecha_Alta?: string;
 
+  Pass: string;
   panel?: boolean,
   esAdmin?: boolean
 

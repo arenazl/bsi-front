@@ -67,6 +67,34 @@
               </div>
             </div>
 
+            <!-- Direccion Calle -->
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2">Dirección Calle</label>
+              <input type="text" class="input-theme w-full" formControlName="Direccion_Calle"
+                placeholder="Calle del organismo" />
+            </div>
+
+            <!-- Direccion Numero -->
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2">Dirección Número</label>
+              <input type="text" class="input-theme w-full" formControlName="Direccion_Numero"
+                placeholder="Número de la calle" />
+            </div>
+
+            <!-- Direccion Localidad -->
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2">Dirección Localidad</label>
+              <input type="text" class="input-theme w-full" formControlName="Direccion_Localidad"
+                placeholder="Localidad del organismo" />
+            </div>
+
+            <!-- Direccion Codigo Postal -->
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2">Dirección Código Postal</label>
+              <input type="text" class="input-theme w-full" formControlName="Direccion_Codigo_Postal"
+                placeholder="Código postal" />
+            </div>
+
             <!-- Código Banco -->
             <div>
               <label class="block text-sm font-medium text-gray-700 mb-2">Código Banco</label>
@@ -77,7 +105,8 @@
             <!-- Banco -->
             <div>
               <label class="block text-sm font-medium text-gray-700 mb-2">Banco</label>
-              <input type="text" class="input-theme w-full" formControlName="Banco" placeholder="Nombre del banco" />
+              <input type="text" class="input-theme w-full" formControlName="Banco"
+                placeholder="Nombre del banco" />
             </div>
 
             <!-- Cuenta Bancaria -->
@@ -90,13 +119,30 @@
             <!-- CBU -->
             <div>
               <label class="block text-sm font-medium text-gray-700 mb-2">CBU</label>
-              <input type="text" class="input-theme w-full" formControlName="CBU" placeholder="CBU completo" />
+              <input type="text" class="input-theme w-full" formControlName="CBU"
+                placeholder="CBU completo" />
+            </div>
+
+            <!-- Sucursal Bapro -->
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2">Sucursal Bapro</label>
+              <input type="text" class="input-theme w-full" formControlName="Sucursal_Bapro"
+                placeholder="Número de sucursal Bapro" />
+            </div>
+
+            <!-- Tipo Organismo -->
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2">Tipo Organismo</label>
+              <select class="input-theme w-full" formControlName="Tipo_Organismo">
+                <option [value]="1">Municipal</option>
+                <option [value]="0">Provincial</option>
+              </select>
             </div>
 
             <!-- Estado -->
             <div>
               <label class="block text-sm font-medium text-gray-700 mb-2">Estado</label>
-              <select class="input-theme w-full" formControlName="Estado">
+              <select class="input-theme w-full" formControlName="Tipo_Estado">
                 <option [value]="1">Activo</option>
                 <option [value]="0">Inactivo</option>
               </select>

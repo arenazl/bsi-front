@@ -1,29 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, AbstractControl } from '@angular/forms';
-import { FileService } from '../../../services/file.service';
+import { Organismo, OrganismosService } from 'src/app/services/organismos.service';
 import Swal from 'sweetalert2';
-
-interface Organismo {
-  ID_Organismo?: number;
-  Nombre: string;
-  Nombre_Corto: string;
-  CUIT: string;
-  Direccion_Calle: string;
-  Direccion_Numero: string;
-  Direccion_Localidad: string;
-  Direccion_Codigo_Postal: string;
-  Sucursal_Bapro: string;
-  Tipo_Organismo?: number;
-  Tipo_Estado?: number;
-  Estado?: number;
-  Codigo_Banco?: string;
-  Banco?: string;
-  Cuenta_Bancaria?: string;
-  CBU?: string;
-  Fecha_Alta?: Date;
-  Fecha_Baja?: Date;
-  Fecha_Modificacion?: Date;
-}
 
 @Component({
   selector: 'app-organismo-management',
@@ -44,7 +22,7 @@ export class OrganismoManagementComponent implements OnInit {
 
   constructor(
     private fb: FormBuilder,
-    private fileService: FileService
+    private organismoService : OrganismosService
   ) {}
 
   ngOnInit(): void {
@@ -62,6 +40,10 @@ export class OrganismoManagementComponent implements OnInit {
       Direccion_Numero: ['', [Validators.required, Validators.maxLength(10)]],
       Direccion_Localidad: ['', Validators.required],
       Direccion_Codigo_Postal: ['', [Validators.required, Validators.pattern(/^\d{4}$/)]],
+      Codigo_Banco: [''],
+      Banco: [''],
+      Cuenta_Bancaria: [''],
+      CBU: [''],
       Sucursal_Bapro: ['', [Validators.maxLength(50)]],
       Tipo_Organismo: [1],
       Tipo_Estado: [1]
@@ -80,6 +62,10 @@ export class OrganismoManagementComponent implements OnInit {
       Direccion_Numero: ['', [Validators.required, Validators.maxLength(10)]],
       Direccion_Localidad: ['', Validators.required],
       Direccion_Codigo_Postal: ['', [Validators.required, Validators.pattern(/^\d{4}$/)]],
+      Codigo_Banco: [''],
+      Banco: [''],
+      Cuenta_Bancaria: [''],
+      CBU: [''],
       Sucursal_Bapro: ['', [Validators.maxLength(50)]],
       Tipo_Organismo: [1],
       Tipo_Estado: [1]
@@ -107,7 +93,7 @@ export class OrganismoManagementComponent implements OnInit {
   async loadOrganismos(): Promise<void> {
     try {
       this.loading = true;
-      const response = await this.fileService.postSelectGenericSP({
+      const response = await this.organismoService.postSelectGenericSP({
         sp_name: 'ORGANISMO_OBTENER_LISTA',
         body: {}
       }).toPromise();
@@ -133,12 +119,37 @@ export class OrganismoManagementComponent implements OnInit {
     this.organismoForm.reset({ Tipo_Organismo: 1, Tipo_Estado: 1 });
   }
 
-  editOrganismo(organismo: Organismo): void {
-    this.showForm = true;
-    this.isEditing = true;
-    this.currentOrganismo = organismo;
-    this.organismoForm.patchValue(organismo);
+editOrganismo(organismo: Organismo): void {
+    if (!organismo.ID_Organismo) {
+      Swal.fire('Error', 'No se puede editar un organismo sin ID.', 'error');
+      return;
+    }
+
+    this.loading = true;
+    this.organismoService.obtenerPorId(organismo.ID_Organismo).subscribe(
+      response => {
+        if (response && response.estado === 1 && response.data) {
+          const organismoDetallado = response.data;
+          console.log('Datos recibidos del backend:', organismoDetallado);
+          this.showForm = true;
+          this.isEditing = true;
+          this.currentOrganismo = organismoDetallado;
+          this.organismoForm.patchValue(organismoDetallado);
+        } else {
+          const errorMsg = response.descripcion || 'No se encontraron los detalles del organismo.';
+          Swal.fire('Error', errorMsg, 'error');
+        }
+        this.loading = false;
+      },
+      error => {
+        console.error('Error al obtener detalle del organismo:', error);
+        Swal.fire('Error', error.message || 'No se pudieron cargar los datos para editar.', 'error');
+        this.loading = false;
+      }
+    );
   }
+
+
 
   async onSubmit(): Promise<void> {
     if (this.organismoForm.invalid) {
@@ -150,26 +161,66 @@ export class OrganismoManagementComponent implements OnInit {
     const formData = this.organismoForm.value;
 
     try {
-      const spName = this.isEditing ? 'ORGANISMO_ACTUALIZAR' : 'ORGANISMO_CREAR';
-      const body = this.isEditing 
-        ? { ...formData, id_organismo: this.currentOrganismo?.ID_Organismo }
-        : formData;
+      if (this.isEditing) {
+        // Validación mínima del ID
+        if (this.currentOrganismo?.ID_Organismo == null) {
+          throw new Error('No se encontró el ID del organismo a actualizar.');
+        }
 
-      const response = await this.fileService.postInsertGenericSP({
-        sp_name: spName,
-        body
-      }).toPromise();
+        // Asegurar tipos numéricos donde corresponde
+        const id = Number(this.currentOrganismo.ID_Organismo);
+        const tipoOrganismo = Number(formData.Tipo_Organismo);
+        const tipoEstado = Number(formData.Tipo_Estado);
 
-      if (response.estado === 1) {
-        await Swal.fire({
-          icon: 'success',
-          title: this.isEditing ? 'Actualizado' : 'Creado',
-          text: `Organismo ${this.isEditing ? 'actualizado' : 'creado'} exitosamente`
-        });
-        this.cancelForm();
-        await this.loadOrganismos();
+        const payload = {
+          id_organismo: id,
+          Nombre: formData.Nombre,
+          Nombre_Corto: formData.Nombre_Corto,
+          CUIT: formData.CUIT,
+          Direccion_Calle: formData.Direccion_Calle,
+          Direccion_Numero: formData.Direccion_Numero,
+          Direccion_Localidad: formData.Direccion_Localidad,
+          Direccion_Codigo_Postal: formData.Direccion_Codigo_Postal,
+          Sucursal_Bapro: formData.Sucursal_Bapro,
+          Tipo_Organismo: tipoOrganismo,
+          Tipo_Estado: tipoEstado
+        };
+
+        const response = await this.organismoService.postInsertGenericSP({
+          sp_name: 'ORGANISMO_ACTUALIZAR',
+          body: payload
+        }).toPromise();
+
+
+        if (response.estado === 1) {
+          await Swal.fire({
+            icon: 'success',
+            title: 'Actualizado',
+            text: 'Organismo actualizado exitosamente'
+          });
+          this.cancelForm();
+          await this.loadOrganismos();
+        } else {
+          throw new Error(response.descripcion);
+        }
       } else {
-        throw new Error(response.descripcion);
+        // Crear: puede seguir yendo como body (objeto)
+        const response = await this.organismoService.postInsertGenericSP({
+          sp_name: 'ORGANISMO_CREAR',
+          body: formData
+        }).toPromise();
+
+        if (response.estado === 1) {
+          await Swal.fire({
+            icon: 'success',
+            title: this.isEditing ? 'Actualizado' : 'Creado',
+            text: `Organismo ${this.isEditing ? 'actualizado' : 'creado'} exitosamente`
+          });
+          this.cancelForm();
+          await this.loadOrganismos();
+        } else {
+          throw new Error(response.descripcion);
+        }
       }
     } catch (error: any) {
       Swal.fire('Error', error.message || 'Error al guardar', 'error');
@@ -193,7 +244,7 @@ export class OrganismoManagementComponent implements OnInit {
     if (result.isConfirmed) {
       try {
         this.loading = true;
-        const response = await this.fileService.postInsertGenericSP({
+        const response = await this.organismoService.postInsertGenericSP({
           sp_name: 'ORGANISMO_ELIMINAR',
           body: { id_organismo: organismo.ID_Organismo }
         }).toPromise();
@@ -273,10 +324,33 @@ export class OrganismoManagementComponent implements OnInit {
     const formData = this.editingForm.value;
 
     try {
-      const response = await this.fileService.postInsertGenericSP({
+      if (organismo.ID_Organismo == null) {
+        throw new Error('No se encontró el ID del organismo a actualizar.');
+      }
+
+      const id = Number(organismo.ID_Organismo);
+      const tipoOrganismo = Number(formData.Tipo_Organismo);
+      const tipoEstado = Number(formData.Tipo_Estado);
+
+      const payload = {
+        id_organismo: id,
+        Nombre: formData.Nombre,
+        Nombre_Corto: formData.Nombre_Corto,
+        CUIT: formData.CUIT,
+        Direccion_Calle: formData.Direccion_Calle,
+        Direccion_Numero: formData.Direccion_Numero,
+        Direccion_Localidad: formData.Direccion_Localidad,
+        Direccion_Codigo_Postal: formData.Direccion_Codigo_Postal,
+        Sucursal_Bapro: formData.Sucursal_Bapro,
+        Tipo_Organismo: tipoOrganismo,
+        Tipo_Estado: tipoEstado
+      };
+
+      const response = await this.organismoService.postInsertGenericSP({
         sp_name: 'ORGANISMO_ACTUALIZAR',
-        body: { ...formData, id_organismo: organismo.ID_Organismo }
+        body: payload
       }).toPromise();
+
 
       if (response.estado === 1) {
         await Swal.fire({
