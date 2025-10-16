@@ -25,6 +25,11 @@ export interface UsuarioFiltros {
   activo?: boolean;
   busqueda?: string;
 }
+interface Organismo {
+  ID_Organismo: number;
+  Nombre: string;
+  CUIT: string;
+}
 
 @Injectable({
   providedIn: 'root'

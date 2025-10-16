@@ -1,6 +1,6 @@
 <div class="p-6">
   <div class="bg-white rounded-3xl shadow-xl">
-    <!-- Header moderno con gradiente del tema -->
+    <!-- Header -->
     <div class="bg-gradient-to-br rounded-t-3xl p-6">
       <div class="flex items-center justify-between">
         <h3 class="text-2xl font-bold text-white flex items-center gap-3">
@@ -19,142 +19,171 @@
         </button>
       </div>
     </div>
-    
+
     <div class="p-6">
       <!-- Formulario -->
       <div *ngIf="showForm" class="bg-gray-50 p-6 rounded-2xl mb-6">
         <h5 class="text-lg font-semibold text-gray-800 mb-4">
           {{ isEditing ? 'Editar Usuario' : 'Nuevo Usuario' }}
         </h5>
+
         <form [formGroup]="userForm" (ngSubmit)="onSubmit()">
           <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <!-- Email -->
+
+            <!-- User_Name -->
             <div>
-              <label class="block text-sm font-medium text-gray-700 mb-2">Email *</label>
-              <input
-                type="email"
-                class="input-theme w-full"
-                formControlName="email"
-                [class.border-red-500]="hasError('email', 'required') || hasError('email', 'email')"
-                placeholder="correo@ejemplo.com"
-              />
-              <div *ngIf="hasError('email', 'required')" class="text-red-500 text-sm mt-1">
-                El email es obligatorio
-              </div>
-              <div *ngIf="hasError('email', 'email')" class="text-red-500 text-sm mt-1">
-                El email no es válido
-              </div>
-            </div>
-            
-            <!-- Nombre -->
-            <div>
-              <label class="block text-sm font-medium text-gray-700 mb-2">Nombre *</label>
+              <label class="block text-sm font-medium text-gray-700 mb-2">Usuario *</label>
               <input
                 type="text"
                 class="input-theme w-full"
-                formControlName="nombre"
-                [class.border-red-500]="hasError('nombre', 'required') || hasError('nombre', 'pattern')"
-                placeholder="Nombre"
+                formControlName="User_Name"
+                [class.border-red-500]="hasError('User_Name','required') || hasError('User_Name','minlength')"
+                placeholder="Nombre de usuario"
               />
-              <div *ngIf="hasError('nombre', 'required')" class="text-red-500 text-sm mt-1">
-                El nombre es obligatorio
+              <div *ngIf="hasError('User_Name','required')" class="text-red-500 text-sm mt-1">
+                El usuario es obligatorio
               </div>
-              <div *ngIf="hasError('nombre', 'pattern')" class="text-red-500 text-sm mt-1">
-                Solo se permiten letras y espacios
+              <div *ngIf="hasError('User_Name','minlength')" class="text-red-500 text-sm mt-1">
+                Debe tener al menos 3 caracteres
               </div>
             </div>
-            
+
+            <!-- CUIL -->
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2">CUIL</label>
+              <input
+                type="text"
+                class="input-theme w-full"
+                formControlName="CUIL"
+                [class.border-red-500]="hasError('CUIL','pattern')"
+                placeholder="XX-XXXXXXXX-X"
+              />
+              <div *ngIf="hasError('CUIL','pattern')" class="text-red-500 text-sm mt-1">
+                Formato de CUIL inválido
+              </div>
+            </div>
+
             <!-- Apellido -->
             <div>
               <label class="block text-sm font-medium text-gray-700 mb-2">Apellido *</label>
               <input
                 type="text"
                 class="input-theme w-full"
-                formControlName="apellido"
-                [class.border-red-500]="hasError('apellido', 'required') || hasError('apellido', 'pattern')"
+                formControlName="Apellido"
+                [class.border-red-500]="hasError('Apellido','required')"
                 placeholder="Apellido"
               />
-              <div *ngIf="hasError('apellido', 'required')" class="text-red-500 text-sm mt-1">
+              <div *ngIf="hasError('Apellido','required')" class="text-red-500 text-sm mt-1">
                 El apellido es obligatorio
               </div>
-              <div *ngIf="hasError('apellido', 'pattern')" class="text-red-500 text-sm mt-1">
-                Solo se permiten letras y espacios
+            </div>
+
+            <!-- Nombre -->
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2">Nombre *</label>
+              <input
+                type="text"
+                class="input-theme w-full"
+                formControlName="Nombre"
+                [class.border-red-500]="hasError('Nombre','required')"
+                placeholder="Nombre"
+              />
+              <div *ngIf="hasError('Nombre','required')" class="text-red-500 text-sm mt-1">
+                El nombre es obligatorio
               </div>
             </div>
-            
+
+            <!-- Email -->
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2">Email</label>
+              <input
+                type="email"
+                class="input-theme w-full"
+                formControlName="Email"
+                [class.border-red-500]="hasError('Email','email')"
+                placeholder="correo@dominio.com"
+              />
+              <div *ngIf="hasError('Email','email')" class="text-red-500 text-sm mt-1">
+                Formato de email inválido
+              </div>
+            </div>
+
             <!-- Teléfono -->
             <div>
               <label class="block text-sm font-medium text-gray-700 mb-2">Teléfono</label>
               <input
                 type="text"
                 class="input-theme w-full"
-                formControlName="telefono"
-                [class.border-red-500]="hasError('telefono', 'pattern')"
-                placeholder="Solo números"
+                formControlName="Telefono"
+                placeholder="Ej: +54 11 1234-5678"
               />
-              <div *ngIf="hasError('telefono', 'pattern')" class="text-red-500 text-sm mt-1">
-                Solo se permiten números
-              </div>
             </div>
-            
-            <!-- Fecha de Nacimiento -->
-            <div>
-              <label class="block text-sm font-medium text-gray-700 mb-2">Fecha de Nacimiento</label>
-              <input
-                type="date"
+
+            <!-- Organismo (del form de Contratos) -->
+            <div class="md:col-span-2">
+              <label class="block text-sm font-medium text-gray-700 mb-2">Organismo *</label>
+              <select
+                formControlName="organismo"
                 class="input-theme w-full"
-                formControlName="fecha_nacimiento"
-              />
-            </div>
-            
-            <!-- Género -->
-            <div>
-              <label class="block text-sm font-medium text-gray-700 mb-2">Género</label>
-              <select class="input-theme w-full" formControlName="genero">
-                <option value="">Seleccionar...</option>
-                <option *ngFor="let genero of generoOptions" [value]="genero.value">
-                  {{ genero.label }}
+                [class.border-red-500]="userForm.get('organismo')?.invalid && userForm.get('organismo')?.touched"
+                [compareWith]="compareOrganismo"
+              >
+                <option [ngValue]="null">-- Seleccione un organismo --</option>
+                <option *ngFor="let org of organismos" [ngValue]="org">
+                  {{ org.Nombre }} ({{ org.CUIT }})
                 </option>
               </select>
+              <!-- Nota: en el componente, al guardar, mapear organismoSeleccionado -> ID_Organismo y Nombre_Organismo -->
+              <div *ngIf="userForm.get('organismoSeleccionado')?.invalid && userForm.get('organismoSeleccionado')?.touched" class="text-red-500 text-sm mt-1">
+                Debe seleccionar un organismo
+              </div>
             </div>
-            
+
+            <!-- Cargo/Función -->
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2">Cargo / Función</label>
+              <input
+                type="text"
+                class="input-theme w-full"
+                formControlName="Cargo_Funcion"
+                placeholder="Cargo o función del usuario"
+              />
+            </div>
+
+            <!-- Perfil (opcional, libre) -->
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2">Perfil</label>
+              <input
+                type="text"
+                class="input-theme w-full"
+                formControlName="Perfil"
+                placeholder="Ej: Operador, Supervisor, Admin"
+              />
+            </div>
+
             <!-- Estado -->
             <div>
               <label class="block text-sm font-medium text-gray-700 mb-2">Estado</label>
-              <select class="input-theme w-full" formControlName="activo">
-                <option [value]="true">Activo</option>
-                <option [value]="false">Inactivo</option>
+              <select class="input-theme w-full" formControlName="Tipo_Estado">
+                <option [value]="1">Activo</option>
+                <option [value]="2">Inactivo</option>
               </select>
             </div>
+
           </div>
-          
-          <div class="bg-blue-50 border border-blue-200 rounded-xl p-4 mt-4" *ngIf="!isEditing">
-            <div class="flex items-center gap-2 text-blue-700">
-              <i class="fa fa-info-circle"></i>
-              <span>Se enviará un email al usuario con las instrucciones para establecer su contraseña.</span>
-            </div>
-          </div>
-          
+
           <div class="flex justify-end gap-3 mt-6">
-            <button
-              type="button"
-              class="btn-theme-secondary"
-              (click)="cancelForm()"
-            >
+            <button type="button" class="btn-theme-secondary" (click)="cancelForm()">
               Cancelar
             </button>
-            <button
-              type="submit"
-              class="btn-theme-primary"
-              [disabled]="loading || userForm.invalid"
-            >
+            <button type="submit" class="btn-theme-primary" [disabled]="loading || userForm.invalid">
               <i *ngIf="loading" class="fas fa-globe-americas world-spinner mr-2"></i>
               {{ isEditing ? 'Actualizar' : 'Crear' }}
             </button>
           </div>
         </form>
       </div>
-      
+
       <!-- Búsqueda -->
       <div class="mb-6">
         <form [formGroup]="searchForm">
@@ -166,12 +195,12 @@
               type="text"
               class="input-theme w-full pl-12"
               formControlName="searchTerm"
-              placeholder="Buscar por nombre, apellido o email..."
+              placeholder="Buscar por usuario, nombre, apellido o email..."
             />
           </div>
         </form>
       </div>
-      
+
       <!-- Tabla -->
       <div class="overflow-x-auto">
         <table class="w-full rounded-lg overflow-hidden">
@@ -181,168 +210,66 @@
               <th class="text-left px-4 py-3 text-white font-semibold bg-black/10">Nombre</th>
               <th class="text-left px-4 py-3 text-white font-semibold bg-black/10">Email</th>
               <th class="text-left px-4 py-3 text-white font-semibold bg-black/10">Teléfono</th>
-              <th class="text-left px-4 py-3 text-white font-semibold bg-black/10">Género</th>
-              <th class="text-left px-4 py-3 text-white font-semibold bg-black/10">Email Verificado</th>
+              <th class="text-left px-4 py-3 text-white font-semibold bg-black/10">Organismo</th>
+              <th class="text-left px-4 py-3 text-white font-semibold bg-black/10">Cargo/Función</th>
               <th class="text-left px-4 py-3 text-white font-semibold bg-black/10">Estado</th>
-              <th class="text-left px-4 py-3 text-white font-semibold bg-black/10">Último Login</th>
               <th class="text-right px-4 py-3 text-white font-semibold bg-black/10">Acciones</th>
             </tr>
           </thead>
+
           <tbody>
             <tr *ngIf="loading && filteredUsers.length === 0">
-              <td colspan="9" class="text-center py-8">
+              <td colspan="10" class="text-center py-8">
                 <app-world-loader [size]="'large'" [text]="'Cargando usuarios...'"></app-world-loader>
               </td>
             </tr>
+
             <tr *ngIf="!loading && filteredUsers.length === 0">
-              <td colspan="9" class="text-center text-gray-500 py-8">
+              <td colspan="10" class="text-center text-gray-500 py-8">
                 No se encontraron usuarios
               </td>
             </tr>
-            <tr *ngFor="let user of filteredUsers; let i = index" 
+
+            <tr *ngFor="let user of filteredUsers; let i = index"
                 class="border-b border-gray-200 hover:bg-white/80 transition-all duration-200"
-                [ngClass]="{'bg-gradient-to-r from-[rgba(var(--primary-color-rgb),0.05)] to-[rgba(var(--complementary-color-rgb),0.1)]': i % 2 === 0, 'bg-white/50': i % 2 !== 0}">
-              <td class="px-4 py-3 text-gray-800">{{ user.id }}</td>
-              
-              <!-- Nombre -->
-              <td class="px-4 py-3 text-gray-800">
-                <span *ngIf="!isEditingRow(user)">{{ user.nombre }} {{ user.apellido }}</span>
-                <div *ngIf="isEditingRow(user)" class="flex gap-2">
-                  <input 
-                    type="text"
-                    class="input-theme text-sm"
-                    [formControl]="$any(editingForm.get('nombre'))"
-                    [class.border-red-500]="hasEditingError('nombre', 'required') || hasEditingError('nombre', 'pattern')"
-                    placeholder="Nombre"
-                  />
-                  <input 
-                    type="text"
-                    class="input-theme text-sm"
-                    [formControl]="$any(editingForm.get('apellido'))"
-                    [class.border-red-500]="hasEditingError('apellido', 'required') || hasEditingError('apellido', 'pattern')"
-                    placeholder="Apellido"
-                  />
-                </div>
-              </td>
-              
-              <!-- Email -->
-              <td class="px-4 py-3 text-gray-800">
-                <span *ngIf="!isEditingRow(user)">{{ user.email }}</span>
-                <input 
-                  *ngIf="isEditingRow(user)"
-                  type="email"
-                  class="input-theme text-sm"
-                  [formControl]="$any(editingForm.get('email'))"
-                  [class.border-red-500]="hasEditingError('email', 'required') || hasEditingError('email', 'email')"
-                />
-              </td>
-              
-              <!-- Teléfono -->
-              <td class="px-4 py-3 text-gray-800">
-                <span *ngIf="!isEditingRow(user)">{{ user.telefono || '-' }}</span>
-                <input 
-                  *ngIf="isEditingRow(user)"
-                  type="text"
-                  class="input-theme text-sm"
-                  [formControl]="$any(editingForm.get('telefono'))"
-                  [class.border-red-500]="hasEditingError('telefono', 'pattern')"
-                  placeholder="Teléfono"
-                />
-              </td>
-              
-              <!-- Género -->
-              <td class="px-4 py-3 text-gray-800">
-                <span *ngIf="!isEditingRow(user) && user.genero" class="px-2 py-1 text-xs font-medium rounded-full bg-gray-200 text-gray-700">
-                  {{ user.genero === 'M' ? 'Masculino' : user.genero === 'F' ? 'Femenino' : 'Otro' }}
-                </span>
-                <span *ngIf="!isEditingRow(user) && !user.genero">-</span>
-                <select
-                  *ngIf="isEditingRow(user)"
-                  class="input-theme text-sm"
-                  [formControl]="$any(editingForm.get('genero'))"
-                >
-                  <option value="">-</option>
-                  <option value="M">Masculino</option>
-                  <option value="F">Femenino</option>
-                  <option value="Otro">Otro</option>
-                </select>
-              </td>
-              <td class="px-4 py-3 text-gray-800">
-                <i 
-                  class="fa"
-                  [class.fa-check-circle]="user.email_verificado"
-                  [class.text-green-600]="user.email_verificado"
-                  [class.fa-times-circle]="!user.email_verificado"
-                  [class.text-red-600]="!user.email_verificado"
-                ></i>
-              </td>
-              <td class="px-4 py-3 text-gray-800">
-                <span 
-                  *ngIf="!isEditingRow(user)"
+                [ngClass]="{
+                  'bg-gradient-to-r from-[rgba(var(--primary-color-rgb),0.05)] to-[rgba(var(--complementary-color-rgb),0.1)]': i % 2 === 0,
+                  'bg-white/50': i % 2 !== 0
+                }">
+              <td class="px-4 py-3 text-gray-800">{{ user.ID_USER }}</td>
+              <td class="px-4 py-3 text-gray-800">{{ user.Nombre }} {{ user.Apellido }}</td>
+              <td class="px-4 py-3 text-gray-800">{{ user.Email || '-' }}</td>
+              <td class="px-4 py-3 text-gray-800">{{ user.Telefono || '-' }}</td>
+              <td class="px-4 py-3 text-gray-800">{{ user.Nombre_Organismo }}</td>
+              <td class="px-4 py-3 text-gray-800">{{ user.Cargo_Funcion || '-' }}</td>
+              <td class="px-4 py-3">
+                <span
                   class="px-2 py-1 text-xs font-medium rounded-full"
-                  [class.bg-green-100]="user.activo"
-                  [class.text-green-800]="user.activo"
-                  [class.bg-red-100]="!user.activo"
-                  [class.text-red-800]="!user.activo"
+                  [class.bg-green-100]="user.Tipo_Estado === 1"
+                  [class.text-green-800]="user.Tipo_Estado === 1"
+                  [class.bg-red-100]="user.Tipo_Estado === 2"
+                  [class.text-red-800]="user.Tipo_Estado === 2"
                 >
-                  {{ user.activo ? 'Activo' : 'Inactivo' }}
+                  {{ user.Tipo_Estado === 1 ? 'Activo' : 'Inactivo' }}
                 </span>
-                <select
-                  *ngIf="isEditingRow(user)"
-                  class="input-theme text-sm"
-                  [formControl]="$any(editingForm.get('activo'))"
-                >
-                  <option [value]="true">Activo</option>
-                  <option [value]="false">Inactivo</option>
-                </select>
-              </td>
-              <td class="px-4 py-3 text-gray-800">
-                <small>{{ user.ultimo_login ? (user.ultimo_login | date:'short') : 'Nunca' }}</small>
               </td>
               <td class="px-4 py-3 text-right">
-                <div class="flex justify-end gap-2" *ngIf="!isEditingRow(user)">
-                  <button
-                    class="p-2 hover:bg-blue-100 rounded-lg transition-colors duration-200 text-blue-600"
-                    (click)="startInlineEdit(user)"
-                    [disabled]="loading || editingRowId !== null"
-                    title="Editar inline"
-                  >
-                    <i class="fa fa-pencil"></i>
-                  </button>
+                <div class="flex justify-end gap-2">
                   <button
                     class="p-2 hover:bg-[rgba(var(--primary-color-rgb),0.1)] rounded-lg transition-colors duration-200 text-[var(--primary-color)]"
                     (click)="editUser(user)"
-                    [disabled]="loading || editingRowId !== null"
-                    title="Editar en formulario"
+                    [disabled]="loading"
+                    title="Editar"
                   >
                     <i class="fa fa-edit"></i>
                   </button>
                   <button
                     class="p-2 hover:bg-red-100 rounded-lg transition-colors duration-200 text-red-600"
                     (click)="deleteUser(user)"
-                    [disabled]="loading || editingRowId !== null"
+                    [disabled]="loading"
                     title="Eliminar"
                   >
                     <i class="fa fa-trash"></i>
-                  </button>
-                </div>
-                
-                <div class="flex justify-end gap-2" *ngIf="isEditingRow(user)">
-                  <button
-                    class="p-2 hover:bg-green-100 rounded-lg transition-colors duration-200 text-green-600"
-                    (click)="saveInlineEdit(user)"
-                    [disabled]="loading || editingForm.invalid"
-                    title="Guardar"
-                  >
-                    <i class="fa fa-check"></i>
-                  </button>
-                  <button
-                    class="p-2 hover:bg-gray-100 rounded-lg transition-colors duration-200 text-gray-600"
-                    (click)="cancelInlineEdit()"
-                    [disabled]="loading"
-                    title="Cancelar"
-                  >
-                    <i class="fa fa-times"></i>
                   </button>
                 </div>
               </td>
@@ -350,6 +277,7 @@
           </tbody>
         </table>
       </div>
+
     </div>
   </div>
 </div>

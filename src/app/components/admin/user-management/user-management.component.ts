@@ -1,22 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { FileService } from '../../../services/file.service';
+import { UsuariosService, Usuario } from '../../../services/usuarios.service';
 import Swal from 'sweetalert2';
-
-interface User {
-  id?: number;
-  email: string;
-  nombre: string;
-  apellido: string;
-  telefono?: string;
-  fecha_nacimiento?: string;
-  genero?: 'M' | 'F' | 'Otro';
-  activo?: boolean;
-  email_verificado?: boolean;
-  fecha_creacion?: Date;
-  fecha_actualizacion?: Date;
-  ultimo_login?: Date;
-}
+import { Organismo, OrganismosService } from 'src/app/services/organismos.service';
 
 @Component({
   selector: 'app-user-management',
@@ -24,79 +10,102 @@ interface User {
   styleUrls: ['./user-management.component.css']
 })
 export class UserManagementComponent implements OnInit {
-  users: User[] = [];
-  filteredUsers: User[] = [];
+  users: Usuario[] = [];
+  organismos: Organismo[] = [];
+  filteredUsers: Usuario[] = [];
   userForm!: FormGroup;
   searchForm!: FormGroup;
+  organismoForm!: FormGroup;
   showForm = false;
   isEditing = false;
   loading = false;
-  currentUser: User | null = null;
+  currentUser: Usuario | null = null;
   editingRowId: number | null = null;
   editingForm!: FormGroup;
-
-  generoOptions = [
-    { value: 'M', label: 'Masculino' },
-    { value: 'F', label: 'Femenino' },
-    { value: 'Otro', label: 'Otro' }
-  ];
+  selectedOrganismoId: number = 0;
+  contratos: any[] = [];
 
   constructor(
     private fb: FormBuilder,
-    private fileService: FileService
+    private usuariosService: UsuariosService,
+    private organismosService: OrganismosService
   ) {}
 
   ngOnInit(): void {
     this.initializeForms();
     this.loadUsers();
     this.setupSearchFilter();
+    this.loadOrganismos();
   }
 
   private initializeForms(): void {
+
+    this.organismoForm = this.fb.group({
+      organismoSeleccionado: ['', Validators.required]
+    });
+
     this.userForm = this.fb.group({
-      email: ['', [Validators.required, Validators.email]],
-      nombre: ['', [Validators.required, Validators.pattern(/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/)]],
-      apellido: ['', [Validators.required, Validators.pattern(/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/)]],
-      telefono: ['', [Validators.pattern(/^\d+$/)]],
-      fecha_nacimiento: [''],
-      genero: [''],
-      activo: [true]
+      Nombre: ['', Validators.required],
+      Apellido: ['', Validators.required],
+      Email: ['', [Validators.required, Validators.email]],
+      User_Name: ['', Validators.required],
+      password: [''],
+      organismo: [null, Validators.required], // guardamos el objeto organismo
+      CUIL: [''],
+      Telefono: [''],
+      Cargo_Funcion: [''],
+      Perfil: [''],
+      Tipo_Estado: [1]
     });
 
     this.searchForm = this.fb.group({
       searchTerm: ['']
     });
 
-    // Formulario para edición inline
     this.editingForm = this.fb.group({
-      email: ['', [Validators.required, Validators.email]],
-      nombre: ['', [Validators.required, Validators.pattern(/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/)]],
-      apellido: ['', [Validators.required, Validators.pattern(/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/)]],
-      telefono: ['', [Validators.pattern(/^\d+$/)]],
-      fecha_nacimiento: [''],
-      genero: [''],
-      activo: [true]
+      Nombre: ['', Validators.required],
+      Apellido: ['', Validators.required],
+      Email: ['', [Validators.required, Validators.email]],
+      User_Name: ['', Validators.required],
+      ID_Organismo: [null, Validators.required],
+      CUIL: [''],
+      Telefono: [''],
+      Cargo_Funcion: [''],
+      Perfil: [''],
+      Tipo_Estado: [1]
+    });
+
+    this.organismoForm.get('organismoSeleccionado')?.valueChanges.subscribe(async (value) => {
+      if (value) {
+        this.selectedOrganismoId = parseInt(value);
+      } else {
+        this.selectedOrganismoId = 0;
+        this.contratos = [];
+      }
     });
   }
+
+  compareOrganismo = (a: any, b: any) => a && b && a.ID_Organismo === b.ID_Organismo;
 
   async loadUsers(): Promise<void> {
     try {
       this.loading = true;
-      const response = await this.fileService.getUsers().toPromise();
-      console.log('Response from getUsers:', response);
+      const response = await this.usuariosService.listar().toPromise();
+      console.log('Response from listar:', response);
       
-      // Manejar diferentes formatos de respuesta
+      let rawUsers: any[] = [];
+
       if (Array.isArray(response)) {
-        this.users = response;
+        rawUsers = response;
       } else if (response && typeof response === 'object') {
-        // Si la respuesta es un objeto con una propiedad data o users
         const res = response as any;
-        this.users = res.data || res.users || [];
-      } else {
-        this.users = [];
+        rawUsers = res.data || res.users || [];
       }
-      
-      this.filterUsers(this.searchForm.get('searchTerm')?.value || '');
+
+      this.users = rawUsers;
+
+      // 👇 completa Nombre_Organismo si ya hay organismos cargados
+      this.syncUserOrgNames();
     } catch (error) {
       console.error('Error fetching users:', error);
       this.users = [];
@@ -107,27 +116,89 @@ export class UserManagementComponent implements OnInit {
     }
   }
 
+  private async loadOrganismos(): Promise<void> {
+    console.log('Cargando lista de organismos...');
+    try {
+      const response = await this.organismosService.postSelectGenericSP({
+        sp_name: 'ORGANISMO_OBTENER_LISTA',
+        body: {}
+      }).toPromise();
+      
+      if ((response as any)?.estado === 1) {
+        this.organismos = (response as any).data || [];
+        this.syncUserOrgNames(); // 👈 refresca nombres en la tabla
+      } else if (Array.isArray((response as any)?.result)) {
+        this.organismos = (response as any).result;
+        this.syncUserOrgNames(); // 👈 refresca nombres en la tabla
+      } else {
+        this.organismos = [];
+        Swal.fire('Error', 'Error al cargar organismos', 'error');
+      }
+    } catch (error) {
+      console.error('Error al cargar organismos:', error);
+      Swal.fire('Error', 'Error al cargar organismos', 'error');
+    }
+  }
+
+  // 👇 JOIN mínimo: agrega Nombre_Organismo a cada usuario según su ID_Organismo
+  private syncUserOrgNames(): void {
+    if (!this.users?.length) {
+      this.filteredUsers = [];
+      return;
+    }
+    if (!this.organismos?.length) {
+      // aún sin organismos: mostramos lista sin nombres y mantenemos filtro
+      this.filterUsers(this.searchForm.get('searchTerm')?.value || '');
+      return;
+    }
+
+    const nameById = new Map<number, string>(
+      this.organismos.map(o => [Number(o.ID_Organismo), o.Nombre])
+    );
+
+    this.users = this.users.map(u => ({
+      ...u,
+      Nombre_Organismo: nameById.get(Number((u as any).ID_Organismo)) || '-'
+    })) as any;
+
+    // re-aplicamos filtro vigente
+    this.filterUsers(this.searchForm.get('searchTerm')?.value || '');
+  }
+
   openNewForm(): void {
     this.showForm = true;
     this.isEditing = false;
     this.currentUser = null;
-    this.userForm.reset();
+    this.userForm.reset({ Tipo_Estado: 1, organismo: null });
+    this.userForm.get('password')?.setValidators([Validators.required, Validators.minLength(8)]);
+    this.userForm.get('password')?.updateValueAndValidity();
   }
 
-  editUser(user: User): void {
+  // setea el objeto organismo para que el select muestre el nombre
+  editUser(user: Usuario): void {
     this.showForm = true;
     this.isEditing = true;
     this.currentUser = user;
-    
-    // Formatear fecha si existe
-    const formData: any = { ...user };
-    if (formData.fecha_nacimiento) {
-      formData.fecha_nacimiento = formData.fecha_nacimiento.split('T')[0];
-    }
-    
-    this.userForm.patchValue(formData);
+
+    const orgObj = this.organismos.find(o => o.ID_Organismo === (user as any).ID_Organismo) || null;
+
+    this.userForm.patchValue({
+      Nombre: user.Nombre,
+      Apellido: user.Apellido,
+      Email: user.Email || '',
+      User_Name: user.User_Name,
+      organismo: orgObj,
+      CUIL: user.CUIL || '',
+      Telefono: user.Telefono || '',
+      Cargo_Funcion: user.Cargo_Funcion || '',
+      Perfil: user.Perfil || '',
+      Tipo_Estado: user.Tipo_Estado ?? 1
+    });
+    this.userForm.get('password')?.clearValidators();
+    this.userForm.get('password')?.updateValueAndValidity();
   }
 
+  // mapea objeto organismo → ID_Organismo para el backend/SP
   async onSubmit(): Promise<void> {
     if (this.userForm.invalid) {
       this.markFormGroupTouched(this.userForm);
@@ -135,14 +206,38 @@ export class UserManagementComponent implements OnInit {
     }
 
     this.loading = true;
-    const formData = this.userForm.value;
+    const v = this.userForm.value;
+    const org = v.organismo;
+
+    const payload: any = {
+      ID_Organismo: org?.ID_Organismo ?? null,
+      User_Name: v.User_Name,
+      CUIL: v.CUIL || null,
+      Apellido: v.Apellido,
+      Nombre: v.Nombre,
+      Telefono: v.Telefono || null,
+      Email: v.Email || null,
+      Cargo_Funcion: v.Cargo_Funcion || null,
+      Perfil: v.Perfil || null,
+      Tipo_Estado: Number(v.Tipo_Estado),
+      Nombre_Organismo: org?.Nombre ?? ''
+    };
+
+    if (v.password) {
+      payload.password = v.password;
+    }
+
+    if (!payload.ID_Organismo) {
+      this.userForm.get('organismo')?.markAsTouched();
+      this.loading = false;
+      return;
+    }
 
     try {
-      let result;
       if (this.isEditing && this.currentUser) {
-        result = await this.fileService.updateUser(this.currentUser.id!, formData).toPromise();
+        await this.usuariosService.actualizar(this.currentUser.ID_USER!, payload).toPromise();
       } else {
-        result = await this.fileService.createUser(formData).toPromise();
+        await this.usuariosService.crear(payload).toPromise();
       }
 
       await Swal.fire({
@@ -161,10 +256,10 @@ export class UserManagementComponent implements OnInit {
     }
   }
 
-  async deleteUser(user: User): Promise<void> {
+  async deleteUser(user: Usuario): Promise<void> {
     const result = await Swal.fire({
       title: '¿Está seguro?',
-      text: `¿Desea eliminar al usuario ${user.nombre} ${user.apellido}?`,
+      text: `¿Desea eliminar al usuario ${user.Nombre} ${user.Apellido}?`,
       icon: 'warning',
       showCancelButton: true,
       confirmButtonColor: '#3085d6',
@@ -176,7 +271,7 @@ export class UserManagementComponent implements OnInit {
     if (result.isConfirmed) {
       try {
         this.loading = true;
-        await this.fileService.deleteUser(user.id!).toPromise();
+        await this.usuariosService.eliminar(user.ID_USER!).toPromise();
         Swal.fire('Eliminado', 'Usuario eliminado exitosamente', 'success');
         await this.loadUsers();
       } catch (error: any) {
@@ -221,27 +316,24 @@ export class UserManagementComponent implements OnInit {
     });
   }
 
+  // null-safe para evitar errores si Email es null/undefined
   private filterUsers(searchTerm: string): void {
     if (!searchTerm) {
       this.filteredUsers = [...this.users];
     } else {
-      const term = searchTerm.toLowerCase();
+      const term = (searchTerm ?? '').toLowerCase();
       this.filteredUsers = this.users.filter(user => 
-        user.nombre.toLowerCase().includes(term) ||
-        user.apellido.toLowerCase().includes(term) ||
-        user.email.toLowerCase().includes(term)
+        (user.Nombre ?? '').toLowerCase().includes(term) ||
+        (user.Apellido ?? '').toLowerCase().includes(term) ||
+        ((user.Email ?? '') as string).toLowerCase().includes(term) ||
+        (user.User_Name ?? '').toLowerCase().includes(term)
       );
     }
   }
 
-  // Métodos para edición inline
-  startInlineEdit(user: User): void {
-    this.editingRowId = user.id!;
-    const formData: any = { ...user };
-    if (formData.fecha_nacimiento) {
-      formData.fecha_nacimiento = formData.fecha_nacimiento.split('T')[0];
-    }
-    this.editingForm.patchValue(formData);
+  startInlineEdit(user: Usuario): void {
+    this.editingRowId = user.ID_USER!;
+    this.editingForm.patchValue(user);
   }
 
   cancelInlineEdit(): void {
@@ -249,7 +341,7 @@ export class UserManagementComponent implements OnInit {
     this.editingForm.reset();
   }
 
-  async saveInlineEdit(user: User): Promise<void> {
+  async saveInlineEdit(user: Usuario): Promise<void> {
     if (this.editingForm.invalid) {
       this.markFormGroupTouched(this.editingForm);
       return;
@@ -259,7 +351,7 @@ export class UserManagementComponent implements OnInit {
     const formData = this.editingForm.value;
 
     try {
-      await this.fileService.updateUser(user.id!, formData).toPromise();
+      await this.usuariosService.actualizar(user.ID_USER!, formData).toPromise();
       await Swal.fire({
         icon: 'success',
         title: 'Actualizado',
@@ -276,8 +368,8 @@ export class UserManagementComponent implements OnInit {
     }
   }
 
-  isEditingRow(user: User): boolean {
-    return this.editingRowId === user.id;
+  isEditingRow(user: Usuario): boolean {
+    return this.editingRowId === user.ID_USER;
   }
 
   hasEditingError(field: string, error: string): boolean {
