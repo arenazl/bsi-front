@@ -1,8 +1,9 @@
 
 export const GlobalVariable = Object.freeze({
-    //BASE_API_URL: 'https://bsi-back-dev-22264eab9225.herokuapp.com/api'               ////// DEV
-    //BASE_API_URL: 'https://bsi-back-6f59f9b7097f.herokuapp.com/api'                   ////// PROD
-    //BASE_API_URL: 'http://localhost:3000/api'                                         ///// LOCAL
-      BASE_API_URL: 'https://bsi-back-qa-62b208186c75.herokuapp.com/api'                ////// QA
+    // Mismo origen: la Pages Function de functions/api/[[path]].js rutea /api al backend
+    // en Cloud Run. El front no sabe donde vive el backend, y por eso no hay CORS ni una
+    // URL que haya que cambiar en cada ambiente.
+    // Historia: hasta 2026-10-07 esto apuntaba a mano a una de las tres apps de Heroku
+    // (dev/qa/prod), comentando y descomentando lineas.
+      BASE_API_URL: '/api'
 });
-

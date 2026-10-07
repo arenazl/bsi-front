@@ -45,3 +45,6 @@ testem.log
 .DS_Store        
 Thumbs.db
 src/environments/global.ts
+
+# Netlify retirada del ecosistema (2026)
+.netlify/
