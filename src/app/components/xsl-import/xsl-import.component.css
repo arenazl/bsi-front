@@ -1,14 +1,129 @@
+/* Formulario generico de importacion. Lo arma `controls`, que viene de la metadata, asi
+   que la cantidad y el tipo de campos cambian por pantalla: el layout no puede depender
+   de cuantos haya ni de cuanto mida cada etiqueta. */
 
+/* El problema que resuelve: antes era `d-flex flex-wrap` con cada control al 25%. En flex,
+   cada celda se alinea a SU contenido, asi que una etiqueta que ocupa dos renglones
+   ("Cuenta Debito") empujaba su campo hacia abajo y descolocaba la fila entera. Con grid,
+   todas las celdas de una fila miden lo mismo y los campos quedan alineados aunque los
+   titulos tengan largos distintos. */
+.grilla-campos {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 18px 16px;
+  align-items: end;
+}
+
+/* La celda se estira y el campo se apoya abajo: asi todos los inputs de una fila quedan
+   a la misma altura, tengan la etiqueta de uno o de dos renglones. */
+.celda {
+  min-width: 0;            /* sin esto, un valor largo desborda la columna */
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+
+.celda .form-group {
+  margin-bottom: 0;
+}
+
+.label {
+  display: block;
+  margin-bottom: 6px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: #5a6b85;
+  line-height: 1.3;
+  min-height: 2.1em;       /* reserva dos renglones: los titulos cortos y los largos
+                              dejan sus campos a la misma altura */
+  display: flex;
+  align-items: flex-end;
+}
+
+/* Todos los campos iguales, incluido el selector de fecha nativo, que antes se veia
+   distinto del resto por traer el estilo del navegador. */
+.celda .form-control,
+.celda select.form-control,
+.celda input[type="date"].form-control {
+  width: 100%;
+  height: 42px;
+  padding: 0 12px;
+  border: 1px solid #d5dce6;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  background-color: #fff;
+  transition: border-color .15s, box-shadow .15s;
+}
+
+.celda .form-control:focus {
+  border-color: #0d6efd;
+  box-shadow: 0 0 0 3px rgba(13, 110, 253, .12);
+  outline: none;
+}
+
+/* Un campo de solo lectura tiene que PARECER de solo lectura: antes unos venian grises y
+   otros blancos sin un criterio visible. */
+.celda .form-control[readonly] {
+  background-color: #f1f4f8;
+  color: #5a6b85;
+  cursor: default;
+}
+
+.celda input[type="range"].form-control {
+  height: auto;
+  padding: 0;
+  border: 0;
+  background: none;
+}
+
+/* Un campo de tipo texto suelto no es un input: no lleva marco ni alto de control. */
+.celda p {
+  margin: 0;
+  min-height: 42px;
+  display: flex;
+  align-items: center;
+  font-size: 0.95rem;
+}
+
+/* Los botones de accion estaban separados con divs vacios de 3% de ancho. Eso es un gap. */
+.bloque-acciones .label {
+  min-height: auto;
+  margin-bottom: 10px;
+}
+
+.fila-botones {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  width: 100%;
+}
+
+.boton-accion {
+  flex: 1 1 160px;
+  min-height: 44px;
+  border-radius: 8px;
+}
+
+/* En el celular, una columna: tres campos de 200px al lado no entran y el formulario
+   terminaba con desplazamiento horizontal. */
+@media (max-width: 575.98px) {
+  .grilla-campos {
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+  .label {
+    min-height: auto;
+  }
+  .boton-accion {
+    flex: 1 1 100%;
+  }
+}
 
 .display-inherit {
-    display: inherit !important;
-  }
+  display: inherit !important;
+}
 
-  .label{
-    margin-bottom: 10px;
-  }
-
-.bg-progress{
+.bg-progress {
   background: linear-gradient(270deg, #00BCD4, #0d6efd) !important;
 }
-  

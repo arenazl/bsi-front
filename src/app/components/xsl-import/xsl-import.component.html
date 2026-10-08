@@ -26,14 +26,14 @@
       <div class="row">
         <form [formGroup]="formGroup" (ngSubmit)="onSubmit()">
 
-          <div class="mt-2 d-flex flex-wrap">
+          <div class="grilla-campos mt-2">
 
             <ng-container *ngFor="let control of controls">
 
-              <div style="flex: 0 0 25%;">
+              <div class="celda">
 
                 <!-- Input -->
-                <div class="form-group m-2" *ngIf="control.type === 'input'">
+                <div class="form-group" *ngIf="control.type === 'input'">
                   <label class="label" [for]="control.field">{{ control.header }}</label>
                   <input
                     [type]="control.inputType || 'text'" 
@@ -44,7 +44,7 @@
                 </div>
                 
                 <!-- Combo -->
-                <div class="form-group m-2" *ngIf="control.type === 'select'">
+                <div class="form-group" *ngIf="control.type === 'select'">
                   <label class="label" [for]="control.field">{{ control.header }}</label>
                   <select class="form-control" [id]="control.field" (change)="optionChanged($event)" [formControlName]="control.field">
                     <option *ngFor="let option of control.options" [value]="option.id">{{ option.value }}</option>
@@ -52,19 +52,19 @@
                 </div>
         
                 <!-- Date -->
-                <div class="form-group m-2" *ngIf="control.type === 'date'">
-                  <label class="label" [for]="control.field">{{ control.heade | date:'dd/MM/yyyy' }}</label>
+                <div class="form-group" *ngIf="control.type === 'date'">
+                  <label class="label" [for]="control.field">{{ control.header }}</label>
                   <input type="date" class="form-control" formControlName="{{ control.field }}" [id]="control.field" />
                 </div>
         
                 <!-- Range -->
-                <div class="form-group m-2" *ngIf="control.type === 'range'">
+                <div class="form-group" *ngIf="control.type === 'range'">
                   <label class="label" [for]="control.field">{{ control.header }}</label>
                   <input type="range" class="form-control" [id]="control.field" formControlName="{{ control.field }}" [min]="control.min" [max]="control.max" />
                 </div>
 
                 <!-- Label -->
-                <div class="form-group m-2" *ngIf="control.type === 'label'">
+                <div class="form-group" *ngIf="control.type === 'label'">
                   <label class="label">{{ control.header }}</label>
                   <p>{{ formGroup.get(control.field)?.value }}</p>
                 </div>   
@@ -77,23 +77,21 @@
 
           <!-- Opciones de Carga -->
 
-          <div class="form-group mt-3 m-2 d-flex flex-wrap" style="flex: 0 0 50%; width: 50%;">
+          <div class="form-group bloque-acciones mt-4">
 
             <label class="label w-100">Opciones de Carga</label>
 
-            <div class="d-flex"style="width: 98% !important;">
+            <div class="fila-botones">
             
-              <button type="button" *ngIf="cargaManual" class="btn btn-primary fw-bold ml-2" style="flex: 1 0 24%;" (click)="navigatToXslEditabletable()">
+              <button type="button" *ngIf="cargaManual" class="btn btn-primary fw-bold boton-accion" (click)="navigatToXslEditabletable()">
                 Carga Manual
               </button>
 
-              <div style="width: 3%;"></div>
-              <button type="button" *ngIf="cargaArchivo" class="btn btn-primary fw-bold ml-2" style="flex: 1 0 24%;" (click)="selectCargaArchivo()">
+                            <button type="button" *ngIf="cargaArchivo" class="btn btn-primary fw-bold boton-accion" (click)="selectCargaArchivo()">
                 Carga por Archivo
               </button>
 
-              <div style="width: 3%;" class=""></div>
-              <button type="button" *ngIf="cargaNomina" class="btn btn-primary fw-bold ml-2" style="flex: 1 0 24%;" (click)="selectCargaNomina()">
+                            <button type="button" *ngIf="cargaNomina" class="btn btn-primary fw-bold boton-accion" (click)="selectCargaNomina()">
                 Cargar Nomina
               </button>
               
@@ -101,13 +99,13 @@
                  
           </div>
     
-          <div class="form-group mt-3 m-2" *ngIf="cargaArchivoSeleccionada" style="flex: 0 0 98.5%;">
+          <div class="form-group mt-3 m-2" *ngIf="cargaArchivoSeleccionada">
             <label class="label" for="fileUpload">Carga de Archivo</label>
             <input type="file" name="upload" placeholder="Archivo" class="form-control" id="fileUpload" multiple
               ng2FileSelect [uploader]="uploader" />
           </div>
     
-          <div class="row m-1" *ngFor="let item of uploader.queue" style="flex: 0 0 98.5%;">
+          <div class="row m-1" *ngFor="let item of uploader.queue">
 
             <div class="col-md-4 filename" style="padding-top: 7px">
               {{ item.file.name }}
@@ -130,7 +128,7 @@
 
           </div>
   
-          <div class="form-group m-2 mt-3" *ngIf="cargaArchivoSeleccionada" style="flex: 0 0 98.5%;">
+          <div class="form-group m-2 mt-3" *ngIf="cargaArchivoSeleccionada">
             <button [ngClass]="{ 'btn-completed': filesUploaded }" class="btn btn-primary w-100 display-inherit"
               type="button" id="uploadBtn" (click)="uploader.uploadAll()">
               {{ buttonText }}
