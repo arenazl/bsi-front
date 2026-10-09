@@ -139,6 +139,14 @@ export class XslImportComponent implements OnInit {
   }
   
   private handleContractData(resData: dbResponse): void {
+    if (!resData || !resData.data) {
+      Swal.fire({
+        title: "Contrato no disponible",
+        text: resData?.descripcion || "No hay un contrato habilitado para esta modalidad.",
+        icon: "error",
+      }).then(() => this.location.back());
+      return;
+    }
     this.data = resData.data;
     this.setSessionData(resData.data);
     this.loadMetadata();

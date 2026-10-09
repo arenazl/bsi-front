@@ -12,7 +12,7 @@
       "items": [
         {
           "description": "Importar la plantilla",
-          "link": "/xslImport/CUENTA/3",
+          "link": "/xslImport/CUENTA/BENEFICIOS",
           "icono": "fa-download"
         }
       ]    },
@@ -37,7 +37,7 @@
       "items": [
         {
           "description": "Importar CBUs",
-          "link": "/xslImport/NOMINA/3",
+          "link": "/xslImport/NOMINA/BENEFICIOS",
           "icono": "fa-download"
         }
       ]
