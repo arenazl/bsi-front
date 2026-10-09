@@ -54,11 +54,16 @@ export class FileService {
   }
 
   getTR(id: string) {
-    return this._http.get(`${this.API_URI}/responsetr/${id}`);
+    return this._http.get(`${this.API_URI}/IO/responsetr/${id}`);
   }
 
   getTRList() {
-    return this._http.get(`${this.API_URI}/responsetrforcombo`);
+    return this._http.get(`${this.API_URI}/IO/responsetrforcombo`);
+  }
+
+  /** El archivo de transferencias inmediatas (TIL) de una carga, en el diseno del banco. */
+  downloadTIL(id: string | number): Observable<Blob> {
+    return this._http.get(`${this.API_URI}/IO/downloadtil/${id}`, { responseType: 'blob' });
   }
 
   saveValidationData(data: any): void {

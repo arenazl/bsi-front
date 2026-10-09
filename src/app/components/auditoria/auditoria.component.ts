@@ -143,17 +143,16 @@ export class AuditoriaComponent implements OnInit {
   getFile(): void {
     
     this.fileService
-      .downloadFile(this.id as unknown as number)
+      .downloadTIL(this.id)
       .subscribe((blob) => {
         
-        let cbu : string = this.tranfeResponse.head[0].empresaNombre;
-        let concepto = this.tranfeResponse.head[0].concepto;
+        const rotulo: string = (this.tranfeResponse.head[0].rotuloArchivo || 'TIL').trim();
 
         const url = window.URL.createObjectURL(blob);
         const link = document.createElement("a");
         link.href = url;
 
-        link.setAttribute("download", cbu.trim() + "-" + concepto + ".txt"); // or any other extension
+        link.setAttribute("download", "TIL-" + rotulo + "-" + this.id + ".txt");
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);

@@ -11,7 +11,7 @@ import { GlobalVariable } from '../../../environments/global';
 import Swal from 'sweetalert2';
 import { NgxImageCompressService } from 'ngx-image-compress';
 
-const uri = GlobalVariable.BASE_API_URL + "/file/uploadtr"
+const uri = GlobalVariable.BASE_API_URL + "/IO/uploadtr"
 
 @Component({
   selector: 'app-game-form',
@@ -83,9 +83,8 @@ export class GameFormComponent implements OnInit {
 
       item.withCredentials = false;
 
-      item.file.name = sessionStorage.getItem('nombre') as unknown as string + "-" +
-        this.conceptoSeleccionado + "-" +
-        this.motivoSeleccionado;
+      // El backend lee el motivo del final del nombre: <usuario>-<motivo>.
+      item.file.name = (sessionStorage.getItem('Nombre') || 'usuario') + "-" + this.motivoSeleccionado;
     }
 
     this.uploader.onCompleteItem = (item: any, response: any, status: any, headers: any) => {
@@ -195,10 +194,6 @@ export class GameFormComponent implements OnInit {
   }
 
   onMotivoSelect(event: any) {
-    this.conceptoSeleccionado = event.target.value;
-  }
-
-  onConceptoSelect(event: any) {
     this.motivoSeleccionado = event.target.value;
   }
 
