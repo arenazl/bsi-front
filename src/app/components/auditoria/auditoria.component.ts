@@ -102,7 +102,14 @@ export class AuditoriaComponent implements OnInit {
 
     this.ld_header = true;
     this.fileService.getTR(id).subscribe(
-      (res) => {
+      (res: any) => {
+        // La base guarda las fechas como AAMMDD en un entero; la pantalla las muestra como fecha.
+        for (const h of res?.head ?? []) {
+          for (const k of ['fechaAcreditacion', 'fechaEmision']) {
+            const v = String(h[k] ?? '');
+            if (/^\d{6}$/.test(v)) h[k] = `20${v.slice(0, 2)}-${v.slice(2, 4)}-${v.slice(4, 6)}`;
+          }
+        }
         this.tranfeResponse = res;
          this.ld_header = false;
       },
