@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
 import { GlobalVariable } from '../../environments/global';
 import { Observable, Observer, of } from 'rxjs';
 import { map } from 'jquery';
@@ -108,12 +108,10 @@ export class FileService {
     });
   }
 
-  downloadOutputFile(tipoModulo: string, id: number): Observable<Blob> {
+  downloadOutputFile(tipoModulo: string, id: number): Observable<HttpResponse<Blob>> {
     const url = `${this.API_URI}/IO/downloadtxtfile/${tipoModulo}/${id}`;
-    return this._http.get(url, {
-      responseType: 'blob',
-      headers: new HttpHeaders().append('Content-Type', 'application/json')
-    });
+    // Con la respuesta completa: el nombre del archivo viene en Content-Disposition (rotulo.txt o NNNNmmdd.emp).
+    return this._http.get(url, { responseType: 'blob', observe: 'response' });
   }
   
   

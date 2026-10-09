@@ -199,11 +199,15 @@ export class PdfService {
 
   // Método para descargar un archivo
   getFile(tipoModulo: string, id: number, rotulo: string): void {
-    this.fileService.downloadOutputFile(tipoModulo, id).subscribe((blob) => {
+    this.fileService.downloadOutputFile(tipoModulo, id).subscribe((respuesta) => {
+      const blob = respuesta.body as Blob;
+      const disposicion = respuesta.headers.get('content-disposition') || '';
+      const enCabecera = /filename\*?=(?:UTF-8'')?"?([^";]+)"?/i.exec(disposicion);
+      const nombre = enCabecera ? decodeURIComponent(enCabecera[1].trim()) : `${rotulo}.txt`;
       const url = window.URL.createObjectURL(blob);
       const link = document.createElement('a');
       link.href = url;
-      link.setAttribute('download', `${rotulo}.txt`); // Nombre del archivo a descargar
+      link.setAttribute('download', nombre); // rotulo.txt para pagos, NNNNmmdd.emp para altas
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link); // Eliminar el enlace después de descargar
