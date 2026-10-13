@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
 import { GlobalVariable } from '../../environments/global';
 import { Observable, Observer, of } from 'rxjs';
+import { map as mapear } from 'rxjs/operators';
 import { map } from 'jquery';
 import { TipoMetada, TipoModulo } from '../enums/enums';
 import { Altas_Payload, dbResponse } from '../models/Model';
@@ -115,6 +116,17 @@ export class FileService {
   }
   
   
+
+  /** Próximo día hábil bancario, para precargar la fecha de pago (procedure PROXIMO_DIA_HABIL). */
+  getProximoDiaHabil(): Observable<{ fecha: string; dia: string }> {
+    return this._http.post<any>(`${this.API_URI}/Metadata/POST_SELECT_GENERIC_SP`, { sp_name: 'PROXIMO_DIA_HABIL', body: {}, jsonUnify: false })
+      .pipe(mapear((r: any) => r?.data));
+  }
+
+  /** Mueve la fecha de pago de un lote vencido al próximo día hábil (PAGO_ACTUALIZAR_FECHAPAGO). */
+  actualizarFechaPago(id: number, fecha: string): Observable<any> {
+    return this._http.post<any>(`${this.API_URI}/Metadata/POST_INSERT_GENERIC_SP`, { sp_name: 'PAGO_ACTUALIZAR_FECHAPAGO', body: { ID: id, FECHAPAGO: fecha }, jsonUnify: true });
+  }
 
   getListForCombo(tipoModulo: TipoModulo): Observable<any> {
 

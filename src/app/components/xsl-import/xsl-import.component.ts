@@ -226,7 +226,14 @@ export class XslImportComponent implements OnInit {
     this.filesUploaded = true;
     this.buttonText = 'Completado';
     if(res.tipo_modulo == TipoModulo.NOMINA) this.tipoModulo = TipoModulo.NOMINA;
-    this.router.navigate(['/xslVerified/' + this.tipoModulo + '/' + res.data.id_insertado]);
+    const irAlLote = () => this.router.navigate(['/xslVerified/' + this.tipoModulo + '/' + res.data.id_insertado]);
+    // Si la base corrió la fecha de pago (hoy, feriado o fin de semana), se dice antes de seguir; nunca en silencio.
+    const nota = res?.data?.nota;
+    if (nota) {
+      Swal.fire({ title: 'Fecha de pago', text: nota, icon: 'info' }).then(irAlLote);
+    } else {
+      irAlLote();
+    }
   }
 
   initializeControls(data: any = {}): void {
@@ -237,6 +244,10 @@ export class XslImportComponent implements OnInit {
         value = new Date().toISOString().split('T')[0];
       }
       this.formGroup.addControl(control.field, this.fb.control(value));
+      if (control.type === 'date') {
+        // El banco no acredita en el día: la fecha de pago arranca en el próximo día hábil.
+        this.fileService.getProximoDiaHabil().subscribe(d => { if (d?.fecha) this.formGroup.get(control.field)?.setValue(d.fecha); }, () => {});
+      }
       if (control.type === 'select') {
         this.loadComboOptions(control);
       }

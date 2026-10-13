@@ -5,6 +5,7 @@ import { TipoMetada, TipoModulo } from "src/app/enums/enums";
 import { FileService } from "../../services/file.service";
 import { PdfService } from "src/app/services/pdf.service";
 import { BsiHelper } from "src/app/services/bsiHelper.service";
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-xsl-verified',
@@ -219,6 +220,39 @@ export class XslVerifiedComponent implements OnInit, AfterViewInit {
       console.error('El rótulo no está disponible en sessionStorage.');
       return;
     }
+    // El banco rechaza un archivo cuya fecha de acreditación no sea posterior al día: si la fecha de pago
+    // del lote ya pasó, no se baja el archivo; se ofrece correrla al próximo día hábil y recién ahí se genera.
+    const fechaPago = String(this.validationData?.header?.fechapago ?? '').slice(0, 10);
+    if (this.Tipo_Modulo === TipoModulo.PAGO && /^\d{4}-\d{2}-\d{2}$/.test(fechaPago) && fechaPago <= this.hoyLocal()) {
+      const [a, m, d] = fechaPago.split('-');
+      Swal.fire({
+        title: 'La fecha de pago ya pasó',
+        text: `El lote tiene fecha de pago ${d}/${m}/${a} y el banco no acepta acreditar en el día ni antes. ¿La paso al próximo día hábil y genero el archivo?`,
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Sí, pasarla',
+        cancelButtonText: 'No, dejar así',
+      }).then(r => {
+        if (!r.isConfirmed) return;
+        this.fileService.actualizarFechaPago(this.id, fechaPago).subscribe((res: any) => {
+          if (res?.estado !== 1 || !res?.data?.fechapago) {
+            Swal.fire({ title: 'No se pudo cambiar la fecha', text: res?.descripcion ?? '', icon: 'error' });
+            return;
+          }
+          this.validationData.header.fechapago = res.data.fechapago;
+          Swal.fire({ title: 'Fecha de pago', text: res.data.nota ?? `Nueva fecha de pago: ${res.data.fechapago}`, icon: 'info' })
+            .then(() => this.pdfService.getFile(this.Tipo_Modulo, this.id, rotulo));
+        }, () => Swal.fire({ title: 'No se pudo cambiar la fecha', text: 'Reintentá en un momento.', icon: 'error' }));
+      });
+      return;
+    }
     this.pdfService.getFile(this.Tipo_Modulo, this.id, rotulo);
+  }
+
+  /** Hoy en hora local (AAAA-MM-DD): toISOString daría la fecha UTC, que a la noche ya es mañana. */
+  private hoyLocal(): string {
+    const h = new Date();
+    const dos = (n: number) => String(n).padStart(2, '0');
+    return `${h.getFullYear()}-${dos(h.getMonth() + 1)}-${dos(h.getDate())}`;
   }
 }
